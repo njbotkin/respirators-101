@@ -1,0 +1,38 @@
+{
+  "name": "respirators-101",
+  "version": "1.0.0",
+  "description": "Just breathe",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape client/**/*-test.js",
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TehShrike/respirators-101.git"
+  },
+  "author": "Cool dudes",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/TehShrike/respirators-101/issues"
+  },
+  "homepage": "https://github.com/TehShrike/respirators-101#readme",
+  "dependencies": {
+    "autoprefixer": "7.1.6",
+    "babel-core": "6.26.0",
+    "babel-plugin-external-helpers": "6.22.0",
+    "babel-preset-env": "1.6.1",
+    "glob-module-file": "2.0.0",
+    "hash-brown-router": "3.3.0",
+    "postcss": "6.0.14",
+    "precss": "2.0.0",
+    "rollup": "0.51.5",
+    "rollup-plugin-babel": "3.0.2",
+    "rollup-plugin-commonjs": "8.2.6",
+    "rollup-plugin-node-resolve": "3.0.0",
+    "rollup-plugin-svelte": "3.1.0",
+    "svelte": "1.41.3",
+    "tape": "4.8.0"
+  }
+}
