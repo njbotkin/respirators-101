@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: node:8
+    steps:
+      - run:
+          name: "Install + build"
+          # todo: push build artifacts somewhere
+          command: |
+            npm i
+            npm run build
+  test:
+    docker:
+      - image: node:8
+    steps:
+      - run:
+          name: "Install + build + test"
+          command: |
+            npm i
+            npm run build
+            npm t
