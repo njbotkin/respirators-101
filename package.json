@@ -4,9 +4,15 @@
   "description": "Just breathe",
   "main": "index.js",
   "scripts": {
-    "test": "tape client/**/*-test.js",
-    "build": "rollup -c",
-    "watch": "rollup -c -w"
+    "test": "tape -r reify client/**/*-test.js",
+    "build": "npm run create-symlinks && npm run glob && rollup -c",
+    "watch": "rollup -c -w",
+    "watch-glob": "watch \"npm run glob\" client/static-html",
+    "glob": "run-p glob:*",
+    "glob:routes": "glob-module-file --pattern=\"client/routes/**/*.js\" --format=es --pathPrefix=../../ --outputPath=client/lib/globbed-routes.js",
+    "glob:static-html": "glob-module-file --pattern=\"client/static-html/**/*.html\" --format=es --exportWithPath --pathPrefix=../../ --outputPath=client/lib/globbed-static-html.js",
+    "create-symlinks": "symlink client/component client/node_modules/component && symlink client/lib client/node_modules/lib",
+    "dev": "npm run glob && sh -c 'npm run watch-glob & npm run watch & serve public && kill 0'"
   },
   "repository": {
     "type": "git",
@@ -19,20 +25,30 @@
   },
   "homepage": "https://github.com/TehShrike/respirators-101#readme",
   "dependencies": {
+    "abstract-state-router": "^6.0.4",
     "autoprefixer": "7.1.6",
     "babel-core": "6.26.0",
     "babel-plugin-external-helpers": "6.22.0",
     "babel-preset-env": "1.6.1",
-    "glob-module-file": "2.0.0",
-    "hash-brown-router": "3.3.0",
+    "better-match": "^1.0.2",
+    "glob-module-file": "^2.2.0",
+    "npm-run-all": "^4.1.2",
     "postcss": "6.0.14",
     "precss": "2.0.0",
+    "reify": "^0.12.3",
     "rollup": "0.51.5",
     "rollup-plugin-babel": "3.0.2",
     "rollup-plugin-commonjs": "8.2.6",
     "rollup-plugin-node-resolve": "3.0.0",
+    "rollup-plugin-string": "^2.0.2",
     "rollup-plugin-svelte": "3.1.0",
     "svelte": "1.41.3",
+    "svelte-state-renderer": "^1.2.5",
+    "symlink-cli": "^1.0.0",
     "tape": "4.8.0"
+  },
+  "devDependencies": {
+    "serve": "^6.4.1",
+    "watch": "^1.0.2"
   }
 }

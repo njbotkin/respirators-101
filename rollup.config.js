@@ -2,6 +2,7 @@ import commonjs from 'rollup-plugin-commonjs'
 import resolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
 import svelte from 'rollup-plugin-svelte'
+import string from 'rollup-plugin-string'
 
 export default {
 	name: 'revelationStructure',
@@ -12,7 +13,12 @@ export default {
 	},
 	sourcemap: true,
 	plugins: [
-		svelte(),
+		string({
+			include: '**/static-html/**/*.html',
+		}),
+		svelte({
+			exclude: '**/static-html/**/*.html',
+		}),
 		commonjs(),
 		resolve({
 			browser: true,

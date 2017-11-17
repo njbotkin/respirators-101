@@ -1,5 +1,10 @@
-console.log('root!')
+import StateRouter from 'abstract-state-router'
+import makeSvelteStateRenderer from 'svelte-state-renderer'
 
-const a = () => console.log('lol')
+import states from 'lib/globbed-routes.js'
 
-a()
+const stateRouter = StateRouter(makeSvelteStateRenderer(), document.querySelector('#target'))
+
+states.forEach(state => stateRouter.addState(state))
+
+stateRouter.evaluateCurrentRoute('home')

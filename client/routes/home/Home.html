@@ -1,0 +1,11 @@
+<h1>This is the home page</h1>
+
+<h2>Static pages:</h2>
+<ul>
+	{{#each staticHtmlIds as id}}
+	<li>
+		<a href="{{ asr.makePath('app.static-content', { fileId: id }) }}">{{id}}</a>
+	</li>
+	{{/each}}
+</ul>
+
