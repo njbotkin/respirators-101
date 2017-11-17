@@ -13,7 +13,7 @@
     "glob": "run-p glob:*",
     "glob:routes": "glob-module-file --pattern=\"client/routes/**/*.js\" --format=es --pathPrefix=../../ --outputPath=client/lib/globbed-routes.js",
     "glob:static-html": "glob-module-file --pattern=\"client/static-html/**/*.html\" --format=es --exportWithPath --pathPrefix=../../ --outputPath=client/lib/globbed-static-html.js",
-    "create-symlinks": "symlink client/component client/node_modules/component && symlink client/lib client/node_modules/lib",
+    "create-symlinks": "symlink client/lib client/node_modules/lib",
     "dev": "npm run glob && sh -c 'npm run watch-glob & npm run watch-css & npm run watch & serve public && kill 0'"
   },
   "repository": {
