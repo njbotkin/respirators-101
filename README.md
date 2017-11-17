@@ -13,6 +13,8 @@ npm run build
 npm run dev
 ```
 
+A server will be started automatically, probably on `http://localhost:5000` (`serve` should copy the url to your clipboard)
+
 ## To test
 
 ```sh
