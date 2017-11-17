@@ -2,9 +2,9 @@
 
 <h2>Static pages:</h2>
 <ul>
-	{{#each staticHtmlIds as id}}
+	{{#each staticPages as page}}
 	<li>
-		<a href="{{ asr.makePath('app.static-content', { fileId: id }) }}">{{id}}</a>
+		<a href="{{ asr.makePath('app.static-content', { fileId: page.id }) }}">{{page.name}}</a>
 	</li>
 	{{/each}}
 </ul>

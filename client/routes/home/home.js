@@ -1,16 +1,16 @@
 import Home from './Home.html'
 
-import idToHtml from 'lib/static-content-id-to-html.js'
+import idToHtml from 'lib/static-content-by-id.js'
 
-const staticHtmlIds = Object.keys(idToHtml)
+const staticPages = Object.keys(idToHtml).map(id => idToHtml[id])
 
 export default {
-	name: 'home',
-	route: 'home',
+	name: `home`,
+	route: `home`,
 	template: Home,
 	resolve(data, params) {
 		return Promise.resolve({
-			staticHtmlIds,
+			staticPages,
 		})
 	},
 }

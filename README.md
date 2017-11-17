@@ -25,3 +25,5 @@ npm t
 - Anything in `lib` and `component` can be imported with `import 'lib/[whatever]` or `import component/[whatever]` without having to use relative paths
 - Because of this, anything in `routes` shouldn't have to use relative paths to access any files outside of that directory tree
 - `.html` files in `client/static-html` will be automatically slurped up during the build
+	- it is safe to wipe out that directory and overwrite it with new html files
+	- to give the static files friendly names, edit `lib/static-html-page-names.js`
