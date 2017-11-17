@@ -24,15 +24,16 @@ main(process.argv[2] === `watch`).catch(e => {
 })
 
 async function main(debug) {
-	const cssGlob = `./client/routes/**/*.css`
+	const cssGlob = `client/routes/**/*.css`
 	const output = `./public/style.css`
+	const watchGlob = `client/**/*.css`
 
 	makeDirSync(path.dirname(output))
 
 	await build(cssGlob, output)
 
 	if (debug) {
-		watch(cssGlob, () => build(cssGlob, output))
+		watch(watchGlob, () => build(cssGlob, output))
 	}
 }
 
