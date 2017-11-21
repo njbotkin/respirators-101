@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "tape -r reify ./**/*-test.js",
-    "build": "npm run create-symlinks && npm run glob && npm run build-css && rollup -c",
+    "prep-build": "npm run build-decisions-from-twine-input && npm run create-symlinks && npm run glob",
+    "build": "npm run prep-build && npm run build-css && rollup -c",
     "watch": "rollup -c -w",
     "watch-glob": "watch \"npm run glob\" client/static-html",
     "build-css": "node compile-css.js",
@@ -14,7 +15,8 @@
     "glob:routes": "glob-module-file --pattern=\"client/routes/**/*.js\" --format=es --pathPrefix=../../ --outputPath=client/lib/globbed-routes.js",
     "glob:static-html": "glob-module-file --pattern=\"client/static-html/**/*.html\" --format=es --exportWithPath --pathPrefix=../../ --outputPath=client/lib/globbed-static-html.js",
     "create-symlinks": "symlink client/lib client/node_modules/lib",
-    "dev": "npm run glob && sh -c 'npm run watch-glob & npm run watch-css & npm run watch & serve public && kill 0'"
+    "build-decisions-from-twine-input": "node twine-parser/output-decisions-html-object.js",
+    "dev": "npm run prep-build && sh -c 'npm run watch-glob & npm run watch-css & npm run watch & serve public && kill 0'"
   },
   "repository": {
     "type": "git",
@@ -33,6 +35,7 @@
     "babel-plugin-external-helpers": "6.22.0",
     "babel-preset-env": "1.6.1",
     "better-match": "^1.0.2",
+    "better-replace": "^1.0.1",
     "glob-module-file": "^2.2.0",
     "globby": "^7.0.0",
     "he": "^1.1.1",
@@ -43,9 +46,11 @@
     "precss": "^2.0.0",
     "regex-fun": "^2.0.2",
     "reify": "^0.12.3",
+    "remarkable": "^1.7.1",
     "rollup": "0.51.5",
     "rollup-plugin-babel": "3.0.2",
     "rollup-plugin-commonjs": "8.2.6",
+    "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-resolve": "3.0.0",
     "rollup-plugin-string": "^2.0.2",
     "rollup-plugin-svelte": "3.1.0",

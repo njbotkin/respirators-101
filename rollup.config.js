@@ -3,21 +3,23 @@ import resolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
 import svelte from 'rollup-plugin-svelte'
 import string from 'rollup-plugin-string'
+import json from 'rollup-plugin-json'
 
 export default {
-	name: 'revelationStructure',
-	input: './client/index.js',
+	name: `revelationStructure`,
+	input: `./client/index.js`,
 	output: {
-		file: './public/index-bundle.js',
-		format: 'iife',
+		file: `./public/index-bundle.js`,
+		format: `iife`,
 	},
 	sourcemap: true,
 	plugins: [
 		string({
-			include: '**/static-html/**/*.html',
+			include: `**/static-html/**/*.html`,
 		}),
+		json(),
 		svelte({
-			exclude: '**/static-html/**/*.html',
+			exclude: `**/static-html/**/*.html`,
 		}),
 		commonjs(),
 		resolve({
@@ -27,14 +29,14 @@ export default {
 			babelrc: false,
 			presets: [
 				[
-					'env',
+					`env`,
 					{
 						modules: false,
 					},
 				],
 			],
 			plugins: [
-				'external-helpers',
+				`external-helpers`,
 			],
 		}),
 	],

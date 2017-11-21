@@ -1,6 +1,10 @@
-node_modules
-globbed-*.js
+.DS_Store
 .reify-cache
+
+node_modules
+
+client/lib/globbed-*.js
+client/lib/decision-data.json
+
 public/*-bundle.js*
 public/style.css*
-.DS_Store
