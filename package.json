@@ -6,17 +6,19 @@
   "scripts": {
     "test": "tape -r reify ./**/*-test.js",
     "prep-build": "run-p build-decisions-from-twine-input create-symlinks glob",
-    "build": "run-p prep-build build-css && rollup -c",
-    "watch": "rollup -c -w",
-    "watch-glob": "watch \"npm run glob\" client/static-html",
-    "build-css": "node compile-css.js",
-    "watch-css": "node compile-css.js watch",
+    "build": "npm-run-all prep-build --parallel build:*",
+    "build:js": "rollup -c",
+    "watch:js": "rollup -c -w",
+    "watch:glob": "watch \"npm run glob\" client/static-html",
+    "build:css": "node compile-css.js",
+    "watch:css": "node compile-css.js watch",
     "glob": "run-p glob:*",
     "glob:routes": "glob-module-file --pattern=\"client/routes/**/*.js\" --format=es --pathPrefix=../../ --outputPath=client/lib/globbed-routes.js",
     "glob:static-html": "glob-module-file --pattern=\"client/static-html/**/*.html\" --format=es --exportWithPath --pathPrefix=../../ --outputPath=client/lib/globbed-static-html.js",
     "create-symlinks": "symlink client/lib client/node_modules/lib",
     "build-decisions-from-twine-input": "node twine-parser/output-decisions-html-object.js",
-    "dev": "npm run prep-build && sh -c 'npm run watch-glob & npm run watch-css & npm run watch & serve public && kill 0'"
+    "dev:server": "serve public",
+    "dev": "npm-run-all prep-build --parallel watch:* dev:server"
   },
   "repository": {
     "type": "git",
