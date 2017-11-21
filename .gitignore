@@ -3,3 +3,4 @@ globbed-*.js
 .reify-cache
 public/*-bundle.js*
 public/style.css*
+.DS_Store
