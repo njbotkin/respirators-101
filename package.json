@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "tape -r reify ./**/*-test.js",
-    "prep-build": "npm run build-decisions-from-twine-input && npm run create-symlinks && npm run glob",
-    "build": "npm run prep-build && npm run build-css && rollup -c",
+    "prep-build": "run-p build-decisions-from-twine-input create-symlinks glob",
+    "build": "run-p prep-build build-css && rollup -c",
     "watch": "rollup -c -w",
     "watch-glob": "watch \"npm run glob\" client/static-html",
     "build-css": "node compile-css.js",
