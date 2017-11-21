@@ -2,7 +2,7 @@ import StaticContent from './StaticContent.html'
 
 import idToPage from 'lib/static-content-by-id.js'
 
-export default {
+export default () => ({
 	name: `app.static-content`,
 	route: `/static/:fileId(.+)`,
 	template: StaticContent,
@@ -26,4 +26,4 @@ export default {
 			html,
 		})
 	},
-}
+})

@@ -1,6 +1,6 @@
 import NotFound from './NotFound.html'
 
-export default {
+export default () => ({
 	name: `app.not-found`,
 	route: `not-found`,
 	querystringParameters: [ `route`, `parameters` ],
@@ -10,4 +10,4 @@ export default {
 
 		return Promise.resolve({ route, parameters })
 	},
-}
+})
