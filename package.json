@@ -4,7 +4,7 @@
   "description": "Just breathe",
   "main": "index.js",
   "scripts": {
-    "test": "tape -r reify client/**/*-test.js",
+    "test": "tape -r reify ./**/*-test.js",
     "build": "npm run create-symlinks && npm run glob && npm run build-css && rollup -c",
     "watch": "rollup -c -w",
     "watch-glob": "watch \"npm run glob\" client/static-html",
@@ -35,11 +35,13 @@
     "better-match": "^1.0.2",
     "glob-module-file": "^2.2.0",
     "globby": "^7.0.0",
+    "he": "^1.1.1",
     "make-dir": "^1.1.0",
     "npm-run-all": "^4.1.2",
     "pify": "^3.0.0",
     "postcss": "^6.0.14",
     "precss": "^2.0.0",
+    "regex-fun": "^2.0.2",
     "reify": "^0.12.3",
     "rollup": "0.51.5",
     "rollup-plugin-babel": "3.0.2",
@@ -50,7 +52,8 @@
     "svelte": "1.41.3",
     "svelte-state-renderer": "^1.2.5",
     "symlink-cli": "^1.0.0",
-    "tape": "4.8.0"
+    "tape": "4.8.0",
+    "tape-catch": "^1.0.6"
   },
   "devDependencies": {
     "gaze": "^1.1.2",
