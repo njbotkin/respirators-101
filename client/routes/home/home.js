@@ -1,8 +1,11 @@
 import Home from './Home.html'
 
-import idToHtml from 'lib/static-content-by-id.js'
+import idToName from 'data/id-to-name.json'
 
-const staticPages = Object.keys(idToHtml).map(id => idToHtml[id])
+const contentIdsAndNames = Object.keys(idToName).map(id => ({
+	id,
+	name: idToName[id],
+}))
 
 export default () => ({
 	name: `home`,
@@ -10,7 +13,7 @@ export default () => ({
 	template: Home,
 	resolve(data, params) {
 		return Promise.resolve({
-			staticPages,
+			contentIdsAndNames,
 		})
 	},
 })

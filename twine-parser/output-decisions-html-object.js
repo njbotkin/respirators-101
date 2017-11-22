@@ -61,7 +61,7 @@ function makeMap(array, fn) {
 
 // //////////////////////////////////////////////////////////////////////////////////
 const inputPath = joinPath(__dirname, `../twine-data/How to Pick a Respirator.html`)
-const outputPath = joinPath(__dirname, `../client/lib/decision-data.json`)
+const outputPath = joinPath(__dirname, `../client/data/decision-data.json`)
 
 parseAndWriteOutput(inputPath, outputPath)
 

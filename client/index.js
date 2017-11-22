@@ -1,7 +1,7 @@
 import StateRouter from 'abstract-state-router'
 import makeSvelteStateRenderer from 'svelte-state-renderer'
 
-import states from 'lib/globbed-routes.js'
+import states from 'data/globbed-routes.js'
 
 const stateRouter = StateRouter(makeSvelteStateRenderer(), document.querySelector(`#target`))
 
