@@ -3,6 +3,7 @@
 		Not Found
 	</h1>
 	{{#if route}}
-		<p>No route for {{route}}</p>
+		<p>No route for <code>{{route}}</code>
+		{{#if parameters}} with parameters <code>{{parameters}}</code>{{/if}}</p>
 	{{/if}}
 </div>
