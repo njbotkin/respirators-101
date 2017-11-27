@@ -1,0 +1,31 @@
+<!-- from https://github.com/sveltejs/svelte/issues/640#issuecomment-343103698 -->
+
+<div ref:root></div>
+
+<script>
+export default {
+  data() {
+    return {
+      data: {},
+    }
+  },
+
+  oncreate() {
+    this.observe(`component`, (Component, prev) => {
+      if (prev) {
+        this.component.destroy()
+      }
+      this.component = new Component({
+        target: this.refs.root,
+        data: this.get(`data`),
+      })
+    })
+    this.observe(`data`, data => this.component.set(data))
+    this.component.on(`load`, this.fire.bind(this, `load`))
+  },
+
+  ondestroy() {
+    this.component.destroy()
+  },
+}
+</script>

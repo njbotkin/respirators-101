@@ -1,23 +1,18 @@
-import staticHtmlFiles from 'lib/globbed-static-html.js'
-
+import staticHtmlFiles from 'data/globbed-content.js'
 import pathToId from 'lib/path-to-id.js'
-import idToName from 'lib/static-html-page-names.js'
+import idToName from 'data/id-to-name.json'
 
-const idToHtml = staticHtmlFiles.reduce((acc, { path, export: html }) => {
+const idToComponent = staticHtmlFiles.reduce((acc, { path, export: component }) => {
 	const id = pathToId(path)
 	const name = idToName[id]
 
-	if (name === undefined) {
-		throw new Error(`No name found for static page ${id}`)
-	}
-
 	acc[id] = {
 		id,
-		html,
+		component,
 		name,
 	}
 
 	return acc
 }, Object.create(null))
 
-export default idToHtml
+export default idToComponent

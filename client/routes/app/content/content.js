@@ -1,29 +1,29 @@
-import StaticContent from './StaticContent.html'
+import StaticContent from './Content.html'
 
 import idToPage from 'lib/static-content-by-id.js'
 
 export default () => ({
-	name: `app.static-content`,
-	route: `/static/:fileId(.+)`,
+	name: `app.content`,
+	route: `/content/:id(.+)`,
 	template: StaticContent,
 	resolve(data, params) {
-		const staticPage = idToPage[params.fileId]
+		const page = idToPage[params.id]
 
-		if (!staticPage) {
+		if (!page) {
 			return Promise.reject({
 				redirectTo: {
 					name: `app.not-found`,
 					params: {
-						route: `/static/${ params.fileId }`,
+						route: `/static/${ params.id }`,
 					},
 				},
 			})
 		}
 
-		const { html } = staticPage
+		const { component } = page
 
 		return Promise.resolve({
-			html,
+			component,
 		})
 	},
 })

@@ -2,11 +2,11 @@
 
 <h2><a href="{{ asr.makePath('app.respirator-picker') }}">Pick your respirator!</a></h2>
 
-<h2>Static pages:</h2>
+<h2>Content:</h2>
 <ul>
-	{{#each staticPages as page}}
+	{{#each contentIdsAndNames as page}}
 	<li>
-		<a href="{{ asr.makePath('app.static-content', { fileId: page.id }) }}">{{page.name}}</a>
+		<a href="{{ asr.makePath('app.content', { id: page.id }) }}">{{page.name}}</a>
 	</li>
 	{{/each}}
 </ul>

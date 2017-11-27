@@ -1,6 +1,6 @@
 import RespiratorPicker from './RespiratorPicker.html'
 
-import decisionData from 'lib/decision-data.json'
+import decisionData from 'data/decision-data.json'
 import replaceDecisionLinkUrls from 'lib/replace-decision-link-urls'
 
 const { start, decisions } = decisionData
