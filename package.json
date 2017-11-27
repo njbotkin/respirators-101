@@ -46,6 +46,7 @@
     "loud-rejection": "^1.6.0",
     "make-dir": "^1.1.0",
     "npm-run-all": "^4.1.2",
+    "parse5": "^3.0.3",
     "pify": "^3.0.0",
     "postcss-alt-cli": "^1.0.0",
     "precss": "^2.0.0",
