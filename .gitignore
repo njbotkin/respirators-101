@@ -8,3 +8,7 @@ client/data
 public/*-bundle.js*
 public/style.css*
 public/wp-images
+
+cordova/www
+cordova/platforms
+cordova/plugins

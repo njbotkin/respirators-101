@@ -1,5 +1,6 @@
 {
   "name": "respirators-101",
+  "private": true,
   "version": "1.0.0",
   "description": "Just breathe",
   "main": "index.js",
@@ -18,7 +19,10 @@
     "build-twine-data-to-decisions-html": "node twine-parser/output-decisions-html-object.js",
     "build-wordpress-data-to-svelte": "node wordpress-parser/xml-to-svelte.js",
     "dev:server": "serve public",
-    "dev": "npm-run-all prep-build --parallel watch:* dev:server"
+    "dev": "npm-run-all prep-build --parallel watch:* dev:server",
+    "prep-cordova": "pushd cordova && npm i && npx cordova prepare && popd && del cordova/www && make-dir cordova/www && npm run build && cp -r public/* cordova/www && node cordova-copy.js",
+    "build-ios": "npm run prep-cordova && pushd cordova && npx cordova build ios",
+    "build-android": "npm run prep-cordova && pushd cordova && npx cordova build android"
   },
   "repository": {
     "type": "git",
@@ -39,12 +43,15 @@
     "babel-preset-env": "1.6.1",
     "better-match": "^1.0.2",
     "better-replace": "^1.0.1",
+    "cordova": "^7.1.0",
+    "del-cli": "^1.1.0",
     "download": "^6.2.5",
     "glob-module-file": "^2.2.0",
     "globby": "^7.0.0",
     "he": "^1.1.1",
     "loud-rejection": "^1.6.0",
     "make-dir": "^1.1.0",
+    "make-dir-cli": "^1.0.0",
     "npm-run-all": "^4.1.2",
     "parse5": "^3.0.3",
     "pify": "^3.0.0",
