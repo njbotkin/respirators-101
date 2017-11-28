@@ -20,7 +20,7 @@
     "build-wordpress-data-to-svelte": "node wordpress-parser/xml-to-svelte.js",
     "dev:server": "serve public",
     "dev": "npm-run-all prep-build --parallel watch:* dev:server",
-    "prep-cordova": "pushd cordova && npm i && popd && del cordova/www && make-dir cordova/www && npm run build && cp -r public/* cordova/www && node cordova-copy.js",
+    "prep-cordova": "pushd cordova && npm i && npx cordova prepare && popd && del cordova/www && make-dir cordova/www && npm run build && cp -r public/* cordova/www && node cordova-copy.js",
     "build-ios": "npm run prep-cordova && pushd cordova && npx cordova build ios",
     "build-android": "npm run prep-cordova && pushd cordova && npx cordova build android"
   },
