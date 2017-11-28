@@ -2,6 +2,8 @@ const Remarkable = require(`remarkable`)
 
 const parse = require(`./parse-passages-from-html`)
 const convertLinksToMarkdown = require(`./twine-link-to-markdown-link`)
+const addDivAroundFooter = require(`./add-div-around-footer`)
+const addUlAnswerLinksClass = require(`./add-ul-answer-links-class`)
 
 const { readFileSync, writeFileSync } = require(`fs`)
 const { join: joinPath } = require(`path`)
@@ -27,8 +29,12 @@ function parseAndWriteOutput(inputPath, outputPath) {
 	writeFileSync(outputPath, JSON.stringify(friendlyOutput, null, `\t`))
 }
 
-const markdownToHtml = namesToIds => markdown => remarkable.render(
-	passageTextToFinalHtml(markdown, namesToIds)
+const markdownToHtml = namesToIds => (markdown, title) => addDivAroundFooter(
+	addUlAnswerLinksClass(
+		remarkable.render(
+			passageTextToFinalMarkdown(markdown, title, namesToIds)
+		)
+	)
 )
 
 const makeMapOfNamesToIds = passages => makeMap(
@@ -38,12 +44,15 @@ const makeMapOfNamesToIds = passages => makeMap(
 
 const makeMapOfIdsToFinalForm = (passages, transformToFinalForm) => makeMap(
 	passages,
-	({ attributes, text }) => [ attributes.pid, transformToFinalForm(text) ]
+	({ attributes, text }) => [ attributes.pid, transformToFinalForm(text, attributes.name) ]
 )
 
-function passageTextToFinalHtml(text, namesToIds) {
-	const properMarkdown = convertLinksToMarkdown(text, namesToIds)
-	return properMarkdown
+function passageTextToFinalMarkdown(text, title, namesToIds) {
+	return addTitleHeader(convertLinksToMarkdown(text, namesToIds), title)
+}
+
+function addTitleHeader(markdown, title) {
+	return `## ${ title }\n\n` + markdown
 }
 
 
