@@ -1,0 +1,3 @@
+Example of copy that really needs to be fixed
+http://localhost:5000/#/respirator-picker?id=21
+http://localhost:5000/#/respirator-picker?id=45
