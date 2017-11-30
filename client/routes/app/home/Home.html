@@ -10,19 +10,19 @@
 	
 		{{#if item.children}}
 			
-			<Category title="{{item.title}}">
-				<ul>
-					{{#each item.children as page}}
-						<li>
-							<a href="{{ asr.makePath('app.content', { id: page.id }) }}">{{page.name}}</a>
-						</li>
-					{{/each}}
-				</ul> 
-			</Category>
+		<Category title="{{item.title}}">
+			<ul>
+				{{#each item.children as page}}
+				<li>
+					<a href="{{ asr.makePath('app.content', { id: page.id }) }}">{{page.name}}</a>
+				</li>
+				{{/each}}
+			</ul> 
+		</Category>
 
 		{{else}}
 
-			<a href="{{ asr.makePath('app.content', { id: item.id }) }}">{{item.name}}</a>
+		<a href="{{ asr.makePath('app.content', { id: item.id }) }}">{{item.name}}</a>
 
 		{{/if}}
 
