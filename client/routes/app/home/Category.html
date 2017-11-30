@@ -1,0 +1,35 @@
+<div>
+	<div
+		class="clickable category-title"
+		on:click="set({ open: !open })"
+	>
+		{{title}}
+	</div>
+	<div data-open="{{open}}">
+		<slot></slot>
+	</div>
+</div>
+
+<style>
+
+.clickable {
+	cursor: pointer;
+}
+
+[data-open=false] {
+	display: none;
+}
+
+</style>
+
+<script>
+
+export default {
+	data() {
+		return {
+			open: false
+		}
+	}
+}
+
+</script>

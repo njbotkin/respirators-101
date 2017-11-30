@@ -1,0 +1,41 @@
+<h1>This is the home page</h1>
+
+<h2><a href="{{ asr.makePath('app.respirator-picker') }}">Pick your respirator!</a></h2>
+
+<h2>Content:</h2>
+<ul>
+	{{#each navigation as item}}
+
+	<li>
+	
+		{{#if item.children}}
+			
+			<Category title="{{item.title}}">
+				<ul>
+					{{#each item.children as page}}
+						<li>
+							<a href="{{ asr.makePath('app.content', { id: page.id }) }}">{{page.name}}</a>
+						</li>
+					{{/each}}
+				</ul> 
+			</Category>
+
+		{{else}}
+
+			<a href="{{ asr.makePath('app.content', { id: item.id }) }}">{{item.name}}</a>
+
+		{{/if}}
+
+	</li>
+
+	{{/each}}
+</ul>
+
+<script>
+	import Category from './Category.html'
+	export default {
+		components: {
+			Category
+		}
+	}
+</script>
