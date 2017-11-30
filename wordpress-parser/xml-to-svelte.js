@@ -146,10 +146,6 @@ function extractText(node) {
 	return node.children.filter(child => child.type === `text`).map(child => child.text).join(``)
 }
 
-// function extractAttr(node, attr) {
-// 	return node.children.filter(child => child.type === `text`).map(child => child.text).join(``)
-// }
-
 
 // /////////////////////////////////////////////////////////////
 const inputGlob = joinPath(__dirname, `../wordpress-data/*.xml`)
