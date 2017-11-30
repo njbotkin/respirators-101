@@ -15,4 +15,4 @@ stateRouter.on(`routeNotFound`, (route, parameters) => {
 	stateRouter.go(`app.not-found`, Object.assign({ route }, parameters), { replace: true })
 })
 
-stateRouter.evaluateCurrentRoute(`home`)
+stateRouter.evaluateCurrentRoute(`app.home`)
