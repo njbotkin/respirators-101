@@ -12,7 +12,7 @@ const match = require(`better-match`)
 const globby = require(`globby`)
 const download = require(`download`)
 
-async function parseAndWriteOutput({ inputGlob, outputDir, OutputFile, navigationOutputFile, downloadImages, imageOutputDir }) {
+async function parseAndWriteOutput({ inputGlob, outputDir, idToNameOutputFile, navigationOutputFile, downloadImages, imageOutputDir }) {
 	const inputPaths = await globby(inputGlob)
 	await makeDir(outputDir)
 	await makeDir(imageOutputDir)
@@ -22,11 +22,11 @@ async function parseAndWriteOutput({ inputGlob, outputDir, OutputFile, navigatio
 	))
 
 	await Promise.all(fileContents.map(xmlString =>
-		parseXmlAndOutputSvelteComponents({ xmlString, outputDir, OutputFile, navigationOutputFile, downloadImages, imageOutputDir })
+		parseXmlAndOutputSvelteComponents({ xmlString, outputDir, idToNameOutputFile, navigationOutputFile, downloadImages, imageOutputDir })
 	))
 }
 
-async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, OutputFile, navigationOutputFile, downloadImages, imageOutputDir }) {
+async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, idToNameOutputFile, navigationOutputFile, downloadImages, imageOutputDir }) {
 	const doc = parseXml(xmlString)
 	const rss = findFirstChild(doc, `rss`)
 	const channel = findFirstChild(rss, `channel`)
@@ -72,7 +72,7 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, OutputF
 	// console.log(categories)
 	// console.log(idToName)
 
-	await writeFile(OutputFile, JSON.stringify(idToName, null, `\t`))
+	await writeFile(idToNameOutputFile, JSON.stringify(idToName, null, `\t`))
 	await writeFile(navigationOutputFile, JSON.stringify(navigation, null, `\t`))
 
 	if (downloadImages) {
@@ -150,9 +150,9 @@ function extractText(node) {
 // /////////////////////////////////////////////////////////////
 const inputGlob = joinPath(__dirname, `../wordpress-data/*.xml`)
 const outputDir = joinPath(__dirname, `../client/data/content/`)
-const OutputFile = joinPath(__dirname, `../client/data/id-to-name.json`)
+const idToNameOutputFile = joinPath(__dirname, `../client/data/id-to-name.json`)
 const navigationOutputFile = joinPath(__dirname, `../client/data/navigation.json`)
 const imageOutputDir = joinPath(__dirname, `../public/wp-images`)
 const downloadImages = true
 
-parseAndWriteOutput({ inputGlob, outputDir, OutputFile, navigationOutputFile, downloadImages, imageOutputDir })
+parseAndWriteOutput({ inputGlob, outputDir, idToNameOutputFile, navigationOutputFile, downloadImages, imageOutputDir })
