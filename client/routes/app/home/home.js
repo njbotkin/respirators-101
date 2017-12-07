@@ -1,12 +1,21 @@
 import Home from './Home.html'
 
-import navigation from 'data/navigation.json'
+import navTree from 'data/navigation.json'
+import idToName from 'data/id-to-name.json'
 
-// convert object to array
-// const contentIdsAndNames = Object.keys(idToName).map(id => ({
-// 	id,
-// 	name: idToName[id],
-// }))
+var navigation = []
+navTree.forEach(e => {
+	var children = e.children.map(id => ({
+		id,
+		name: idToName[id],
+	}))
+
+	navigation.push({
+		id: e.id,
+		title: e.title,
+		children
+	})
+})
 
 export default () => ({
 	name: `app.home`,

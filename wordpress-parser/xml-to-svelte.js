@@ -52,10 +52,7 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, idToNam
 			})
 		}
 
-		navigation[categories[category]].children.push({
-			id: id,
-			name: title
-		})
+		navigation[categories[category]].children.push(id)
 
 		return {
 			title,
