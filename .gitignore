@@ -2,6 +2,7 @@
 .reify-cache
 
 node_modules
+npm-debug.log
 
 client/data
 
@@ -13,4 +14,4 @@ cordova/www
 cordova/platforms
 cordova/plugins
 
-npm-debug.log
+*.sublime-workspace
