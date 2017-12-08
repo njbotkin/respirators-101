@@ -12,7 +12,7 @@ const context = {
 states.forEach(createState => stateRouter.addState(createState(context)))
 
 stateRouter.on(`routeNotFound`, (route, parameters) => {
-	stateRouter.go(`app.not-found`, Object.assign({ route }, parameters), { replace: true })
+	stateRouter.go(`wrapper.app.not-found`, Object.assign({ route }, parameters), { replace: true })
 })
 
-stateRouter.evaluateCurrentRoute(`app.home`)
+stateRouter.evaluateCurrentRoute(`wrapper.home`)
