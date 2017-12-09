@@ -33,6 +33,5 @@ npm t
 	- to give the static files friendly names, edit `lib/static-html-page-names.js`
 - All `.css` files in `routes` will be automatically slurped up
 	- they will be processed with [precss](https://www.npmjs.com/package/precss) and [autoprefixer](https://www.npmjs.com/package/autoprefixer) and any other PostCSS plugins we want
-	- these slurped-up files can import any css files in `client/global-css` without having to use relative paths: `@import "filename-without-extnesion";`
-	- even though you can (and should) put relevant stylesheets next to the templates where they're used, they are still global styles, so you'll have to use your own nesting/namespacing if you want to restrict how they're used
-- You can put locally-scoped styles in the Svelte components, those styles just wont be able to import any outside constants or get run through the PostCSS transforms
+	- these slurped-up files can import any css files in `client/global-css` without having to use relative paths: `@import "filename-without-extension";`
+- All <style> blocks in components will be slurped up and processed like the `.css` files.  For now, this is the preferred way to style components.
