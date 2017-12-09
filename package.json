@@ -67,7 +67,7 @@
     "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-resolve": "3.0.0",
     "rollup-plugin-string": "^2.0.2",
-    "rollup-plugin-svelte": "3.1.0",
+    "rollup-plugin-svelte": "3.3.0",
     "svelte": "1.41.3",
     "svelte-state-renderer": "^1.2.5",
     "svelte-transitions": "^1.1.1",
