@@ -6,7 +6,7 @@ import string from 'rollup-plugin-string'
 import json from 'rollup-plugin-json'
 
 export default {
-	name: `revelationStructure`,
+	name: `respiratorsStructure`,
 	input: `./client/index.js`,
 	output: {
 		file: `./public/index-bundle.js`,

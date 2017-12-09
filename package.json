@@ -41,6 +41,7 @@
     "babel-core": "6.26.0",
     "babel-plugin-external-helpers": "6.22.0",
     "babel-preset-env": "1.6.1",
+    "better-emitter": "^1.0.2",
     "better-match": "^1.0.2",
     "better-replace": "^1.0.1",
     "cordova": "^7.1.0",
@@ -69,6 +70,7 @@
     "rollup-plugin-svelte": "3.1.0",
     "svelte": "1.41.3",
     "svelte-state-renderer": "^1.2.5",
+    "svelte-transitions": "^1.1.1",
     "symlink-cli": "^1.0.0",
     "tape": "4.8.0",
     "tape-catch": "^1.0.6"

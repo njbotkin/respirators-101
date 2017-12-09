@@ -1,40 +1,40 @@
-<Navbar asr="{{asr}}">
-	<div class="slide-out">
-		<ul>
-			{{#each navigation as item}}
+<Navbar bind:visible="visibleSlideOut">
 
-			<li>
-			
-				{{#if item.children}}
-					
-				<Category title="{{item.title}}">
-					<ul>
-						{{#each item.children as page}}
-						<li>
-							<a href="{{ asr.makePath('wrapper.app.content', { id: page.id }) }}">{{page.name}}</a>
-						</li>
-						{{/each}}
-					</ul> 
-				</Category>
+	<ul>
+		{{#each navigation as item}}
 
-				{{else}}
+		<li>
+		
+			{{#if item.children}}
+				
+			<Category title="{{item.title}}">
+				<ul>
+					{{#each item.children as page}}
+					<li>
+						<a href="{{ asr.makePath('wrapper.app.content', { id: page.id }) }}">{{page.name}}</a>
+					</li>
+					{{/each}}
+				</ul> 
+			</Category>
 
-				<a href="{{ asr.makePath('wrapper.app.content', { id: item.id }) }}">{{item.name}}</a>
+			{{else}}
 
-				{{/if}}
+			<a href="{{ asr.makePath('wrapper.app.content', { id: item.id }) }}">{{item.name}}</a>
 
-			</li>
+			{{/if}}
 
-			{{/each}}
-		</ul>
-	</div>
+		</li>
+
+		{{/each}}
+	</ul>
+
 </Navbar>
 <uiView></uiView>
 
 <script>
 
-import Navbar from 'lib/Navbar.html'
-import Category from 'lib/Category.html'
+	import Navbar from 'lib/Navbar.html'
+	import Category from 'lib/Category.html'
 
 	import navTree from 'data/navigation.json'
 	import idToName from 'data/id-to-name.json'
@@ -50,15 +50,19 @@ import Category from 'lib/Category.html'
 		}
 	})
 
-export default {
-	components: {
-		Navbar,
-		Category
-	},
-	data() {
-		return { navigation }
+	export default {
+		components: {
+			Navbar,
+			Category
+		},
+		data() {
+			return { navigation }
+		},
+		oncreate () {
+			this.on('closeSlideOut', () => {
+				this.set({visibleSlideOut: false})
+			})
+		}
 	}
-}
-		
 
 </script>

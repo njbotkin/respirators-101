@@ -1,5 +1,10 @@
 @import "colors";
 
+body {
+	margin: 0;
+	overflow-x: hidden;
+}
+
 .app {
 	.header {
 		font-family: sans-serif;
