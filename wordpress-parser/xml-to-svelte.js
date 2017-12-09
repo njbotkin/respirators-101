@@ -12,7 +12,7 @@ const match = require(`better-match`)
 const globby = require(`globby`)
 const download = require(`download`)
 
-async function parseAndWriteOutput({ inputGlob, outputDir, idToNameOutputFile, downloadImages, imageOutputDir }) {
+async function parseAndWriteOutput({ inputGlob, outputDir, idToNameOutputFile, navigationOutputFile, downloadImages, imageOutputDir }) {
 	const inputPaths = await globby(inputGlob)
 	await makeDir(outputDir)
 	await makeDir(imageOutputDir)
@@ -22,25 +22,42 @@ async function parseAndWriteOutput({ inputGlob, outputDir, idToNameOutputFile, d
 	))
 
 	await Promise.all(fileContents.map(xmlString =>
-		parseXmlAndOutputSvelteComponents({ xmlString, outputDir, idToNameOutputFile, downloadImages, imageOutputDir })
+		parseXmlAndOutputSvelteComponents({ xmlString, outputDir, idToNameOutputFile, navigationOutputFile, downloadImages, imageOutputDir })
 	))
 }
 
-async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, idToNameOutputFile, downloadImages, imageOutputDir }) {
+async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, idToNameOutputFile, navigationOutputFile, downloadImages, imageOutputDir }) {
 	const doc = parseXml(xmlString)
 	const rss = findFirstChild(doc, `rss`)
 	const channel = findFirstChild(rss, `channel`)
 	const items = channel.children.filter(node => node.name === `item`)
+
+	const navigation = []
+	const categories = {}
 
 	const pageDetails = items.map(itemNode => {
 		const title = extractText(findFirstChild(itemNode, `title`))
 		const id = extractText(findFirstChild(itemNode, `wp:post_name`))
 		const content = extractText(findFirstChild(itemNode, `content:encoded`))
 
+		const category = findFirstChild(itemNode, `category`).attributes.nicename
+		const categoryTitle = extractText(findFirstChild(itemNode, `category`))
+
+		if(categories[category] === undefined) {
+			categories[category] = navigation.length
+			navigation.push({
+				id: category,
+				title: categoryTitle,
+				children: []
+			})
+		}
+
+		navigation[categories[category]].children.push(id)
+
 		return {
 			title,
 			id,
-			content,
+			content
 		}
 	})
 
@@ -48,8 +65,12 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, idToNam
 		acc[id] = title
 		return acc
 	}, Object.create(null))
+	
+	// console.log(categories)
+	// console.log(idToName)
 
 	await writeFile(idToNameOutputFile, JSON.stringify(idToName, null, `\t`))
+	await writeFile(navigationOutputFile, JSON.stringify(navigation, null, `\t`))
 
 	if (downloadImages) {
 		const imagesToDownload = flatMap(pageDetails, ({ content }) => match(
@@ -127,7 +148,8 @@ function extractText(node) {
 const inputGlob = joinPath(__dirname, `../wordpress-data/*.xml`)
 const outputDir = joinPath(__dirname, `../client/data/content/`)
 const idToNameOutputFile = joinPath(__dirname, `../client/data/id-to-name.json`)
+const navigationOutputFile = joinPath(__dirname, `../client/data/navigation.json`)
 const imageOutputDir = joinPath(__dirname, `../public/wp-images`)
 const downloadImages = true
 
-parseAndWriteOutput({ inputGlob, outputDir, idToNameOutputFile, downloadImages, imageOutputDir })
+parseAndWriteOutput({ inputGlob, outputDir, idToNameOutputFile, navigationOutputFile, downloadImages, imageOutputDir })
