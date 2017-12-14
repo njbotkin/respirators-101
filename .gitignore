@@ -8,6 +8,7 @@ client/data
 
 public/*-bundle.js*
 public/style.css*
+public/components.css*
 public/wp-images
 
 cordova/www

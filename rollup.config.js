@@ -4,9 +4,10 @@ import babel from 'rollup-plugin-babel'
 import svelte from 'rollup-plugin-svelte'
 import string from 'rollup-plugin-string'
 import json from 'rollup-plugin-json'
+import postcss from 'postcss'
 
 export default {
-	name: `revelationStructure`,
+	name: `respiratorsStructure`,
 	input: `./client/index.js`,
 	output: {
 		file: `./public/index-bundle.js`,
@@ -19,7 +20,31 @@ export default {
 		}),
 		json(),
 		svelte({
+
 			exclude: `**/static-html/**/*.html`,
+
+			preprocess: {
+				style({ content }) {
+					return Promise.resolve(postcss([
+						require(`precss`)({
+							import: {
+								path: [ `client/global-css` ],
+								prefix: ``,
+							},
+						}),
+						require(`autoprefixer`),
+					])
+						.process(content)
+						.then(result => {
+							return { code: result }
+						}))
+				},
+			},
+
+			css(css) {
+				css.write(`public/components.css`)
+			},
+
 		}),
 		commonjs(),
 		resolve({

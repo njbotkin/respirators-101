@@ -1,18 +1,23 @@
 import StateRouter from 'abstract-state-router'
 import makeSvelteStateRenderer from 'svelte-state-renderer'
+import createEmitter from 'better-emitter'
 
 import states from 'data/globbed-routes.js'
 
 const stateRouter = StateRouter(makeSvelteStateRenderer(), document.querySelector(`#target`))
 
-const context = {
+const context = createEmitter({
 	makePath: stateRouter.makePath,
-}
+})
 
 states.forEach(createState => stateRouter.addState(createState(context)))
 
 stateRouter.on(`routeNotFound`, (route, parameters) => {
-	stateRouter.go(`app.not-found`, Object.assign({ route }, parameters), { replace: true })
+	stateRouter.go(`wrapper.app.not-found`, Object.assign({ route }, parameters), { replace: true })
 })
 
-stateRouter.evaluateCurrentRoute(`app.home`)
+stateRouter.on(`stateChangeStart`, () => {
+	context.emit(`stateChangeStart`)
+})
+
+stateRouter.evaluateCurrentRoute(`wrapper.home`)

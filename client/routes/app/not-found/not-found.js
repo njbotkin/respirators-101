@@ -1,7 +1,7 @@
 import NotFound from './NotFound.html'
 
 export default () => ({
-	name: `app.not-found`,
+	name: `wrapper.app.not-found`,
 	route: `not-found`,
 	querystringParameters: [ `route`, `parameters` ],
 	template: NotFound,

@@ -1,7 +1,7 @@
 import App from './App.html'
 
 export default () => ({
-	name: `app`,
+	name: `wrapper.app`,
 	route: ``,
 	template: App,
 })

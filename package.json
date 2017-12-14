@@ -18,7 +18,7 @@
     "create-symlinks": "symlink client/lib client/node_modules/lib && symlink client/data client/node_modules/data",
     "build-twine-data-to-decisions-html": "node twine-parser/output-decisions-html-object.js",
     "build-wordpress-data-to-svelte": "node wordpress-parser/xml-to-svelte.js",
-    "dev:server": "serve public",
+    "dev:server": "live-server public",
     "dev": "npm-run-all prep-build --parallel watch:* dev:server",
     "prep-cordova": "pushd cordova && npm i && npx cordova prepare && popd && del cordova/www && make-dir cordova/www && npm run build && cp -r public/* cordova/www && node cordova-copy.js",
     "build-ios": "npm run prep-cordova && pushd cordova && npx cordova build ios",
@@ -41,6 +41,7 @@
     "babel-core": "6.26.0",
     "babel-plugin-external-helpers": "6.22.0",
     "babel-preset-env": "1.6.1",
+    "better-emitter": "^1.0.2",
     "better-match": "^1.0.2",
     "better-replace": "^1.0.1",
     "cordova": "^7.1.0",
@@ -66,16 +67,17 @@
     "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-resolve": "3.0.0",
     "rollup-plugin-string": "^2.0.2",
-    "rollup-plugin-svelte": "3.1.0",
+    "rollup-plugin-svelte": "3.3.0",
     "svelte": "1.41.3",
     "svelte-state-renderer": "^1.2.5",
+    "svelte-transitions": "^1.1.1",
     "symlink-cli": "^1.0.0",
     "tape": "4.8.0",
     "tape-catch": "^1.0.6"
   },
   "devDependencies": {
     "gaze": "^1.1.2",
-    "serve": "^6.4.1",
+    "live-server": "^1.2.0",
     "watch": "^1.0.2"
   }
 }

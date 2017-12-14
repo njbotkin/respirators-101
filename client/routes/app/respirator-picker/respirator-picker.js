@@ -6,7 +6,7 @@ import replaceDecisionLinkUrls from 'lib/replace-decision-link-urls'
 const { start, decisions } = decisionData
 
 export default ({ makePath }) => ({
-	name: `app.respirator-picker`,
+	name: `wrapper.app.respirator-picker`,
 	route: `/respirator-picker`,
 	template: RespiratorPicker,
 	querystringParameters: [ `id` ],
@@ -19,7 +19,7 @@ export default ({ makePath }) => ({
 		if (!html) {
 			return Promise.reject({
 				redirectTo: {
-					name: `app.not-found`,
+					name: `wrapper.app.not-found`,
 					params: {
 						route: `/respirator-picker`,
 						parameters: JSON.stringify(params),
