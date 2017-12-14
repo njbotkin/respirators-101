@@ -25,21 +25,19 @@ export default {
 
 			preprocess: {
 				style({ content }) {
-					return new Promise(fulfill => {
-						postcss([
-							require(`precss`)({
-								import: {
-									path: [ `client/global-css` ],
-									prefix: ``,
-								},
-							}),
-							require(`autoprefixer`),
-						])
-							.process(content)
-							.then(result => {
-								fulfill({ code: result })
-							})
-					})
+					return Promise.resolve(postcss([
+						require(`precss`)({
+							import: {
+								path: [ `client/global-css` ],
+								prefix: ``,
+							},
+						}),
+						require(`autoprefixer`),
+					])
+						.process(content)
+						.then(result => {
+							return { code: result }
+						}))
 				},
 			},
 
