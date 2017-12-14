@@ -6,7 +6,7 @@
 <div class="anythingelsebutton" on:click="set({visible: false})"></div>
 {{/if}}
 
-<div class="slide-out {{visible}}Visible">
+<div class="slide-out" data-visible="{{visible}}">
 
 	<button class="hamburger close" on:click="set({visible: false})"></button>
 
@@ -68,14 +68,14 @@
 		background: $blue1;
 		transition: all .2s ease;
 		color: #fff;
-	}
 
-	.falseVisible {
-		right: -400px;
-	}
+		&[data-visible=false] {
+			right: -400px;
+		}
 
-	.trueVisible {
-		right: 0;
+		&[data-visible=true] {
+			right: 0;
+		}
 	}
 
 </style>
