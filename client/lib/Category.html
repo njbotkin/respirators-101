@@ -1,11 +1,11 @@
-<div>
+<div class="category" data-open="{{open}}">
 	<div
 		class="clickable category-title"
-		on:click="set({ open: !open })"
+		on:click="clicky( open )"
 	>
-		{{title}}
+		{{item.title}}
 	</div>
-	<div data-open="{{open}}">
+	<div class="expand">
 		<slot></slot>
 	</div>
 </div>
@@ -13,11 +13,17 @@
 <style>
 
 .clickable {
-	cursor: pointer;
+	cursor: pointer; 
 }
 
-[data-open=false] {
-	display: none;
+.expand.initialized {
+	transition: height 0.2s ease-out;
+	height: auto;
+	overflow: hidden;
+}
+
+.category[data-open=false] .expand.initialized {
+	height: 0 !important;
 }
 
 </style>
@@ -28,6 +34,15 @@ export default {
 	data() {
 		return {
 			open: false
+		}
+	},
+	oncreate() {
+		this._state.registerExpand(this);
+	},
+	methods: {
+		clicky(open) {
+			this._state.closeAllExpands()
+			this._set({open: !open})
 		}
 	}
 }

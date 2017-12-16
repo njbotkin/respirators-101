@@ -1,62 +1,13 @@
-<Navbar bind:visible="visibleSlideOut">
-
-	<ul>
-		{{#each navigation as item}}
-
-		<li>
-		
-			{{#if item.children}}
-				
-			<Category title="{{item.title}}">
-				<ul>
-					{{#each item.children as page}}
-					<li>
-						<a href="{{ asr.makePath('wrapper.app.content', { id: page.id }) }}">{{page.name}}</a>
-					</li>
-					{{/each}}
-				</ul> 
-			</Category>
-
-			{{else}}
-
-			<a href="{{ asr.makePath('wrapper.app.content', { id: item.id }) }}">{{item.name}}</a>
-
-			{{/if}}
-
-		</li>
-
-		{{/each}}
-	</ul>
-
-</Navbar>
+<Navbar bind:visible="visibleSlideOut" :asr></Navbar>
 <uiView></uiView>
 
 <script>
 
 	import Navbar from 'lib/Navbar.html'
-	import Category from 'lib/Category.html'
-
-	import navTree from 'data/navigation.json'
-	import idToName from 'data/id-to-name.json'
-
-	const navigation = navTree.map(e => {
-		return {
-			id: e.id,
-			title: e.title,
-			children: e.children.map(id => ({
-				id,
-				name: idToName[id],
-			}))
-		}
-	})
 
 	export default {
 		components: {
-			Navbar,
-			Category
-		},
-		data() {
-			return { navigation }
+			Navbar
 		},
 		oncreate () {
 			this.on('closeSlideOut', () => {
