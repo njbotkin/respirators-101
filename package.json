@@ -20,9 +20,14 @@
     "build-wordpress-data-to-svelte": "node wordpress-parser/xml-to-svelte.js",
     "dev:server": "live-server public",
     "dev": "npm-run-all prep-build --parallel watch:* dev:server",
-    "prep-cordova": "pushd cordova && npm i && npx cordova prepare && popd && del cordova/www && make-dir cordova/www && npm run build && cp -r public/* cordova/www && node cordova-copy.js",
-    "build-ios": "npm run prep-cordova && pushd cordova && npx cordova build ios",
-    "build-android": "npm run prep-cordova && pushd cordova && npx cordova build android"
+    "fetch-blind-polyfill": "curl 'http://127.0.0.1:3000/v2/polyfill.min.js?features=default-3.6,NodeList.prototype.@@iterator,NodeList.prototype.forEach,RegExp.prototype.flags&flags=always,gated' -H 'User-Agent: Mozilla/5.0 Firefox/900.0' > public/blind-polyfill.js",
+    "cordova-init": "cd cordova && npx cordova platform add android && npx cordova platform add ios",
+    "cordova-update-config": "cd cordova && npx cordova prepare",
+    "cordova-copy-www": "rm -rf cordova/www; mkdir cordova/www && cp -r public/* cordova/www && node cordova-copy.js",
+    "cordova-build-ios": "cd cordova && npx cordova build ios",
+    "cordova-build-android": "cd cordova && npx cordova build android",
+    "cordova-test-android": "adb -s ZX1B2237ZR install -r cordova/platforms/android/build/outputs/apk/debug/android-debug.apk",
+    "cordova-android": "npm-run-all cordova-build-android cordova-test-android"
   },
   "repository": {
     "type": "git",
@@ -43,7 +48,7 @@
     "babel-preset-env": "1.6.1",
     "better-emitter": "^1.0.2",
     "better-match": "^1.0.2",
-    "better-replace": "^1.0.1",
+    "better-replace": "^1.0.2",
     "cordova": "^7.1.0",
     "del-cli": "^1.1.0",
     "download": "^6.2.5",

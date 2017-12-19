@@ -10,6 +10,7 @@ public/*-bundle.js*
 public/style.css*
 public/components.css*
 public/wp-images
+public/blind-polyfill.js
 
 cordova/www
 cordova/platforms
