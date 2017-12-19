@@ -26,7 +26,7 @@
     "cordova-copy-www": "rm -rf cordova/www; mkdir cordova/www && cp -r public/* cordova/www && node cordova-copy.js",
     "cordova-build-ios": "cd cordova && npx cordova build ios",
     "cordova-build-android": "cd cordova && npx cordova build android",
-    "cordova-test-android": "adb -s ZX1B2237ZR install -r cordova/platforms/android/build/outputs/apk/debug/android-debug.apk",
+    "cordova-test-android": "adb -s ZY223MJ3P7 install -r cordova/platforms/android/build/outputs/apk/debug/android-debug.apk",
     "cordova-android": "npm-run-all cordova-build-android cordova-test-android"
   },
   "repository": {
