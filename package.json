@@ -69,6 +69,7 @@
     "rollup-plugin-string": "^2.0.2",
     "rollup-plugin-svelte": "3.3.0",
     "svelte": "~1.45.0",
+    "svelte-preprocess-postcss": "^1.0.0",
     "svelte-state-renderer": "^1.2.5",
     "svelte-transitions": "^1.1.1",
     "symlink-cli": "^1.0.0",

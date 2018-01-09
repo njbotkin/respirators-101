@@ -4,7 +4,7 @@ import babel from 'rollup-plugin-babel'
 import svelte from 'rollup-plugin-svelte'
 import string from 'rollup-plugin-string'
 import json from 'rollup-plugin-json'
-import postcss from 'postcss'
+import sveltePreprocessPostcss from 'svelte-preprocess-postcss'
 
 export default {
 	name: `respiratorsStructure`,
@@ -24,21 +24,7 @@ export default {
 			exclude: `**/static-html/**/*.html`,
 
 			preprocess: {
-				style({ content }) {
-					return Promise.resolve(postcss([
-						require(`precss`)({
-							import: {
-								path: [ `client/global-css` ],
-								prefix: ``,
-							},
-						}),
-						require(`autoprefixer`),
-					])
-						.process(content)
-						.then(result => {
-							return { code: result }
-						}))
-				},
+				style: sveltePreprocessPostcss(),
 			},
 
 			css(css) {
