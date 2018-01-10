@@ -3,23 +3,23 @@ const { run } = require('runjs')
 
 /* DATA */
 function build_twine_data_to_decisions_html() { 
-	run("node twine_parser/output_decisions_html_object.js")
+	run("node twine-parser/output-decisions-html-object.js")
 }
 
 function build_wordpress_data_to_svelte() { 
-	run("node wordpress_parser/xml_to_svelte.js")
+	run("node wordpress-parser/xml-to-svelte.js")
 }
 
 async function glob_all() {
-	await Promise.all([ glob.js(), glob.css() ])
+	await Promise.all([ glob.routes(), glob.content() ])
 }
 
 const glob = {
 	routes() {
-		run("glob-module-file --pattern=\"client/routes/**/*.js\" --format=es --pathPrefix=../../ --outputPath=client/data/globbed_routes.js")
+		run("glob-module-file --pattern=\"client/routes/**/*.js\" --format=es --pathPrefix=../../ --outputPath=client/data/globbed-routes.js")
 	},
 	content() {
-		run("glob-module-file --pattern=\"client/data/content/*.html\" --format=es --pathPrefix=../../ --exportWithPath --outputPath=client/data/globbed_content.js")
+		run("glob-module-file --pattern=\"client/data/content/*.html\" --format=es --pathPrefix=../../ --exportWithPath --outputPath=client/data/globbed-content.js")
 	}
 }
 
@@ -54,9 +54,8 @@ const build = {
 
 // requires patched polyfill-server running locally
 function fetch_blind_polyfill() { 
-	run("curl 'http://127.0.0.1:3000/v2/polyfill.min.js?features=default-3.6,NodeList.prototype.@@iterator,NodeList.prototype.forEach,RegExp.prototype.flags&flags=always,gated' -H 'User_Agent: Mozilla/5.0 Firefox/900.0' > public/blind_polyfill.js")
+	run("curl 'http://127.0.0.1:3000/v2/polyfill.min.js?features=default-3.6,NodeList.prototype.@@iterator,NodeList.prototype.forEach,RegExp.prototype.flags&flags=always,gated' -H 'User_Agent: Mozilla/5.0 Firefox/900.0' > public/blind-polyfill.js")
 }
-
 
 
 /* TEST */
@@ -67,25 +66,31 @@ function test() {
 
 /* DEV */
 function dev_server() { 
-	run("live-server public")
+	run("live-server public", {
+		async: true
+	})
 }
 
-async function dev() { 
-	prep_build()
+function dev() {
 	watch_all()
 	dev_server()
 }
 
-async function watch_all() {
-	await Promise.all([ watch.js(), watch.css() ])
+function watch_all() {
+	watch.js()
+	watch.css()
 }
 
 const watch = {
 	js() {
-		run("rollup -c -w")
+		run("rollup -c -w", {
+			async: true
+		})
 	},
 	css() {
-		run("postcss-alt \"client/routes/**/*.css\" \"./public/style.css\" --watch=\"client/**/*.css\"")
+		run("postcss-alt \"client/routes/**/*.css\" \"./public/style.css\" --watch=\"client/**/*.css\"", {
+			async: true
+		})
 	}
 }
 

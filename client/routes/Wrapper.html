@@ -1,19 +1,160 @@
-<Navbar bind:visible="visibleSlideOut" :asr></Navbar>
-<uiView></uiView>
+<div class="wrapper" data-menu-visible="{{visibleSlideOut}}">
+
+	<div class="left">
+
+		Respirators 101
+
+		<Menu :asr></Menu>
+
+		{{#if !visibleSlideOut}}
+		<div class="debutterfinger"></div>
+		{{/if}}
+	</div>
+
+
+	<div class="right">
+		{{#if visibleSlideOut}}
+		<div class="anythingelsebutton" on:click="set({visibleSlideOut: false})"></div>
+		{{/if}}
+
+		<nav>
+			<button class="menu open" on:click="set({visibleSlideOut: true})"></button>
+			<div class="title"></div>
+		</nav>
+
+		<div class="main">
+
+			<uiView></uiView>
+
+		</div>
+	</div>
+
+</div>
 
 <script>
 
-	import Navbar from 'lib/Navbar.html'
+	import Menu from 'lib/Menu.html'
 
 	export default {
 		components: {
-			Navbar
+			Menu
 		},
 		oncreate () {
+			// captures event from router
 			this.on('closeSlideOut', () => {
 				this.set({visibleSlideOut: false})
 			})
+		},
+		data() {
+			return { 
+				visibleSlideOut: false
+			}
 		}
 	}
 
 </script>
+
+<style>
+
+	@import "colors";
+
+	.left {
+		position: absolute;
+		top: 0;
+		right: calc(100% - 300px);
+		bottom: 0;
+		left: 0;
+		background: $blue3;
+		color: #fff;
+		font-size: 14px;
+	}
+
+	.right {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 300px;
+	}
+	
+	nav {
+		width: 100%;
+		height: 50px;
+		background: $blue3;
+	}
+
+	.main {
+		position: absolute;
+		top: 50px;
+		right: 0;
+		bottom: 0;
+		left:0;
+		overflow: scroll;
+	}
+
+	.wrapper {
+
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		width: calc(100% + 300px);
+		transition: all .2s ease;
+
+		&[data-menu-visible=false] {
+			left: -300px;
+		}
+
+		&[data-menu-visible=true] {
+			left: 0;
+		}
+
+	}
+
+	::-webkit-scrollbar { 
+	    display: none; 
+	}
+
+	.left {
+		position: absolute;
+		top: 0;
+		right: calc(100% - 300px);
+		bottom: 0;
+		left: 0;
+		background: $blue3;
+		color: #fff;
+		font-size: 14px;
+		overflow:scroll;
+	}
+
+	button.menu {
+		float: left;
+		width: 50px;
+		height: 50px;
+		display: block;
+		border: 0;
+		cursor: pointer;
+		background-color: $blue3;
+		background-size: 60%;
+		background-repeat: no-repeat;
+		background-position: center;
+
+		&.open {
+			background-image: url('icons/menu.svg');
+		}
+		&.close {
+			background-image: url('icons/x.svg');
+		}
+	}
+
+	.anythingelsebutton, .debutterfinger {
+		position:absolute;
+		top:0;
+		right:0;
+		bottom:0;
+		left:0;
+		z-index: 1;
+	}
+
+</style>

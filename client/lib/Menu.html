@@ -1,0 +1,137 @@
+
+<ul class="links">
+	{{#each navigation as item}}
+
+	<li>
+	
+		{{#if item.children}}
+			
+		<Category :item :closeAllExpands :registerExpand>
+			<ul>
+				{{#each item.children as page}}
+				<li>
+					<a href="{{ asr.makePath('wrapper.app.content', { id: page.id }) }}">{{page.name}}</a>
+				</li>
+				{{/each}}
+			</ul> 
+		</Category>
+
+		{{else}}
+
+		<a href="{{ asr.makePath('wrapper.app.content', { id: item.id }) }}">{{item.name}}</a>
+
+		{{/if}}
+
+	</li>
+
+	{{/each}}
+</ul>
+
+<script>
+
+	import Category from 'lib/Category.html'
+
+	import navTree from 'data/navigation.json'
+	import idToName from 'data/id-to-name.json'
+
+	const navigation = navTree.map(e => {
+		return {
+			id: e.id,
+			title: e.title,
+			children: e.children.map(id => ({
+				id,
+				name: idToName[id],
+			}))
+		}
+	})
+
+	export default {
+		components: {
+			Category
+		},
+		oncreate() {
+
+			document.querySelectorAll('.expand').forEach(e => {
+				e.style.height = e.clientHeight + 'px'
+				e.setAttribute('class', 'expand initialized')
+			})
+
+		},
+		// until https://github.com/sveltejs/svelte/issues/881 lands, this is the best way to do dynamic refs that I can think of
+		data() {
+			var expands = []
+			return { 
+				navigation,
+				closeAllExpands() {
+					expands.forEach(e => {
+						e._set({ open: false })
+					})
+				},
+				registerExpand(expand) {
+					expands.push(expand)
+				}
+			}
+		}
+	}
+
+</script>
+
+<style>
+
+	@import "colors";
+
+	.links {
+		margin-top: 50px;
+	}
+
+	ul, li {
+		list-style: none;
+		display: block;
+		padding: 0;
+		margin: 0;
+	}
+
+	.category-title {
+		background: $blue4;
+		display: block;
+		padding: 0 0 0 20px;
+		line-height: 50px;
+		border-top: 1px solid $blue3;
+		border-bottom: 1px solid $blue5;
+
+		&::after {
+			display: block;
+			float: right;
+			width: 50px;
+			height: 50px;
+			background-size: 50%;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-image: url('icons/chevron-down.svg');
+			content: ' ';
+			transition: transform .2s ease-out;
+		}
+	}
+
+	.category[data-open=true] .category-title::after {
+		transform: rotate(-180deg);
+	}
+
+	.expand {
+		background: $blue5;
+	}
+
+	a {
+		color: #fff;
+		display: block;
+		line-height: 20px;
+		text-decoration: none;
+		padding: 10px 20px 10px 40px;
+
+		&:hover {
+			background: #00000066;
+		}
+	}
+
+
+</style>
