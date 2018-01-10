@@ -54,6 +54,7 @@
     "download": "^6.2.5",
     "glob-module-file": "^2.2.0",
     "globby": "^7.0.0",
+    "google-fonts-offline": "^0.1.2",
     "he": "^1.1.1",
     "loud-rejection": "^1.6.0",
     "make-dir": "^1.1.0",

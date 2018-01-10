@@ -2,9 +2,11 @@
 
 	<div class="left">
 
-		Respirators 101
+		<div class="appname">Respirators 101</div>
 
-		<Menu :asr></Menu>
+		<div class="main">
+			<Menu :asr></Menu>
+		</div>
 
 		{{#if !visibleSlideOut}}
 		<div class="debutterfinger"></div>
@@ -23,9 +25,7 @@
 		</nav>
 
 		<div class="main">
-
 			<uiView></uiView>
-
 		</div>
 	</div>
 
@@ -57,6 +57,26 @@
 <style>
 
 	@import "colors";
+
+	.wrapper {
+
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		width: calc(100% + 300px);
+		transition: all .2s ease;
+
+		&[data-menu-visible=false] {
+			left: -300px;
+		}
+
+		&[data-menu-visible=true] {
+			left: 0;
+		}
+
+	}
 
 	.left {
 		position: absolute;
@@ -92,40 +112,16 @@
 		overflow: scroll;
 	}
 
-	.wrapper {
-
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		width: calc(100% + 300px);
-		transition: all .2s ease;
-
-		&[data-menu-visible=false] {
-			left: -300px;
-		}
-
-		&[data-menu-visible=true] {
-			left: 0;
-		}
-
-	}
-
 	::-webkit-scrollbar { 
 	    display: none; 
 	}
 
-	.left {
-		position: absolute;
-		top: 0;
-		right: calc(100% - 300px);
-		bottom: 0;
-		left: 0;
-		background: $blue3;
-		color: #fff;
-		font-size: 14px;
-		overflow:scroll;
+	.appname {
+		font-family: "Roboto Condensed";
+		text-align: left;
+		line-height: 50px;
+		padding: 0 20px;
+		text-transform: uppercase;
 	}
 
 	button.menu {

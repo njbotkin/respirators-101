@@ -57,6 +57,10 @@ function fetch_blind_polyfill() {
 	run("curl 'http://127.0.0.1:3000/v2/polyfill.min.js?features=default-3.6,NodeList.prototype.@@iterator,NodeList.prototype.forEach,RegExp.prototype.flags&flags=always,gated' -H 'User_Agent: Mozilla/5.0 Firefox/900.0' > public/blind-polyfill.js")
 }
 
+function fetch_google_fonts() { 
+	run("npx goofoffline outDir=public/fonts \"https://fonts.googleapis.com/css?family=Roboto+Condensed\"")
+}
+
 
 /* TEST */
 function test() { 
@@ -106,7 +110,7 @@ const cordova = {
 		run("cd cordova && npx cordova prepare")
 	},
 	copy_www() { 
-		run("rm -rf cordova/www; mkdir cordova/www && cp -r public/* cordova/www && node cordova_copy.js")
+		run("rm -rf cordova/www; mkdir cordova/www && cp -r public/* cordova/www && node cordova-copy.js")
 	},
 
 	build_ios() { 
@@ -118,7 +122,7 @@ const cordova = {
 		run("cd cordova && npx cordova build android")
 	},
 	test_android() { 
-		run("adb -s ZY223MJ3P7 install -r cordova/platforms/android/build/outputs/apk/debug/android_debug.apk")
+		run("adb -s ZY223MJ3P7 install -r cordova/platforms/android/build/outputs/apk/debug/android-debug.apk")
 	}
 
 }
@@ -143,6 +147,7 @@ module.exports = {
 	dev_server,
 	dev,
 	fetch_blind_polyfill,
+	fetch_google_fonts,
 	cordova,
 	android_all
 }
