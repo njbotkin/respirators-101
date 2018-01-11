@@ -15,3 +15,11 @@ $red2: #bb615e;
 $red3: #973d3b;
 $red4: #7a211f;
 $red5: #520907;
+
+
+$width: 1242;
+$height: 1959;
+$viewport_height: 2130; /* this number doesn't make sense, but it works okay */
+
+$home_ar: $width/$height;
+$viewport_ar: $width/$viewport_height;

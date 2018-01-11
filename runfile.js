@@ -123,6 +123,7 @@ const cordova = {
 	},
 	test_android() { 
 		run("adb -s ZY223MJ3P7 install -r cordova/platforms/android/build/outputs/apk/debug/android-debug.apk")
+		// start emulators too? %programfiles(x86)%\Microsoft Emulator Manager\1.0\emulatorcmd launch /sku:Android /id:0076019F-F03D-41CC-984F-D92FCBD52648
 	}
 
 }
