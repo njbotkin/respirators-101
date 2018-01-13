@@ -142,6 +142,10 @@ function android_all() {
 	cordova.test_android()
 }
 
+function push_public() {
+	run("rsync -azP public "+creds.user+"@"+creds.host+":"+creds.path+"/app")
+}
+
 module.exports = {
 	test,
 	prep_build,
@@ -160,5 +164,6 @@ module.exports = {
 	fetch_blind_polyfill,
 	fetch_google_fonts,
 	cordova,
-	android_all
+	android_all,
+	push_public
 }
