@@ -16,8 +16,10 @@ stateRouter.on(`routeNotFound`, (route, parameters) => {
 	stateRouter.go(`wrapper.app.not-found`, Object.assign({ route }, parameters), { replace: true })
 })
 
-stateRouter.on(`stateChangeStart`, () => {
-	context.emit(`stateChangeStart`)
+stateRouter.on(`stateChangeStart`, (state, params) => {
+	context.emit(`stateChangeStart`, params)
 })
 
+
 stateRouter.evaluateCurrentRoute(`wrapper.home`)
+// context.emit(`stateChangeStart`, {id: 'home'}) 

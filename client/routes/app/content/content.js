@@ -7,7 +7,7 @@ export default () => ({
 	route: `/content/:id(.+)`,
 	template: StaticContent,
 	resolve(data, params) {
-		const page = idToPage[params.id]
+		const page = idToPage[params.id] 
 
 		if (!page) {
 			return Promise.reject({
@@ -24,6 +24,7 @@ export default () => ({
 
 		return Promise.resolve({
 			component,
+			title: page.name
 		})
-	},
+	}
 })

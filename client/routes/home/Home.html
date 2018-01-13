@@ -2,14 +2,14 @@
 	
 	<div class="buttons">
 
-		<a class="select-a-respirator"></a>
-		<a class="before-you-start"></a>
-		<a class="all-about-respirators"></a>
+		<a class="select-a-respirator" href="{{ asr.makePath('wrapper.app.respirator-picker') }}"></a>
+		<a class="before-you-start" href="{{ asr.makePath('wrapper.app.content', { id: 'before-you-start' }) }}"></a>
+		<a class="all-about-respirators" href="{{ asr.makePath('wrapper.app.content', { id: 'purpose-of-respirators' }) }}"></a>
 	
 		<a class="my-info bottomrow"></a>
 		<a class="chemical-lookup bottomrow"></a>
 		<a class="calculations bottomrow"></a>
-		<a class="osha-standards bottomrow"></a>
+		<a class="osha-standards bottomrow" href="{{ asr.makePath('wrapper.app.content', { id: 'osha-standards' }) }}"></a>
 
 	</div>
 
@@ -30,7 +30,7 @@
 	@media screen and (min-aspect-ratio: $viewport_ar) {
 		.bg {
 			height: calc(100vh - 50px);
-			width: calc(calc(100vh - 50px) * $width / $height ); 
+			width: calc( calc(100vh - 50px) * $width / $height ); 
 		}
 	}
 
@@ -38,7 +38,7 @@
 	@media screen and (max-aspect-ratio: $viewport_ar) {
 		.bg {
 			width: 100vw;
-			padding-bottom: calc(calc( 100vw * calc($height) / $width  ));
+			padding-bottom: calc( 100vw * $height / $width );
 		}
 	}
 
@@ -53,7 +53,6 @@
 			position: absolute;    
 			display:block;
 			cursor: pointer;
-			background: #ff000066;
 		}
 	}
 

@@ -5,7 +5,8 @@ export default ({ on }) => ({
 	route: ``,
 	template: Wrapper,
 	activate(stateContext) {
-		const unsubscribe = on(`stateChangeStart`, () => stateContext.domApi.fire(`closeSlideOut`))
+		// forward events
+		const unsubscribe = on(`stateChangeStart`, (e) => stateContext.domApi.fire(`stateChange`, e))
 		stateContext.on(`destroy`, unsubscribe)
 	},
 })

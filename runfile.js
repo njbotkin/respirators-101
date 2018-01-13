@@ -1,7 +1,13 @@
 const { run } = require('runjs')
+const creds = require('./remoteserver')
 
 
 /* DATA */
+
+function fetch_wordpress_data() {
+	run("ssh "+creds.user+"@"+creds.host+" 'cd "+creds.path+" && php ~/wp-cli.phar export --skip_comments --stdout' > wordpress-data/wordpress.xml")
+}
+
 function build_twine_data_to_decisions_html() { 
 	run("node twine-parser/output-decisions-html-object.js")
 }
@@ -122,8 +128,11 @@ const cordova = {
 		run("cd cordova && npx cordova build android")
 	},
 	test_android() { 
-		run("adb -s ZY223MJ3P7 install -r cordova/platforms/android/build/outputs/apk/debug/android-debug.apk")
+		run("adb -s 169.254.76.233:5555 install -r cordova/platforms/android/build/outputs/apk/debug/android-debug.apk")
 		// start emulators too? %programfiles(x86)%\Microsoft Emulator Manager\1.0\emulatorcmd launch /sku:Android /id:0076019F-F03D-41CC-984F-D92FCBD52648
+	},
+	grab_android() {
+		run("cp cordova/platforms/android/build/outputs/apk/debug/android-debug.apk latest.apk")
 	}
 
 }
@@ -145,6 +154,7 @@ module.exports = {
 	create_symlinks,
 	build_twine_data_to_decisions_html,
 	build_wordpress_data_to_svelte,
+	fetch_wordpress_data,
 	dev_server,
 	dev,
 	fetch_blind_polyfill,

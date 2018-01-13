@@ -2,23 +2,27 @@
 <ul class="links">
 	{{#each navigation as item}}
 
-	<li>
+	<li class="{{ item.id }}">
 	
 		{{#if item.children}}
 			
-		<Category :item :closeAllExpands :registerExpand>
+		<Category :asr :item :closeAllExpands :registerExpand>
 			<ul>
 				{{#each item.children as page}}
-				<li>
-					<a href="{{ asr.makePath('wrapper.app.content', { id: page.id }) }}">{{page.name}}</a>
+				<li class="{{ page.id }}">
+					<a href="{{ asr.makePath('wrapper.app.categorycontent', { id: page.id, catid: item.id }) }}">{{page.title}}</a>
 				</li>
 				{{/each}}
 			</ul> 
 		</Category>
 
-		{{else}}
+		{{elseif item.state}}
 
-		<a href="{{ asr.makePath('wrapper.app.content', { id: item.id }) }}">{{item.name}}</a>
+		<a href="{{ asr.makePath( item.state ) }}">{{item.title}}</a>
+
+		{{elseif item.id}}
+
+		<a href="{{ asr.makePath('wrapper.app.content', { id: item.id }) }}">{{item.title}}</a>
 
 		{{/if}}
 
@@ -31,19 +35,59 @@
 
 	import Category from 'lib/Category.html'
 
-	import navTree from 'data/navigation.json'
-	import idToName from 'data/id-to-name.json'
+	import menu from 'data/menu.json'
+	import posts from 'data/posts.json'
+	import categories from 'data/categories.json'
 
-	const navigation = navTree.map(e => {
-		return {
-			id: e.id,
-			title: e.title,
-			children: e.children.map(id => ({
+	const navigation = menu.map(e => {
+
+		const id = e.name
+
+		if(e.type == 'category') {
+			return {
 				id,
-				name: idToName[id],
-			}))
+				title: categories[id].title,
+				children: categories[id].children.map(id => ({
+					id,
+					title: posts[id]
+				}))
+			}
+		} else {
+			return {
+				id,
+				title: posts[id]
+			}
 		}
 	})
+
+	// insert custom links
+	navigation.splice(0, 0, {
+		id: 'home',
+		title: 'Home',
+		state: 'wrapper.home'
+	})
+	navigation.splice(2, 0, {
+		id: 'respirator-picker',
+		title: 'Respirator Selection Tool',
+		state: 'wrapper.app.respirator-picker'
+	})
+	navigation.splice(4, 0, {
+		id: 'my-info',
+		title: 'My Info'
+	})
+	navigation.splice(5, 0, {
+		id: 'chemical-lookup',
+		title: 'Chemical Lookup'
+	})
+	navigation.splice(6, 0, {
+		id: 'calculate',
+		title: 'Calculate'
+	})
+	navigation.splice(12, 0, {
+		id: 'copyright-statement',
+		title: 'Copyright Statement'
+	})
+
 
 	export default {
 		components: {
@@ -87,47 +131,79 @@
 		margin: 0;
 	}
 
-	.category-title {
-		background: $blue4;
+	a {
+		color: #fff;
 		display: block;
-		padding: 0 0 0 20px;
-		line-height: 50px;
-		border-bottom: 1px solid $blue5;
-		margin-bottom: 1px;
+		line-height: 20px;
+		text-decoration: none;
+		padding: 15px 20px;
+		border-top: 1px solid $blue2;
+		background: $blue3;
+		border-bottom: 1px solid $blue4;
 
-		&::after {
+		&:hover {
+			background: $blue4;
+		}
+	}
+
+	.expand a {
+		border: 0;
+		background: $blue2;
+	}
+
+	.category-title {
+		position:relative;
+
+		.chevron {
 			display: block;
-			float: right;
+			position:absolute;
+			top: 0; 
+			right:0;
 			width: 50px;
 			height: 50px;
 			background-size: 50%;
 			background-repeat: no-repeat;
 			background-position: center;
 			background-image: url('icons/chevron-down.svg');
-			content: ' ';
 			transition: transform .2s ease-out;
 		}
 	}
 
-	.category[data-open=true] .category-title::after {
+	.category[data-open=true] .chevron {
 		transform: rotate(-180deg);
 	}
 
-	.expand {
-		background: $blue5;
-	}
-
-	a {
-		color: #fff;
-		display: block;
-		line-height: 20px;
-		text-decoration: none;
-		padding: 10px 20px 10px 40px;
-
-		&:hover {
-			background: #00000066;
+	li.getting-started, li.respirator-picker, li.all-about-respirators {
+		a {
+			border-top: 1px solid $yellow2;
+			background: $yellow3;
+			border-bottom: 1px solid $yellow4;
+			&:hover {
+				background: $yellow4;
+			}
 		}
-	}
+
+		.expand a {
+			border: 0;
+			background: $yellow2;
+		}
+	} 
+
+	li.my-info, li.chemical-lookup, li.calculate, li.conversion-tables, li.osha-standards, li.acronyms, li.glossary, li.resources {
+		a {
+			border-top: 1px solid $red2;
+			background: $red3;
+			border-bottom: 1px solid $red4;
+			&:hover {
+				background: $red4;
+			}
+		}
+
+		.expand a {
+			border: 0;
+			background: $red2;
+		}
+	} 
 
 
 </style>

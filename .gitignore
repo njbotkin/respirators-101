@@ -18,3 +18,5 @@ cordova/platforms
 cordova/plugins
 
 *.sublime-workspace
+
+*.apk

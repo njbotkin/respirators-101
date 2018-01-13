@@ -20,8 +20,9 @@
 		{{/if}}
 
 		<nav>
-			<button class="menu open" on:click="set({visibleSlideOut: true})"></button>
-			<div class="title"></div>
+			<div class="one"><button class="menu" on:click="set({visibleSlideOut: true})"></button></div>
+			<div class="title">{{ title }}</div>
+			<div class="two"><a class="home" href="{{ asr.makePath('wrapper.home') }}"></a></div>
 		</nav>
 
 		<div class="main">
@@ -34,6 +35,8 @@
 <script>
 
 	import Menu from 'lib/Menu.html'
+	import categories from 'data/categories.json'
+	import posts from 'data/posts.json'
 
 	export default {
 		components: {
@@ -41,13 +44,25 @@
 		},
 		oncreate () {
 			// captures event from router
-			this.on('closeSlideOut', () => {
+			this.on('stateChange', (params) => {
+
+				if(params.catid) {
+					if(categories[params.catid]) {
+						this.set({ title: categories[params.catid].title })
+					}
+				} else {
+					if(posts[params.id]) {
+						this.set({ title: posts[params.id] })
+					}
+				}
+
 				this.set({visibleSlideOut: false})
 			})
-		},
+		}, 
 		data() {
 			return { 
-				visibleSlideOut: false
+				visibleSlideOut: false,
+				title: ''
 			}
 		}
 	}
@@ -70,10 +85,18 @@
 
 		&[data-menu-visible=false] {
 			left: -300px;
+
+			button.menu {
+				background-image: url('icons/menu.svg');
+			}
 		}
 
 		&[data-menu-visible=true] {
 			left: 0;
+
+			button.menu {
+				background-image: url('icons/x.svg');
+			}
 		}
 
 	}
@@ -101,6 +124,23 @@
 		width: 100%;
 		height: 50px;
 		background: $blue3;
+		display: table;
+
+		> div {
+			display: table-cell;
+			vertical-align: middle;
+			color: #fff;
+		}
+
+		.one, .two {
+			width: 50px;
+		}
+		.title {
+			width: 100%;
+			text-align: center;
+			font-family: "Roboto Condensed";
+			text-transform: uppercase;
+		}
 	}
 
 	.main {
@@ -108,6 +148,7 @@
 		top: 50px;
 		right: 0;
 		left:0;
+		bottom: 0;
 		overflow: scroll;
 	}
 
@@ -123,8 +164,7 @@
 		text-transform: uppercase;
 	}
 
-	button.menu {
-		float: left;
+	button.menu, a.home {
 		width: 50px;
 		height: 50px;
 		display: block;
@@ -134,13 +174,10 @@
 		background-size: 60%;
 		background-repeat: no-repeat;
 		background-position: center;
-
-		&.open {
-			background-image: url('icons/menu.svg');
-		}
-		&.close {
-			background-image: url('icons/x.svg');
-		}
+	}
+	a.home {
+		background-size: 50%;
+		background-image: url(icons/icon-home.png);
 	}
 
 	.anythingelsebutton, .debutterfinger {
