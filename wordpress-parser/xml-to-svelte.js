@@ -147,11 +147,10 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 		posts[name] = posts[name].title
 	}
 
-
-	// const idToName = pageDetails.reduce((acc, { id, title }) => {
-	// 	acc[id] = title
-	// 	return acc
-	// }, Object.create(null))
+	const idToName = pageDetails.reduce((acc, { id, title }) => {
+		acc[id] = title
+		return acc
+	}, Object.create(null))
 	
 	await writeFile(joinPath(__dirname, `../client/data/posts.json`), JSON.stringify(posts, null, `\t`))
 	await writeFile(joinPath(__dirname, `../client/data/categories.json`), JSON.stringify(categories, null, `\t`))
