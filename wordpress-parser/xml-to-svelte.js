@@ -152,6 +152,7 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 		return acc
 	}, Object.create(null))
 	
+	await writeFile(joinPath(__dirname, `../client/data/id-to-name.json`), JSON.stringify(idToName, null, `\t`))
 	await writeFile(joinPath(__dirname, `../client/data/posts.json`), JSON.stringify(posts, null, `\t`))
 	await writeFile(joinPath(__dirname, `../client/data/categories.json`), JSON.stringify(categories, null, `\t`))
 	await writeFile(joinPath(__dirname, `../client/data/menu.json`), JSON.stringify(menu, null, `\t`))
@@ -186,9 +187,8 @@ const flatMap = (ary, fn) => ary.reduce((acc, element, index) => [ ...acc, ...fn
 
 function convertContentToSvelteComponent({ content, title }) {
 	return `
-<h1>${ he.encode(title) }</h1>
 
-${ fixExpand(fixImages(content)) }
+${ newlineBreaks(fixExpand(fixImages(content))) }
 
 <script>
 	import Accordion from 'lib/Accordion.html'
@@ -210,6 +210,12 @@ const fixImages = html => replace(
 const fixExpand = html => replace(
 	/\[expand title="([^"]+)"\]((?:.|\n)+?)\[\/expand\]/,
 	(title, content) => `<Accordion title="${ he.encode(title) }">${ content }</Accordion>`,
+	html
+)
+
+const newlineBreaks = html => replace(
+	/\n/,
+	() => `<br>`,
 	html
 )
 

@@ -65,12 +65,19 @@
 					if(categories[params.catid]) {
 						this.set({ title: categories[params.catid].title })
 					}
-				} else {
+				} else if(params.id) {
 					if(posts[params.id]) {
 						this.set({ title: posts[params.id] })
+					} else {
+						// Title of a tool - Respirator selection, calculator.  @TODO implement this right
+						this.set({ title: "Respirator Selection" })
 					}
+				} else {
+					// home
+					this.set({ title: "" })
 				}
 
+				// back button for category contents
 				if(params.catid && params.id) {
 					this.set({ categoryParent: this._state.asr.makePath('wrapper.app.category', { catid: params.catid }) })
 				} else {
