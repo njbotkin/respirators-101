@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" style="width:0;height:0;position:absolute;overflow:hidden;">
-  <defs>
-<symbol viewBox="0 0 1024 1024" aria-labelledby="blsi-ant-circle-left-title" id="si-ant-circle-left"><title id="blsi-ant-circle-left-title">icon circle-left</title><path d="M512 0Q373 0 255 68.5T68.5 255 0 512t68.5 257T255 955.5t257 68.5 257-68.5T955.5 769t68.5-257-68.5-257T769 68.5 512 0zm120 746q9 9 9 22.5t-9.5 23T609 801t-23-10L330 535q-9-9-9-22.5t9-22.5l257-258q10-9 23-9t22.5 9 9.5 22.5-9 22.5L398 513z"/></symbol>
-<symbol viewBox="0 0 1024 1024" aria-labelledby="bqsi-ant-circle-right-title" id="si-ant-circle-right"><title id="bqsi-ant-circle-right-title">icon circle-right</title><path d="M512 0Q373 0 255 68.5T68.5 255 0 512t68.5 257T255 955.5t257 68.5 257-68.5T955.5 769t68.5-257-68.5-257T769 68.5 512 0zm183 535L439 791q-10 10-23 10t-22.5-9.5-9.5-23 9-22.5l234-233-235-236q-9-9-9-22.5t9.5-22.5 22.5-9 23 9l256 258q10 9 10 22.5t-9 22.5z"/></symbol>
-  </defs>
-</svg>

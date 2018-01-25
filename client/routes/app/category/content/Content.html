@@ -1,10 +1,10 @@
 <div class="category-nav">
 	
-	<div class="prev {{prev}}"><a href="{{ asr.makePath('wrapper.app.categorycontent', { id: prev, catid }) }}" class="svg-icon"></a></div>
+	<div class="prev {{prev}}"><a class="icon-angle-left" href="{{ asr.makePath('wrapper.app.categorycontent', { id: prev, catid }) }}"></a></div>
 
 	<div class="title">{{ title }}</div>
 
-	<div class="next {{next}}"><a href="{{ asr.makePath('wrapper.app.categorycontent', { id: next, catid }) }}"></a></div>
+	<div class="next {{next}}"><a class="icon-angle-left" href="{{ asr.makePath('wrapper.app.categorycontent', { id: next, catid }) }}"></a></div> 
 
 </div>
 
@@ -44,26 +44,34 @@
 
 			a {
 				display: block;
-				width: 50px;
-				height: 50px;
-				background-size: 55%;
-				background-repeat: no-repeat;
-				background-position: center;
+				width: 30px;
+				height: 30px;
+				text-align: center;
+				line-height: 30px;
+				color: $red4;
+				background: #fff;
+				text-decoration: none;
+				font-size: 25px;
+				border-radius: 100%;
+				margin: 10px;
 			}
-		}
-
-		.prev {
-			text-align: left;
-			a {
-				background-image: url('icons/arrow-left-circle.svg');
+			a::before {
+				margin-left: -2px;
 			}
 		}
 		.next {
-			text-align: right;
 			a {
-				background-image: url('icons/arrow-right-circle.svg');
+				transform: rotate(180deg);
 			}
 		}
+	}
+
+	h1 {
+		display: none;
+	}
+
+	.content {
+		padding: 20px;
 	}
 
 </style>

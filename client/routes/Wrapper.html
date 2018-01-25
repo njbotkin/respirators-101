@@ -22,9 +22,19 @@
 			{{/if}}
 
 			<nav>
-				<div class="one"><button class="menu" on:click="set({visibleSlideOut: true})"></button></div>
+				<div class="one">
+					{{ #if categoryParent }}
+					<a class="back button icon-angle-left" href="{{ categoryParent }}"></a>
+					{{ else }}
+						{{#if visibleSlideOut}}
+						<button class="close icon-close"></button>
+						{{else}}
+						<button class="menu icon-menu" on:click="set({visibleSlideOut: true})"></button>
+						{{/if}}
+					{{/if}}
+				</div>
 				<div class="title">{{ title }}</div>
-				<div class="two"><a class="home" href="{{ asr.makePath('wrapper.home') }}"></a></div>
+				<div class="two"><a class="button home icon-home" href="{{ asr.makePath('wrapper.home') }}"></a></div>
 			</nav>
 
 			<div class="main">
@@ -49,6 +59,7 @@
 		oncreate () {
 			// captures event from router
 			this.on('stateChange', (params) => {
+					console.log(params, this)
 
 				if(params.catid) {
 					if(categories[params.catid]) {
@@ -58,6 +69,12 @@
 					if(posts[params.id]) {
 						this.set({ title: posts[params.id] })
 					}
+				}
+
+				if(params.catid && params.id) {
+					this.set({ categoryParent: this._state.asr.makePath('wrapper.app.category', { catid: params.catid }) })
+				} else {
+					this.set({ categoryParent: false })
 				}
 
 				this.set({visibleSlideOut: false})
@@ -100,18 +117,10 @@
 
 		&[data-menu-visible=false] {
 			left: -300px;
-
-			button.menu {
-				background-image: url('icons/menu.svg');
-			}
 		}
 
 		&[data-menu-visible=true] {
 			left: 0;
-
-			button.menu {
-				background-image: url('icons/x.svg');
-			}
 		}
 
 	}
@@ -179,20 +188,24 @@
 		text-transform: uppercase;
 	}
 
-	button.menu, a.home {
+	button, .button {
 		width: 50px;
 		height: 50px;
 		display: block;
 		border: 0;
+		color: #fff;
+		text-decoration: none;
+		font-size: 30px;
+		line-height: 50px;
+		text-align: center;
 		cursor: pointer;
 		background-color: $blue3;
 		background-size: 60%;
 		background-repeat: no-repeat;
 		background-position: center;
 	}
-	a.home {
-		background-size: 50%;
-		background-image: url(icons/icon-home.png);
+	a.back::before {
+		margin-left: -2px;
 	}
 
 	.anythingelsebutton, .debutterfinger {
