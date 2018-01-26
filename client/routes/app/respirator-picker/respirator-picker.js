@@ -6,6 +6,7 @@ import replaceDecisionLinkUrls from 'lib/replace-decision-link-urls'
 const { start, decisions } = decisionData
 
 export default ({ makePath }) => ({
+	title: 'Respirator Selection',
 	name: `wrapper.app.respirator-picker`,
 	route: `/respirator-picker`,
 	template: RespiratorPicker,
@@ -28,11 +29,11 @@ export default ({ makePath }) => ({
 			})
 		}
 
-		const title = html.match(/<h2>([^<(]+)(?:[^<]+?)<\/h2>/).pop()
+		const title = html.match(/<h2>([^<(:]+)(?:[^<]+?)<\/h2>/).pop()
 
 		return Promise.resolve({
 			html: replaceDecisionLinkUrls(html, makePath),
-			title			
+			title
 		})
 	},
 })

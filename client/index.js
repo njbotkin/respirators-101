@@ -17,7 +17,7 @@ stateRouter.on(`routeNotFound`, (route, parameters) => {
 })
 
 stateRouter.on(`stateChangeStart`, (state, params) => {
-	context.emit(`stateChangeStart`, params)
+	context.emit(`stateChangeStart`, { state, params })
 })
 
 

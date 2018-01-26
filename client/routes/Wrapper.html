@@ -58,22 +58,27 @@
 		},
 		oncreate () {
 			// captures event from router
-			this.on('stateChange', (params) => {
-					console.log(params, this)
+			this.on('stateChange', (e) => {
+				var params = e.params
+				console.log(e)
 
-				if(params.catid) {
-					if(categories[params.catid]) {
+				if(e.state.name == 'wrapper.app.categorycontent' || e.state.name == 'wrapper.app.category') {
+					if(params.catid && categories[params.catid]) {
 						this.set({ title: categories[params.catid].title })
 					}
-				} else if(params.id) {
-					if(posts[params.id]) {
+				}
+
+				else if(e.state.name == 'wrapper.app.content') {
+					if(params.id && posts[params.id]) {
 						this.set({ title: posts[params.id] })
-					} else {
-						// Title of a tool - Respirator selection, calculator.  @TODO implement this right
-						this.set({ title: "Respirator Selection" })
 					}
-				} else {
-					// home
+				}
+
+				else if(e.state.title) {
+					this.set({ title: e.state.title })
+				}
+
+				else {
 					this.set({ title: "" })
 				}
 
