@@ -7,7 +7,7 @@ const { start, decisions } = decisionData
 
 export default ({ makePath }) => ({
 	title: 'Respirator Selection',
-	name: `wrapper.app.respirator-picker`,
+	name: `app.respirator-picker`,
 	route: `/respirator-picker`,
 	template: RespiratorPicker,
 	querystringParameters: [ `id` ],
@@ -20,7 +20,7 @@ export default ({ makePath }) => ({
 		if (!html) {
 			return Promise.reject({
 				redirectTo: {
-					name: `wrapper.app.not-found`,
+					name: `app.not-found`,
 					params: {
 						route: `/respirator-picker`,
 						parameters: JSON.stringify(params),

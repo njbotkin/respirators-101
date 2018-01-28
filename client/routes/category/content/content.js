@@ -4,8 +4,8 @@ import idToPage from 'lib/static-content-by-id.js'
 import categories from 'data/categories.json'
 
 export default ({ on }) => ({
-	name: `wrapper.app.categorycontent`,
-	route: `categorycontent/:id`,
+	name: `app.categorycontent`,
+	route: `/category/:catid/:id`,
 	template: StaticContent,
 	resolve(data, params) {
 
@@ -15,9 +15,9 @@ export default ({ on }) => ({
 		if (!page || !category) {
 			return Promise.reject({
 				redirectTo: {
-					name: `wrapper.app.not-found`,
+					name: `app.not-found`,
 					params: {
-						route: `/static/${ params.id }`,
+						route: `/static/ack`,
 					},
 				},
 			})

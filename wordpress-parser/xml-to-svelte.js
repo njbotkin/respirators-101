@@ -61,6 +61,7 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 
 	})
 
+	// content
 	const posts = {}
 	channel.children.forEach(node => {
 		if(node.name !== 'item') return false
@@ -90,6 +91,26 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 		}
 	})
 
+
+	// respirator option lists
+	const lists = {}
+	channel.children.forEach(node => {
+		if(node.name !== 'item') return false
+		if(extractText(findFirstChild(node, `wp:post_type`)) !== 'respirator_options') return false
+
+		// const id = extractText(findFirstChild(node, `wp:post_id`))
+		const title = extractText(findFirstChild(node, `title`))
+		const name = extractText(findFirstChild(node, `wp:post_name`))
+		const content = extractText(findFirstChild(node, `content:encoded`))
+
+		lists[name] = {
+			title,
+			name,
+			content
+		}
+	})
+
+
 	var menu = channel.children.filter(node => {
 		if(node.name !== 'item') return false
 		if(extractText(findFirstChild(node, `wp:post_type`)) !== 'nav_menu_item') return false
@@ -100,13 +121,30 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 			const meta = extractPostMeta(node)
 
 			const type = meta._menu_item_object
-			const id = meta._menu_item_object_id
-			const name = type === 'post' ? selectNameById(posts, id) : selectNameById(categories, id)
+			var title, name, path, id
+
+			if(type == 'page') {
+				return {}
+			}
+			if(type == 'post') {
+				id = meta._menu_item_object_id
+				name = selectNameById(posts, id)
+			}
+			if(type == 'category') {
+				id = meta._menu_item_object_id
+				name = selectNameById(categories, id)
+			}
+			if(type == 'custom') {
+				title = extractText(findFirstChild(node, `title`))
+				path = meta._menu_item_url
+			}	
 
 			return {
 				type,
 				name,
 				id,
+				title,
+				path,
 				order: extractText(findFirstChild(node, `wp:menu_order`))
 			}
 		})
@@ -118,6 +156,13 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 			id: name,
 			content: posts[name].content,
 			title: posts[name].title,
+		})
+	}
+	for (name in lists) {
+		pageDetails.push({
+			id: name,
+			content: lists[name].content,
+			title: lists[name].title,
 		})
 	}
 
@@ -136,16 +181,21 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 	menu.sort((a, b) => {
 		return a.order - b.order;
 	})
-	menu = menu.map(n => {
-		return {
+	menu = menu.filter(n => Object.keys(n).length > 0).map(n => ({
 			type: n.type,
-			name: n.name
-		}
-	})
+			title: n.title,
+			name: n.name,
+			path: n.path
+		})
+	)
 
 	for(name in posts) {
 		posts[name] = posts[name].title
 	}
+	for(name in lists) {
+		lists[name] = lists[name].title
+	}
+
 
 	const idToName = pageDetails.reduce((acc, { id, title }) => {
 		acc[id] = title
@@ -154,6 +204,7 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 	
 	await writeFile(joinPath(__dirname, `../client/data/id-to-name.json`), JSON.stringify(idToName, null, `\t`))
 	await writeFile(joinPath(__dirname, `../client/data/posts.json`), JSON.stringify(posts, null, `\t`))
+	await writeFile(joinPath(__dirname, `../client/data/option-lists.json`), JSON.stringify(lists, null, `\t`))
 	await writeFile(joinPath(__dirname, `../client/data/categories.json`), JSON.stringify(categories, null, `\t`))
 	await writeFile(joinPath(__dirname, `../client/data/menu.json`), JSON.stringify(menu, null, `\t`))
 
@@ -188,7 +239,7 @@ const flatMap = (ary, fn) => ary.reduce((acc, element, index) => [ ...acc, ...fn
 function convertContentToSvelteComponent({ content, title }) {
 	return `
 
-${ newlineBreaks(fixExpand(fixImages(content))) }
+${ fixExpand(fixImages(content)) }
 
 <script>
 	import Accordion from 'lib/Accordion.html'
@@ -213,11 +264,11 @@ const fixExpand = html => replace(
 	html
 )
 
-const newlineBreaks = html => replace(
-	/\n/,
-	() => `<br>`,
-	html
-)
+// const newlineBreaks = html => replace(
+// 	/\n/,
+// 	() => `<br>`,
+// 	html
+// )
 
 const findFirstChild = (xmlNode, type) => findFirst(xmlNode.children, node => node.name === type)
 function findFirst(array, comparator) {

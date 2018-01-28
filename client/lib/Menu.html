@@ -10,19 +10,15 @@
 			<ul>
 				{{#each item.children as page}}
 				<li class="{{ page.id }}">
-					<a href="{{ asr.makePath('wrapper.app.categorycontent', { id: page.id, catid: item.id }) }}">{{page.title}}</a>
+					<a href="{{ page.path }}">{{page.title}}</a>
 				</li>
 				{{/each}}
 			</ul> 
 		</Category>
 
-		{{elseif item.state}}
+		{{else}}
 
-		<a href="{{ asr.makePath( item.state ) }}">{{item.title}}</a>
-
-		{{elseif item.id}}
-
-		<a href="{{ asr.makePath('wrapper.app.content', { id: item.id }) }}">{{item.title}}</a>
+		<a href="{{ item.path }}">{{item.title}}</a>
 
 		{{/if}}
 
@@ -30,6 +26,19 @@
 
 	{{/each}}
 </ul>
+
+<div class="copyright">Copyright &copy; IUOENTF {{ copyrightDate }}</div>
+
+<div class="toes">
+	<a class="youtube">
+		<div class="icon icon-youtube"></div>
+		<div class="text">IUOE on YouTube</div>
+	</a>
+	<a class="contact">
+		<div class="icon"></div>
+		<div class="text">Contact Us</div>
+	</a>
+</div>
 
 <script>
 
@@ -39,55 +48,9 @@
 	import posts from 'data/posts.json'
 	import categories from 'data/categories.json'
 
-	const navigation = menu.map(e => {
-
-		const id = e.name
-
-		if(e.type == 'category') {
-			return {
-				id,
-				title: categories[id].title,
-				children: categories[id].children.map(id => ({
-					id,
-					title: posts[id]
-				}))
-			}
-		} else {
-			return {
-				id,
-				title: posts[id]
-			}
-		}
-	})
-
-	// insert custom links
-	navigation.splice(0, 0, {
-		id: 'home',
-		title: 'Home',
-		state: 'wrapper.home'
-	})
-	navigation.splice(2, 0, {
-		id: 'respirator-picker',
-		title: 'Respirator Selection Tool',
-		state: 'wrapper.app.respirator-picker'
-	})
-	navigation.splice(4, 0, {
-		id: 'my-info',
-		title: 'My Info'
-	})
-	navigation.splice(5, 0, {
-		id: 'chemical-lookup',
-		title: 'Chemical Lookup'
-	})
-	navigation.splice(6, 0, {
-		id: 'calculate',
-		title: 'Calculate'
-	})
-	navigation.splice(12, 0, {
-		id: 'copyright-statement',
-		title: 'Copyright Statement'
-	})
-
+	const start = 2018
+	const end = new Date().getFullYear()
+	const copyrightDate = end > start ? start+' - '+end : start
 
 	export default {
 		components: {
@@ -105,7 +68,6 @@
 		data() {
 			var expands = []
 			return { 
-				navigation,
 				closeAllExpands() {
 					expands.forEach(e => {
 						e._set({ open: false })
@@ -113,7 +75,45 @@
 				},
 				registerExpand(expand) {
 					expands.push(expand)
-				}
+				},
+				copyrightDate
+			}
+		},
+		computed: {
+			navigation: asr => {
+
+				return menu.map(e => {
+
+					if(e.type == 'category') {
+						const catid = e.name
+						return {
+							catid,
+							id: catid,
+							title: categories[catid].title,
+							path: asr.makePath('app.category', { catid }),
+							children: categories[catid].children.map(id => ({
+								id,
+								title: posts[id],
+								path: asr.makePath('app.categorycontent', { id, catid })
+							}))
+						}
+					} 
+					else if(e.type == 'post') {
+						return {
+							id: e.name,
+							title: posts[e.name],
+							path: asr.makePath('app.content', { id: e.name })
+						}
+					}
+					else if(e.type == 'custom') {
+						return {
+							id: e.title.replace(/ /g, '-').toLowerCase(),
+							title: e.title,
+							path: e.path
+						}
+					}
+				})
+
 			}
 		}
 	}
@@ -137,7 +137,6 @@
 		line-height: 20px;
 		text-decoration: none;
 		padding: 15px 20px;
-		border-top: 1px solid $blue2;
 		background: $blue3;
 		border-bottom: 1px solid $blue4;
 
@@ -177,9 +176,9 @@
 		transform: rotate(90deg);
 	}
 
-	li.getting-started, li.respirator-picker, li.all-about-respirators {
+	/* brown */
+	li.getting-started, li.respirator-selection-tool, li.all-about-respirators {
 		a {
-			border-top: 1px solid $yellow2;
 			background: $yellow3;
 			border-bottom: 1px solid $yellow4;
 			&:hover {
@@ -193,9 +192,9 @@
 		}
 	} 
 
-	li.my-info, li.chemical-lookup, li.calculate, li.conversion-tables, li.osha-standards, li.acronyms, li.glossary, li.resources {
+	/* red */
+	 li.osha-standards, li.my-info, li.chemical-lookup, li.calculate {
 		a {
-			border-top: 1px solid $red2;
 			background: $red3;
 			border-bottom: 1px solid $red4;
 			&:hover {
@@ -208,6 +207,105 @@
 			background: $red2;
 		}
 	} 
+
+	/* hast icon */
+	li.getting-started, li.all-about-respirators, li.conversion-tables, li.osha-standards, li.respirator-selection-tool, li.my-info, li.chemical-lookup, li.calculate {
+		> a, .clickable a {
+			padding-left: 50px;
+			position: relative;
+		}
+		> a::before, .clickable a::before {
+			content: ' ';
+			position: absolute;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			font-family: 'icomoon' !important;
+			width: 50px;
+			line-height: 50px;
+			text-align: center;
+			font-size: 20px;
+			background-position: center center;
+			background-repeat: no-repeat;
+		}
+	}
+
+	li.getting-started .clickable a::before {
+		content: "\ea34";
+	}
+
+	li.respirator-selection-tool a::before {
+		background-image: url(icons/respirator.png);
+		background-size: 50%;
+	}
+
+	li.all-about-respirators a::before {
+		background-image: url(icons/all-about-respirators.png);
+		background-size: 50%;
+	}
+
+	li.my-info a::before {
+		background-image: url(icons/my-info.png);
+		background-size: 50%;
+	}
+
+	li.chemical-lookup a::before {
+		background-image: url(icons/chemical-lookup.png);
+		background-size: 40%;
+	}
+
+	li.calculate a::before {
+		background-image: url(icons/calculator.png);
+		background-size: 40%;
+	}
+
+	li.osha-standards a::before {
+		background-image: url(icons/osha-standards.png);
+		background-size: 50%;
+	}
+
+	.copyright {
+		padding: 20px;
+		text-align: center;
+		font-style: italic;
+		font-size: smaller;
+	}
+
+	.toes {
+		display: table;
+		width: 100%;
+		padding:0;
+		margin: 0;
+
+		a {
+			display: table-cell;
+			width: 50%;
+			text-align: center;
+			padding: 20px 0 10px;
+			vertical-align: top;
+			cursor: pointer;
+		}
+
+		.youtube {
+			.icon {
+				font-size: 50px;
+			}
+		}
+
+		.contact {
+			.icon {
+				height: 50px;
+				background-image: url(icons/contact-us.png);
+				background-size: 35%;
+				background-position: center center;
+				background-repeat: no-repeat;
+			}
+		}
+
+		.text {
+			padding: 10px;
+		}
+	}
 
 
 </style>

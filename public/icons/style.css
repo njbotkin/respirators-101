@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?6fwp9f');
-  src:  url('fonts/icomoon.eot?6fwp9f#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?6fwp9f') format('truetype'),
-    url('fonts/icomoon.woff?6fwp9f') format('woff'),
-    url('fonts/icomoon.svg?6fwp9f#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?f35w9a');
+  src:  url('fonts/icomoon.eot?f35w9a#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?f35w9a') format('truetype'),
+    url('fonts/icomoon.woff?f35w9a') format('woff'),
+    url('fonts/icomoon.svg?f35w9a#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -27,9 +27,6 @@
 .icon-remove_circle:before {
   content: "\e15c";
 }
-.icon-home:before {
-  content: "\e900";
-}
 .icon-add_circle:before {
   content: "\e903";
 }
@@ -39,9 +36,21 @@
 .icon-menu:before {
   content: "\e902";
 }
+.icon-search:before {
+  content: "\f002";
+}
 .icon-home2:before {
   content: "\f015";
 }
+.icon-book:before {
+  content: "\f02d";
+}
 .icon-angle-left:before {
   content: "\f104";
+}
+.icon-youtube:before {
+  content: "\f167";
+}
+.icon-arrow-right:before {
+  content: "\ea34";
 }

@@ -34,7 +34,7 @@
 					{{/if}}
 				</div>
 				<div class="title">{{ title }}</div>
-				<div class="two"><a class="button home icon-home" href="{{ asr.makePath('wrapper.home') }}"></a></div>
+				<div class="two"><a class="button home icon-home2" href="{{ asr.makePath('app.home') }}"></a></div>
 			</nav>
 
 			<div class="main">
@@ -62,13 +62,13 @@
 				var params = e.params
 				console.log(e)
 
-				if(e.state.name == 'wrapper.app.categorycontent' || e.state.name == 'wrapper.app.category') {
+				if(e.state.name == 'app.categorycontent' || e.state.name == 'app.category') {
 					if(params.catid && categories[params.catid]) {
 						this.set({ title: categories[params.catid].title })
 					}
 				}
 
-				else if(e.state.name == 'wrapper.app.content') {
+				else if(e.state.name == 'app.content') {
 					if(params.id && posts[params.id]) {
 						this.set({ title: posts[params.id] })
 					}
@@ -84,7 +84,7 @@
 
 				// back button for category contents
 				if(params.catid && params.id) {
-					this.set({ categoryParent: this._state.asr.makePath('wrapper.app.category', { catid: params.catid }) })
+					this.set({ categoryParent: this._state.asr.makePath('app.category', { catid: params.catid }) })
 				} else {
 					this.set({ categoryParent: false })
 				}
@@ -94,7 +94,7 @@
 		}, 
 		data() {
 			return { 
-				visibleSlideOut: false,
+				visibleSlideOut: true,
 				title: ''
 			}
 		}
@@ -133,6 +133,10 @@
 
 		&[data-menu-visible=true] {
 			left: 0;
+
+			.left {
+				box-shadow: 0px 0px 40px 0px #00000066;
+			}
 		}
 
 	}
@@ -146,6 +150,7 @@
 		background: $blue3;
 		color: #fff;
 		font-size: 14px;
+		z-index: 3;
 	}
 
 	.right {
@@ -198,9 +203,11 @@
 		line-height: 50px;
 		padding: 0 20px;
 		text-transform: uppercase;
+		background: $blue5;
 	}
 
 	button, .button {
+		padding: 0;
 		width: 50px;
 		height: 50px;
 		display: block;

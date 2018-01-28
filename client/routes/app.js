@@ -1,9 +1,9 @@
-import Wrapper from './Wrapper.html'
+import App from './App.html'
 
 export default ({ on }) => ({
-	name: `wrapper`,
+	name: `app`,
 	route: ``,
-	template: Wrapper,
+	template: App,
 	activate(stateContext) {
 		// forward events
 		const unsubscribe = on(`stateChangeStart`, (e) => stateContext.domApi.fire(`stateChange`, e))

@@ -1,0 +1,62 @@
+<div class="rednav">
+	<slot></slot>
+</div>
+
+<style>
+
+	@import 'colors';
+	
+	.rednav {
+		background: $red4;
+		display: table;
+		width:100%;
+
+		> div {
+			display: table-cell;
+		}
+
+		.title {
+			vertical-align: middle;
+			text-align: center;
+			color: #fff;
+			width: 100%;
+			padding: 10px 20px;
+			line-height: 20px;
+			font-family: "Roboto Condensed";
+		}
+
+		.prev, .next {
+			vertical-align: middle;
+			width: 50px;
+
+			&.null {
+				visibility: hidden;
+			}
+
+			a, button {
+				padding: 0;
+				display: block;
+				width: 26px;
+				height: 26px;
+				text-align: center;
+				line-height: 26px;
+				color: $red4;
+				background: #fff;
+				text-decoration: none;
+				font-size: 24px;
+				border-radius: 100%;
+				margin: 7px 12px;
+
+				&::before {
+					margin-left: -2px;
+				}
+			}
+		}
+		.next {
+			a {
+				transform: rotate(180deg);
+			}
+		}
+	}
+
+</style>

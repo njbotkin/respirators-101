@@ -1,6 +1,6 @@
 <div class="category" data-open="{{open}}">
 	<div class="clickable category-title">
-		<a href="{{ asr.makePath('wrapper.app.category', { catid: item.id }) }}">{{item.title}}</a>
+		<a href="{{ item.path }}">{{item.title}}</a>
 		<div class="chevron icon-angle-left" on:click="clicky( open )"></div>
 	</div>
 	<div class="expand">

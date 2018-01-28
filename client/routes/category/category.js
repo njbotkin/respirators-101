@@ -4,7 +4,7 @@ import categories from 'data/categories.json'
 import posts from 'data/posts.json'
 
 export default () => ({
-	name: `wrapper.app.category`,
+	name: `app.category`,
 	route: `/category/:catid`,
 	template: StaticContent,
 	resolve(data, params) {
@@ -14,7 +14,7 @@ export default () => ({
 		if (!category) {
 			return Promise.reject({
 				redirectTo: {
-					name: `wrapper.app.not-found`,
+					name: `app.not-found`,
 					params: {
 						route: `/static/${ params.id }`,
 					},

@@ -1,0 +1,39 @@
+<RedNavigation>
+	
+	<div class="prev {{prev}}"><a class="icon-angle-left" href="{{ asr.makePath('app.categorycontent', { id: prev, catid }) }}"></a></div>
+
+	<div class="title">{{ title }}</div>
+
+	<div class="next {{next}}"><a class="icon-angle-left" href="{{ asr.makePath('app.categorycontent', { id: next, catid }) }}"></a></div> 
+
+</RedNavigation>
+
+<div class="content">
+	<:Component {component} />
+</div>
+
+<script>
+
+	import RedNavigation from 'lib/RedNavigation.html'
+
+	export default {
+		components: {
+			RedNavigation
+		}
+	}
+
+</script>
+
+<style>
+
+	@import 'spacing';
+
+	h1 {
+		display: none;
+	}
+
+	.content {
+		padding: $padding;
+	}
+
+</style>

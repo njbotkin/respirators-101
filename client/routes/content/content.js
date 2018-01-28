@@ -3,7 +3,7 @@ import StaticContent from './Content.html'
 import idToPage from 'lib/static-content-by-id.js'
 
 export default () => ({
-	name: `wrapper.app.content`,
+	name: `app.content`,
 	route: `/content/:id(.+)`,
 	template: StaticContent,
 	resolve(data, params) {
@@ -12,7 +12,7 @@ export default () => ({
 		if (!page) {
 			return Promise.reject({
 				redirectTo: {
-					name: `wrapper.app.not-found`,
+					name: `app.not-found`,
 					params: {
 						route: `/static/${ params.id }`,
 					},
