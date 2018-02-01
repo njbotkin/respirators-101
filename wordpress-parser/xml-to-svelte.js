@@ -21,8 +21,10 @@ async function parseAndWriteOutput({ inputGlob, outputDir, downloadImages, image
 		readFile(path, { encoding: `utf8` })
 	))
 
+	const tablepressJSON = JSON.parse(await readFile(joinPath(__dirname, '../wordpress-data/tablepress_tables.json'), { encoding: `utf8` }))
+
 	await Promise.all(fileContents.map(xmlString =>
-		parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloadImages, imageOutputDir })
+		parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloadImages, imageOutputDir, tablepressJSON })
 	))
 }
 
@@ -36,10 +38,11 @@ function selectNameById(data, id) {
 	return false
 }
 
-async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloadImages, imageOutputDir }) {
+async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloadImages, imageOutputDir, tablepressJSON }) {
 	const doc = parseXml(xmlString)
 	const rss = findFirstChild(doc, `rss`)
 	const channel = findFirstChild(rss, `channel`)
+	const tablepress = tablepressJSON.table_post
 
 	// categories
 	const categories = {}
@@ -59,11 +62,11 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 			children
 		}
 
-	})
+	})   
 
-	// content
-	const posts = {}
-	channel.children.forEach(node => {
+	// content  
+	const posts = {} 
+	channel.children.forEach(node => { 
 		if(node.name !== 'item') return false
 		if(extractText(findFirstChild(node, `wp:post_type`)) !== 'post') return false
 
@@ -109,6 +112,25 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 			content
 		}
 	})
+
+
+	// tablepress tables
+	const tables = {}
+	channel.children.forEach(node => {
+		if(node.name !== 'item') return false
+		if(extractText(findFirstChild(node, `wp:post_type`)) !== 'tablepress_table') return false
+
+		const id = extractText(findFirstChild(node, `wp:post_id`))
+		const content = extractText(findFirstChild(node, `content:encoded`))
+
+		tables[id] = content
+	})
+
+	// console.log(JSON.stringify(tables))
+
+	for (var id in tables) {
+		console.log('\n\n', id, tables[id])
+	}
 
 
 	var menu = channel.children.filter(node => {
@@ -180,7 +202,7 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 
 	menu.sort((a, b) => {
 		return a.order - b.order;
-	})
+	}) 
 	menu = menu.filter(n => Object.keys(n).length > 0).map(n => ({
 			type: n.type,
 			title: n.title,
@@ -226,7 +248,7 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 	}
 
 	await Promise.all(pageDetails.map(async({ title, id, content }) => {
-		const svelteComponent = convertContentToSvelteComponent({ content, title })
+		const svelteComponent = convertContentToSvelteComponent({ content, title, tables, tablepress })
 		const path = joinPath(outputDir, `${ id }.html`)
 		await writeFile(path, svelteComponent)
 	}))
@@ -236,16 +258,18 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 
 const flatMap = (ary, fn) => ary.reduce((acc, element, index) => [ ...acc, ...fn(element, index) ], [])
 
-function convertContentToSvelteComponent({ content, title }) {
+function convertContentToSvelteComponent({ content, title, tables, tablepress }) {
 	return `
 
-${ fixExpand(fixImages(content)) }
+${ insertTables(fixExpand(fixImages(content), title), tables, tablepress) }
 
 <script>
 	import Accordion from 'lib/Accordion.html'
+	import Table from 'lib/Table.html'
 	export default {
 		components: {
-			Accordion
+			Accordion,
+			Table
 		}
 	}
 </script>
@@ -261,6 +285,12 @@ const fixImages = html => replace(
 const fixExpand = html => replace(
 	/\[expand title="([^"]+)"\]((?:.|\n)+?)\[\/expand\]/,
 	(title, content) => `<Accordion title="${ he.encode(title) }">${ content }</Accordion>`,
+	html
+)
+
+const insertTables = (html, tables, tablepress) => replace(
+	/\[table id=([0-9]+) \/\]/,
+	(id) => `<Table data="${ he.encode(tables[tablepress[id]]) }"></Table>`,
 	html
 )
 

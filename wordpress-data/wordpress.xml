@@ -17,13 +17,13 @@
  7. WordPress will then import each of the posts, pages, comments, categories, etc.
     contained in this file into your site.
 -->
-<!-- generator="WordPress/4.9.2" created="2018-01-27 23:21" -->
+<!-- generator="WordPress/4.9.2" created="2018-02-01 20:15" -->
 <rss version="2.0" xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wp="http://wordpress.org/export/1.2/">
   <channel>
 <title>RESPIRATORS 101</title>
 <link>http://respirators101.iuoe-hazmat.com</link>
 <description></description>
-<pubDate>Sat, 27 Jan 2018 23:21:13 +0000</pubDate>
+<pubDate>Thu, 01 Feb 2018 20:15:23 +0000</pubDate>
 <language>en-US</language>
 <wp:wxr_version>1.2</wp:wxr_version>
 <wp:base_site_url>http://respirators101.iuoe-hazmat.com</wp:base_site_url>
@@ -2693,7 +2693,7 @@ body {font-family: 'Open Sans', sans-serif;
   </wp:postmeta>
   <wp:postmeta>
     <wp:meta_key>_menu_item_url</wp:meta_key>
-    <wp:meta_value><![CDATA[/#/home]]></wp:meta_value>
+    <wp:meta_value><![CDATA[#/home]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -2748,7 +2748,7 @@ body {font-family: 'Open Sans', sans-serif;
   </wp:postmeta>
   <wp:postmeta>
     <wp:meta_key>_menu_item_url</wp:meta_key>
-    <wp:meta_value><![CDATA[/#/respirator-introduction]]></wp:meta_value>
+    <wp:meta_value><![CDATA[#/respirator-introduction]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -2803,7 +2803,7 @@ body {font-family: 'Open Sans', sans-serif;
   </wp:postmeta>
   <wp:postmeta>
     <wp:meta_key>_menu_item_url</wp:meta_key>
-    <wp:meta_value><![CDATA[/#/info]]></wp:meta_value>
+    <wp:meta_value><![CDATA[#/info]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -2858,11 +2858,11 @@ body {font-family: 'Open Sans', sans-serif;
   </wp:postmeta>
   <wp:postmeta>
     <wp:meta_key>_menu_item_url</wp:meta_key>
-    <wp:meta_value><![CDATA[/#/chemicals]]></wp:meta_value>
+    <wp:meta_value><![CDATA[#/chemicals]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
-  <title>Calculate</title>
+  <title>Calculations</title>
   <link>http://respirators101.iuoe-hazmat.com/2018/01/27/calculate/</link>
   <pubDate>Sat, 27 Jan 2018 15:43:12 +0000</pubDate>
   <dc:creator>Noah</dc:creator>
@@ -2913,7 +2913,7 @@ body {font-family: 'Open Sans', sans-serif;
   </wp:postmeta>
   <wp:postmeta>
     <wp:meta_key>_menu_item_url</wp:meta_key>
-    <wp:meta_value><![CDATA[/#/calculate]]></wp:meta_value>
+    <wp:meta_value><![CDATA[#/calculate]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -5873,7 +5873,7 @@ OSHA’s free, twice-monthly online newsletter, QuickTakes, offers the latest ne
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -5904,7 +5904,7 @@ OSHA’s free, twice-monthly online newsletter, QuickTakes, offers the latest ne
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -5934,7 +5934,7 @@ OSHA’s free, twice-monthly online newsletter, QuickTakes, offers the latest ne
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -5964,7 +5964,7 @@ OSHA’s free, twice-monthly online newsletter, QuickTakes, offers the latest ne
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -5994,7 +5994,7 @@ OSHA’s free, twice-monthly online newsletter, QuickTakes, offers the latest ne
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6024,7 +6024,7 @@ OSHA’s free, twice-monthly online newsletter, QuickTakes, offers the latest ne
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6064,7 +6064,7 @@ Acceptable Respirator Options:
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6101,7 +6101,7 @@ Acceptable Respirator Options:
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6518,21 +6518,23 @@ Note 3: An APF of 10 can only be achieved if the respirator is qualitatively or 
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=373</guid>
   <description></description>
-  <content:encoded><![CDATA[You also MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.
+  <content:encoded><![CDATA[You MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of <strong>escape respirator</strong> you need.
+
+<strong>Escape devices</strong> have a single function: to allow a person working in a normally safe environment sufficient time to escape from suddenly occurring respiratory hazards. Given this function, selection does not rely on assigned protection factors. Instead, these respirators are selected based on a consideration of the time needed to escape, and the likelihood of IDLH or oxygen deficiency conditions.
 
 Acceptable Particulate Respirator Options:
 <ul>
- 	<li>Any air-purifying full facepiece respirator equipped with appropriate type of particulate filter.(See Note 2) APF 10</li>
+ 	<li>Any air-purifying full facepiece respirator equipped with appropriate type of particulate filter. (See Note 3) APF 10</li>
  	<li>Any powered air-purifying respirator equipped with a hood or helmet and a high efficiency (HEPA) filter. APF 25</li>
  	<li>Any continuous flow supplied-air respirator equipped with a hood or helmet. APF 25</li>
  	<li>Any air-purifying full facepiece respirator equipped with N-100, R-100, or P-100 filter(s). APF 50</li>
  	<li>Any powered air-purifying respirator equipped with a tight-fitting facepiece (full facepiece) and a high-efficiency filter. APF 50</li>
- 	<li>Any continuous flow supplied-air respirator equipped with a tight- fitting facepiece ( full facepiece). APF 50</li>
+ 	<li>Any continuous flow supplied-air respirator equipped with a tight- fitting facepiece (full facepiece). APF 50</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece. APF 2000</li>
  	<li>Any pressure-demand self-contained respirator equipped with a full facepiece. APF 10000</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece in combination with an auxiliary pressure-demand self- contained breathing apparatus. APF 10000</li>
 </ul>
-Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide protection against the particulate in question. <strong><em>See step 9.2 (change??)</em></strong>  for information on the presence or absence of oil particulates.]]></content:encoded>
+<strong>Note 3:</strong> "Appropriate" means that the filter medium will provide protection against the particulate in question. See step 9.2 in the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> for more information on the presence or absence of oil particulates.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>373</wp:post_id>
   <wp:post_date>2018-01-26 15:40:02</wp:post_date>
@@ -6548,7 +6550,7 @@ Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6560,17 +6562,17 @@ Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide
   <description></description>
   <content:encoded><![CDATA[Acceptable Particulate Respirator Options:
 <ul>
- 	<li>Any air-purifying full facepiece respirator equipped with appropriate type of particulate filter.(See Note 2) APF 10</li>
+ 	<li>Any air-purifying full facepiece respirator equipped with appropriate type of particulate filter. (See Note 3) APF 10</li>
  	<li>Any powered air-purifying respirator equipped with a hood or helmet and a high efficiency (HEPA) filter. APF 25</li>
  	<li>Any continuous flow supplied-air respirator equipped with a hood or helmet. APF 25</li>
  	<li>Any air-purifying full facepiece respirator equipped with N-100, R-100, or P-100 filter(s). APF 50</li>
  	<li>Any powered air-purifying respirator equipped with a tight-fitting facepiece (full facepiece) and a high-efficiency filter. APF 50</li>
- 	<li>Any continuous flow supplied-air respirator equipped with a tight- fitting facepiece ( full facepiece). APF 50</li>
+ 	<li>Any continuous flow supplied-air respirator equipped with a tight- fitting facepiece (full facepiece). APF 50</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece. APF 2000</li>
  	<li>Any pressure-demand self-contained respirator equipped with a full facepiece. APF 10000</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece in combination with an auxiliary pressure-demand self- contained breathing apparatus. APF 10000</li>
 </ul>
-Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide protection against the particulate in question. <strong><em>See step 9.2 (change??)</em></strong>  for information on the presence or absence of oil particulates.]]></content:encoded>
+<strong>Note 3:</strong> "Appropriate" means that the filter medium will provide protection against the particulate in question. See step 9.2 in the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> for more information on the presence or absence of oil particulates.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>374</wp:post_id>
   <wp:post_date>2018-01-26 15:42:23</wp:post_date>
@@ -6586,7 +6588,7 @@ Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6596,7 +6598,9 @@ Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=375</guid>
   <description></description>
-  <content:encoded><![CDATA[No respirator is required for work. But you MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.]]></content:encoded>
+  <content:encoded><![CDATA[No respirator is required for work. But you MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of escape respirator you need.
+
+Escape devices have a single function: to allow a person working in a normally safe environment sufficient time to escape from suddenly occurring respiratory hazards. Given this function, selection does not rely on assigned protection factors. Instead, these respirators are selected based on a consideration of the time needed to escape, and the likelihood of IDLH or oxygen deficiency conditions.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>375</wp:post_id>
   <wp:post_date>2018-01-26 16:08:32</wp:post_date>
@@ -6612,7 +6616,7 @@ Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6622,7 +6626,11 @@ Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=376</guid>
   <description></description>
-  <content:encoded><![CDATA[No respirator required for work. Eye protection is recommended for work, because you answered "Yes" to Step 6, indicating the contaminant is an eye irritant. You also MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.]]></content:encoded>
+  <content:encoded><![CDATA[No respirator is required for work. But you MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of <strong>escape respirator</strong> you need.
+
+<strong>Eye protection</strong> is recommended for work, because you answered "Yes" to Step 6, indicating the contaminant is an eye irritant.
+
+<strong>Escape devices</strong> have a single function: to allow a person working in a normally safe environment sufficient time to escape from suddenly occurring respiratory hazards. Given this function, selection does not rely on assigned protection factors. Instead, these respirators are selected based on a consideration of the time needed to escape, and the likelihood of IDLH or oxygen deficiency conditions.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>376</wp:post_id>
   <wp:post_date>2018-01-26 16:09:34</wp:post_date>
@@ -6638,7 +6646,7 @@ Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6648,7 +6656,13 @@ Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=377</guid>
   <description></description>
-  <content:encoded><![CDATA[No respirator required for work. Eye protection is recommended for work, because you answered "Yes" to Step 6, indicating the contaminant is an eye irritant. You also MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.]]></content:encoded>
+  <content:encoded><![CDATA[<strong>Based on your answers to the respirator selection logic, no respirator is required for this work. </strong>
+
+But you MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of <strong>escape respirator</strong> you need.
+
+<strong>Eye protection</strong> is recommended for work, because you answered "Yes" to Step 6, indicating the contaminant is an eye irritant.
+
+<strong>Escape respirators</strong> are for sudden respiratory hazards and are selected based on the time needed to escape and the likelihood of IDLH or oxygen deficiency conditions.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>377</wp:post_id>
   <wp:post_date>2018-01-26 16:10:53</wp:post_date>
@@ -6664,7 +6678,7 @@ Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6674,7 +6688,11 @@ Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=378</guid>
   <description></description>
-  <content:encoded><![CDATA[No respirator is required for work. But you MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.]]></content:encoded>
+  <content:encoded><![CDATA[<strong>Based on your answers to the respirator selection logic, no respirator is required for this work. </strong>
+
+But you MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of <strong>escape respirator</strong> you need.
+
+<strong>Escape respirators</strong> are for sudden respiratory hazards and are selected based on the time needed to escape and the likelihood of IDLH or oxygen deficiency conditions.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>378</wp:post_id>
   <wp:post_date>2018-01-26 16:11:28</wp:post_date>
@@ -6690,7 +6708,7 @@ Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6700,7 +6718,9 @@ Note 2: "<strong>Appropriate</strong>" means that the filter medium will provide
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=379</guid>
   <description></description>
-  <content:encoded><![CDATA[You also MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.
+  <content:encoded><![CDATA[No respirator is required for work. But you MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of escape respirator you need.
+
+Escape devices have a single function: to allow a person working in a normally safe environment sufficient time to escape from suddenly occurring respiratory hazards. Given this function, selection does not rely on assigned protection factors. Instead, these respirators are selected based on a consideration of the time needed to escape, and the likelihood of IDLH or oxygen deficiency conditions.
 
 Acceptable Gas-Vapor Respirator Options:
 <ul>
@@ -6727,7 +6747,7 @@ Acceptable Gas-Vapor Respirator Options:
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6772,7 +6792,9 @@ Acceptable Gas-Vapor Respirator Options:
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=381</guid>
   <description></description>
-  <content:encoded><![CDATA[You also MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.
+  <content:encoded><![CDATA[No respirator is required for work. But you MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of escape respirator you need.
+
+Escape devices have a single function: to allow a person working in a normally safe environment sufficient time to escape from suddenly occurring respiratory hazards. Given this function, selection does not rely on assigned protection factors. Instead, these respirators are selected based on a consideration of the time needed to escape, and the likelihood of IDLH or oxygen deficiency conditions.
 
 Acceptable Gas-Vapor Respirator Options:
 <ul>
@@ -6797,7 +6819,7 @@ Acceptable Gas-Vapor Respirator Options:
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6840,7 +6862,9 @@ Acceptable Gas-Vapor Respirator Options:
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=383</guid>
   <description></description>
-  <content:encoded><![CDATA[You also MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.
+  <content:encoded><![CDATA[No respirator is required for work. But you MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of escape respirator you need.
+
+Escape devices have a single function: to allow a person working in a normally safe environment sufficient time to escape from suddenly occurring respiratory hazards. Given this function, selection does not rely on assigned protection factors. Instead, these respirators are selected based on a consideration of the time needed to escape, and the likelihood of IDLH or oxygen deficiency conditions.
 
 Acceptable Gas-Vapor Respirator Options:
 <ul>
@@ -6857,7 +6881,7 @@ Acceptable Gas-Vapor Respirator Options:
  	<li>Any pressure-demand self-contained respirator equipped with a full facepiece. APF 10000</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece in combination with an auxiliary pressure-demand self-contained breathing apparatus. APF 10000</li>
 </ul>
-Note 2: Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.]]></content:encoded>
+<strong>Note 2:</strong> Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>383</wp:post_id>
   <wp:post_date>2018-01-26 16:30:39</wp:post_date>
@@ -6873,7 +6897,7 @@ Note 2: Select a cartridge/canister certified to be used for the specific class 
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6898,7 +6922,7 @@ Note 2: Select a cartridge/canister certified to be used for the specific class 
  	<li>Any pressure-demand self-contained respirator equipped with a full facepiece. APF 10000</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece in combination with an auxiliary pressure-demand self-contained breathing apparatus. APF 10000</li>
 </ul>
-Note 2: Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.]]></content:encoded>
+<strong>Note 2:</strong> Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>384</wp:post_id>
   <wp:post_date>2018-01-26 16:31:29</wp:post_date>
@@ -6914,7 +6938,7 @@ Note 2: Select a cartridge/canister certified to be used for the specific class 
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6924,7 +6948,9 @@ Note 2: Select a cartridge/canister certified to be used for the specific class 
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=385</guid>
   <description></description>
-  <content:encoded><![CDATA[You also MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.
+  <content:encoded><![CDATA[No respirator is required for work. But you MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of escape respirator you need.
+
+Escape devices have a single function: to allow a person working in a normally safe environment sufficient time to escape from suddenly occurring respiratory hazards. Given this function, selection does not rely on assigned protection factors. Instead, these respirators are selected based on a consideration of the time needed to escape, and the likelihood of IDLH or oxygen deficiency conditions.
 
 Acceptable Gas-Vapor Respirator Options:
 <ul>
@@ -6937,7 +6963,7 @@ Acceptable Gas-Vapor Respirator Options:
  	<li>Any pressure-demand self-contained respirator equipped with a full facepiece. APF 10000</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece in combination with an auxiliary pressure-demand self-contained breathing apparatus. APF 10000</li>
 </ul>
-Note 2: Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.]]></content:encoded>
+<strong>Note 2:</strong> Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>385</wp:post_id>
   <wp:post_date>2018-01-26 16:36:04</wp:post_date>
@@ -6953,7 +6979,7 @@ Note 2: Select a cartridge/canister certified to be used for the specific class 
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -6974,7 +7000,7 @@ Note 2: Select a cartridge/canister certified to be used for the specific class 
  	<li>Any pressure-demand self-contained respirator equipped with a full facepiece. APF 10000</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece in combination with an auxiliary pressure-demand self-contained breathing apparatus. APF 10000</li>
 </ul>
-Note 2: Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.]]></content:encoded>
+<strong>Note 2:</strong> Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>386</wp:post_id>
   <wp:post_date>2018-01-26 16:37:25</wp:post_date>
@@ -6990,7 +7016,7 @@ Note 2: Select a cartridge/canister certified to be used for the specific class 
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -7000,18 +7026,13 @@ Note 2: Select a cartridge/canister certified to be used for the specific class 
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=387</guid>
   <description></description>
-  <content:encoded><![CDATA[You also MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.
+  <content:encoded><![CDATA[You MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of <strong>escape respirator</strong> you need.
 
-Acceptable Combination Respirator Options:
-<ul>
- 	<li>Any continuous flow supplied-air respirator equipped with a hood or helmet. APF 25</li>
- 	<li>Any continuous flow supplied-air respirator equipped with a tight-fitting facepiece (half or full facepiece). APF 50</li>
- 	<li>Any continuous flow supplied-air respirator equipped with a tight-fitting facepiece (half or full facepiece). APF 50</li>
- 	<li>Any pressure-demand supplied-air respirator equipped with a half-mask. APF 1000</li>
- 	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece. APF 2000</li>
- 	<li>Any pressure-demand self-contained respirator equipped with a full facepiece. APF 10000</li>
- 	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece in combination with an auxiliary pressure-demand self-contained breathing apparatus. APF 10000</li>
-</ul>]]></content:encoded>
+<strong>Escape respirators</strong> are for sudden respiratory hazards and are selected based on the time needed to escape and the likelihood of IDLH or oxygen deficiency conditions.
+
+<strong>Based on your answers to the respirator selection logic, acceptable respirator options include:</strong>
+
+[table id=4 /]]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>387</wp:post_id>
   <wp:post_date>2018-01-26 16:41:53</wp:post_date>
@@ -7027,7 +7048,7 @@ Acceptable Combination Respirator Options:
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -7037,7 +7058,7 @@ Acceptable Combination Respirator Options:
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=388</guid>
   <description></description>
-  <content:encoded><![CDATA[Acceptable Combination Respirator Options:
+  <content:encoded><![CDATA[<strong>Based on your answers to the respirator selection logic, acceptable respirator options include:</strong>
 <ul>
  	<li>Any continuous flow supplied-air respirator equipped with a hood or helmet. APF 25</li>
  	<li>Any continuous flow supplied-air respirator equipped with a tight-fitting facepiece (half or full facepiece). APF 50</li>
@@ -7062,7 +7083,7 @@ Acceptable Combination Respirator Options:
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -7072,9 +7093,11 @@ Acceptable Combination Respirator Options:
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=389</guid>
   <description></description>
-  <content:encoded><![CDATA[You also MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.
+  <content:encoded><![CDATA[You MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of <strong>escape respirator</strong> you need.
 
-Acceptable Combination Respirator Options:
+<strong>Escape respirators</strong> are for sudden respiratory hazards and are selected based on the time needed to escape and the likelihood of IDLH or oxygen deficiency conditions.
+
+<strong>Based on your answers to the respirator selection logic, acceptable respirator options include:</strong>
 <ul>
  	<li>Any continuous flow supplied-air respirator equipped with a hood or helmet. APF 25</li>
  	<li>Any continuous flow supplied-air respirator equipped with a tight-fitting facepiece (half or full facepiece). APF 50</li>
@@ -7097,7 +7120,7 @@ Acceptable Combination Respirator Options:
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -7107,7 +7130,7 @@ Acceptable Combination Respirator Options:
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=390</guid>
   <description></description>
-  <content:encoded><![CDATA[Acceptable Combination Respirator Options:
+  <content:encoded><![CDATA[<strong>Based on your answers to the respirator selection logic, acceptable respirator options include:</strong>
 <ul>
  	<li>Any continuous flow supplied-air respirator equipped with a hood or helmet. APF 25</li>
  	<li>Any continuous flow supplied-air respirator equipped with a tight-fitting facepiece (half or full facepiece). APF 50</li>
@@ -7130,7 +7153,7 @@ Acceptable Combination Respirator Options:
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -7140,17 +7163,19 @@ Acceptable Combination Respirator Options:
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=391</guid>
   <description></description>
-  <content:encoded><![CDATA[You also MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.
+  <content:encoded><![CDATA[You MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of <strong>escape respirator</strong> you need.
 
-Acceptable Combination Respirator Options:
+<strong>Escape respirators</strong> are for sudden respiratory hazards and are selected based on the time needed to escape and the likelihood of IDLH or oxygen deficiency conditions.
+
+<strong>Based on your answers to the respirator selection logic, acceptable respirator options include: </strong>
 <ul>
- 	<li>Any air-purifying half-mask respirator equipped with appropriate gas/vapor cartridges in combination with appropriate type of particulate filter.(See Notes 2 and 3) APF 10</li>
- 	<li>Any full facepiece respirator with appropriate gas/vapor cartridges in combination with appropriate type of particulate filter.(See Note 2 and 3) APF 10</li>
- 	<li>Any powered air-purifying respirator with a loose-fitting hood or helmet that is equipped with an appropriate gas/vapor cartridge in combination with a high- efficiency particulate filter.(See Note 2 and 3) APF 25</li>
+ 	<li>Any air-purifying half-mask respirator equipped with appropriate gas/vapor cartridges in combination with appropriate type of particulate filter. (See Notes 2 &amp; 3) APF 10</li>
+ 	<li>Any full facepiece respirator with appropriate gas/vapor cartridges in combination with appropriate type of particulate filter. (See Notes 2 &amp; 3) APF 10</li>
+ 	<li>Any powered air-purifying respirator with a loose-fitting hood or helmet that is equipped with an appropriate gas/vapor cartridge in combination with a high- efficiency particulate filter. (See Notes 2 &amp; 3) APF 25</li>
  	<li>Any continuous flow supplied-air respirator equipped with a hood or helmet. APF 25</li>
- 	<li>Any air-purifying full facepiece respirator equipped with appropriate gas/vapor cartridges in combination with an N-100, R-100 or P-100 filter or an appropriate canister2 incorporating an N-100, P-100 or R-100 filter.(See Note 2 and 3) APF 50</li>
- 	<li>Any powered air-purifying respirator with a tight-fitting facepiece (half facepiece) equipped with appropriate gas/vapor cartridges in combination with a high-efficiency filter or an appropriate canister incorporating a high-efficiency filter.(See Note 2 and 3) APF 50</li>
- 	<li>Any powered air-purifying respirator with a tight-fitting facepiece (full facepiece) equipped with appropriate gas/vapor cartridges in combination with a high-efficiency filter or an appropriate canister incorporating a high-efficiency filter.(See Note 2 and 3) APF 50</li>
+ 	<li>Any air-purifying full facepiece respirator equipped with appropriate gas/vapor cartridges in combination with an N-100, R-100 or P-100 filter or an appropriate canister incorporating an N-100, P-100 or R-100 filter.(See Notes 2 &amp; 3) APF 50</li>
+ 	<li>Any powered air-purifying respirator with a tight-fitting facepiece (half facepiece) equipped with appropriate gas/vapor cartridges in combination with a high-efficiency filter or an appropriate canister incorporating a high-efficiency filter. (See Notes 2 and 3) APF 50</li>
+ 	<li>Any powered air-purifying respirator with a tight-fitting facepiece (full facepiece) equipped with appropriate gas/vapor cartridges in combination with a high-efficiency filter or an appropriate canister incorporating a high-efficiency filter.(See Notes 2 &amp; 3) APF 50</li>
  	<li>Any continuous flow supplied-air respirator equipped with a tight-fitting facepiece (half facepiece). APF 50</li>
  	<li>Any continuous flow supplied-air respirator equipped with a tight-fitting facepiece (full facepiece). APF 50</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a half-mask. APF 1000</li>
@@ -7158,8 +7183,8 @@ Acceptable Combination Respirator Options:
  	<li>Any pressure-demand self-contained respirator equipped with a full facepiece. APF 10000</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece in combination with an auxiliary pressure-demand self-contained breathing apparatus. APF 10000</li>
 </ul>
-Note 2: Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.
-Note 3: <strong>Appropriate</strong> means that the filter medium will provide protection against the particulate in question. <em><strong>See step 9.2 (change??</strong></em> for information on the presence or absence of oil particulates.]]></content:encoded>
+<strong>Note 2</strong>: Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.
+<strong>Note 3</strong>: "<em>Appropriate"</em> means that the filter medium will provide protection against the particulate in question. See step 9.2 in the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> for more information on the presence or absence of oil particulates.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>391</wp:post_id>
   <wp:post_date>2018-01-26 16:57:33</wp:post_date>
@@ -7175,7 +7200,7 @@ Note 3: <strong>Appropriate</strong> means that the filter medium will provide p
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -7185,7 +7210,7 @@ Note 3: <strong>Appropriate</strong> means that the filter medium will provide p
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=392</guid>
   <description></description>
-  <content:encoded><![CDATA[Acceptable Combination Respirator Options:
+  <content:encoded><![CDATA[<strong>Based on your answers to the respirator selection logic, acceptable respirator options include: </strong>
 <ul>
  	<li>Any air-purifying half-mask respirator equipped with appropriate gas/vapor cartridges in combination with appropriate type of particulate filter.(See Notes 2 and 3) APF 10</li>
  	<li>Any full facepiece respirator with appropriate gas/vapor cartridges in combination with appropriate type of particulate filter.(See Note 2 and 3) APF 10</li>
@@ -7201,8 +7226,8 @@ Note 3: <strong>Appropriate</strong> means that the filter medium will provide p
  	<li>Any pressure-demand self-contained respirator equipped with a full facepiece. APF 10000</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece in combination with an auxiliary pressure-demand self-contained breathing apparatus. APF 10000</li>
 </ul>
-Note 2: Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.
-Note 3: <strong>Appropriate</strong> means that the filter medium will provide protection against the particulate in question. <em><strong>See step 9.2 (change??</strong></em> for information on the presence or absence of oil particulates.]]></content:encoded>
+<strong>Note 2</strong>: Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.
+<strong>Note 3</strong>: "<em>Appropriate"</em> means that the filter medium will provide protection against the particulate in question. See step 9.2 in the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> for more information on the presence or absence of oil particulates.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>392</wp:post_id>
   <wp:post_date>2018-01-26 16:58:59</wp:post_date>
@@ -7218,7 +7243,7 @@ Note 3: <strong>Appropriate</strong> means that the filter medium will provide p
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -7228,9 +7253,11 @@ Note 3: <strong>Appropriate</strong> means that the filter medium will provide p
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=393</guid>
   <description></description>
-  <content:encoded><![CDATA[You also MUST SEE Section IV (LINK HERE) to determine what kind of escape respirator you need.
+  <content:encoded><![CDATA[You MUST SEE Section IV of the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> to determine what kind of <strong>escape respirator</strong> you need.
 
-Acceptable Combination Respirator Options:
+<strong>Escape respirators</strong> are for sudden respiratory hazards and are selected based on the time needed to escape and the likelihood of IDLH or oxygen deficiency conditions.
+
+<strong>Based on your answers to the respirator selection logic, acceptable respirator options include: </strong>
 <ul>
  	<li>Any full facepiece respirator with appropriate gas/vapor cartridgesin combination with appropriate type of particulate filter.(See Notes 2 and 3) APF 10</li>
  	<li>Any powered air-purifying respirator with a loose-fitting hood or helmet that is equipped with an appropriate gas/vapor cartridge in combination with a high- efficiency particulate filter. (See Notes 2 and 3) APF 25</li>
@@ -7242,8 +7269,8 @@ Acceptable Combination Respirator Options:
  	<li>Any pressure-demand self-contained respirator equipped with a full facepiece. APF 10000</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece in combination with an auxiliary pressure-demand self-contained breathing apparatus. APF 10000</li>
 </ul>
-Note 2: Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.
-Note 3: <strong>Appropriat</strong>e means that the filter medium will provide protection against the particulate in question. <em><strong>See step 9.2 (change??)</strong></em> for information on the presence or absence of oil particulates.]]></content:encoded>
+<strong>Note 2</strong>: Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.
+<strong>Note 3</strong>: "<em>Appropriate"</em> means that the filter medium will provide protection against the particulate in question. See step 9.2 in the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> for more information on the presence or absence of oil particulates.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>393</wp:post_id>
   <wp:post_date>2018-01-26 17:05:18</wp:post_date>
@@ -7259,7 +7286,7 @@ Note 3: <strong>Appropriat</strong>e means that the filter medium will provide p
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -7269,9 +7296,9 @@ Note 3: <strong>Appropriat</strong>e means that the filter medium will provide p
   <dc:creator>Emma</dc:creator>
   <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=respirator_options&amp;p=394</guid>
   <description></description>
-  <content:encoded><![CDATA[Acceptable Combination Respirator Options:
+  <content:encoded><![CDATA[<strong>Based on your answers to the respirator selection logic, acceptable respirator options include: </strong>
 <ul>
- 	<li>Any full facepiece respirator with appropriate gas/vapor cartridgesin combination with appropriate type of particulate filter.(See Notes 2 and 3) APF 10</li>
+ 	<li>Any full facepiece respirator with appropriate gas/vapor cartridges in combination with appropriate type of particulate filter. (See Notes 2 and 3) APF 10</li>
  	<li>Any powered air-purifying respirator with a loose-fitting hood or helmet that is equipped with an appropriate gas/vapor cartridge in combination with a high- efficiency particulate filter. (See Notes 2 and 3) APF 25</li>
  	<li>Any continuous flow supplied-air respirator equipped with a hood or helmet. APF 25</li>
  	<li>Any air-purifying full facepiece respirator equipped with appropriate gas/vapor cartridges in combination with an N-100, R-100 or P-100 filter or an appropriate canister2 incorporating an N-100, P-100 or R-100 filter. (See Notes 2 and 3) APF 50</li>
@@ -7281,8 +7308,8 @@ Note 3: <strong>Appropriat</strong>e means that the filter medium will provide p
  	<li>Any pressure-demand self-contained respirator equipped with a full facepiece. APF 10000</li>
  	<li>Any pressure-demand supplied-air respirator equipped with a full facepiece in combination with an auxiliary pressure-demand self-contained breathing apparatus. APF 10000</li>
 </ul>
-Note 2: Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.
-Note 3: <strong>Appropriat</strong>e means that the filter medium will provide protection against the particulate in question. <em><strong>See step 9.2 (change??)</strong></em> for information on the presence or absence of oil particulates.]]></content:encoded>
+<strong>Note 2</strong>: Select a cartridge/canister certified to be used for the specific class of chemicals or the specific gas/vapor found in your workplace.
+<strong>Note 3</strong>: "<em>Appropriate"</em> means that the filter medium will provide protection against the particulate in question. See step 9.2 in the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH Respirator Selection Logic</a> for more information on the presence or absence of oil particulates.]]></content:encoded>
   <excerpt:encoded><![CDATA[]]></excerpt:encoded>
   <wp:post_id>394</wp:post_id>
   <wp:post_date>2018-01-26 17:05:48</wp:post_date>
@@ -7298,7 +7325,7 @@ Note 3: <strong>Appropriat</strong>e means that the filter medium will provide p
   <wp:is_sticky>0</wp:is_sticky>
   <wp:postmeta>
     <wp:meta_key>_edit_last</wp:meta_key>
-    <wp:meta_value><![CDATA[4]]></wp:meta_value>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -7363,6 +7390,36 @@ Note 3: <strong>Appropriat</strong>e means that the filter medium will provide p
   <wp:postmeta>
     <wp:meta_key>_customize_changeset_uuid</wp:meta_key>
     <wp:meta_value><![CDATA[c1bb010c-8a4c-4016-81bb-17db0628c0ff]]></wp:meta_value>
+  </wp:postmeta>
+</item>
+<item>
+  <title>11.2A.xlsx</title>
+  <link>http://respirators101.iuoe-hazmat.com/?post_type=tablepress_table&amp;p=432</link>
+  <pubDate>Tue, 30 Jan 2018 22:35:48 +0000</pubDate>
+  <dc:creator>brucehoward@live.com</dc:creator>
+  <guid isPermaLink="false">http://respirators101.iuoe-hazmat.com/?post_type=tablepress_table&amp;p=432</guid>
+  <description></description>
+  <content:encoded><![CDATA[[["Respirator ","APF"],["Any continuous flow supplied-air respirator equipped with a hood or helmet.","25"],["Any continuous flow supplied-air respirator equipped with a tight-fitting facepiece (half or full facepiece).","50"],["Any continuous flow supplied-air respirator equipped with a tight-fitting facepiece (half or full facepiece).","50"],["Any pressure-demand supplied-air respirator equipped with a half-mask.","1000"],["Any pressure-demand supplied-air respirator equipped with a full facepiece.","2000"],["Any pressure-demand self-contained respirator equipped with a full facepiece.","10000"],["Any pressure-demand supplied-air respirator equipped with a full facepiece in combination with an auxiliary pressure-demand self-contained breathing apparatus.","10000"]]]]></content:encoded>
+  <excerpt:encoded><![CDATA[11.2A.xlsx]]></excerpt:encoded>
+  <wp:post_id>432</wp:post_id>
+  <wp:post_date>2018-01-30 16:35:48</wp:post_date>
+  <wp:post_date_gmt>2018-01-30 22:35:48</wp:post_date_gmt>
+  <wp:comment_status>closed</wp:comment_status>
+  <wp:ping_status>closed</wp:ping_status>
+  <wp:post_name>11-2a-xlsx</wp:post_name>
+  <wp:status>publish</wp:status>
+  <wp:post_parent>0</wp:post_parent>
+  <wp:menu_order>0</wp:menu_order>
+  <wp:post_type>tablepress_table</wp:post_type>
+  <wp:post_password></wp:post_password>
+  <wp:is_sticky>0</wp:is_sticky>
+  <wp:postmeta>
+    <wp:meta_key>_tablepress_table_visibility</wp:meta_key>
+    <wp:meta_value><![CDATA[{"rows":[1,1,1,1,1,1,1,1],"columns":[1,1]}]]></wp:meta_value>
+  </wp:postmeta>
+  <wp:postmeta>
+    <wp:meta_key>_tablepress_table_options</wp:meta_key>
+    <wp:meta_value><![CDATA[{"last_editor":1,"table_head":true,"table_foot":false,"alternating_row_colors":true,"row_hover":true,"print_name":false,"print_name_position":"above","print_description":false,"print_description_position":"below","extra_css_classes":"","use_datatables":true,"datatables_sort":false,"datatables_filter":false,"datatables_paginate":false,"datatables_lengthchange":true,"datatables_paginate_entries":10,"datatables_info":false,"datatables_scrollx":false,"datatables_custom_commands":""}]]></wp:meta_value>
   </wp:postmeta>
 </item>
   </channel>

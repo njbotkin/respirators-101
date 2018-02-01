@@ -5,6 +5,7 @@ node_modules
 npm-debug.log
 
 client/data
+remoteserver.json
 
 public/*-bundle.js*
 public/style.css*

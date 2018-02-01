@@ -1,11 +1,25 @@
 const { run } = require('runjs')
 const creds = require('./remoteserver')
+const SSH = require('simple-ssh');
+const fs = require('fs');
 
+var ssh = new SSH(creds)
+	.on('ready', () => console.log('connection opened to '+creds.user+'@'+creds.host))
+	.on('close', () => console.log('connection closed'))
 
 /* DATA */
 
 function fetch_wordpress_data() {
-	run("ssh "+creds.user+"@"+creds.host+" 'cd "+creds.path+" && php ~/wp-cli.phar export --skip_comments --stdout' > wordpress-data/wordpress.xml")
+	ssh
+		.exec("cd "+creds.path+" && php ~/wp-cli.phar export --skip_comments --stdout", {
+			start: () => console.log('fetching XML export'),
+			exit: (code, stdout) => fs.writeFileSync('wordpress-data/wordpress.xml', stdout)
+		})
+		.exec("cd "+creds.path+" && php ~/wp-cli.phar option get tablepress_tables", {
+			start: () => console.log('fetching tablepress config JSON'),
+			exit: (code, stdout) => fs.writeFileSync('wordpress-data/tablepress_tables.json', stdout)
+		})
+	.start()
 }
 
 function build_twine_data_to_decisions_html() { 

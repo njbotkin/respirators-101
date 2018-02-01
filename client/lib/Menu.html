@@ -193,7 +193,7 @@
 	} 
 
 	/* red */
-	 li.osha-standards, li.my-info, li.chemical-lookup, li.calculate {
+	 li.osha-standards, li.my-info, li.chemical-lookup, li.calculations {
 		a {
 			background: $red3;
 			border-bottom: 1px solid $red4;
@@ -209,7 +209,7 @@
 	} 
 
 	/* hast icon */
-	li.getting-started, li.all-about-respirators, li.conversion-tables, li.osha-standards, li.respirator-selection-tool, li.my-info, li.chemical-lookup, li.calculate {
+	li.home, li.getting-started, li.all-about-respirators, li.conversion-tables, li.osha-standards, li.respirator-selection-tool, li.my-info, li.chemical-lookup, li.calculations {
 		> a, .clickable a {
 			padding-left: 50px;
 			position: relative;
@@ -228,6 +228,11 @@
 			background-position: center center;
 			background-repeat: no-repeat;
 		}
+	}
+
+	li.home a::before {
+		font-size: 24px;
+  		content: "\f015";
 	}
 
 	li.getting-started .clickable a::before {
@@ -254,7 +259,7 @@
 		background-size: 40%;
 	}
 
-	li.calculate a::before {
+	li.calculations a::before {
 		background-image: url(icons/calculator.png);
 		background-size: 40%;
 	}
