@@ -60,7 +60,6 @@
 			// captures event from router
 			this.on('stateChange', (e) => {
 				var params = e.params
-				console.log(e)
 
 				if(e.state.name == 'app.categorycontent' || e.state.name == 'app.category') {
 					if(params.catid && categories[params.catid]) {
