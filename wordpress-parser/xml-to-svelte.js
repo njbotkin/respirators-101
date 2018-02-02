@@ -126,11 +126,9 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 		tables[id] = content
 	})
 
-	// console.log(JSON.stringify(tables))
-
-	for (var id in tables) {
-		console.log('\n\n', id, tables[id])
-	}
+	// for (var id in tables) {
+	// 	console.log('\n\n', id, tables[id])
+	// }
 
 
 	var menu = channel.children.filter(node => {

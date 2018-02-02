@@ -15,7 +15,7 @@ export default () => ({
 				redirectTo: {
 					name: `app.not-found`,
 					params: {
-						route: `/static/${ params.id }`,
+						route: `/options/${ params.id }`,
 					},
 				},
 			})

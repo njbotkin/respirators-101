@@ -37,6 +37,8 @@ const addAnswerLinksClass = makeConditionalTransform(
 function transformRecursively(node, transform) {
 	const transformed = transform(node)
 
+	// console.log(transformed)
+
 	if (node.childNodes) {
 		const transformedChildren = node.childNodes.map(child =>
 			transformRecursively(child, transform)

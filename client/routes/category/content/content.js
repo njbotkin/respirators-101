@@ -3,7 +3,7 @@ import StaticContent from './Content.html'
 import idToPage from 'lib/static-content-by-id.js'
 import categories from 'data/categories.json'
 
-export default ({ on }) => ({
+export default () => ({
 	name: `app.categorycontent`,
 	route: `/category/:catid/:id`,
 	template: StaticContent,
@@ -17,7 +17,7 @@ export default ({ on }) => ({
 				redirectTo: {
 					name: `app.not-found`,
 					params: {
-						route: `/static/ack`,
+						route: `/category${ params.catid }/${ params.id }`,
 					},
 				},
 			})

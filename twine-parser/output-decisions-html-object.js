@@ -17,6 +17,8 @@ function parseAndWriteOutput(inputPath, outputPath) {
 
 	const story = parse(html)
 
+	// console.log(story)
+
 	const namesToIds = makeMapOfNamesToIds(story.passages)
 
 	// console.log(JSON.stringify(namesToIds, null, `\t`))
@@ -25,6 +27,8 @@ function parseAndWriteOutput(inputPath, outputPath) {
 		start: story.attributes.startnode,
 		decisions: makeMapOfIdsToFinalForm(story.passages, markdownToHtml(namesToIds)),
 	}
+
+	// console.log(friendlyOutput)
 
 	writeFileSync(outputPath, JSON.stringify(friendlyOutput, null, `\t`))
 }
@@ -39,7 +43,15 @@ const markdownToHtml = namesToIds => (markdown, title) => addDivAroundFooter(
 
 const makeMapOfNamesToIds = passages => makeMap(
 	passages,
-	({ attributes }) => [ attributes.name.trim(), attributes.pid ]
+	({ attributes, text }) => {
+
+		const redirect = text.match(/http:\/\/respirators101\.iuoe\-hazmat\.com\/respirator_options\/(.*)\//)
+		if(redirect) {
+			attributes.pid = '#/options/' + redirect[1]
+		}
+
+		return [ attributes.name.trim(), attributes.pid ]
+	}
 )
 
 const makeMapOfIdsToFinalForm = (passages, transformToFinalForm) => makeMap(
