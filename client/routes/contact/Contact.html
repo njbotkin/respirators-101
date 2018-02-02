@@ -51,47 +51,47 @@
 	import isEmail from 'validator/lib/isEmail'
 
 	const $ = e => document.querySelector(e)
-	$.show = e => e.style.display = 'block'
-	$.hide = e => e.style.display = 'none'
+	$.switch = (t, e) => t ? e.style.display = 'block' : e.style.display = 'none'
+
+	class OR {
+		constructor(b) {
+			this.value = b
+		}
+		or(b) {
+			if(b) this.value = true
+			return b
+		}
+	}
 
 	export default {
 		methods: {
 			sendMessage: () => {
 
-				var stop = false
+				var b = new OR(false)
 
-				if(isEmpty($('#name').value)) {
-					stop = true
-					$.show($('.name .status .empty'))
-				} else {
-					$.hide($('.name .status .empty'))
-				}
+				$.switch(
+					b.or(isEmpty($('#name').value)),
+					$('.name .status .empty')
+				)
 
-				if(isEmpty($('#email').value)) {
-					stop = true
-					console.log($('#email').value)
-					$.show($('.email .status .empty'))
-				} else {
-					$.hide($('.email .status .empty'))
+				$.switch(
+					b.or(isEmpty($('#email').value)),
+					$('.email .status .empty')
+				)
 
-					if(isEmail($('#email').value)) {
-						$.hide($('.email .status .invalid'))
-					} else {
-						stop = true
-						$.show($('.email .status .invalid'))
-					}
-				}
+				$.switch(
+					b.or(!isEmpty($('#email').value) && !isEmail($('#email').value)),
+					$('.email .status .invalid')
+				)
 
-				if(isEmpty($('#comment').value)) {
-					stop = true
-					$.show($('.comment .status .empty'))
-				} else {
-					$.hide($('.comment .status .empty'))
-				}
+				$.switch(
+					b.or(isEmpty($('#comment').value)),
+					$('.comment .status .empty')
+				)
 
-				if(stop) return
+				if(b.value) return
 
-
+				// ATTEMPT TO SEND EMAIL
 			}
 		}
 	}
