@@ -29,7 +29,9 @@ export default ({ makePath }) => ({
 			})
 		}
 
-		const title = html.match(/<h2>([^<(:]+)(?:[^<]+?)<\/h2>/).pop()
+		console.log(html)
+
+		const title = html.match(/<h2>([^<(:]+)/).pop()
 
 		return Promise.resolve({
 			html: replaceDecisionLinkUrls(html, makePath),
