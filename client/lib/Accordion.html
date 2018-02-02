@@ -1,19 +1,51 @@
-<div>
-	<h2
-		class="clickable"
-		on:click="set({ open: !open })"
-	>
+<div class="expand">
+	<div class="clickable" on:click="set({ open: !open })">
 		{{title}}
-	</h2>
-	<div data-open="{{open}}">
+
+			{{#if open}}
+			<div class="icon icon-remove_circle"></div>
+			{{else}}
+			<div class="icon icon-add_circle"></div>
+			{{/if}}
+	</div>
+	<div class="contents" data-open="{{open}}">
 		<slot></slot>
 	</div>
 </div>
 
 <style>
 
+@import 'colors';
+
 .clickable {
 	cursor: pointer;
+	font-size: 16px;
+	position: relative;
+	line-height: 24px;
+	padding: 13px 15px;
+	font-weight: bold;
+}
+.icon {	
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 50px;
+	color: $red4;
+	line-height: 50px;
+	text-align: center;
+	font-size: 25px;
+}
+
+.expand {
+	background: #fff;
+	margin: 0 -16px;
+}
+.expand:nth-child(odd) {
+	background: #ddd;
+}
+.contents {
+	padding: 0 15px 15px 15px;
 }
 
 [data-open=false] {

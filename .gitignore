@@ -5,14 +5,19 @@ node_modules
 npm-debug.log
 
 client/data
+remoteserver.json
 
 public/*-bundle.js*
 public/style.css*
 public/components.css*
 public/wp-images
+public/fonts
+public/blind-polyfill.js
 
 cordova/www
 cordova/platforms
 cordova/plugins
 
 *.sublime-workspace
+
+*.apk

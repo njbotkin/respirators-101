@@ -13,11 +13,13 @@ const context = createEmitter({
 states.forEach(createState => stateRouter.addState(createState(context)))
 
 stateRouter.on(`routeNotFound`, (route, parameters) => {
-	stateRouter.go(`wrapper.app.not-found`, Object.assign({ route }, parameters), { replace: true })
+	stateRouter.go(`app.not-found`, Object.assign({ route }, parameters), { replace: true })
 })
 
-stateRouter.on(`stateChangeStart`, () => {
-	context.emit(`stateChangeStart`)
+stateRouter.on(`stateChangeStart`, (state, params) => {
+	context.emit(`stateChangeStart`, { state, params })
 })
 
-stateRouter.evaluateCurrentRoute(`wrapper.home`)
+
+stateRouter.evaluateCurrentRoute(`app.home`)
+// context.emit(`stateChangeStart`, {id: 'home'}) 
