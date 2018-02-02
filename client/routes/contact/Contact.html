@@ -1,0 +1,192 @@
+<div class="content">
+	<form>
+		<div class="name">
+			<label for="name">Name</label>
+			<input type="text" id="name" />
+
+			<div class="status small">
+				<div class="bad empty"> Please fill this out. </div>
+			</div>
+		</div>
+
+		<div class="email">
+			<label for="email">Email</label>
+			<input type="text" id="email" />
+
+			<div class="status small">
+				<div class="bad empty"> Please fill this out. </div>
+				<div class="bad invalid"> Please enter a valid email address. </div>
+			</div>
+		</div>
+
+		<div class="comment">
+			<label for="comment">Comment or Question</label>
+			<textarea id="comment"></textarea>
+
+			<div class="status small">
+				<div class="bad empty"> Please fill this out. </div>
+			</div>
+		</div>
+
+		<div class="buttons">
+			<button class="submit" on:click="sendMessage()">Submit</button>
+			<a class="call" href="tel:+1-234-555-1212">Call</a>
+		</div>
+
+		<div class="status general">
+
+			<div class="good sending"> Sending... </div>
+			<div class="good sent"> Sent! </div>
+			<div class="bad validation-error"> Please check the inputs marked with red. </div>
+			<div class="bad error"> Couldn't send right now.  Please try again later. </div>
+			<div class="bad no-connection"> You are not connected to the internet.  Please connect and try again. </div>
+			
+		</div>
+	</form>
+</div>
+
+<script>
+
+	import isEmpty from 'validator/lib/isEmpty'
+	import isEmail from 'validator/lib/isEmail'
+
+	const $ = e => document.querySelector(e)
+	$.show = e => e.style.display = 'block'
+	$.hide = e => e.style.display = 'none'
+
+	export default {
+		methods: {
+			sendMessage: () => {
+
+				var stop = false
+
+				if(isEmpty($('#name').value)) {
+					stop = true
+					$.show($('.name .status .empty'))
+				} else {
+					$.hide($('.name .status .empty'))
+				}
+
+				if(isEmpty($('#email').value)) {
+					stop = true
+					console.log($('#email').value)
+					$.show($('.email .status .empty'))
+				} else {
+					$.hide($('.email .status .empty'))
+
+					if(isEmail($('#email').value)) {
+						$.hide($('.email .status .invalid'))
+					} else {
+						stop = true
+						$.show($('.email .status .invalid'))
+					}
+				}
+
+				if(isEmpty($('#comment').value)) {
+					stop = true
+					$.show($('.comment .status .empty'))
+				} else {
+					$.hide($('.comment .status .empty'))
+				}
+
+				if(stop) return
+
+
+			}
+		}
+	}
+
+</script>
+
+<style>
+	
+	@import 'spacing';
+	@import 'colors';
+
+	$green: #24bb00;
+	$red: #f55;
+
+	$darkgreen: #0f8433;
+	$darkred: #a52828;
+
+	.status div {
+		display: none;
+	}
+
+	.status.general {
+		margin-top: 20px;
+
+		div {
+			padding: 15px;
+			color: #fff;
+			text-align: center;
+		}
+		.good {
+			background-color: $darkgreen;
+		}
+		.bad {
+			background-color: $darkred;
+		}
+	}
+
+	.status.small {
+		font-size: smaller;
+
+		div {
+			padding: 5px;
+			border: 0;
+		}
+		.good {
+			color: $green;
+		}
+		.bad {
+			color: $red;
+		}
+	}
+
+	.content {
+		padding: $padding/2 $padding;
+	}
+
+	form {
+		label, input, textarea {
+			display: block;
+			width: 100%;
+			font-family: "Open Sans", sans-serif;
+		}
+		label {
+			margin-top: 20px;
+			padding: 6px;
+		}
+		input, textarea {
+			border: 0;
+			padding: 10px;
+			background: #fff;
+			width: calc(100% - 20px);
+		}
+		.buttons {
+			margin-top: 30px;
+			overflow: hidden;
+
+			button, a {
+				box-sizing: border-box;
+				display: block;
+				width: calc(50% - 10px);
+				float: left;
+				background: $red3;
+				padding: 0 20px;
+				border-radius: 5px;
+				font-size: 16px;
+				line-height: 50px;
+				color: #fff;
+				text-decoration: none;
+				text-align: center;
+			}
+
+			a.call {
+				margin-left: 20px;
+			}
+		}
+	}
+
+</style>

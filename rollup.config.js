@@ -5,6 +5,7 @@ import svelte from 'rollup-plugin-svelte'
 import string from 'rollup-plugin-string'
 import json from 'rollup-plugin-json'
 import postcss from 'postcss'
+import progress from 'rollup-plugin-progress';
 
 export default {
 	name: `respiratorsStructure`,
@@ -15,6 +16,7 @@ export default {
 	},
 	sourcemap: true,
 	plugins: [
+		progress(),
 		string({
 			include: `**/static-html/**/*.html`,
 		}),

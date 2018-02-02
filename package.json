@@ -79,11 +79,14 @@
     "svelte-transitions": "^1.1.1",
     "symlink-cli": "^1.0.0",
     "tape": "4.8.0",
-    "tape-catch": "^1.0.6"
+    "tape-catch": "^1.0.6",
+    "validate": "^3.0.1",
+    "validator": "^9.4.0"
   },
   "devDependencies": {
     "gaze": "^1.1.2",
     "live-server": "^1.2.0",
+    "rollup-plugin-progress": "^0.4.0",
     "runjs": "^4.3.0",
     "simple-ssh": "^1.0.0",
     "watch": "^1.0.2"
