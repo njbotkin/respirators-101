@@ -15,7 +15,7 @@
 
 			<div class="status small">
 				<div hidden="{{!status.email.empty}}" class="bad"> Please fill this out. </div>
-				<div hidden="{{!status.email.invalid}}" class="bad"> Please enter a valid email address. </div>
+				<div hidden="{{status.email.empty || status.email.valid}}" class="bad"> Please enter a valid email address. </div>
 			</div>
 		</div>
 
@@ -58,7 +58,7 @@
 		},
 		email: {
 			empty: false,
-			invalid: false
+			valid: true
 		},
 		comment: {
 			empty: false
@@ -74,12 +74,18 @@
 		methods: {
 			sendMessage() {
 
-				var status = validStatus()
-
-				if(isEmpty($('#name').value)) status.name.empty = true
-				if(isEmpty($('#email').value)) status.email.empty = true
-				if(!isEmpty($('#email').value) && !isEmail($('#email').value)) status.email.invalid = true
-				if(isEmpty($('#comment').value)) status.comment.empty = true
+				const status = {
+					name: {
+						empty: isEmpty($('#name').value)
+					},
+					email: {
+						empty: isEmpty($('#email').value),
+						valid: isEmail($('#email').value)
+					},
+					comment: {
+						empty: isEmpty($('#comment').value)
+					}
+				}
 
 				this.set({status})
 
