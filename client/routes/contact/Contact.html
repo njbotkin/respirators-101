@@ -5,7 +5,7 @@
 			<input type="text" id="name" />
 
 			<div class="status small">
-				<div class="bad empty"> Please fill this out. </div>
+				<div hidden="{{!status.name.empty}}" class="bad"> Please fill this out. </div>
 			</div>
 		</div>
 
@@ -14,8 +14,8 @@
 			<input type="text" id="email" />
 
 			<div class="status small">
-				<div class="bad empty"> Please fill this out. </div>
-				<div class="bad invalid"> Please enter a valid email address. </div>
+				<div hidden="{{!status.email.empty}}" class="bad"> Please fill this out. </div>
+				<div hidden="{{!status.email.invalid}}" class="bad"> Please enter a valid email address. </div>
 			</div>
 		</div>
 
@@ -24,7 +24,7 @@
 			<textarea id="comment"></textarea>
 
 			<div class="status small">
-				<div class="bad empty"> Please fill this out. </div>
+				<div hidden="{{!status.comment.empty}}" class="bad"> Please fill this out. </div>
 			</div>
 		</div>
 
@@ -51,45 +51,39 @@
 	import isEmail from 'validator/lib/isEmail'
 
 	const $ = e => document.querySelector(e)
-	$.switch = (t, e) => t ? e.style.display = 'block' : e.style.display = 'none'
 
-	class OR {
-		constructor(b) {
-			this.value = b
+	const validStatus = () => ({
+		name: {
+			empty: false
+		},
+		email: {
+			empty: false,
+			invalid: false
+		},
+		comment: {
+			empty: false
 		}
-		or(b) {
-			if(b) this.value = true
-			return b
-		}
-	}
+	})
 
 	export default {
+		data() {
+			return {
+				status: validStatus()
+			}
+		},
 		methods: {
-			sendMessage: () => {
+			sendMessage() {
 
-				var b = new OR(false)
+				var status = validStatus()
 
-				$.switch(
-					b.or(isEmpty($('#name').value)),
-					$('.name .status .empty')
-				)
+				if(isEmpty($('#name').value)) status.name.empty = true
+				if(isEmpty($('#email').value)) status.email.empty = true
+				if(!isEmpty($('#email').value) && !isEmail($('#email').value)) status.email.invalid = true
+				if(isEmpty($('#comment').value)) status.comment.empty = true
 
-				$.switch(
-					b.or(isEmpty($('#email').value)),
-					$('.email .status .empty')
-				)
+				this.set({status})
 
-				$.switch(
-					b.or(!isEmpty($('#email').value) && !isEmail($('#email').value)),
-					$('.email .status .invalid')
-				)
-
-				$.switch(
-					b.or(isEmpty($('#comment').value)),
-					$('.comment .status .empty')
-				)
-
-				if(b.value) return
+				if(JSON.stringify(validStatus()) !== JSON.stringify(status)) return
 
 				// ATTEMPT TO SEND EMAIL
 			}
@@ -109,9 +103,9 @@
 	$darkgreen: #0f8433;
 	$darkred: #a52828;
 
-	.status div {
+	/*.status div {
 		display: none;
-	}
+	}*/
 
 	.status.general {
 		margin-top: 20px;
