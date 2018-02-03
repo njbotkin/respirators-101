@@ -52,7 +52,7 @@
 
 	const $ = e => document.querySelector(e)
 
-	const validStatus = () => ({
+	const validStatus = {
 		name: {
 			empty: false
 		},
@@ -63,12 +63,12 @@
 		comment: {
 			empty: false
 		}
-	})
+	}
 
 	export default {
 		data() {
 			return {
-				status: validStatus()
+				status: validStatus
 			}
 		},
 		methods: {
@@ -89,7 +89,7 @@
 
 				this.set({status})
 
-				if(JSON.stringify(validStatus()) !== JSON.stringify(status)) return
+				if(JSON.stringify(validStatus) !== JSON.stringify(status)) return
 
 				// ATTEMPT TO SEND EMAIL
 			}
