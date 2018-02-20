@@ -1,17 +1,18 @@
 const { run } = require('runjs')
 const creds = require('./remoteserver')
 const buildcreds = require('./buildserver')
-const SSH = require('simple-ssh');
-const fs = require('fs');
-const gitignore = require('parse-gitignore');
-
-var ssh = new SSH(creds)
-	.on('ready', () => console.log('connection opened to '+creds.user+'@'+creds.host))
-	.on('close', () => console.log('connection closed'))
+const SSH = require('simple-ssh')
+const fs = require('fs')
+const gitignore = require('parse-gitignore')
 
 /* DATA */
 
 function fetch_wordpress_data() {
+
+	var ssh = new SSH(creds)
+		.on('ready', () => console.log('connection opened to '+creds.user+'@'+creds.host))
+		.on('close', () => console.log('connection closed'))
+		
 	ssh
 		.exec("cd "+creds.path+" && php ~/wp-cli.phar export --skip_comments --stdout", {
 			start: () => console.log('fetching XML export'),
@@ -22,6 +23,7 @@ function fetch_wordpress_data() {
 			exit: (code, stdout) => fs.writeFileSync('wordpress-data/tablepress_tables.json', stdout)
 		})
 	.start()
+	return ssh
 }
 
 function build_twine_data_to_decisions_html() { 
@@ -164,7 +166,6 @@ function push_public() {
 
 function push_app() {
 	let exclude = gitignore('.gitignore', ['.git', 'cordova']).reduce((a, e) => a+' --exclude "'+e+'"', '')
-	// console.log(exclude)
 	run("rsync -azP "+exclude+" ./ "+buildcreds.user+"@"+buildcreds.host+":"+buildcreds.path)
 }
 
