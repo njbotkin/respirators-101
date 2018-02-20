@@ -2,7 +2,7 @@
 	<form>
 		<div class="name">
 			<label for="name">Name</label>
-			<input type="text" id="name" />
+			<input type="text" bind:value="form.name" />
 
 			<div class="status small">
 				<div hidden="{{!status.name.empty}}" class="bad"> Please fill this out. </div>
@@ -11,7 +11,7 @@
 
 		<div class="email">
 			<label for="email">Email</label>
-			<input type="text" id="email" />
+			<input type="text" bind:value="form.email" />
 
 			<div class="status small">
 				<div hidden="{{!status.email.empty}}" class="bad"> Please fill this out. </div>
@@ -21,7 +21,7 @@
 
 		<div class="comment">
 			<label for="comment">Comment or Question</label>
-			<textarea id="comment"></textarea>
+			<textarea bind:value="form.comment"></textarea>
 
 			<div class="status small">
 				<div hidden="{{!status.comment.empty}}" class="bad"> Please fill this out. </div>
@@ -35,11 +35,11 @@
 
 		<div class="status general">
 
-			<div class="good sending"> Sending... </div>
-			<div class="good sent"> Sent! </div>
-			<div class="bad validation-error"> Please check the inputs marked with red. </div>
-			<div class="bad error"> Couldn't send right now.  Please try again later. </div>
-			<div class="bad no-connection"> You are not connected to the internet.  Please connect and try again. </div>
+			<div hidden="{{!sending}}" class="good"> Sending... </div>
+			<div hidden="{{!sent}}" class="good"> Sent! </div>
+			<div hidden="{{!invalid}}" class="bad"> Please check the inputs marked with red. </div>
+			<div hidden="{{!error}}" class="bad"> Couldn't send right now.  Please try again later. </div>
+			<div hidden="{{connected}}" class="bad"> You are not connected to the internet.  Please connect and try again. </div>
 			
 		</div>
 	</form>
@@ -49,8 +49,6 @@
 
 	import isEmpty from 'validator/lib/isEmpty'
 	import isEmail from 'validator/lib/isEmail'
-
-	const $ = e => document.querySelector(e)
 
 	const validStatus = {
 		name: {
@@ -66,32 +64,83 @@
 	}
 
 	export default {
-		data() {
-			return {
-				status: validStatus
-			}
-		},
+		data: () => ({
+			status: validStatus,
+			form: {
+				name: '',
+				email: '',
+				comment: '',
+				subject: 'Respirators 101 Message'
+			},
+			connected: true,
+			sent: false,
+			sending: false,
+			invalid: false,
+			error: false,
+		}),
 		methods: {
 			sendMessage() {
 
+				const form = this.get('form')
+
 				const status = {
 					name: {
-						empty: isEmpty($('#name').value)
+						empty: isEmpty(form.name)
 					},
 					email: {
-						empty: isEmpty($('#email').value),
-						valid: isEmail($('#email').value)
+						empty: isEmpty(form.email),
+						valid: isEmail(form.email)
 					},
 					comment: {
-						empty: isEmpty($('#comment').value)
+						empty: isEmpty(form.comment)
 					}
 				}
 
 				this.set({status})
 
-				if(JSON.stringify(validStatus) !== JSON.stringify(status)) return
+				if(JSON.stringify(validStatus) !== JSON.stringify(status)) {
+					this.set({invalid: true})
+					return
+				}
+				this.set({invalid: false})
+
+				if(!window.WEB && navigator.connection.type === 'none') {
+					this.set({connected: false})
+					return
+				}
+				this.set({connected: true})
 
 				// ATTEMPT TO SEND EMAIL
+				this.set({error: false})
+				this.set({sent: false})
+
+				const xhr = new XMLHttpRequest()
+				xhr.open("POST", 'http://respirators101.iuoe-hazmat.com/contact.php')
+				xhr.setRequestHeader('Content-Type', 'application/json')
+
+				xhr.onreadystatechange = () => {
+					if (xhr.readyState == 4) {
+						this.set({sending: false})
+
+						if(xhr.status == 200) {
+							console.log('200', xhr)
+							this.set({sent: true})
+							this.set({form: {
+								name: '',
+								email: '',
+								comment: ''
+							}})
+						} else {
+							console.log('500', xhr)
+							this.set({error: true})
+						}
+					}
+				}
+
+				xhr.send(JSON.stringify(form))
+
+				this.set({sending: true})
+
 			}
 		}
 	}

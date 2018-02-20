@@ -1,7 +1,9 @@
 const { run } = require('runjs')
 const creds = require('./remoteserver')
+const buildcreds = require('./buildserver')
 const SSH = require('simple-ssh');
 const fs = require('fs');
+const gitignore = require('parse-gitignore');
 
 var ssh = new SSH(creds)
 	.on('ready', () => console.log('connection opened to '+creds.user+'@'+creds.host))
@@ -160,6 +162,12 @@ function push_public() {
 	run("rsync -azP public "+creds.user+"@"+creds.host+":"+creds.path+"/app")
 }
 
+function push_app() {
+	let exclude = gitignore('.gitignore', ['.git', 'cordova']).reduce((a, e) => a+' --exclude "'+e+'"', '')
+	// console.log(exclude)
+	run("rsync -azP "+exclude+" ./ "+buildcreds.user+"@"+buildcreds.host+":"+buildcreds.path)
+}
+
 module.exports = {
 	test,
 	prep_build,
@@ -179,5 +187,6 @@ module.exports = {
 	fetch_google_fonts,
 	cordova,
 	android_all,
-	push_public
+	push_public,
+	push_app
 }

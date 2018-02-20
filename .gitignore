@@ -6,6 +6,7 @@ npm-debug.log
 
 client/data
 remoteserver.json
+buildserver.json
 
 public/*-bundle.js*
 public/style.css*
