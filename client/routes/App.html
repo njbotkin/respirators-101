@@ -57,6 +57,19 @@
 			Menu
 		},
 		oncreate () {
+
+			// use event bubbling to make all external links open in new tab
+			this.options.target.addEventListener('click', e => {
+
+				const a = e.path.filter(e => e.tagName === 'A').shift()
+
+				if(a && a.host !== window.location.host) {
+					event.preventDefault();
+					event.stopPropagation();
+					window.open(a.href, '_blank');
+				}
+			})
+
 			// captures event from router
 			this.on('stateChange', (e) => {
 				var params = e.params
