@@ -49,7 +49,6 @@
     "better-emitter": "^1.0.2",
     "better-match": "^1.0.2",
     "better-replace": "^1.0.2",
-    "cordova": "^7.1.0",
     "del-cli": "^1.1.0",
     "download": "^6.2.5",
     "glob-module-file": "^2.2.0",
@@ -82,6 +81,7 @@
     "tape-catch": "^1.0.6"
   },
   "devDependencies": {
+    "cordova": "^7.1.0",
     "gaze": "^1.1.2",
     "live-server": "^1.2.0",
     "runjs": "^4.3.0",
