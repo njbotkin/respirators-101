@@ -1,0 +1,49 @@
+<table>
+	<thead>
+		{{ #each head as cell }}
+			<th>{{ cell }}</th>
+		{{ /each }}
+	</thead>
+	<tbody>
+		{{ #each body as row }}
+			<tr>
+				{{ #each row as cell }}
+					<td>{{ cell }}</td>
+				{{ /each }}
+			</tr>
+		{{ /each }}
+	</tbody>
+</table>
+
+<style>
+
+table {
+	margin: 20px 0;
+	border-collapse: collapse;
+	border-spacing: 0;
+
+	th {
+		text-align: left;
+	}
+
+	th, td {
+		padding: 10px;
+	}
+
+	tr:nth-child(odd) {
+		background: #ddd;
+	}
+}
+
+</style>
+
+<script>
+
+export default {
+	computed: {
+		head: data => JSON.parse(data).shift(),
+		body: data => JSON.parse(data).slice(1)
+	}
+}
+
+</script>

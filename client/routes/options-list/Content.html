@@ -1,0 +1,35 @@
+<RedNavigation>
+	
+	<div class="prev"><button class="icon-angle-left" onclick="window.history.go(-1); return false;"></button></div>
+	
+	<div class="title"> Acceptable Respirator Options </div>
+
+	<div class="next"><a style="visibility: hidden;"></a></div>
+
+</RedNavigation>
+
+<div class="content">
+	<:Component {component} />
+</div>
+
+<style>
+	
+	@import 'spacing';
+
+	.content {
+		padding: calc($padding/2) $padding;
+	}
+
+</style>
+
+<script>
+
+	import RedNavigation from 'lib/RedNavigation.html'
+
+	export default {
+		components: {
+			RedNavigation
+		}
+	}
+
+</script>

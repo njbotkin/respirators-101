@@ -1,0 +1,238 @@
+<div class="maxwidth">
+
+	<div class="wrapper" data-menu-visible="{{visibleSlideOut}}">
+
+		<div class="left">
+
+			<div class="appname">Respirators 101</div>
+
+			<div class="main">
+				<Menu :asr></Menu>
+			</div>
+
+			{{#if !visibleSlideOut}}
+			<div class="debutterfinger"></div>
+			{{/if}}
+		</div>
+
+
+		<div class="right">
+			{{#if visibleSlideOut}}
+			<div class="anythingelsebutton" on:click="set({visibleSlideOut: false})"></div>
+			{{/if}}
+
+			<nav>
+				<div class="one">
+					{{ #if categoryParent }}
+					<a class="back button icon-angle-left" href="{{ categoryParent }}"></a>
+					{{ else }}
+						{{#if visibleSlideOut}}
+						<button class="close icon-close"></button>
+						{{else}}
+						<button class="menu icon-menu" on:click="set({visibleSlideOut: true})"></button>
+						{{/if}}
+					{{/if}}
+				</div>
+				<div class="title">{{ title }}</div>
+				<div class="two"><a class="button home icon-home2" href="{{ asr.makePath('app.home') }}"></a></div>
+			</nav>
+
+			<div class="main">
+				<uiView></uiView>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+<script>
+
+	import Menu from 'lib/Menu.html'
+	import categories from 'data/categories.json'
+	import posts from 'data/posts.json'
+
+	export default {
+		components: {
+			Menu
+		},
+		oncreate () {
+			// captures event from router
+			this.on('stateChange', (e) => {
+				var params = e.params
+
+				if(e.state.name == 'app.categorycontent' || e.state.name == 'app.category') {
+					if(params.catid && categories[params.catid]) {
+						this.set({ title: categories[params.catid].title })
+					}
+				}
+
+				else if(e.state.name == 'app.content') {
+					if(params.id && posts[params.id]) {
+						this.set({ title: posts[params.id] })
+					}
+				}
+
+				else if(e.state.title) {
+					this.set({ title: e.state.title })
+				}
+
+				else {
+					this.set({ title: "" })
+				}
+
+				// back button for category contents
+				if(params.catid && params.id) {
+					this.set({ categoryParent: this._state.asr.makePath('app.category', { catid: params.catid }) })
+				} else {
+					this.set({ categoryParent: false })
+				}
+
+				this.set({visibleSlideOut: false})
+			})
+		}, 
+		data() {
+			return { 
+				visibleSlideOut: false,
+				title: ''
+			}
+		}
+	}
+
+</script>
+
+<style>
+
+	@import "colors";
+
+	.maxwidth {
+		position:absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		max-width: 800px;
+		margin: 0 auto;
+		overflow:hidden;
+	}
+
+	.wrapper {
+
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		width: calc(100% + 300px);
+		transition: all .2s ease;
+
+		&[data-menu-visible=false] {
+			left: -300px;
+		}
+
+		&[data-menu-visible=true] {
+			left: 0;
+
+			.left {
+				box-shadow: 0px 0px 40px 0px #00000066;
+			}
+		}
+
+	}
+
+	.left {
+		position: absolute;
+		top: 0;
+		right: calc(100% - 300px); 
+		bottom: 0;
+		left: 0;
+		background: $blue3;
+		color: #fff;
+		font-size: 14px;
+		z-index: 3;
+	}
+
+	.right {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 300px;
+	}
+	
+	nav {
+		width: 100%;
+		height: 50px;
+		background: $blue3;
+		display: table;
+
+		> div {
+			display: table-cell;
+			vertical-align: middle;
+			color: #fff;
+		}
+
+		.one, .two {
+			width: 50px;
+		}
+		.title {
+			width: 100%;
+			text-align: center;
+			font-family: "Roboto Condensed";
+			text-transform: uppercase;
+		}
+	}
+
+	.main {
+		position: absolute;
+		top: 50px;
+		right: 0;
+		left:0;
+		bottom: 0;
+		overflow: scroll;
+	}
+
+	::-webkit-scrollbar { 
+	    display: none; 
+	}
+
+	.appname {
+		font-family: "Roboto Condensed";
+		text-align: left;
+		line-height: 50px;
+		padding: 0 20px;
+		text-transform: uppercase;
+		background: $blue5;
+	}
+
+	button, .button {
+		padding: 0;
+		width: 50px;
+		height: 50px;
+		display: block;
+		border: 0;
+		color: #fff;
+		text-decoration: none;
+		font-size: 30px;
+		line-height: 50px;
+		text-align: center;
+		cursor: pointer;
+		background-color: $blue3;
+		background-size: 60%;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+	a.back::before {
+		margin-left: -2px;
+	}
+
+	.anythingelsebutton, .debutterfinger {
+		position:absolute;
+		top:0;
+		right:0;
+		bottom:0;
+		left:0;
+		z-index: 1;
+	}
+
+</style>

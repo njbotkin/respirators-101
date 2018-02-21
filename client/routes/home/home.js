@@ -1,7 +1,8 @@
 import Home from './Home.html'
 
 export default () => ({
-	name: `wrapper.home`,
+	title: 'Respirators 101',
+	name: `app.home`,
 	route: `home`,
 	template: Home
 })

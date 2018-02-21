@@ -12,7 +12,7 @@ const match = require(`better-match`)
 const globby = require(`globby`)
 const download = require(`download`)
 
-async function parseAndWriteOutput({ inputGlob, outputDir, idToNameOutputFile, navigationOutputFile, downloadImages, imageOutputDir }) {
+async function parseAndWriteOutput({ inputGlob, outputDir, downloadImages, imageOutputDir }) {
 	const inputPaths = await globby(inputGlob)
 	await makeDir(outputDir)
 	await makeDir(imageOutputDir)
@@ -21,56 +21,212 @@ async function parseAndWriteOutput({ inputGlob, outputDir, idToNameOutputFile, n
 		readFile(path, { encoding: `utf8` })
 	))
 
+	const tablepressJSON = JSON.parse(await readFile(joinPath(__dirname, '../wordpress-data/tablepress_tables.json'), { encoding: `utf8` }))
+
 	await Promise.all(fileContents.map(xmlString =>
-		parseXmlAndOutputSvelteComponents({ xmlString, outputDir, idToNameOutputFile, navigationOutputFile, downloadImages, imageOutputDir })
+		parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloadImages, imageOutputDir, tablepressJSON })
 	))
 }
 
-async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, idToNameOutputFile, navigationOutputFile, downloadImages, imageOutputDir }) {
+
+function selectNameById(data, id) {
+	for ( var name in data ) {
+		if(data[name].id == id) {
+			return name
+		}
+	}
+	return false
+}
+
+async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloadImages, imageOutputDir, tablepressJSON }) {
 	const doc = parseXml(xmlString)
 	const rss = findFirstChild(doc, `rss`)
 	const channel = findFirstChild(rss, `channel`)
-	const items = channel.children.filter(node => node.name === `item`)
+	const tablepress = tablepressJSON.table_post
 
-	const navigation = []
+	// categories
 	const categories = {}
+	channel.children.forEach(node => {
+		if(node.name !== 'wp:category') return
 
-	const pageDetails = items.map(itemNode => {
-		const title = extractText(findFirstChild(itemNode, `title`))
-		const id = extractText(findFirstChild(itemNode, `wp:post_name`))
-		const content = extractText(findFirstChild(itemNode, `content:encoded`))
+		const id = extractText(findFirstChild(node, `wp:term_id`))
+		const name = extractText(findFirstChild(node, `wp:category_nicename`))
+		const title = extractText(findFirstChild(node, `wp:cat_name`))
+		const description = extractText(findFirstChild(node, `wp:category_description`))
+		const children = []
 
-		const category = findFirstChild(itemNode, `category`).attributes.nicename
-		const categoryTitle = extractText(findFirstChild(itemNode, `category`))
-
-		if(categories[category] === undefined) {
-			categories[category] = navigation.length
-			navigation.push({
-				id: category,
-				title: categoryTitle,
-				children: []
-			})
+		categories[name] = {
+			id,
+			title,
+			description,
+			children
 		}
 
-		navigation[categories[category]].children.push(id)
+	})   
 
-		return {
+	// content  
+	const posts = {} 
+	channel.children.forEach(node => { 
+		if(node.name !== 'item') return false
+		if(extractText(findFirstChild(node, `wp:post_type`)) !== 'post') return false
+
+		const id = extractText(findFirstChild(node, `wp:post_id`))
+		const title = extractText(findFirstChild(node, `title`))
+		const name = extractText(findFirstChild(node, `wp:post_name`))
+		const content = extractText(findFirstChild(node, `content:encoded`))
+
+		const category = findFirstChild(node, `category`).attributes.nicename
+
+		const meta = extractPostMeta(node)
+
+		const categoryId = categories[category].id
+		const order = meta[ '_sort_' + categoryId ] || null
+
+		categories[category].children.push({
+			name,
+			order
+		})
+
+		posts[name] = {
 			title,
 			id,
 			content
 		}
 	})
 
+
+	// respirator option lists
+	const lists = {}
+	channel.children.forEach(node => {
+		if(node.name !== 'item') return false
+		if(extractText(findFirstChild(node, `wp:post_type`)) !== 'respirator_options') return false
+
+		// const id = extractText(findFirstChild(node, `wp:post_id`))
+		const title = extractText(findFirstChild(node, `title`))
+		const name = extractText(findFirstChild(node, `wp:post_name`))
+		const content = extractText(findFirstChild(node, `content:encoded`))
+
+		lists[name] = {
+			title,
+			name,
+			content
+		}
+	})
+
+
+	// tablepress tables
+	const tables = {}
+	channel.children.forEach(node => {
+		if(node.name !== 'item') return false
+		if(extractText(findFirstChild(node, `wp:post_type`)) !== 'tablepress_table') return false
+
+		const id = extractText(findFirstChild(node, `wp:post_id`))
+		const content = extractText(findFirstChild(node, `content:encoded`))
+
+		tables[id] = content
+	})
+
+	// for (var id in tables) {
+	// 	console.log('\n\n', id, tables[id])
+	// }
+
+
+	var menu = channel.children.filter(node => {
+		if(node.name !== 'item') return false
+		if(extractText(findFirstChild(node, `wp:post_type`)) !== 'nav_menu_item') return false
+		return true
+	} )
+		.map(node => {
+
+			const meta = extractPostMeta(node)
+
+			const type = meta._menu_item_object
+			var title, name, path, id
+
+			if(type == 'page') {
+				return {}
+			}
+			if(type == 'post') {
+				id = meta._menu_item_object_id
+				name = selectNameById(posts, id)
+			}
+			if(type == 'category') {
+				id = meta._menu_item_object_id
+				name = selectNameById(categories, id)
+			}
+			if(type == 'custom') {
+				title = extractText(findFirstChild(node, `title`))
+				path = meta._menu_item_url
+			}	
+
+			return {
+				type,
+				name,
+				id,
+				title,
+				path,
+				order: extractText(findFirstChild(node, `wp:menu_order`))
+			}
+		})
+
+	// for component generation
+	const pageDetails = []
+	for (name in posts) {
+		pageDetails.push({
+			id: name,
+			content: posts[name].content,
+			title: posts[name].title,
+		})
+	}
+	for (name in lists) {
+		pageDetails.push({
+			id: name,
+			content: lists[name].content,
+			title: lists[name].title,
+		})
+	}
+
+
+	// now that the data is hooked up properly, sort and clean
+	for(var name in categories) {
+		categories[name].children.sort((a, b) => {
+			return a.order - b.order;
+		})
+		categories[name].children = categories[name].children.map(n => {
+			return n.name
+		})
+		delete categories[name].id
+	}
+
+	menu.sort((a, b) => {
+		return a.order - b.order;
+	}) 
+	menu = menu.filter(n => Object.keys(n).length > 0).map(n => ({
+			type: n.type,
+			title: n.title,
+			name: n.name,
+			path: n.path
+		})
+	)
+
+	for(name in posts) {
+		posts[name] = posts[name].title
+	}
+	for(name in lists) {
+		lists[name] = lists[name].title
+	}
+
+
 	const idToName = pageDetails.reduce((acc, { id, title }) => {
 		acc[id] = title
 		return acc
 	}, Object.create(null))
 	
-	// console.log(categories)
-	// console.log(idToName)
-
-	await writeFile(idToNameOutputFile, JSON.stringify(idToName, null, `\t`))
-	await writeFile(navigationOutputFile, JSON.stringify(navigation, null, `\t`))
+	await writeFile(joinPath(__dirname, `../client/data/id-to-name.json`), JSON.stringify(idToName, null, `\t`))
+	await writeFile(joinPath(__dirname, `../client/data/posts.json`), JSON.stringify(posts, null, `\t`))
+	await writeFile(joinPath(__dirname, `../client/data/option-lists.json`), JSON.stringify(lists, null, `\t`))
+	await writeFile(joinPath(__dirname, `../client/data/categories.json`), JSON.stringify(categories, null, `\t`))
+	await writeFile(joinPath(__dirname, `../client/data/menu.json`), JSON.stringify(menu, null, `\t`))
 
 	if (downloadImages) {
 		const imagesToDownload = flatMap(pageDetails, ({ content }) => match(
@@ -90,25 +246,28 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, idToNam
 	}
 
 	await Promise.all(pageDetails.map(async({ title, id, content }) => {
-		const svelteComponent = convertContentToSvelteComponent({ content, title })
+		const svelteComponent = convertContentToSvelteComponent({ content, title, tables, tablepress })
 		const path = joinPath(outputDir, `${ id }.html`)
 		await writeFile(path, svelteComponent)
 	}))
 }
 
+
+
 const flatMap = (ary, fn) => ary.reduce((acc, element, index) => [ ...acc, ...fn(element, index) ], [])
 
-function convertContentToSvelteComponent({ content, title }) {
+function convertContentToSvelteComponent({ content, title, tables, tablepress }) {
 	return `
-<h1>${ he.encode(title) }</h1>
 
-${ fixExpand(fixImages(content)) }
+${ insertTables(fixExpand(fixImages(content), title), tables, tablepress) }
 
 <script>
 	import Accordion from 'lib/Accordion.html'
+	import Table from 'lib/Table.html'
 	export default {
 		components: {
-			Accordion
+			Accordion,
+			Table
 		}
 	}
 </script>
@@ -127,6 +286,18 @@ const fixExpand = html => replace(
 	html
 )
 
+const insertTables = (html, tables, tablepress) => replace(
+	/\[table id=([0-9]+) \/\]/,
+	(id) => `<Table data="${ he.encode(tables[tablepress[id]]) }"></Table>`,
+	html
+)
+
+// const newlineBreaks = html => replace(
+// 	/\n/,
+// 	() => `<br>`,
+// 	html
+// )
+
 const findFirstChild = (xmlNode, type) => findFirst(xmlNode.children, node => node.name === type)
 function findFirst(array, comparator) {
 	for (let i = 0; i < array.length; ++i) {
@@ -143,13 +314,20 @@ function extractText(node) {
 	return node.children.filter(child => child.type === `text`).map(child => child.text).join(``)
 }
 
+function extractPostMeta(node) {
+	const meta = {}
+	node.children.forEach(n2 => {
+		if(n2.name !== 'wp:postmeta') return
+		meta[extractText(findFirstChild(n2, `wp:meta_key`))] = extractText(findFirstChild(n2, `wp:meta_value`))
+	})
+	return meta
+}
+
 
 // /////////////////////////////////////////////////////////////
 const inputGlob = joinPath(__dirname, `../wordpress-data/*.xml`)
 const outputDir = joinPath(__dirname, `../client/data/content/`)
-const idToNameOutputFile = joinPath(__dirname, `../client/data/id-to-name.json`)
-const navigationOutputFile = joinPath(__dirname, `../client/data/navigation.json`)
 const imageOutputDir = joinPath(__dirname, `../public/wp-images`)
 const downloadImages = true
 
-parseAndWriteOutput({ inputGlob, outputDir, idToNameOutputFile, navigationOutputFile, downloadImages, imageOutputDir })
+parseAndWriteOutput({ inputGlob, outputDir, downloadImages, imageOutputDir })

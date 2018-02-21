@@ -17,6 +17,8 @@ module.exports = (stringWithLinks, nameToId) => replace(
 		const pageNameToLinkTo = pageNameFromOriginalLink.trim()
 		const pageIdToLinkTo = nameToId[pageNameToLinkTo]
 
+		// console.log(pageNameToLinkTo, pageIdToLinkTo) 
+
 		if (!pageIdToLinkTo) {
 			throw new Error(`Could not find id for page |${ pageNameToLinkTo }|`)
 		}
