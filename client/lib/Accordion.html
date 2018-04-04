@@ -39,13 +39,21 @@
 
 .expand {
 	background: #fff;
-	margin: 0 -16px;
+	margin-right: -16px;
+	margin-left: -16px;
 }
 .expand:nth-child(odd) {
 	background: #ddd;
 }
 .contents {
-	padding: 0 15px 15px 15px;
+	padding: 10px 30px 30px 30px;
+
+	p:first-child {
+		margin-top: 0;
+	}
+	p:last-child {
+		margin-bottom: 0;
+	}
 }
 
 [data-open=false] {

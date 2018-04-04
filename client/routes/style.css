@@ -2,6 +2,7 @@ body {
 	margin: 0;
 	overflow-x: hidden;
 	background: #eaedf1; 
+	color: #333;
 }
 #target {
 	overflow: hidden;
@@ -54,5 +55,20 @@ $containerPadding: 16px;
 	.content {
 		padding-left: 0;
 		padding-right: 0;
+	}
+}
+
+p {
+	margin: 15px 0;
+	
+	.expand {
+		margin-top: -15px;
+		margin-bottom: -15px;
+	}
+}
+
+p:nth-child(even) {
+	.expand {
+		background: #fff !important;
 	}
 }

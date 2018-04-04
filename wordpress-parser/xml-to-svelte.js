@@ -11,6 +11,10 @@ const replace = require(`better-replace`)
 const match = require(`better-match`)
 const globby = require(`globby`)
 const download = require(`download`)
+const md = require('markdown-it')({
+	html: true,
+	linkify: true,
+})
 
 async function parseAndWriteOutput({ inputGlob, outputDir, downloadImages, imageOutputDir }) {
 	const inputPaths = await globby(inputGlob)
@@ -259,7 +263,7 @@ const flatMap = (ary, fn) => ary.reduce((acc, element, index) => [ ...acc, ...fn
 function convertContentToSvelteComponent({ content, title, tables, tablepress }) {
 	return `
 
-${ insertTables(fixExpand(fixImages(content), title), tables, tablepress) }
+${ md.render(insertTables(fixExpand(fixImages(content), title), tables, tablepress)) }
 
 <script>
 	import Accordion from 'lib/Accordion.html'
