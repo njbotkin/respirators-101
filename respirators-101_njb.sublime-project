@@ -8,7 +8,9 @@
 			],
 			"folder_exclude_patterns":
 			[
-				"node_modules"
+				"node_modules",
+				"cordova/platforms",
+				"cordova/www"
 			],
 			"path": "."
 		}

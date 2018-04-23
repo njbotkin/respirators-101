@@ -29,8 +29,6 @@ export default ({ makePath }) => ({
 			})
 		}
 
-		console.log(html)
-
 		const title = html.match(/<h2>([^<(:]+)/).pop()
 
 		return Promise.resolve({
