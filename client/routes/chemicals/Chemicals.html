@@ -1,0 +1,307 @@
+<div class="search">
+	<input bind:value=search type="text" id="search" placeholder="Search" />
+</div>
+
+<div class="container">
+	{{ #if search !== '' }}
+		<div class="results">
+			{{ #if results.count > 0 }}
+				{{ #each results as c }}
+					<div class="chemical"> 
+						<div class="title">
+							<span class="name">{{{ c.item.cHighlit || c.item.c }}}</span>
+							<span class="synonyms">({{{ c.item.sHighlit || c.item.s }}})</span>
+							<span class="score">{{ Math.round(c.score * 100) / 100 }}</span>
+						</div>
+					</div>
+				{{ /each }}
+			{{ else }}
+				<div class="empty">No search results.</div>
+			{{ /if }}
+		</div>
+	{{ else }}
+		<div class="chemicals">
+			{{ #each results as c }}
+				<div class="chemical"> 
+					<div class="title" id="{{ c.id || '' }}">
+						<span class="name">{{{ c.c }}}</span>
+						<span class="synonyms">({{{ c.s }}})</span>
+					</div>
+				</div>
+			{{ /each }}
+		</div>
+
+		<div class="alphabet">
+			{{ #each letters as l }}
+				<div class="letter">{{ l }}</div>
+			{{ /each }}
+		</div>
+	{{ /if }}
+</div>
+
+<style>
+	.search {
+		height: 50px;
+		position: relative;
+		padding: 10px;
+		box-sizing: border-box;
+
+		input {
+			line-height: 30px;
+			display: block;
+			width: auto;
+			padding: 0 10px;
+			box-sizing: border-box;
+			width: 100%;
+			border: 1px solid #999;
+			font-size: 120%;
+		}
+
+		&:after {
+			position: absolute;
+			right: 11px;
+			top: 11px;
+			display:inline-block;
+			width: 30px;
+			line-height: 30px;
+			z-index: 2;
+			text-align: center;
+			color: #999;
+
+			content: "\f002";
+			/* use !important to prevent issues with browser extensions that change fonts */
+			font-family: 'icomoon' !important;
+			speak: none;
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+
+			/* Better Font Rendering =========== */
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+
+	}
+	.empty {
+		font-size: 120%;
+		color: #666;
+		padding: 20px;
+		text-align: center;
+	}
+	.title em {
+		font-weight: bold;
+		font-style: normal;
+	}
+	.title.jumpedTo {
+		background: #ddd;
+	}
+	.synonyms {
+		font-size: 80%;
+		color: #aaa;
+	}
+	.container {
+		position: absolute;
+		top: 50px;
+		right: 0;
+		bottom: 0;
+		left: 0;
+
+		.results {
+			padding: 0 20px;
+		}
+
+		.chemicals {
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: calc(2.6vh - 2.7px + 16px );
+			overflow: scroll;
+			padding: 0 20px;
+		}
+		.alphabet {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+
+			div {
+				user-select: none;
+				cursor: pointer;
+				width: calc(2.6vh - 2.7px );
+				padding: 0 8px;
+				font-size: calc(2.6vh - 2.7px ); 
+				text-transform: uppercase;
+
+				&.active {
+					background: #ddd;
+				}
+			}
+		}
+	}
+	
+</style>
+
+<script>
+
+	import { chemicals } from 'data/chemicals.js' 
+	import Fuse from 'fuse.js'  
+
+	const letters = 'abcdefghiklmnopqrstuvwxyz'.split('') // no J chemicals
+	var letter = -1
+
+	for(var c of chemicals) {
+		if(c.c.slice(0, 1).toLowerCase() === letters[letter+1] && c.c.slice(1, 2) !== '-') {
+			letter++
+			c.id = letters[letter]
+		}
+	}
+
+	var fuse = new Fuse(chemicals, {
+		keys: [
+			{
+				name: 'c',
+				weight: 0.7
+			}, 
+			{
+				name: 's',
+				weight: 0.5
+			}
+		],
+		shouldSort: true,
+		includeScore: true,
+		includeMatches: true,
+		threshold: 0.4,
+	})
+
+	export default {
+		data: () => ({
+			search: '',
+			letters
+		}),
+		oncreate() {
+
+			var mouseDown = false
+
+			document.querySelector('.container').addEventListener('mousedown', down)
+			document.querySelector('.container').addEventListener('touchstart', down)
+			document.querySelector('.container').addEventListener('mouseup', up)
+			document.querySelector('.container').addEventListener('touchend', up)
+			document.querySelector('.container').addEventListener('touchcancel', up)
+
+			function down(e) {
+				if(e.target.className === 'letter') {
+					mouseDown = true
+				}
+			}
+
+			function up(e) {
+				mouseDown = false
+
+				for(var l of document.querySelectorAll('.letter')) {
+					l.classList.remove('active')
+				}
+			}
+
+			document.querySelector('.container').addEventListener('mousemove', selectLetter)
+			document.querySelector('.container').addEventListener('touchmove', selectLetter)
+			document.querySelector('.container').addEventListener('click', selectLetter)
+
+			function selectLetter(e) {
+
+				var target
+
+				if(e.type == 'touchmove') {
+					let myLocation = e.touches[0];
+					target = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
+				} else {
+					target = e.target
+				}
+
+				console.log('select', e.type, target.innerText, e)
+
+				var chemicalBox = document.querySelector('.chemicals')
+				var chemicalBoxOffset = chemicalBox.getBoundingClientRect()
+
+				if(mouseDown || e.type == 'click') {
+
+					if(target.className === 'letter') {
+
+						for(var l of document.querySelectorAll('.letter')) {
+							l.classList.remove('active')
+						}
+						target.classList.add('active')
+
+						var chemical = document.getElementById(target.innerText.toLowerCase())
+
+						if(chemical) {
+							var scrollTop = chemicalBox.scrollTop + chemical.getBoundingClientRect().top - chemicalBoxOffset.top - chemicalBoxOffset.height/3
+							chemicalBox.scrollTop = scrollTop
+
+							for(var c of document.querySelectorAll('.chemical .title')) {
+								c.classList.remove('jumpedTo')
+							}
+							chemical.classList.add('jumpedTo')
+
+						}
+
+					}
+
+				}
+			}
+
+		},
+		computed: {
+			results: search => {
+
+				// var results = []
+
+				let time = Date.now()
+
+				var results = fuse.search(search)
+					.filter(r => {
+						var emptyMatches = r.matches.filter(m => m.value === '')
+						return emptyMatches.length < r.matches.length
+					})
+					.slice(0, 50) // maximum number for rendering speed
+
+				for(var r of results) {
+					for(var m of r.matches) {
+
+						var highlit = ''
+
+						if(m.indices.length > 0) {
+
+							highlit += m.value.slice(0, m.indices[0][0])
+
+							for(var i = 0; i < m.indices.length; i++) {
+								let indice = m.indices[i]
+								
+								highlit += '<em>' + m.value.slice(indice[0], indice[1]+1) + '</em>'
+								if(i+1 < m.indices.length) {
+									highlit += m.value.slice(indice[1]+1, m.indices[i+1][0])
+								}							
+							}
+
+							highlit += m.value.slice(m.indices[m.indices.length-1][1]+1)
+						}
+
+						r.item[m.key + 'Highlit'] = highlit
+					}
+				}
+
+				console.log(results[0])
+				console.log(Date.now() - time)
+
+				if(search === '') {
+					return chemicals
+				} else {
+					results.count = results.length
+					return results
+				}
+			}
+		}
+	}
+
+</script>

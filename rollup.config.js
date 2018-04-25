@@ -65,6 +65,9 @@ export default {
 			plugins: [
 				`external-helpers`,
 			],
+			ignore: [
+				'client/data/chemicals.js'
+			]
 		}),
 	],
 }
