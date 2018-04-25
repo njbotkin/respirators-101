@@ -10,8 +10,9 @@
 					<div class="chemical"> 
 						<div class="title">
 							<span class="name">{{{ c.item.cHighlit || c.item.c }}}</span>
-							<span class="synonyms">({{{ c.item.sHighlit || c.item.s }}})</span>
-							<span class="score">{{ Math.round(c.score * 100) / 100 }}</span>
+							{{ #if c.item.s }}
+								<span class="synonyms">({{{ c.item.sHighlit || c.item.s }}})</span>
+							{{ /if }}
 						</div>
 					</div>
 				{{ /each }}
@@ -22,10 +23,15 @@
 	{{ else }}
 		<div class="chemicals">
 			{{ #each results as c }}
+				{{ #if c.id }}
+					<div class="letter-heading">{{ c.id }}</div>
+				{{ /if }}
 				<div class="chemical"> 
 					<div class="title" id="{{ c.id || '' }}">
 						<span class="name">{{{ c.c }}}</span>
-						<span class="synonyms">({{{ c.s }}})</span>
+						{{ #if c.s }}
+							<span class="synonyms">({{{ c.s }}})</span>
+						{{ /if }}
 					</div>
 				</div>
 			{{ /each }}
@@ -93,12 +99,16 @@
 		font-weight: bold;
 		font-style: normal;
 	}
-	.title.jumpedTo {
+	/*.title.jumpedTo {
 		background: #ddd;
-	}
+	}*/
 	.synonyms {
 		font-size: 80%;
 		color: #aaa;
+	}
+	.letter-heading {
+		font-size: 240%;
+		text-transform: uppercase;
 	}
 	.container {
 		position: absolute;
@@ -219,14 +229,12 @@
 					target = e.target
 				}
 
-				console.log('select', e.type, target.innerText, e)
-
-				var chemicalBox = document.querySelector('.chemicals')
-				var chemicalBoxOffset = chemicalBox.getBoundingClientRect()
-
 				if(mouseDown || e.type == 'click') {
 
 					if(target.className === 'letter') {
+
+						var chemicalBox = document.querySelector('.chemicals')
+						var chemicalBoxOffset = chemicalBox.getBoundingClientRect()
 
 						for(var l of document.querySelectorAll('.letter')) {
 							l.classList.remove('active')
@@ -239,10 +247,10 @@
 							var scrollTop = chemicalBox.scrollTop + chemical.getBoundingClientRect().top - chemicalBoxOffset.top - chemicalBoxOffset.height/3
 							chemicalBox.scrollTop = scrollTop
 
-							for(var c of document.querySelectorAll('.chemical .title')) {
+							/*for(var c of document.querySelectorAll('.chemical .title')) {
 								c.classList.remove('jumpedTo')
 							}
-							chemical.classList.add('jumpedTo')
+							chemical.classList.add('jumpedTo')*/
 
 						}
 
@@ -254,8 +262,6 @@
 		},
 		computed: {
 			results: search => {
-
-				// var results = []
 
 				let time = Date.now()
 
