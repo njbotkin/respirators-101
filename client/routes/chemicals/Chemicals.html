@@ -5,16 +5,9 @@
 <div class="container">
 	{{ #if search !== '' }}
 		<div class="results">
-			{{ #if results.count > 0 }}
-				{{ #each results as c }}
-					<div class="chemical"> 
-						<div class="title">
-							<span class="name">{{{ c.item.cHighlit || c.item.c }}}</span>
-							{{ #if c.item.s }}
-								<span class="synonyms">({{{ c.item.sHighlit || c.item.s }}})</span>
-							{{ /if }}
-						</div>
-					</div>
+			{{ #if results.length > 0 }}
+				{{ #each results as r }}
+					<Chemical highlight="true" c="{{ r.item }}"></Chemical>
 				{{ /each }}
 			{{ else }}
 				<div class="empty">No search results.</div>
@@ -26,14 +19,7 @@
 				{{ #if c.id }}
 					<div class="letter-heading">{{ c.id }}</div>
 				{{ /if }}
-				<div class="chemical"> 
-					<div class="title" id="{{ c.id || '' }}">
-						<span class="name">{{{ c.c }}}</span>
-						{{ #if c.s }}
-							<span class="synonyms">({{{ c.s }}})</span>
-						{{ /if }}
-					</div>
-				</div>
+				<Chemical :c></Chemical>
 			{{ /each }}
 		</div>
 
@@ -95,20 +81,10 @@
 		padding: 20px;
 		text-align: center;
 	}
-	.title em {
-		font-weight: bold;
-		font-style: normal;
-	}
-	/*.title.jumpedTo {
-		background: #ddd;
-	}*/
-	.synonyms {
-		font-size: 80%;
-		color: #aaa;
-	}
 	.letter-heading {
 		font-size: 240%;
 		text-transform: uppercase;
+		padding-left: 10px;
 	}
 	.container {
 		position: absolute;
@@ -118,7 +94,7 @@
 		left: 0;
 
 		.results {
-			padding: 0 20px;
+			padding: 0 10px;
 		}
 
 		.chemicals {
@@ -129,7 +105,7 @@
 			right: calc(2.65vh - 2.65px + 16px );
 			overflow-y: scroll;
 			overflow-x: hidden;
-			padding: 0 20px;
+			padding: 0 10px;
 		}
 		.alphabet {
 			position: absolute;
@@ -152,20 +128,37 @@
 		}
 	}
 	
-</style>
+</style> 
 
 <script>
 
-	import { chemicals } from 'data/chemicals.js' 
+	import chemicals from 'data/chemicals.json'
 	import Fuse from 'fuse.js'  
+	import Chemical from './Chemical.html'
 
+	const NPG_ID = "a",
+		NAME = "c",
+		CAS = "cn",
+		FORMULA = "f",
+		SYNONYMS = "s",
+		DOT_ID_AND_GUIDE = "d",
+		NIOSH_REL = "n",
+		OSHA_PEL = "o",
+		MEASUREMENT_METHODS = "m",
+		IDLH = "i",
+		CONVERSION = "co",
+		PHYSICAL_DESCRIPTION = "p",
+		EXPOSURE_ROUTES = "e", 
+		TARGET_ORGANS = "to"
+
+	// I know this seems hacky.  Sorting chemicals by name is pretty arbitrary, what with the alpha- 1,2,3- o- style prefixes.  I'm not going to build a hideous regex for this.  The data source is already mostly sorted alphabetically, so I'm just picking up on the existing order.
 	const letters = 'abcdefghiklmnopqrstuvwxyz'.split('') // no J chemicals
-	var letter = -1
+	var letter = 0
 
 	for(var c of chemicals) {
-		if(c.c.slice(0, 1).toLowerCase() === letters[letter+1] && c.c.slice(1, 2) !== '-') {
-			letter++
+		if(c.c.slice(0, 1).toLowerCase() === letters[letter] && c.c.slice(1, 2) !== '-') {
 			c.id = letters[letter]
+			letter++
 		}
 	}
 
@@ -187,6 +180,9 @@
 	})
 
 	export default {
+		components: {
+			Chemical
+		},
 		data: () => ({
 			search: '',
 			letters
@@ -247,12 +243,6 @@
 						if(chemical) {
 							var scrollTop = chemicalBox.scrollTop + chemical.getBoundingClientRect().top - chemicalBoxOffset.top - chemicalBoxOffset.height/3
 							chemicalBox.scrollTop = scrollTop
-
-							/*for(var c of document.querySelectorAll('.chemical .title')) {
-								c.classList.remove('jumpedTo')
-							}
-							chemical.classList.add('jumpedTo')*/
-
 						}
 
 					}
@@ -264,7 +254,7 @@
 		computed: {
 			results: search => {
 
-				let time = Date.now()
+				// let time = Date.now()
 
 				var results = fuse.search(search)
 					.filter(r => {
@@ -298,13 +288,12 @@
 					}
 				}
 
-				console.log(results[0])
-				console.log(Date.now() - time)
+				// console.log(results[0])
+				// console.log(Date.now() - time)
 
 				if(search === '') {
 					return chemicals
 				} else {
-					results.count = results.length
 					return results
 				}
 			}

@@ -66,7 +66,7 @@ export default {
 				`external-helpers`,
 			],
 			ignore: [
-				'client/data/chemicals.js'
+				'client/data/chemicals.json',
 			]
 		}),
 	],
