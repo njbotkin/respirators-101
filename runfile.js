@@ -34,6 +34,10 @@ function build_wordpress_data_to_svelte() {
 	run("node wordpress-parser/xml-to-svelte.js")
 }
 
+function process_chemicals() { 
+	run("node chemical_processor/index.js")
+}
+
 async function glob_all() {
 	await Promise.all([ glob.routes(), glob.content() ])
 }

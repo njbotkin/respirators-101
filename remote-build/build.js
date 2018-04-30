@@ -34,7 +34,8 @@ async function build() {
 			Promise.all([
 				runfile.build_wordpress_data_to_svelte(),
 				runfile.create_symlinks(),
-				runfile.glob_all()
+				runfile.glob_all(),
+				runfile.process_chemicals()
 			])
 		)
 
