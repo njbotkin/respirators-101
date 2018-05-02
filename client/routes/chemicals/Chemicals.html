@@ -136,21 +136,6 @@
 	import Fuse from 'fuse.js'  
 	import Chemical from './Chemical.html'
 
-	const NPG_ID = "a",
-		NAME = "c",
-		CAS = "cn",
-		FORMULA = "f",
-		SYNONYMS = "s",
-		DOT_ID_AND_GUIDE = "d",
-		NIOSH_REL = "n",
-		OSHA_PEL = "o",
-		MEASUREMENT_METHODS = "m",
-		IDLH = "i",
-		CONVERSION = "co",
-		PHYSICAL_DESCRIPTION = "p",
-		EXPOSURE_ROUTES = "e", 
-		TARGET_ORGANS = "to"
-
 	// I know this seems hacky.  Sorting chemicals by name is pretty arbitrary, what with the alpha- 1,2,3- o- style prefixes.  I'm not going to build a hideous regex for this.  The data source is already mostly sorted alphabetically, so I'm just picking up on the existing order.
 	const letters = 'abcdefghiklmnopqrstuvwxyz'.split('') // no J chemicals
 	var letter = 0
@@ -183,13 +168,6 @@
 		components: {
 			Chemical
 		},
-		// onstate({ changed, current, previous }) {
-		// 	// this fires before oncreate, and on every state change.
-		// 	// the first time it runs, `previous` is undefined
-		// 	// if (changed.time) {
-		// 		console.log(`time changed: ${previous && previous.time} -> ${current.time}`);
-		// 	// }
-		// },
 		data: () => ({
 			search: '',
 			letters
@@ -298,9 +276,6 @@
 						r.item[m.key + 'Highlit'] = highlit
 					}
 				}
-
-				// console.log(results[0])
-				// console.log(Date.now() - time)
 
 				return results
 			}
