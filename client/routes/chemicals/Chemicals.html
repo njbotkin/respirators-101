@@ -183,18 +183,20 @@
 		components: {
 			Chemical
 		},
-		onstate({ changed, current, previous }) {
-			// this fires before oncreate, and on every state change.
-			// the first time it runs, `previous` is undefined
-			if (changed.time) {
-				console.log(`time changed: ${previous && previous.time} -> ${current.time}`);
-			}
-		},
+		// onstate({ changed, current, previous }) {
+		// 	// this fires before oncreate, and on every state change.
+		// 	// the first time it runs, `previous` is undefined
+		// 	// if (changed.time) {
+		// 		console.log(`time changed: ${previous && previous.time} -> ${current.time}`);
+		// 	// }
+		// },
 		data: () => ({
 			search: '',
 			letters
 		}),
 		oncreate() {
+
+			console.log('oncreate', document.querySelector('.container'))
 
 			var mouseDown = false
 
@@ -205,12 +207,12 @@
 			document.querySelector('.container').addEventListener('touchcancel', up)
 
 			function down(e) {
-				if(e.target.className === 'letter') {
+				if(e.target.className.indexOf('letter') > -1) {
 					mouseDown = true
 				}
 			}
 
-			function up(e) {
+			function up() {
 				mouseDown = false
 
 				for(var l of document.querySelectorAll('.letter')) {
@@ -235,7 +237,7 @@
 
 				if(mouseDown || e.type == 'click') {
 
-					if(target.className === 'letter') {
+					if(target.className.indexOf('letter') > -1) {
 
 						var chemicalBox = document.querySelector('.chemicals')
 						var chemicalBoxOffset = chemicalBox.getBoundingClientRect()
@@ -261,7 +263,9 @@
 		computed: {
 			results: ({ search }) => {
 
-				// let time = Date.now()
+				if(search === '') {
+					return chemicals
+				} 
 
 				var results = fuse.search(search)
 					.filter(r => {
@@ -298,11 +302,7 @@
 				// console.log(results[0])
 				// console.log(Date.now() - time)
 
-				if(search === '') {
-					return chemicals
-				} else {
-					return results
-				}
+				return results
 			}
 		}
 	}
