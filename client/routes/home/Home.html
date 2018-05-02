@@ -2,14 +2,14 @@
 	
 	<div class="buttons">
 
-		<a class="select-a-respirator" href="{{ asr.makePath('app.respirator-introduction') }}"></a>
-		<a class="before-you-start" href="{{ asr.makePath('app.categorycontent', { catid: 'getting-started', id: 'before-you-start' }) }}"></a>
-		<a class="all-about-respirators" href="{{ asr.makePath('app.categorycontent', { catid: 'all-about-respirators', id: 'purpose-of-respirators' }) }}"></a>
+		<a class="select-a-respirator" href="{ asr.makePath('app.respirator-introduction') }">Select a Respirator</a>
+		<a class="before-you-start" href="{ asr.makePath('app.categorycontent', { catid: 'getting-started', id: 'before-you-start' }) }">Before you Start</a>
+		<a class="all-about-respirators" href="{ asr.makePath('app.categorycontent', { catid: 'all-about-respirators', id: 'purpose-of-respirators' }) }">All About Respirators</a>
 	
-		<a class="my-info bottomrow"></a>
-		<a class="chemical-lookup bottomrow" href="{{ asr.makePath('app.chemicals') }}"></a>
-		<a class="calculations bottomrow" href="{{ asr.makePath('app.calculate') }}"></a>
-		<a class="osha-standards bottomrow" href="{{ asr.makePath('app.category', { catid: 'osha-standards' }) }}"></a>
+		<a class="my-info bottomrow">My Info</a>
+		<a class="chemical-lookup bottomrow" href="{ asr.makePath('app.chemicals') }">Chemical Lookup</a>
+		<a class="calculations bottomrow" href="{ asr.makePath('app.calculate') }">Calculations</a>
+		<a class="osha-standards bottomrow" href="{ asr.makePath('app.category', { catid: 'osha-standards' }) }">OSHA Standards</a>
 
 	</div>
 
@@ -53,6 +53,7 @@
 			position: absolute;    
 			display:block;
 			cursor: pointer;
+			text-indent: -9999px;
 		}
 	}
 

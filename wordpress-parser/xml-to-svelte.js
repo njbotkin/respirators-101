@@ -261,17 +261,27 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 const flatMap = (ary, fn) => ary.reduce((acc, element, index) => [ ...acc, ...fn(element, index) ], [])
 
 function convertContentToSvelteComponent({ content, title, tables, tablepress }) {
+
+	var expandReplacements, tableReplacements
+
+	content = fixImages(content);
+	({ expandReplacements, content } = fixExpand(content));
+	({ tableReplacements, content } = insertTables(content, tables, tablepress));
+	content = md.render(content);
+
+	// process.exit()
+
 	return `
 
-${ md.render(insertTables(fixExpand(fixImages(content), title), tables, tablepress)) }
+${ content }
 
 <script>
-	import Accordion from 'lib/Accordion.html'
-	import Table from 'lib/Table.html'
+	${ expandReplacements ? "import Accordion from 'lib/Accordion.html'" : "" }
+	${ tableReplacements ? "import Table from 'lib/Table.html'" : "" }
 	export default {
 		components: {
-			Accordion,
-			Table
+			${ expandReplacements ? "Accordion," : "" }
+			${ tableReplacements ? "Table" : "" }
 		}
 	}
 </script>
@@ -284,17 +294,39 @@ const fixImages = html => replace(
 	html
 )
 
-const fixExpand = html => replace(
-	/\[expand title="([^"]+)"\]((?:.|\n)+?)\[\/expand\]/,
-	(title, content) => `<Accordion title="${ he.encode(title) }">${ content }</Accordion>`,
-	html
-)
+const fixExpand = html => {
+	var expandReplacements = 0
+	var content = replace(
+		/\[expand title="([^"]+)"\]((?:.|\n)+?)\[\/expand\]/,
+		(title, content) => {
+			expandReplacements++
+			return `<Accordion title="${ he.encode(title) }">${ content }</Accordion>`
+		},
+		html
+	)
 
-const insertTables = (html, tables, tablepress) => replace(
-	/\[table id=([0-9]+) \/\]/,
-	(id) => `<Table data="${ he.encode(tables[tablepress[id]]) }"></Table>`,
-	html
-)
+	return {
+		expandReplacements,
+		content
+	}
+}
+
+const insertTables = (html, tables, tablepress) => {
+	var tableReplacements = 0
+	var content = replace(
+		/\[table id=([0-9]+) \/\]/,
+		(id) => {
+			tableReplacements++
+			return `<Table data="${ he.encode(tables[tablepress[id]]) }"></Table>`
+		},
+		html
+	)
+
+	return {
+		tableReplacements,
+		content
+	}
+}
 
 // const newlineBreaks = html => replace(
 // 	/\n/,

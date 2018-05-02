@@ -1,14 +1,14 @@
 <div class="expand">
 	<div class="clickable" on:click="set({ open: !open })">
-		{{title}}
+		{title}
 
-			{{#if open}}
+			{#if open}
 			<div class="icon icon-remove_circle"></div>
-			{{else}}
+			{:else}
 			<div class="icon icon-add_circle"></div>
-			{{/if}}
+			{/if}
 	</div>
-	<div class="contents" data-open="{{open}}">
+	<div class="contents" data-open="{open}">
 		<slot></slot>
 	</div>
 </div>

@@ -1,9 +1,9 @@
-<div class="chemical" data-open="{{ open }}">
-	<div class="title" on:click="set({ open: !open })" id="{{ c.id || '' }}">
-		<span class="name">{{{ (highlight && c.cHighlit) || c.c }}}</span>
-		{{ #if c.s }}
-			<span class="synonyms">({{{ (highlight && c.sHighlit) || c.s }}})</span>
-		{{ /if }}
+<div class="chemical" data-open="{ open }">
+	<div class="title" on:click="set({ open: !open })" id="{ c.id || '' }">
+		<span class="name">{@html (highlight && c.cHighlit) || c.c }</span>
+		{ #if c.s }
+			<span class="synonyms">({@html (highlight && c.sHighlit) || c.s })</span>
+		{ /if }
 	</div>
 	<div class="contents">
 
@@ -11,11 +11,11 @@
 			<div class="row">
 				<div class="cell">
 					<label>CAS</label>
-					{{ c.cn }}
+					{ c.cn }
 				</div>
 				<div class="cell">
 					<label>IDLH</label>
-					{{{ c.i }}}
+					{@html c.i }
 				</div>
 			</div>
 		</div>
@@ -28,11 +28,11 @@
 				<div class="row">
 					<div class="cell">
 						<label>NIOSH REL</label>
-						{{{ c.n }}}
+						{@html c.n }
 					</div>
 					<div class="cell">
 						<label>OSHA PEL</label>
-						{{{ c.o }}}
+						{@html c.o }
 					</div>
 				</div>
 			</div>
@@ -41,18 +41,18 @@
 
 		<div class="block">
 			<label>Physical Description</label>
-			{{{ c.p }}}
+			{@html c.p }
 		</div>
 
 		<div class="table">
 			<div class="row">
 				<div class="cell">
 					<label>Exposure Routes</label>
-					{{{ c.e }}}
+					{@html c.e }
 				</div>
 				<div class="cell">
 					<label>Target Organs</label>
-					{{{ c.to }}}
+					{@html c.to }
 				</div>
 			</div>
 		</div>
@@ -61,12 +61,12 @@
 			<label>Personal Protection/Sanitation</label>
 
 			<table class="table">	
-					<tr><td><label>Skin</label></td><td>{{{ c.ps }}}</td></tr>
-					<tr><td><label>Eyes</label></td><td>{{{ c.pe }}}</td></tr>
-					<tr><td><label>Wash skin</label></td><td>{{{ c.pw }}}</td></tr>
-					<tr><td><label>Remove</label></td><td>{{{ c.pr }}}</td></tr>
-					<tr><td><label>Change</label></td><td>{{{ c.pc }}}</td></tr>
-					<tr><td><label>Provide</label></td><td>{{{ c.pp }}}</td></tr>
+					<tr><td><label>Skin</label></td><td>{@html c.ps }</td></tr>
+					<tr><td><label>Eyes</label></td><td>{@html c.pe }</td></tr>
+					<tr><td><label>Wash skin</label></td><td>{@html c.pw }</td></tr>
+					<tr><td><label>Remove</label></td><td>{@html c.pr }</td></tr>
+					<tr><td><label>Change</label></td><td>{@html c.pc }</td></tr>
+					<tr><td><label>Provide</label></td><td>{@html c.pp }</td></tr>
 			</table>
 		</div>
 

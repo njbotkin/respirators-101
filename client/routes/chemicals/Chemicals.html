@@ -3,32 +3,32 @@
 </div>
 
 <div class="container">
-	{{ #if search !== '' }}
+	{ #if search !== '' }
 		<div class="results">
-			{{ #if results.length > 0 }}
-				{{ #each results as r }}
-					<Chemical highlight="true" c="{{ r.item }}"></Chemical>
-				{{ /each }}
-			{{ else }}
+			{ #if results.length > 0 }
+				{ #each results as r }
+					<Chemical highlight="true" c="{ r.item }"></Chemical>
+				{ /each }
+			{ :else }
 				<div class="empty">No search results.</div>
-			{{ /if }}
+			{ /if }
 		</div>
-	{{ else }}
+	{ :else }
 		<div class="chemicals">
-			{{ #each results as c }}
-				{{ #if c.id }}
-					<div class="letter-heading">{{ c.id }}</div>
-				{{ /if }}
-				<Chemical :c></Chemical>
-			{{ /each }}
+			{ #each results as c }
+				{ #if c.id }
+					<div class="letter-heading">{ c.id }</div>
+				{ /if }
+				<Chemical {c}></Chemical>
+			{ /each }
 		</div>
 
 		<div class="alphabet">
-			{{ #each letters as l }}
-				<div class="letter">{{ l }}</div>
-			{{ /each }}
+			{ #each letters as l }
+				<div class="letter">{ l }</div>
+			{ /each }
 		</div>
-	{{ /if }}
+	{ /if }
 </div>
 
 <style>
@@ -259,7 +259,7 @@
 
 		},
 		computed: {
-			results: search => {
+			results: ({ search }) => {
 
 				// let time = Date.now()
 

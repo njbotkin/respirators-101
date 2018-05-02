@@ -1,6 +1,6 @@
-<div class="category" data-open="{{open}}">
+<div class="category" data-open="{open}">
 	<div class="clickable category-title">
-		<a href="{{ item.path }}">{{item.title}}</a>
+		<a href="{ item.path }">{item.title}</a>
 		<div class="chevron icon-angle-left" on:click="clicky( open )"></div>
 	</div>
 	<div class="expand">
@@ -10,17 +10,51 @@
 
 <style>
 
+	@import 'colors';
+
+	.expand a {
+		border: 0;
+		background: $blue2;
+	}
+
+	.category[data-open=true] .chevron {
+		transform: rotate(90deg);
+	}
+
+
+	.category-title {
+		position:relative;
+
+		.chevron {
+			display: block;
+			position:absolute;
+			top: 0; 
+			right:0;
+			width: 50px;
+			height: 50px;
+			font-size: 28px;
+			line-height: 50px;
+			text-align: center;
+			transition: transform .2s ease-out;
+			transform: rotate(270deg);
+		}
+
+		.chevron::before {
+			margin-left: -2px;
+		}
+	}
+
 .clickable {
 	cursor: pointer; 
 }
 
-.expand.initialized {
+:global(.expand.initialized) {
 	transition: height 0.2s ease-out;
 	height: auto;
 	overflow: hidden;
 }
 
-.category[data-open=false] .expand.initialized {
+:global(.category[data-open=false] .expand.initialized) {
 	height: 0 !important;
 }
 

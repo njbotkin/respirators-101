@@ -1,17 +1,17 @@
 <table>
 	<thead>
-		{{ #each head as cell }}
-			<th>{{ cell }}</th>
-		{{ /each }}
+		{ #each head as cell }
+			<th>{ cell }</th>
+		{ /each }
 	</thead>
 	<tbody>
-		{{ #each body as row }}
+		{ #each body as row }
 			<tr>
-				{{ #each row as cell }}
-					<td>{{ cell }}</td>
-				{{ /each }}
+				{ #each row as cell }
+					<td>{ cell }</td>
+				{ /each }
 			</tr>
-		{{ /each }}
+		{ /each }
 	</tbody>
 </table>
 
@@ -41,8 +41,8 @@ table {
 
 export default {
 	computed: {
-		head: data => JSON.parse(data).shift(),
-		body: data => JSON.parse(data).slice(1)
+		head: ({ data }) => JSON.parse(data).shift(),
+		body: ({ data }) => JSON.parse(data).slice(1)
 	}
 }
 

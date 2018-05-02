@@ -1,21 +1,21 @@
 <div class="content">
-	<h1>{{ title }}</h1>
+	<h1>{ title }</h1>
 
-	<div class="desc">{{{ description }}}</div>
+	<div class="desc">{@html description }</div>
 
 	<ul class="links">
-		{{#each children as item}}
+		{#each children as item}
 
 		<li>
 
-			<a href="{{ asr.makePath('app.categorycontent', { id: item.id, catid: catid }) }}">
-				{{item.title}}
+			<a href="{ asr.makePath('app.categorycontent', { id: item.id, catid: catid }) }">
+				{item.title}
 				<div class="icon icon-angle-left"></div>
 			</a>
 
 		</li>
 
-		{{/each}}
+		{/each}
 	</ul>
 </div>
 

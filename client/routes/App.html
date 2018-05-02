@@ -1,40 +1,40 @@
 <div class="maxwidth">
 
-	<div class="wrapper" data-menu-visible="{{visibleSlideOut}}">
+	<div class="wrapper" data-menu-visible="{visibleSlideOut}">
 
 		<div class="left">
 
 			<div class="appname">Respirators 101</div>
 
 			<div class="main">
-				<Menu :asr></Menu>
+				<Menu asr="{ asr }"></Menu>
 			</div>
 
-			{{#if !visibleSlideOut}}
+			{#if !visibleSlideOut}
 			<div class="debutterfinger"></div>
-			{{/if}}
+			{/if}
 		</div>
 
 
 		<div class="right">
-			{{#if visibleSlideOut}}
+			{#if visibleSlideOut}
 			<div class="anythingelsebutton" on:click="set({visibleSlideOut: false})"></div>
-			{{/if}}
+			{/if}
 
 			<nav>
 				<div class="one">
-					{{ #if categoryParent }}
-					<a class="back button icon-angle-left" href="{{ categoryParent }}"></a>
-					{{ else }}
-						{{#if visibleSlideOut}}
+					{ #if categoryParent }
+					<a class="back button icon-angle-left" href="{ categoryParent }"></a>
+					{ :else }
+						{#if visibleSlideOut}
 						<button class="close icon-close"></button>
-						{{else}}
+						{:else}
 						<button class="menu icon-menu" on:click="set({visibleSlideOut: true})"></button>
-						{{/if}}
-					{{/if}}
+						{/if}
+					{/if}
 				</div>
-				<div class="title">{{ title }}</div>
-				<div class="two"><a class="button home icon-home2" href="{{ asr.makePath('app.home') }}"></a></div>
+				<div class="title">{ title }</div>
+				<div class="two"><a class="button home icon-home2" href="{ asr.makePath('app.home') }"></a></div>
 			</nav>
 
 			<div class="main">
@@ -64,10 +64,11 @@
 				const a = e.path.filter(e => e.tagName === 'A').shift()
 
 				if(a && a.host !== window.location.host) {
-					event.preventDefault();
-					event.stopPropagation();
-					window.open(a.href, '_blank');
+					event.preventDefault()
+					event.stopPropagation() 
+					window.open(a.href, '_blank')
 				}
+
 			})
 
 			// captures event from router

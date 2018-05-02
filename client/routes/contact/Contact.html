@@ -5,7 +5,7 @@
 			<input type="text" bind:value="form.name" />
 
 			<div class="status small">
-				<div hidden="{{!status.name.empty}}" class="bad"> Please fill this out. </div>
+				<div hidden="{!status.name.empty}" class="bad"> Please fill this out. </div>
 			</div>
 		</div>
 
@@ -14,8 +14,8 @@
 			<input type="text" bind:value="form.email" />
 
 			<div class="status small">
-				<div hidden="{{!status.email.empty}}" class="bad"> Please fill this out. </div>
-				<div hidden="{{status.email.empty || status.email.valid}}" class="bad"> Please enter a valid email address. </div>
+				<div hidden="{!status.email.empty}" class="bad"> Please fill this out. </div>
+				<div hidden="{status.email.empty || status.email.valid}" class="bad"> Please enter a valid email address. </div>
 			</div>
 		</div>
 
@@ -24,7 +24,7 @@
 			<textarea bind:value="form.comment"></textarea>
 
 			<div class="status small">
-				<div hidden="{{!status.comment.empty}}" class="bad"> Please fill this out. </div>
+				<div hidden="{!status.comment.empty}" class="bad"> Please fill this out. </div>
 			</div>
 		</div>
 
@@ -35,11 +35,11 @@
 
 		<div class="status general">
 
-			<div hidden="{{!sending}}" class="good"> Sending... </div>
-			<div hidden="{{!sent}}" class="good"> Sent! </div>
-			<div hidden="{{!invalid}}" class="bad"> Please check the inputs marked with red. </div>
-			<div hidden="{{!error}}" class="bad"> Couldn't send right now.  Please try again later. </div>
-			<div hidden="{{connected}}" class="bad"> You are not connected to the internet.  Please connect and try again. </div>
+			<div hidden="{!sending}" class="good"> Sending... </div>
+			<div hidden="{!sent}" class="good"> Sent! </div>
+			<div hidden="{!invalid}" class="bad"> Please check the inputs marked with red. </div>
+			<div hidden="{!error}" class="bad"> Couldn't send right now.  Please try again later. </div>
+			<div hidden="{connected}" class="bad"> You are not connected to the internet.  Please connect and try again. </div>
 			
 		</div>
 	</form>
@@ -81,7 +81,7 @@
 		methods: {
 			sendMessage() {
 
-				const form = this.get('form')
+				const form = this.get().form
 
 				const status = {
 					name: {
