@@ -269,8 +269,6 @@ function convertContentToSvelteComponent({ content, title, tables, tablepress })
 	({ tableReplacements, content } = insertTables(content, tables, tablepress));
 	content = md.render(content);
 
-	// process.exit()
-
 	return `
 
 ${ content }
