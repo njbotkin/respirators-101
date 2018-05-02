@@ -1,0 +1,44 @@
+<div class="bg">
+	
+	<div class="buttons">
+
+		<a class="twa" href="{{ asr.makePath('app.calculate', { id: 'twa' }) }}">
+			<label>Calculate TWA</label>
+			(Time-Weighted Average)
+		</a>
+		<a class="hr" href="{{ asr.makePath('app.calculate', { id: 'hr' }) }}">
+			<label>Calculate Hr</label>
+			(Hazard Ratio)
+		</a>
+
+	</div>
+
+</div>
+
+<style>
+
+	$cyan: #00b1f0;
+	
+	.buttons a {
+		margin: 20px auto;
+		font-size: 3vh;
+		width: 80%;
+		box-sizing: content-box;
+		max-width: 400px;
+		color: $cyan;
+		display: block;
+		border: 3px solid $cyan;
+		padding: 20px 0;
+		border-radius: 20px;
+		text-decoration: none;
+		text-align: center;
+		background: #fff;
+
+		label {
+			text-transform: uppercase;
+			display: block;
+			cursor: inherit;
+		}
+	}
+
+</style>

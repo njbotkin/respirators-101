@@ -35,7 +35,7 @@ function build_wordpress_data_to_svelte() {
 }
 
 function process_chemicals() { 
-	run("node chemical_processor/index.js")
+	run("node chemical-processor/index.js")
 }
 
 async function glob_all() {
@@ -61,6 +61,7 @@ async function prep_build() {
 	await Promise.all([
 		build_twine_data_to_decisions_html(),
 		build_wordpress_data_to_svelte(),
+		process_chemicals(),
 		create_symlinks(),
 		glob_all()
 	])
@@ -165,12 +166,12 @@ function android_all() {
 }
 
 function push_public() {
-	run("rsync -azP public "+creds.user+"@"+creds.host+":"+creds.path+"/app")
+	run("rsync -W public "+creds.user+"@"+creds.host+":"+creds.path+"/app")
 }
 
 function push_app() {
-	let exclude = gitignore('.gitignore', ['.git', 'cordova']).reduce((a, e) => a+' --exclude "'+e+'"', '')
-	run("rsync -azP "+exclude+" ./ "+buildcreds.user+"@"+buildcreds.host+":"+buildcreds.path)
+	let exclude = gitignore('.gitignore', ['.git', 'cordova', 'public']).reduce((a, e) => a+' --exclude "'+e+'"', '')
+	run("rsync -azP --links --safe-links --remote-option=--log-file=/var/log/rsync.log --remote-option=--verbose "+exclude+" ./ "+buildcreds.user+"@"+buildcreds.host+":"+buildcreds.path)
 }
 
 module.exports = {

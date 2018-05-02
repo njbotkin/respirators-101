@@ -183,6 +183,13 @@
 		components: {
 			Chemical
 		},
+		onstate({ changed, current, previous }) {
+			// this fires before oncreate, and on every state change.
+			// the first time it runs, `previous` is undefined
+			if (changed.time) {
+				console.log(`time changed: ${previous && previous.time} -> ${current.time}`);
+			}
+		},
 		data: () => ({
 			search: '',
 			letters
