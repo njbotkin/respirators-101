@@ -112,13 +112,14 @@
 			top: 0;
 			right: 0;
 			bottom: 0;
+			font-size: calc(2.65vh - 2.65px ); 
+			overflow: hidden;
 
 			div {
 				user-select: none;
 				cursor: pointer;
 				width: calc(2.65vh - 2.65px );
 				padding: 0 8px;
-				font-size: calc(2.65vh - 2.65px ); 
 				text-transform: uppercase;
 
 				&.active {
@@ -135,6 +136,7 @@
 	import chemicals from 'data/chemicals.json'
 	import Fuse from 'fuse.js'  
 	import Chemical from './Chemical.html'
+	import documentsize from 'jquery.documentsize' // don't worry it's actually standalone
 
 	// I know this seems hacky.  Sorting chemicals by name is pretty arbitrary, what with the alpha- 1,2,3- o- style prefixes.  I'm not going to build a hideous regex for this.  The data source is already mostly sorted alphabetically, so I'm just picking up on the existing order.
 	const letters = 'abcdefghiklmnopqrstuvwxyz'.split('') // no J chemicals
@@ -173,6 +175,16 @@
 			letters
 		}),
 		oncreate() {
+			// would like to do this with CSS...
+			function adjustAlphabetHeight() {
+				var height = window.document.querySelector('.alphabet').getBoundingClientRect().height
+				var fontSize = height / 25 / 1.5 // height / # of letters / line height
+				document.querySelector('.alphabet').style.fontSize = `${fontSize}px`
+			}
+
+			window.addEventListener('resize', adjustAlphabetHeight)
+			adjustAlphabetHeight()
+
 
 			var mouseDown = false
 
@@ -213,7 +225,7 @@
 
 				if(mouseDown || e.type == 'click') {
 
-					if(target.className.indexOf('letter') > -1) {
+					if(target.className && target.className.indexOf('letter') > -1) {
 
 						var chemicalBox = document.querySelector('.chemicals')
 						var chemicalBoxOffset = chemicalBox.getBoundingClientRect()
