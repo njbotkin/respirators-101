@@ -4,28 +4,30 @@
 	</div>
 </div>
 
-<h2>PURPOSE</h2>
+<div class="content">
+	<h2>PURPOSE</h2>
 
-<p>The My Info tool gathers all the information each user needs into one place for handy reference. Some
-information is entered by the user on this screen. Other information is saved here from the Chemical
-Lookup or Respirator Selection tools.</p>
+	<p>The My Info tool gathers all the information each user needs into one place for handy reference. Some
+	information is entered by the user on this screen. Other information is saved here from the Chemical
+	Lookup or Respirator Selection tools.</p>
 
-<h2>DIRECTIONS</h2>
+	<h2>DIRECTIONS</h2>
 
-<p>My Info helps you to store all the information about your respirators. Job Names are stored along with
-the chemical hazards and measured exposure concentrations.
+	<p>My Info helps you to store all the information about your respirators. Job Names are stored along with
+	the chemical hazards and measured exposure concentrations.
 
-<h2>EXAMPLE</h2>
+	<h2>EXAMPLE</h2>
 
-<div class="jobs">
-	
-	{ #each jobs as job }
-		<div class="job">
-			<div class="name">{ job.name }</div>
-			<div class="date">{ job.date }</div>
-		</div>
-	{ /each }
+	<div class="jobs">
+		
+		{ #each jobs as job }
+			<div class="job">
+				<div class="name">{ job.name }</div>
+				<div class="date">{ job.date }</div>
+			</div>
+		{ /each }
 
+	</div>
 </div>
 
 <script>
@@ -89,3 +91,16 @@ the chemical hazards and measured exposure concentrations.
 	}
 
 </style>
+
+<!--
+job
+
+	name
+	date
+
+	chemical
+		exposure limits (in PPM, I guess) etc
+
+		- connected: my measured concentration 
+
+-->
