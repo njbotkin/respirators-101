@@ -21,6 +21,10 @@ body {
 	bottom: 0;
 }
 
+a {
+	word-break: break-word;
+}
+
 /* cribbed from wikipedia */
 a[href^='http'], a[href^='//'] {
 	background-position: center right;
