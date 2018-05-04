@@ -136,7 +136,6 @@
 	import chemicals from 'data/chemicals.json'
 	import Fuse from 'fuse.js'  
 	import Chemical from './Chemical.html'
-	import documentsize from 'jquery.documentsize' // don't worry it's actually standalone
 
 	// I know this seems hacky.  Sorting chemicals by name is pretty arbitrary, what with the alpha- 1,2,3- o- style prefixes.  I'm not going to build a hideous regex for this.  The data source is already mostly sorted alphabetically, so I'm just picking up on the existing order.
 	const letters = 'abcdefghiklmnopqrstuvwxyz'.split('') // no J chemicals
@@ -226,6 +225,8 @@
 				if(mouseDown || e.type == 'click') {
 
 					if(target.className && target.className.indexOf('letter') > -1) {
+
+						e.preventDefault()
 
 						var chemicalBox = document.querySelector('.chemicals')
 						var chemicalBoxOffset = chemicalBox.getBoundingClientRect()

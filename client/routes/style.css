@@ -84,6 +84,7 @@ img.alignleft {
 img {
 	display: block;
 	max-width: 100%;
+	height: auto;
 }
 img.size-stretch { width: 100%; }
 img.size-50 { width: 50%; }
