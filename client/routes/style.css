@@ -34,28 +34,24 @@ a[href^='http'], a[href^='//'] {
 .content {
 	margin-left: auto;
 	margin-right: auto;
-	padding: 0 16px;
-}
-@media (max-width: 400px) {
-	.content {
-		padding-left: 8px;
-		padding-right: 8px;
-	}
-}
-@media (max-width: 350px) {
-	.content {
-		padding-left: 0;
-		padding-right: 0;
-	}
+	padding: 0 20px;
 }
 
 p {
-	margin: 15px 0;
+	margin: 20px 0;
 
 	.expand {
-		margin-top: -15px;
-		margin-bottom: -15px;
+		margin-top: -25px;
+		margin-bottom: -25px;
 	}
+}
+
+p + .expand {
+	margin-top: 30px;
+}
+
+.expand + p{
+	margin-bottom: 30px;
 }
 
 p:nth-child(even) {
@@ -64,12 +60,29 @@ p:nth-child(even) {
 	}
 }
 
+blockquote {
+	border: 2px solid #2c3b70;
+	font-style: italic;
+	margin: 0 0 0 20px;
+	padding: 20px;
+}
+
 /* image alignment */
 img.aligncenter {
 	margin: 0 auto;
 }
-
-img.size-full {
+img.alignright {
+	float: right;
+}
+img.alignleft {
+	float: left;
+}
+img {
 	display: block;
 	max-width: 100%;
 }
+img.size-stretch { width: 100%; }
+img.size-50 { width: 50%; }
+img.size-65 { width: 65%; }
+img.size-80 { width: 80%; }
+img.size-90 { width: 90%; }

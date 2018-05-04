@@ -8,6 +8,26 @@
 
 </div> 
 
+<div class="rednav-main">
+	<slot></slot>
+</div>
+
+<script>
+	// would like to do this with CSS...
+	export default {
+		oncreate() {
+			window.addEventListener('resize', adjustMainHeight)
+
+			function adjustMainHeight() {
+				var height = document.querySelector('.rednav').getBoundingClientRect().height
+				document.querySelector('.rednav-main').style.top = height + 'px'
+			}
+
+			adjustMainHeight()
+		}
+	}
+</script>
+
 <style>
 
 	@import 'colors';
@@ -26,7 +46,7 @@
 			text-align: center;
 			color: #fff;
 			width: 100%;
-			padding: 10px 20px;
+			padding: 10px 0;
 			line-height: 20px;
 			font-family: "Roboto Condensed";
 		}
@@ -36,7 +56,7 @@
 			width: 50px;
 
 			&.null, &.undefined {
-				display: none;
+				visibility: hidden;
 			}
 
 			a { 
@@ -58,6 +78,16 @@
 				}
 			}
 		}
+	}
+
+	.rednav-main {
+		position: absolute;
+		top: 40px;
+		right: 0;
+		left:0;
+		bottom: 0;
+		overflow-y: scroll;
+		overflow-x: hidden;
 	}
 
 </style>

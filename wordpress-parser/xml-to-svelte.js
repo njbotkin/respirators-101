@@ -268,6 +268,7 @@ function convertContentToSvelteComponent({ content, title, tables, tablepress })
 	({ expandReplacements, content } = fixExpand(content));
 	({ tableReplacements, content } = insertTables(content, tables, tablepress));
 	content = md.render(content);
+	content = deparagraph(content); // markdown is too aggressive, and this is easier than writing a markdown plugin
 
 	return `
 
@@ -326,6 +327,7 @@ const insertTables = (html, tables, tablepress) => {
 	}
 }
 
+const deparagraph = html => html.replace(/<p><Accordion/g, '<Accordion').replace(/<\/Accordion><\/p>/g, '</Accordion>')
 // const newlineBreaks = html => replace(
 // 	/\n/,
 // 	() => `<br>`,

@@ -1,16 +1,10 @@
-<RedNavigation title="Acceptable Respirator Options" prev="back" prev_href="javascript:window.history.go(-1);" />
-
-<div class="content options-list">
-	<svelte:component this={component} />
-</div>
+<RedNavigation title="Acceptable Respirator Options" prev="back" prev_href="javascript:window.history.go(-1);">
+	<div class="content options-list">
+		<svelte:component this={component} />
+	</div>
+</RedNavigation>
 
 <style>
-	
-	@import 'spacing';
-
-	.content {
-		padding: calc($padding/2) $padding;
-	}
 
 	:global(.options-list) {
 

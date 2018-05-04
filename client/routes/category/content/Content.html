@@ -1,8 +1,10 @@
-<RedNavigation {title} {prev} prev_href="{ asr.makePath('app.categorycontent', { id: prev, catid }) }" {next} next_href="{ asr.makePath('app.categorycontent', { id: next, catid }) }" />
+<RedNavigation {title} {prev} prev_href="{ asr.makePath('app.categorycontent', { id: prev, catid }) }" {next} next_href="{ asr.makePath('app.categorycontent', { id: next, catid }) }">
 
-<div class="content">
-	<svelte:component this={component} />
-</div>
+	<div class="content">
+		<svelte:component this={component} />
+	</div>
+
+</RedNavigation>
 
 <script>
 
@@ -18,14 +20,8 @@
 
 <style>
 
-	@import 'spacing';
-
 	h1 {
 		display: none;
 	}
-
-	.content {
-		padding: $padding;
-	}
-
+	
 </style>

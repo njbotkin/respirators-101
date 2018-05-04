@@ -67,6 +67,7 @@ export default {
 			],
 			ignore: [
 				'client/data/chemicals.json',
+				'**/*.json'
 			]
 		}),
 	],
