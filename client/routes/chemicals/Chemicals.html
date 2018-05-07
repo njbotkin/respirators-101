@@ -142,7 +142,7 @@
 	var letter = 0
 
 	for(var c of chemicals) {
-		if(c.c.slice(0, 1).toLowerCase() === letters[letter] && c.c.slice(1, 2) !== '-') {
+		if(c.name.slice(0, 1).toLowerCase() === letters[letter] && c.name.slice(1, 2) !== '-') {
 			c.id = letters[letter]
 			letter++
 		}
@@ -151,12 +151,16 @@
 	var fuse = new Fuse(chemicals, {
 		keys: [
 			{
-				name: 'c',
+				name: 'name',
 				weight: 0.7
 			}, 
 			{
-				name: 's',
+				name: 'synonyms',
 				weight: 0.5
+			},
+			{
+				name: 'cas',
+				weight: 0.9
 			}
 		],
 		shouldSort: true,

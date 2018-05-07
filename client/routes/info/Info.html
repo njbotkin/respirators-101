@@ -31,13 +31,22 @@
 </div>
 
 <script>
+
+	import chemicals from 'data/chemicals.json'
 	
 	export default {
 		data: () => ({
 			jobs: [
 				{
 					name: 'Clean  inside  tank  at  SpedCo',
-					date: new Date('May 11, 2017 13:35')
+					date: new Date('May 11, 2017 13:35'),
+					details: {
+						chemical: chemicals[0],
+						measured: {
+							"8hr": 300,
+
+						}
+					}
 				},
 				{
 					name: 'Painting  primer  on  new  doors ',
@@ -102,5 +111,8 @@ job
 		exposure limits (in PPM, I guess) etc
 
 		- connected: my measured concentration 
+
+
+	
 
 -->

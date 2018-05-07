@@ -26,6 +26,13 @@ function fetch_wordpress_data() {
 	return ssh
 }
 
+function fetch_chemical_data() {
+	run('wget -O chemical-data/chemicals.json https://wwwn.cdc.gov/niosh-npg/assets/chemicals2.json')
+	run('wget -O chemical-data/z1.html https://www.osha.gov/dsg/annotated-pels/tablez-1.html')
+	run('wget -O chemical-data/z2.html https://www.osha.gov/dsg/annotated-pels/tablez-2.html')
+	run('wget -O chemical-data/z3.html https://www.osha.gov/dsg/annotated-pels/tablez-3.html')
+}
+
 function build_twine_data_to_decisions_html() { 
 	run("node twine-parser/output-decisions-html-object.js")
 }
@@ -187,6 +194,8 @@ module.exports = {
 	build_twine_data_to_decisions_html,
 	build_wordpress_data_to_svelte,
 	fetch_wordpress_data,
+	process_chemicals,
+	fetch_chemical_data,
 	dev_server,
 	dev,
 	fetch_blind_polyfill,

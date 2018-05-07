@@ -49,6 +49,8 @@
     "better-emitter": "^1.0.2",
     "better-match": "^1.0.2",
     "better-replace": "^1.0.2",
+    "cheerio": "^1.0.0-rc.2",
+    "cheerio-tableparser": "^1.0.1",
     "cordova": "^7.1.0",
     "del-cli": "^1.1.0",
     "download": "^6.2.5",
@@ -86,6 +88,7 @@
   },
   "devDependencies": {
     "gaze": "^1.1.2",
+    "jsoncomp": "^1.6.1",
     "live-server": "^1.2.0",
     "parse-gitignore": "^0.4.0",
     "rollup-plugin-progress": "^0.4.0",

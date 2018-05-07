@@ -1,0 +1,171 @@
+<div class="el_group">
+	<table>
+
+		{ #if el.regular }
+			<tr>
+				<td><label>Standard</label></td>
+
+				<td class="el regular">
+					
+					{ #if el.regular.ppm }
+						<div class="representation ppm">
+							{ el.regular.ppm }
+							<div class="unit">
+								PPM
+							</div>
+						</div>
+					{ /if }
+					
+					{ #if el.regular.mgm3 }
+						<div class="representation mgm3">
+							{ el.regular.mgm3 }
+							<div class="unit">
+								mg/m<sup>3</sup>
+							</div>
+						</div>
+					{ /if }
+
+				</td>
+			</tr>
+
+		{ /if }
+
+		{ #if el.ceiling }
+
+			<tr>
+
+				<td><label>Ceiling</label></td>
+
+				<td class="el ceiling">
+					
+					{ #if el.ceiling.ppm }
+						<div class="representation ppm">
+							{ el.ceiling.ppm }
+							<div class="unit">
+								PPM
+							</div>
+						</div>
+					{ /if }
+					
+					{ #if el.ceiling.mgm3 }
+						<div class="representation mgm3">
+							{ el.ceiling.mgm3 }
+							<div class="unit">
+								mg/m<sup>3</sup>
+							</div>
+						</div>
+					{ /if }
+
+				</td>
+
+			</tr>
+
+		{ /if }
+
+		{ #if el.stel }
+
+			<tr>
+
+				<td><label>STEL</label></td>
+
+				<td class="el stel">
+					
+					{ #if el.stel.ppm }
+						<div class="representation ppm">
+							{ el.stel.ppm }
+							<div class="unit">
+								PPM
+							</div>
+						</div>
+					{ /if }
+					
+					{ #if el.stel.mgm3 }
+						<div class="representation mgm3">
+							{ el.stel.mgm3 }
+							<div class="unit">
+								mg/m<sup>3</sup>
+							</div>
+						</div>
+					{ /if }
+
+				</td>
+
+			</tr>
+
+		{ /if }
+
+	</table>
+
+	{ #if el.carcinogens || el.notes || el.znotes }<div class="break"></div>{ /if }
+
+	{ #if el.carcinogens }
+		<span class="carcinogens">carcinogens</span>
+	{ /if }
+
+	{ #if el.znotes }
+		{ #each el.znotes as znote }
+			<div class="note">{@html znote }</div>
+		{ /each }
+	{ :elseif el.notes }
+		{ #each el.notes as note }
+			<div class="note">{@html note }</div>
+		{ /each }
+	{ /if }
+
+</div>
+
+<style>
+	
+	.el_group {
+
+		table {
+			border-collapse: collapse;
+			border-style: hidden;
+			border-spacing: 0;
+			width: 100%;
+
+			td {
+				border: 1px solid #ddd;
+				padding: 5px 10px;
+				vertical-align: middle;
+
+				label {
+					font-weight: bold;
+				}
+			}
+		}
+
+		.table-container {
+			border-bottom: 1px solid #ddd;
+		}
+
+		.el {
+
+			.representation {
+				display: inline-block;
+				text-align: center;
+				line-height: 1;
+				vertical-align: bottom;
+
+				.unit  {
+					display: block;
+					font-size: 70%;
+					color: #999;
+
+					sup {
+						vertical-align: top;
+					}
+				}
+			}
+		}
+
+		.note {
+			padding: 10px;
+		}
+
+		.break {
+			border-bottom: 1px solid #ddd;
+		}
+	}
+
+</style>
