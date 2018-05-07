@@ -6,25 +6,7 @@
 				<td><label>Standard</label></td>
 
 				<td class="el regular">
-					
-					{ #if el.regular.ppm }
-						<div class="representation ppm">
-							{ el.regular.ppm }
-							<div class="unit">
-								PPM
-							</div>
-						</div>
-					{ /if }
-					
-					{ #if el.regular.mgm3 }
-						<div class="representation mgm3">
-							{ el.regular.mgm3 }
-							<div class="unit">
-								mg/m<sup>3</sup>
-							</div>
-						</div>
-					{ /if }
-
+					<ExposureLimit el="{ el.regular }" />
 				</td>
 			</tr>
 
@@ -37,25 +19,7 @@
 				<td><label>Ceiling</label></td>
 
 				<td class="el ceiling">
-					
-					{ #if el.ceiling.ppm }
-						<div class="representation ppm">
-							{ el.ceiling.ppm }
-							<div class="unit">
-								PPM
-							</div>
-						</div>
-					{ /if }
-					
-					{ #if el.ceiling.mgm3 }
-						<div class="representation mgm3">
-							{ el.ceiling.mgm3 }
-							<div class="unit">
-								mg/m<sup>3</sup>
-							</div>
-						</div>
-					{ /if }
-
+					<ExposureLimit el="{ el.ceiling }" />
 				</td>
 
 			</tr>
@@ -69,25 +33,7 @@
 				<td><label>STEL</label></td>
 
 				<td class="el stel">
-					
-					{ #if el.stel.ppm }
-						<div class="representation ppm">
-							{ el.stel.ppm }
-							<div class="unit">
-								PPM
-							</div>
-						</div>
-					{ /if }
-					
-					{ #if el.stel.mgm3 }
-						<div class="representation mgm3">
-							{ el.stel.mgm3 }
-							<div class="unit">
-								mg/m<sup>3</sup>
-							</div>
-						</div>
-					{ /if }
-
+					<ExposureLimit el="{ el.stel }" />
 				</td>
 
 			</tr>
@@ -114,6 +60,16 @@
 
 </div>
 
+<script>
+	import ExposureLimit from 'lib/ExposureLimit.html'
+
+	export default {
+		components: {
+			ExposureLimit
+		}
+	}
+</script>
+
 <style>
 	
 	.el_group {
@@ -137,26 +93,6 @@
 
 		.table-container {
 			border-bottom: 1px solid #ddd;
-		}
-
-		.el {
-
-			.representation {
-				display: inline-block;
-				text-align: center;
-				line-height: 1;
-				vertical-align: bottom;
-
-				.unit  {
-					display: block;
-					font-size: 70%;
-					color: #999;
-
-					sup {
-						vertical-align: top;
-					}
-				}
-			}
 		}
 
 		.note {

@@ -22,8 +22,69 @@
 		
 		{ #each jobs as job }
 			<div class="job">
-				<div class="name">{ job.name }</div>
-				<div class="date">{ job.date }</div>
+				<div class="title">
+					<div class="name">{ job.name }</div>
+					<div class="date">{ job.date }</div>
+					<div class="cfx"></div>
+				</div>
+				<div class="content">
+					<table>
+						<thead>
+							<tr>
+								<th></th>
+								<th>
+									My Measured Concentration
+								</th>
+								<th>
+									Industry  Exposure  Limit  (From  Chemical  Lookup  Tool)  
+								</th>
+								<th>
+									Hazard Ratio = Concentration ÷  Limit   
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{ #if job.details.chemical.forms.regular.osha_pel }
+								<tr>
+									<td> OSHA PEL </td>
+									<td>
+										{ #if job.details.measured.regular.osha_pel }
+											<ExposureLimit el="{ job.details.measured.regular.osha_pel }" />
+										{ /if }
+									</td>
+									<td></td>
+									<td></td>
+								</tr>
+							{ /if }
+
+							{ #if job.details.chemical.forms.regular.cal_osha_pel }
+								<tr>
+									<td> Cal/OSHA PEL 8-hour TWA </td>
+									<td>
+										{ #if job.details.measured.regular.cal_osha_pel }
+											<ExposureLimit el="{ job.details.measured.regular.cal_osha_pel }" />
+										{ /if }
+									</td>
+									<td></td>
+									<td></td>
+								</tr>
+							{ /if }
+
+							{ #if job.details.chemical.forms.regular.niosh_rel }
+								<tr>
+									<td> NIOSH REL Up to 10-hour TWA </td>
+									<td>
+										{ #if job.details.measured.regular.niosh_rel }
+											<ExposureLimit el="{ job.details.measured.regular.niosh_rel }" />
+										{ /if }
+									</td>
+									<td></td>
+									<td></td>
+								</tr>
+							{ /if }
+						</tbody>
+					</table>
+				</div>
 			</div>
 		{ /each }
 
@@ -33,28 +94,58 @@
 <script>
 
 	import chemicals from 'data/chemicals.json'
+	import ExposureLimit from 'lib/ExposureLimit.html'
 	
 	export default {
+		components: {
+			ExposureLimit
+		},
 		data: () => ({
 			jobs: [
 				{
 					name: 'Clean  inside  tank  at  SpedCo',
-					date: new Date('May 11, 2017 13:35'),
+					date: 'May 11, 2017 1:35PM',
 					details: {
 						chemical: chemicals[0],
 						measured: {
-							"8hr": 300,
+							"regular": {
+								"niosh_rel": {
+									ppm: 40
+								}
+							}
 
 						}
 					}
 				},
 				{
 					name: 'Painting  primer  on  new  doors ',
-					date: new Date('May 10, 2017 10:15')
+					date: 'May 10, 2017 10:15AM',
+					details: {
+						chemical: chemicals[0],
+						measured: {
+							"regular": {
+								"niosh_rel": {
+									ppm: 40
+								}
+							}
+
+						}
+					}
 				},
 				{
 					name: 'HAZMAT Cleanup at Waverly Oil',
-					date: new Date('May 1, 2017 9:01')
+					date: 'May 1, 2017 9:01AM',
+					details: {
+						chemical: chemicals[0],
+						measured: {
+							"regular": {
+								"niosh_rel": {
+									ppm: 40
+								}
+							}
+
+						}
+					}
 				},
 			]
 		})
@@ -99,6 +190,39 @@
 		color: #999;
 	}
 
+	.job {
+		position: relative;
+		background: #fff;
+		padding: 10px;
+		overflow: hidden;
+		margin: 5px;
+
+		.name {
+			font-weight: bold;
+			float:left;
+		}
+		.date {
+			float:right;
+		}
+		.cfx {
+			clear:both;
+			content: ' ';
+		}
+
+		.content {
+			margin-top: 10px;
+			border-top: 1px solid #ddd;
+			padding: 10px 0 0;
+		}
+
+		table {
+			border-collapse: collapse;
+			td {
+				border: 1px solid #ddd;
+			}
+		}
+	}
+
 </style>
 
 <!--
@@ -113,6 +237,6 @@ job
 		- connected: my measured concentration 
 
 
-	
+
 
 -->

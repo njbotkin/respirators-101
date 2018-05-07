@@ -1,0 +1,36 @@
+
+{ #if el.ppm }
+	<div class="representation ppm">
+		{ el.ppm }
+		<div class="unit">
+			PPM
+		</div>
+	</div>
+{ /if }
+
+{ #if el.mgm3 }
+	<div class="representation mgm3">
+		{ el.mgm3 }
+		<div class="unit">
+			mg/m<sup>3</sup>
+		</div>
+	</div>
+{ /if }
+
+<style>
+.representation {
+	display: inline-block;
+	text-align: center;
+	line-height: 1;
+	vertical-align: bottom;
+	.unit  {
+		display: block;
+		font-size: 70%;
+		color: #999;
+
+		sup {
+			vertical-align: top;
+		}
+	}
+}
+</style>
