@@ -1,4 +1,4 @@
-<div class="chemical" data-open="{ open }">
+<div class="chemical open{open}">
 	<div class="title" on:click="set({ open: !open })" id="{ c.id || '' }">
 		<span class="name">{@html (highlight && c.nameHighlit) || c.name }</span>
 		{ #if c.synonyms }
@@ -188,18 +188,16 @@
 		transition: all .2s;
 	}
 
-	[data-open=false] {
-
+	.openfalse {
 		.contents {
 			display: none;
 		}
 	}
 
-	[data-open=true] {
-
+	.opentrue {
 		background: #fff; 
 		margin: 5px 0;
-		box-shadow: 1px 1px 10px #00000066;
+		box-shadow: 1px 1px 10px #00000011;
 
 		.contents {
 			display: block;
