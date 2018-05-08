@@ -1,0 +1,29 @@
+
+<div class="select">
+
+	{ #each select.options as option }
+		<Option :option bind:current='select.current'></Option>
+	{ /each } 
+
+</div>
+
+<style>
+	.select {
+		margin: 0; 
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+</style>
+
+<script>
+	import Option from './Option.html'
+
+	export default {
+		components: {
+			Option
+		}
+	}
+</script>

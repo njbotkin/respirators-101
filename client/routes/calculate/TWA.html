@@ -1,0 +1,99 @@
+
+<div class="description content" style="margin-top: 20px">
+
+<ol>
+	<li>Use buttons below to enter sample information . </li>
+	<li>Press Calculate button to get TWA </li>
+</ol>
+
+<p>NOTE ON HOURS: Take into account time when workers were NOT exposed to the hazard (for instance, on breaks). If a sample was taken at 11am and then again at 2pm, but the lunch hour was between 12pm and 1pm, the sample taken at 11am only represents 2 hours. </p>
+	
+</div>
+
+<div class="samples">
+	{ #each samples as sample, i }
+		<div class="sample"><label>Sample {i}</label><input type="text" bind:value="sample" /></div>
+	{ /each }
+</div>
+
+<input type="text" bind:value="ppmhours" />
+<input type="text" value="{hours}" disabled="true" />
+
+<div class="twa">{ twa }</div>
+
+<div class="button"> Generate Table </div>
+
+
+<style>
+
+	@import 'colors';
+
+	h3 {
+		text-align: center;
+	}
+
+	.hours {
+		margin: 0 auto;
+		max-width: 300px;
+	}
+
+	:global(.samples) {
+		margin: 0 auto;
+		max-width: 300px;
+
+		.select {
+			height: 350px;
+			.option {
+				width: 80px;
+			}
+		}
+	}
+
+	.button {
+		padding: 30px;
+		background: $blue2;
+		color: #fff;
+		max-width: 300px;
+		margin: 0 auto;
+		cursor: pointer;
+		text-align: center;
+		font-size: 20px;
+		margin-bottom: 40px;
+	}
+
+</style>
+
+
+<script>
+	
+
+export default {
+	components: {
+		
+	},
+	computed: {
+		avg: (samples) => {
+			console.log(samples)
+		}
+	},
+	data: () => ({
+		ppmhours: 0,
+		twa: 0
+	})
+	// data: (hours, samples) => {
+
+	// 	console.log(samples, 'asdasdasd')		
+
+	// 	var samplesArr = []
+	// 	// for(; samples > 0; samples--) {
+	// 	// 	samplesArr.push(0)
+	// 	// }
+
+	// 	return {
+	// 		samples: samplesArr
+	// 	}
+		
+	// }
+}
+
+</script>

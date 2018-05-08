@@ -1,0 +1,147 @@
+
+<div class="description content" style="margin-top: 20px">
+	
+Time-Weighted Average (TWA) is used to measure a worker's daily exposure to hazardous substances, averaged on an 8 or 10 hour workday. The average is calculated from: 
+	
+<ul>
+	<li>air samples taken during the workday</li>
+	<li>the amount of time spent working in those conditions</li>
+</ul>
+
+<h4>To Calculate: </h4>
+
+<ol>
+	<li>Select the length of the workday.</li>
+	<li>Select the number of samples that were taken.</li>
+	<li>Press the ͞Generate Table button. </li>
+</ol>
+
+
+</div>
+
+<div class="hours">
+	<h3>Hours</h3>
+	<ButtonSelect select="{hours}" />
+</div>
+
+<div class="samples">
+	<h3>Number of Samples</h3>
+	<ButtonSelect select="{samples}" />
+</div>
+
+<div class="button"> Generate Table </div>
+
+
+<style>
+
+	@import 'colors';
+
+	h3 {
+		text-align: center;
+	}
+
+	.hours {
+		margin: 0 auto;
+		max-width: 300px;
+	}
+
+	:global(.samples) {
+		margin: 0 auto;
+		max-width: 300px;
+
+		.select {
+			height: 350px;
+			.option {
+				width: 80px;
+			}
+		}
+	}
+
+	.button {
+		padding: 30px;
+		background: $blue2;
+		color: #fff;
+		max-width: 300px;
+		margin: 0 auto;
+		cursor: pointer;
+		text-align: center;
+		font-size: 20px;
+		margin-bottom: 40px;
+	}
+
+</style>
+
+
+<script>
+	
+import ButtonSelect from './ButtonSelect.html'
+
+var currentSamples = ''
+
+export default {
+	components: {
+		ButtonSelect
+	},
+	data: () => ({
+		hours: {
+			current: '8hr',
+			options: [
+				{
+					id: "8hr",
+					name: "8 hours"
+				},
+				{
+					id: "10hr",
+					name: "10 hours"
+				}
+			]
+		},
+		samples: {
+			current: currentSamples,
+			options: [
+				{
+					id: "1",
+					name: "1"
+				},
+				{
+					id: "2",
+					name: "2"
+				},
+				{
+					id: "3",
+					name: "3"
+				},
+				{
+					id: "4",
+					name: "4"
+				},
+				{
+					id: "5",
+					name: "5"
+				},
+				{
+					id: "6",
+					name: "6"
+				},
+				{
+					id: "7",
+					name: "7"
+				},
+				{
+					id: "8",
+					name: "8"
+				},
+				{
+					id: "9",
+					name: "9"
+				},
+				{
+					id: "10",
+					name: "10"
+				}
+			]
+		}
+	})
+}
+
+</script>
