@@ -1,4 +1,4 @@
-<div class="category" data-open="{open}">
+<div class="category open{open}">
 	<div class="clickable category-title">
 		<a href="{ item.path }">{item.title}</a>
 		<div class="chevron icon-angle-left" on:click="clicky( open )"></div>
@@ -17,7 +17,7 @@
 		background: $blue2;
 	}
 
-	.category[data-open=true] .chevron {
+	.category.opentrue .chevron {
 		transform: rotate(90deg);
 	}
 
@@ -54,7 +54,7 @@
 	overflow: hidden;
 }
 
-:global(.category[data-open=false] .expand.initialized) {
+:global(.category.openfalse .expand.initialized) {
 	height: 0 !important;
 }
 

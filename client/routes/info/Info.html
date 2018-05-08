@@ -28,6 +28,7 @@
 					<div class="cfx"></div>
 				</div>
 				<div class="content">
+					<div class="chemical">{ job.details.chemical.name }</div>
 					<table>
 						<thead>
 							<tr>
@@ -48,39 +49,169 @@
 								<tr>
 									<td> OSHA PEL </td>
 									<td>
-										{ #if job.details.measured.regular.osha_pel }
-											<ExposureLimit el="{ job.details.measured.regular.osha_pel }" />
+										{ #if job.details.measured.regular.osha_pel.regular }
+											<ExposureLimit el="{ job.details.measured.regular.osha_pel.regular }" />
 										{ /if }
 									</td>
-									<td></td>
+									<td>
+										{ #if job.details.chemical.forms.regular.osha_pel.regular }
+										<ExposureLimit el="{ job.details.chemical.forms.regular.osha_pel.regular }" />
+										{/if}
+									</td>
 									<td></td>
 								</tr>
+
+								{ #if job.details.chemical.forms.regular.osha_pel.ceiling }
+
+									<tr>
+
+										<td class="sub"><label>Ceiling</label></td>
+										<td>
+										{ #if job.details.measured.regular.osha_pel.ceiling }
+											<ExposureLimit el="{ job.details.measured.regular.osha_pel.ceiling }" />
+										{ /if }</td>
+
+										<td class="el ceiling">
+											<ExposureLimit el="{ job.details.chemical.forms.regular.osha_pel.ceiling } }" />
+										</td>
+										<td></td>
+
+									</tr>
+
+								{ /if }
+
+								{ #if job.details.chemical.forms.regular.osha_pel.stel }
+
+									<tr>
+
+										<td class="sub"><label>STEL</label></td>
+										<td>
+										{ #if job.details.measured.regular.osha_pel.stel }
+											<ExposureLimit el="{ job.details.measured.regular.osha_pel.stel }" />
+										{ /if }</td>
+
+										<td class="el stel">
+											<ExposureLimit el="{ job.details.chemical.forms.regular.osha_pel.stel } }" />
+										</td>
+										<td></td>
+
+									</tr>
+
+								{ /if }
+
 							{ /if }
 
 							{ #if job.details.chemical.forms.regular.cal_osha_pel }
 								<tr>
 									<td> Cal/OSHA PEL 8-hour TWA </td>
 									<td>
-										{ #if job.details.measured.regular.cal_osha_pel }
-											<ExposureLimit el="{ job.details.measured.regular.cal_osha_pel }" />
+										{ #if job.details.measured.regular.cal_osha_pel.regular }
+											<ExposureLimit el="{ job.details.measured.regular.cal_osha_pel.regular }" />
 										{ /if }
 									</td>
-									<td></td>
+									<td>
+										{ #if job.details.chemical.forms.regular.cal_osha_pel.regular }
+											<ExposureLimit el="{ job.details.chemical.forms.regular.cal_osha_pel.regular }" />
+										{ /if }
+									</td>
+										
 									<td></td>
 								</tr>
+
+								{ #if job.details.chemical.forms.regular.cal_osha_pel.ceiling }
+
+									<tr>
+
+										<td class="sub"><label>Ceiling</label></td>
+										<td>
+										{ #if job.details.measured.regular.cal_osha_pel.ceiling }
+											<ExposureLimit el="{ job.details.measured.regular.cal_osha_pel.ceiling }" />
+										{ /if }</td>
+
+										<td class="el ceiling">
+											<ExposureLimit el="{ job.details.chemical.forms.regular.cal_osha_pel.ceiling }" />
+										</td>
+
+										<td></td>
+
+									</tr>
+
+								{ /if }
+
+								{ #if job.details.chemical.forms.regular.cal_osha_pel.stel }
+
+									<tr>
+
+										<td class="sub"><label>STEL</label></td>
+										<td>
+										{ #if job.details.measured.regular.cal_osha_pel.stel }
+											<ExposureLimit el="{ job.details.measured.regular.cal_osha_pel.stel }" />
+										{ /if }</td>
+
+										<td class="el stel">
+											<ExposureLimit el="{ job.details.chemical.forms.regular.cal_osha_pel.stel }" />
+										</td>
+										<td></td>
+
+									</tr>
+
+								{ /if }
 							{ /if }
 
 							{ #if job.details.chemical.forms.regular.niosh_rel }
 								<tr>
 									<td> NIOSH REL Up to 10-hour TWA </td>
 									<td>
-										{ #if job.details.measured.regular.niosh_rel }
-											<ExposureLimit el="{ job.details.measured.regular.niosh_rel }" />
+										{ #if job.details.measured.regular.niosh_rel.regular }
+											<ExposureLimit el="{ job.details.measured.regular.niosh_rel.regular }" />
 										{ /if }
 									</td>
-									<td></td>
+									<td>
+										{ #if job.details.chemical.forms.regular.niosh_rel.regular }
+											<ExposureLimit el="{ job.details.chemical.forms.regular.niosh_rel.regular }" />
+										{ /if }
+									</td>
+										
 									<td></td>
 								</tr>
+
+								{ #if job.details.chemical.forms.regular.niosh_rel.ceiling }
+
+									<tr>
+
+										<td class="sub"><label>Ceiling</label></td>
+										<td>
+										{ #if job.details.measured.regular.niosh_rel.ceiling }
+											<ExposureLimit el="{ job.details.measured.regular.niosh_rel.ceiling }" />
+										{ /if }</td>
+
+										<td class="el ceiling">
+											<ExposureLimit el="{ job.details.chemical.forms.regular.niosh_rel.ceiling }" />
+										</td>
+										<td></td>
+
+									</tr>
+
+								{ /if }
+
+								{ #if job.details.chemical.forms.regular.niosh_rel.stel }
+
+									<tr>
+
+										<td class="sub"><label>STEL</label></td>
+										<td>
+										{ #if job.details.measured.regular.niosh_rel.stel }
+											<ExposureLimit el="{ job.details.measured.regular.niosh_rel.stel }" />
+										{ /if }</td>
+
+										<td class="el stel">
+											<ExposureLimit el="{ job.details.chemical.forms.regular.niosh_rel.stel }" />
+										</td>
+										<td></td>
+
+									</tr>
+
+								{ /if }
 							{ /if }
 						</tbody>
 					</table>
@@ -95,6 +226,8 @@
 
 	import chemicals from 'data/chemicals.json'
 	import ExposureLimit from 'lib/ExposureLimit.html'
+
+	console.log(chemicals[0].forms.regular)
 	
 	export default {
 		components: {
@@ -109,8 +242,14 @@
 						chemical: chemicals[0],
 						measured: {
 							"regular": {
+								"osha_pel": {
+									"regular": {
+										ppm: 40
+									}
+								},
+								"cal_osha_pel": {
+								},
 								"niosh_rel": {
-									ppm: 40
 								}
 							}
 
@@ -121,11 +260,17 @@
 					name: 'Painting  primer  on  new  doors ',
 					date: 'May 10, 2017 10:15AM',
 					details: {
-						chemical: chemicals[0],
+						chemical: chemicals[500],
 						measured: {
 							"regular": {
+								"osha_pel": {
+								},
+								"cal_osha_pel": {
+									"stel": {
+										ppm: 1
+									}
+								},
 								"niosh_rel": {
-									ppm: 40
 								}
 							}
 
@@ -136,11 +281,17 @@
 					name: 'HAZMAT Cleanup at Waverly Oil',
 					date: 'May 1, 2017 9:01AM',
 					details: {
-						chemical: chemicals[0],
+						chemical: chemicals[200],
 						measured: {
 							"regular": {
+								"osha_pel": {
+								},
+								"cal_osha_pel": {
+								},
 								"niosh_rel": {
-									ppm: 40
+									"regular": {
+										mgm3: .2
+									}
 								}
 							}
 
@@ -219,6 +370,9 @@
 			border-collapse: collapse;
 			td {
 				border: 1px solid #ddd;
+				&.sub {
+					text-align: right;
+				}
 			}
 		}
 	}

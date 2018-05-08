@@ -1,20 +1,23 @@
+{ #if el }
 
-{ #if el.ppm }
-	<div class="representation ppm">
-		{ el.ppm }
-		<div class="unit">
-			PPM
+	{ #if el.ppm }
+		<div class="representation ppm">
+			{ el.ppm }
+			<div class="unit">
+				PPM
+			</div>
 		</div>
-	</div>
-{ /if }
+	{ /if }
 
-{ #if el.mgm3 }
-	<div class="representation mgm3">
-		{ el.mgm3 }
-		<div class="unit">
-			mg/m<sup>3</sup>
+	{ #if el.mgm3 }
+		<div class="representation mgm3">
+			{ el.mgm3 }
+			<div class="unit">
+				mg/m<sup>3</sup>
+			</div>
 		</div>
-	</div>
+	{ /if }
+
 { /if }
 
 <style>

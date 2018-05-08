@@ -1,6 +1,6 @@
 <div class="maxwidth">
 
-	<div class="wrapper" data-menu-visible="{visibleSlideOut}">
+	<div class="wrapper out{visibleSlideOut}">
 
 		<div class="left">
 
@@ -61,7 +61,9 @@
 			// use event bubbling to make all external links open in new tab
 			this.options.target.addEventListener('click', e => {
 
-				const a = e.path.filter(e => e.tagName === 'A').shift()
+				if(e.target.tagName !== 'a') return true
+
+				const a = e
 
 				if(a && a.host !== window.location.host && a.href.indexOf('javascript:') === -1) {
 					console.log(a.href.indexOf('javascript:'))
@@ -141,11 +143,11 @@
 		width: calc(100% + 300px);
 		transition: all .2s ease;
 
-		&[data-menu-visible=false] {
+		&.outfalse {
 			left: -300px;
 		}
 
-		&[data-menu-visible=true] {
+		&.outtrue {
 			left: 0;
 
 			.left {

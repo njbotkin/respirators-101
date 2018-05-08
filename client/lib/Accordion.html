@@ -8,9 +8,11 @@
 			<div class="icon icon-add_circle"></div>
 			{/if}
 	</div>
-	<div class="contents" data-open="{open}">
+	{#if open}
+	<div class="contents">
 		<slot></slot>
 	</div>
+	{/if}
 </div>
 
 <style>
@@ -55,10 +57,6 @@
 	p:last-child {
 		margin-bottom: 0;
 	}
-}
-
-[data-open=false] {
-	display: none;
 }
 
 </style>

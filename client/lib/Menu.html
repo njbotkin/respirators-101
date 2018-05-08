@@ -58,10 +58,10 @@
 		},
 		oncreate() {
 
-			document.querySelectorAll('.expand').forEach(e => {
+			for(var e of document.querySelectorAll('.expand')) {
 				e.style.height = e.clientHeight + 'px'
 				e.setAttribute('class', 'expand initialized')
-			})
+			}
 
 		},
 		// until https://github.com/sveltejs/svelte/issues/881 lands, this is the best way to do dynamic refs that I can think of
@@ -69,9 +69,9 @@
 			var expands = []
 			return { 
 				closeAllExpands() {
-					expands.forEach(e => {
+					for(var e of expands) {
 						e._set({ open: false })
-					})
+					}
 				},
 				registerExpand(expand) {
 					expands.push(expand)
