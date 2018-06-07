@@ -7,16 +7,19 @@ export default () => ({
 	template: TWA,
 	querystringParameters: [ `hours`, `samples` ],
 
-	resolve(data, params) {
+	resolve(data, params) { 
 		var samplesArr = []
 		if(params.samples) {
 			for(; params.samples > 0; params.samples--) {
-				samplesArr.push(0)
+				samplesArr.push({
+					ppm: '',
+					hours: ''
+				})
 			}
 		}
 		return Promise.resolve({
 			hours: params.hours,
 			samples: samplesArr
 		})
-	},
+	}
 })
