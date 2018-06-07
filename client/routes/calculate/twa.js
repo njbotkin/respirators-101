@@ -8,10 +8,11 @@ export default () => ({
 	querystringParameters: [ `hours`, `samples` ],
 
 	resolve(data, params) { 
-		var samplesArr = []
+		var samples = []
+
 		if(params.samples) {
 			for(; params.samples > 0; params.samples--) {
-				samplesArr.push({
+				samples.push({
 					ppm: '',
 					hours: ''
 				})
@@ -19,7 +20,7 @@ export default () => ({
 		}
 		return Promise.resolve({
 			hours: params.hours,
-			samples: samplesArr
+			samples
 		})
 	}
 })

@@ -13,17 +13,19 @@
 <table>
 	<thead>
 		<tr>
-			<th></th><th>PPM <br>Measured</th><th></th><th>Hours <br>Represented</th>
+			<th></th><th>PPM <br>Measured</th><th></th><th>Hours <br>Represented</th><th></th><th>PPM-hours</th>
 		</tr>
 	</thead>
 	<tbody>
 
 	{ #each samples as sample, i }
 		<tr class="sample">
-			<td><label>Sample {i + 1}</label></td>
+			<td><label><span class="optional">Sample </span>{i + 1}</label></td>
 			<td><input type="text" bind:value="sample.ppm" placeholder="0" /></td>
 			<td>x</td>
 			<td><input type="text" bind:value="sample.hours" placeholder="0" /></td>
+			<td>=</td>
+			<td><div class="result">{ round(sampleTotals[i]) }</div></td>
 		</tr>
 	{ /each }
 		
@@ -36,26 +38,27 @@
 <div class="equation">
 
 	<div class="operand">
-		<div class="value">{totalppmhours}</div>
+		<div class="value">{ round(totalPPMHours) }</div>
 		<div class="unit">Total <br>PPM-hours</div>
 	</div>
 
 	<div class="operator">&#247;</div>
 
 	<div class="operand">
-		<div class="value">{totalhours}</div>
+		<div class="value">{ round(totalHours) }</div>
 		<div class="unit">Total <br>hours</div>
 	</div>
 
 	<div class="operator">=</div>
 
 	<div class="operand">
-		<div class="value">{twa}</div>
+		<div class="value">{ round(twa) }</div>
 		<div class="unit">TWA</div>
 	</div>
 
 </div>
 
+<div class="button valid{ valid }"> Use TWA </div>
 
 <style>
 
@@ -89,6 +92,18 @@
 				border: 1px solid #aaa;
 			}
 
+			.result {
+				display: inline-block;
+				font-size: 110%;
+				margin: 0 10px;
+			}
+
+		}
+	}
+
+	@media screen and (max-width: 400px) {
+		.optional {
+			display: none;
 		}
 	}
 
@@ -126,6 +141,26 @@
 		}
 	}
 
+	.button {
+
+		padding: 30px;
+		display: block;
+		text-decoration: none;
+		max-width: 300px;
+		margin: 20px auto;
+		cursor: default;
+		background: #aaa;
+		color: #666;
+		text-align: center;
+		font-size: 20px;
+
+		&.validtrue {
+			cursor: pointer;
+			background: $blue2;
+			color: #fff;
+		}
+	}
+
 </style>
 
 
@@ -133,25 +168,14 @@
 
 export default {
 	computed: {
-		totalppmhours: ({ samples }) => { 
-			var total = 0;
-			for(var sample of samples) {
-				if(!isNaN(sample.ppm) && !isNaN(sample.hours)) {
-					total += sample.ppm * sample.hours
-				}
-			}
-			return total
-		},
-		totalhours: ({ samples }) => { 
-			var total = 0;
-			for(var sample of samples) {
-				if(!isNaN(sample.hours)) {
-					total += Number(sample.hours)
-				}
-			}
-			return total
-		},
-		twa: ({ totalppmhours, totalhours }) => (Math.round((totalppmhours / totalhours) * 100) / 100) || 0 // round to 2 decimal places
+		sampleTotals: ({ samples }) => samples.map(s => !isNaN(s.ppm) && !isNaN(s.hours) ? s.ppm * s.hours : 0),
+		valid: ({ sampleTotals }) => { for(var t of sampleTotals) { if(t === 0) return false; } return true; },
+		totalPPMHours: ({ sampleTotals }) => sampleTotals.reduce((a, t) => a + t, 0),
+		totalHours: ({ samples }) => samples.reduce((a, s) => !isNaN(s.hours) ? a + Number(s.hours) : a, 0),
+		twa: ({ totalPPMHours, totalHours }) => totalPPMHours / totalHours || 0 
+	},
+	helpers: {
+		round(v) { return Math.round(v * 100) / 100 }
 	}
 }
 
