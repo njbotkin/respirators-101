@@ -22,10 +22,10 @@
 		<tr class="sample">
 			<td><label><span class="optional">Sample </span>{i + 1}</label></td>
 			<td><input type="text" bind:value="sample.ppm" placeholder="0" /></td>
-			<td>x</td>
+			<td>&#215;</td>
 			<td><input type="text" bind:value="sample.hours" placeholder="0" /></td>
 			<td>=</td>
-			<td><div class="result">{ round(sampleTotals[i]) }</div></td>
+			<td><div class="result">{ round(sampleProducts[i]) }</div></td>
 		</tr>
 	{ /each }
 		
@@ -168,14 +168,14 @@
 
 export default {
 	computed: {
-		sampleTotals: ({ samples }) => samples.map(s => !isNaN(s.ppm) && !isNaN(s.hours) ? s.ppm * s.hours : 0),
-		valid: ({ sampleTotals }) => { for(var t of sampleTotals) { if(t === 0) return false; } return true; },
-		totalPPMHours: ({ sampleTotals }) => sampleTotals.reduce((a, t) => a + t, 0),
+		sampleProducts: ({ samples }) => samples.map(s => !isNaN(s.ppm) && !isNaN(s.hours) ? s.ppm * s.hours : 0),
+		valid: ({ sampleProducts }) => { for(var t of sampleProducts) { if(t === 0) return false; } return true; },
+		totalPPMHours: ({ sampleProducts }) => sampleProducts.reduce((a, t) => a + t, 0),
 		totalHours: ({ samples }) => samples.reduce((a, s) => !isNaN(s.hours) ? a + Number(s.hours) : a, 0),
 		twa: ({ totalPPMHours, totalHours }) => totalPPMHours / totalHours || 0 
 	},
 	helpers: {
-		round(v) { return Math.round(v * 100) / 100 }
+		round: (v) => Math.round(v * 100) / 100 // 2 decimal places
 	}
 }
 

@@ -1,0 +1,120 @@
+
+<div class="description content" style="margin-top: 20px">
+
+<p>Maximum use concentration (MUC) is the maximum atmospheric concentration of a hazardous substance from which an employee can be expected to be protected when wearing a respirator. It is determined by multiplying the assigned protection factor (APF) of the respirator or class of respirators by the exposure limit* of the hazardous substance. </p>
+	
+</div>
+
+<h3>MUC Equation:</h3>
+
+<div class="equation">
+
+	<div class="operand">
+		<div class="value"><input type="text" bind:value="apf" placeholder="0"></div>
+		<div class="unit">APF</div>
+	</div>
+
+	<div class="operator">&#215;</div>
+
+	<div class="operand">
+		<div class="value"><input type="text" bind:value="exposureLimit" placeholder="0"></div>
+		<div class="unit">Exposure limit</div>
+	</div>
+
+	<div class="operator">=</div>
+
+	<div class="operand">
+		<div class="value">{ round(muc) }</div>
+		<div class="unit">MUC</div>
+	</div>
+
+</div>
+
+<div class="button valid{ valid }"> Use MUC </div>
+
+<style>
+
+	@import 'colors';
+
+	h3 {
+		text-align: center;
+	}
+
+	.equation {
+		text-align: center;
+
+		> div {
+			display: inline-block;
+			margin: 0 6px;
+			vertical-align: middle;
+		}
+
+		.operand {
+			.value, .unit {
+				display: block;
+				text-align: center;
+			}
+
+			.value {
+				font-size: 150%;
+				input {
+					font-size: 100%;
+					line-height: 40px;
+					padding: 0 10px;
+					width: 60px;
+					border: 1px solid #aaa;
+				}
+			}
+			.unit {
+				margin-top: 5px;
+				color: #666;
+				line-height: 1.2;
+				font-size: 90%;
+			}
+		}
+
+		.operator {
+			font-size: 120%;
+		}
+	}
+
+	.button {
+
+		padding: 30px;
+		display: block;
+		text-decoration: none;
+		max-width: 300px;
+		margin: 20px auto;
+		cursor: default;
+		background: #aaa;
+		color: #666;
+		text-align: center;
+		font-size: 20px;
+
+		&.validtrue {
+			cursor: pointer;
+			background: $blue2;
+			color: #fff;
+		}
+	}
+
+</style>
+
+
+<script>
+
+export default {
+	data: () => ({
+		exposureLimit: '',
+		apf: '',
+	}),
+	computed: {
+		muc: ({ apf, exposureLimit }) => apf * exposureLimit || 0,
+		valid: ({ apf, exposureLimit}) => !(isNaN(apf) || isNaN(exposureLimit) || apf.trim().length === 0 || exposureLimit.trim().length === 0)
+	},
+	helpers: {
+		round: (v) => Math.round(v * 100) / 100 // 2 decimal places
+	}
+}
+
+</script>

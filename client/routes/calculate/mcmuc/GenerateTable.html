@@ -1,0 +1,124 @@
+
+<div class="description content" style="margin-top: 20px">
+	
+<p>Maximum use concentration (MUC) is the maximum atmospheric concentration of a hazardous substance from which an employee can be expected to be protected when wearing a respirator. To calculate a multi-component MUC: </p>
+
+<ol>
+	<li>Select the number of components below . </li>
+	<li>Press the ͞Generate Table͟ button. </li>
+</ol>
+
+</div>
+
+<div class="concentrations">
+	<h3>Number of concentrations</h3>
+	<ButtonSelect bind:select="concentrations" />
+</div>
+
+<a class="button valid{ valid }" href="{ valid ? asr.makePath('app.calculate-mcmuc', {concentrations: concentrations.current.id}) : 'javascript:void(0)' }"> Generate Table </a>
+
+
+<style>
+
+	@import 'colors';
+
+	h3 {
+		text-align: center;
+	}
+
+	:global(.concentrations) {
+		margin: 0 auto;
+		max-width: 300px;
+
+		.select {
+			height: 350px;
+			.option {
+				width: 80px;
+			}
+		}
+	}
+
+	.button {
+		padding: 30px;
+		display: block;
+		text-decoration: none;
+		max-width: 300px;
+		margin: 0 auto;
+		cursor: default;
+		background: #aaa;
+		color: #666;
+		text-align: center;
+		font-size: 20px;
+		margin-bottom: 40px;
+
+		&.validtrue {
+			cursor: pointer;
+			background: $blue2;
+			color: #fff;
+		}
+	}
+
+</style>
+
+
+<script>
+	
+import ButtonSelect from '../ButtonSelect.html'
+
+export default {
+	components: {
+		ButtonSelect
+	},
+	computed: {
+		valid: ({concentrations}) => concentrations.current.id !== undefined
+	},
+	data: () => ({
+		concentrations: {
+			current: '',
+			options: [
+				{
+					id: "1",
+					name: "1"
+				},
+				{
+					id: "2",
+					name: "2"
+				},
+				{
+					id: "3",
+					name: "3"
+				},
+				{
+					id: "4",
+					name: "4"
+				},
+				{
+					id: "5",
+					name: "5"
+				},
+				{
+					id: "6",
+					name: "6"
+				},
+				{
+					id: "7",
+					name: "7"
+				},
+				{
+					id: "8",
+					name: "8"
+				},
+				{
+					id: "9",
+					name: "9"
+				},
+				{
+					id: "10",
+					name: "10"
+				}
+			]
+		}
+	})
+}
+
+</script>

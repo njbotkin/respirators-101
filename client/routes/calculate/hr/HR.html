@@ -1,0 +1,126 @@
+
+<div class="description content" style="margin-top: 20px">
+
+<ol>
+	<li>Enter the time-weighted average (TWA) for the contaminant </li>
+	<li>Enter the NIOSH REL or other applicable exposure limit. </li>
+	<li>Press the Calculate button to calculate Hazard Ratio </li>
+</ol>
+
+<p>NOTE: The TWA and exposure limit values MUST have the same hourly base (if an 8 hr TWA, then the exposure limit should be for 8 hrs).</p>
+	
+</div>
+
+<h3>HR Equation:</h3>
+
+<div class="equation">
+
+	<div class="operand">
+		<div class="value"><input type="text" bind:value="twa" placeholder="0"></div>
+		<div class="unit">TWA</div>
+	</div>
+
+	<div class="operator">&#247;</div>
+
+	<div class="operand">
+		<div class="value"><input type="text" bind:value="exposureLimit" placeholder="0"></div>
+		<div class="unit">Exposure limit</div>
+	</div>
+
+	<div class="operator">=</div>
+
+	<div class="operand">
+		<div class="value">{ round(hr) }</div>
+		<div class="unit">HR</div>
+	</div>
+
+</div>
+
+<div class="button valid{ valid }"> Use HR </div>
+
+<style>
+
+	@import 'colors';
+
+	h3 {
+		text-align: center;
+	}
+
+	.equation {
+		text-align: center;
+
+		> div {
+			display: inline-block;
+			margin: 0 6px;
+			vertical-align: middle;
+		}
+
+		.operand {
+			.value, .unit {
+				display: block;
+				text-align: center;
+			}
+
+			.value {
+				font-size: 150%;
+				input {
+					font-size: 100%;
+					line-height: 40px;
+					padding: 0 10px;
+					width: 60px;
+					border: 1px solid #aaa;
+				}
+			}
+			.unit {
+				margin-top: 5px;
+				color: #666;
+				line-height: 1.2;
+				font-size: 90%;
+			}
+		}
+
+		.operator {
+			font-size: 120%;
+		}
+	}
+
+	.button {
+
+		padding: 30px;
+		display: block;
+		text-decoration: none;
+		max-width: 300px;
+		margin: 20px auto;
+		cursor: default;
+		background: #aaa;
+		color: #666;
+		text-align: center;
+		font-size: 20px;
+
+		&.validtrue {
+			cursor: pointer;
+			background: $blue2;
+			color: #fff;
+		}
+	}
+
+</style>
+
+
+<script>
+
+export default {
+	data: () => ({
+		exposureLimit: '',
+		twa: '',
+	}),
+	computed: {
+		hr: ({ twa, exposureLimit }) => twa / exposureLimit || 0,
+		valid: ({ twa, exposureLimit}) => !(isNaN(twa) || isNaN(exposureLimit) || twa.trim().length === 0 || exposureLimit.trim().length === 0)
+	},
+	helpers: {
+		round: (v) => Math.round(v * 100) / 100 // 2 decimal places
+	}
+}
+
+</script>
