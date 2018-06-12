@@ -38,22 +38,8 @@
 <div class="equation">
 
 	<div class="operand">
-		<div class="value">{ round(averageRatio) }</div>
-		<div class="unit">Average of <br>component ratios</div>
-	</div>
-
-	<div class="operator">&#247;</div>
-
-	<div class="operand">
-		<div class="value"><input type="text" bind:value="exposureLimit" placeholder="0"></div>
-		<div class="unit">Exposure limit</div>
-	</div>
-
-	<div class="operator">=</div>
-
-	<div class="operand">
-		<div class="value">{ round(mcmuc) }</div>
-		<div class="unit">MCMUC</div>
+		<div class="value">{ round(ratioSum) }</div>
+		<div class="unit">Sum of component ratios (MCMUC)</div>
 	</div>
 
 </div>
@@ -178,14 +164,21 @@ function isNumber(v) {
 
 export default {
 	data: () => ({
-		exposureLimit: ''
+		// exposureLimit: ''
 	}),
 	computed: {
 		validConcentrations: ({ concentrations }) => concentrations.filter(c => isNumber(c.ppm) && isNumber(c.muc)),
 		componentRatios: ({ validConcentrations }) => validConcentrations.map( c => c.ppm / c.muc ),
-		valid: ({ componentRatios, exposureLimit }) => { for(var t of componentRatios) { if(t === 0) return false; } if(!exposureLimit) return false; return true; },
-		averageRatio: ({ componentRatios, validConcentrations }) => componentRatios.reduce((a, t) => a + t, 0) / validConcentrations.length,
-		mcmuc: ({ averageRatio, exposureLimit }) => isNumber(exposureLimit) ? (averageRatio / exposureLimit || 0) : 0
+		valid: ({ componentRatios, validConcentrations, concentrations, ratioSum }) => { 
+			for(var t of componentRatios) { 
+				if(t === 0) return false 
+			} 
+			if(validConcentrations.length !== concentrations.length) return false
+			if(ratioSum === Infinity) return false
+			return true 
+		},
+		ratioSum: ({ componentRatios }) => componentRatios.reduce((a, t) => a + t, 0),
+		// mcmuc: ({ averageRatio, exposureLimit }) => isNumber(exposureLimit) ? (averageRatio / exposureLimit || 0) : 0
 	},
 	helpers: {
 		round: (v) => (Math.round(v * 100) / 100) || 0 // 2 decimal places

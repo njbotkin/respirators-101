@@ -25,6 +25,8 @@
 				<div class="one">
 					{ #if categoryParent }
 					<a class="back button icon-angle-left" href="{ categoryParent }"></a>
+					{ :elseif backButton }
+					<a class="back button icon-angle-left" href="javascript:window.history.go(-1);"></a>
 					{ :else }
 						{#if visibleSlideOut}
 						<button class="close icon-close"></button>
@@ -66,7 +68,7 @@
 				const a = e
 
 				if(a && a.host !== window.location.host && a.href.indexOf('javascript:') === -1) {
-					console.log(a.href.indexOf('javascript:'))
+					// console.log(a.href.indexOf('javascript:'))
 					event.preventDefault()
 					event.stopPropagation() 
 					window.open(a.href, '_blank')
@@ -100,8 +102,13 @@
 
 				// back button for category contents
 				if(params.catid && params.id) {
+					this.set({ backButton: false })
 					this.set({ categoryParent: this._state.asr.makePath('app.category', { catid: params.catid }) })
+				} else if(e.state.route.slice(0, 9) === 'calculate' && e.state.route.length > 9) {
+					this.set({ backButton: true })
+					this.set({ categoryParent: false })
 				} else {
+					this.set({ backButton: false })
 					this.set({ categoryParent: false })
 				}
 

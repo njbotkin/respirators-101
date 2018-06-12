@@ -32,6 +32,9 @@
 	</tbody>
 </table>
 
+{ #if validSamples.length === samples.length && (totalHours > hours || totalHours < hours) }
+	<div class="wrong-hours">The total hours of the samples you've entered is { totalHours > hours ? 'greater' : 'less' } than the length of workday you selected ({hours} hours).  If you need, <a href="{asr.makePath('app.generate-table')}">go back</a> and change your workday length.</div>
+{ /if }
 
 <h3>TWA Equation:</h3>
 
@@ -141,6 +144,17 @@
 		}
 	}
 
+	.wrong-hours {
+		background: $red3;
+		color: #fff;
+		padding: 15px;
+		font-size: 80%;
+
+		a {
+			color: #fff;
+		}
+	}
+
 	.button {
 
 		padding: 30px;
@@ -166,12 +180,24 @@
 
 <script>
 
+function isNumber(v) {
+	return !(isNaN(v) || v.trim().length === 0)
+}
+
 export default {
 	computed: {
-		sampleProducts: ({ samples }) => samples.map(s => !isNaN(s.ppm) && !isNaN(s.hours) ? s.ppm * s.hours : 0),
-		valid: ({ sampleProducts }) => { for(var t of sampleProducts) { if(t === 0) return false; } return true; },
+		validSamples: ({ samples }) => samples.filter(s => isNumber(s.ppm) && isNumber(s.hours)),
+		sampleProducts: ({ samples }) => samples.map(s => isNumber(s.ppm) && isNumber(s.hours) ? s.ppm * s.hours : 0),
+		valid: ({ sampleProducts, totalHours, hours, twa }) => { 
+			if(totalHours > hours || totalHours < hours) return false
+			for(var t of sampleProducts) { 
+				if(t === 0) return false
+			} 
+			if(twa === Infinity) return false
+			return true;
+		},
 		totalPPMHours: ({ sampleProducts }) => sampleProducts.reduce((a, t) => a + t, 0),
-		totalHours: ({ samples }) => samples.reduce((a, s) => !isNaN(s.hours) ? a + Number(s.hours) : a, 0),
+		totalHours: ({ samples }) => samples.reduce((a, s) => isNumber(s.hours) ? a + Number(s.hours) : a, 0),
 		twa: ({ totalPPMHours, totalHours }) => totalPPMHours / totalHours || 0 
 	},
 	helpers: {
