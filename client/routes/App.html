@@ -47,9 +47,9 @@
 	</div>
 
 	{ #if inSelection }
-	<div class="in-selection">
+	<a class="in-selection" href="{ asr.makePath('app.respirator-picker', {id: inSelection})}">
 		Return to Respirator Selection
-	</div>
+	</a>
 	{ /if }
 
 </div>
@@ -120,7 +120,9 @@
 
 				this.set({visibleSlideOut: false})
 
-				this.set({inSelection: getStep()})
+				console.log(e)
+
+				this.set({inSelection: e.state.name !== 'app.respirator-picker' ? getStep() : false})
 			}
 
 			// captures event from router
@@ -273,7 +275,15 @@
 		position: absolute;
 		z-index: 200;
 		bottom: 0;
-		background: $blue1;
+		background: $blue2;
+		padding: 10px;
+		color: #fff;
+		text-decoration: none;
+		padding-left: 40px;
+		background-image: url(icons/respirator.png);
+		background-size: 10%;
+		background-position: 8px center;
+		background-repeat: no-repeat;
 	}
 
 </style>

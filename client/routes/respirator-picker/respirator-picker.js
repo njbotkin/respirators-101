@@ -38,6 +38,7 @@ export default ({ makePath }) => ({
 		return Promise.resolve({
 			html: replaceDecisionLinkUrls(passage.html, makePath),
 			title: passage.title,
+			prettyTitle: passage.title.match(/^([^<(:]+)/).pop(),
 			prev: passage.prev
 		})
 	},
