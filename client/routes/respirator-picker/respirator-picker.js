@@ -3,6 +3,8 @@ import RespiratorPicker from './RespiratorPicker.html'
 import decisionData from 'data/decision-data.json'
 import replaceDecisionLinkUrls from 'lib/replace-decision-link-urls'
 
+import { setStep } from 'lib/storage'
+
 const { start, decisions } = decisionData
 
 export default ({ makePath }) => ({
@@ -15,9 +17,9 @@ export default ({ makePath }) => ({
 		id: start,
 	},
 	resolve(data, params) {
-		const html = decisions[params.id]
+		const passage = decisions[params.id]
 
-		if (!html) {
+		if (!passage) {
 			return Promise.reject({
 				redirectTo: {
 					name: `app.not-found`,
@@ -29,11 +31,14 @@ export default ({ makePath }) => ({
 			})
 		}
 
-		const title = html.match(/<h2>([^<(:]+)/).pop()
+		// const title = html.match(/<h2>([^<(:]+)/).pop()
+
+		setStep(params.id)
 
 		return Promise.resolve({
-			html: replaceDecisionLinkUrls(html, makePath),
-			title
+			html: replaceDecisionLinkUrls(passage.html, makePath),
+			title: passage.title,
+			prev: passage.prev
 		})
 	},
 })

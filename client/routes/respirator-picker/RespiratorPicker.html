@@ -1,4 +1,4 @@
-<RedNavigation {title} prev="back" prev_href="javascript:window.history.go(-1);">
+<RedNavigation {title} prev="back" prev_href="{ asr.makePath('app.respirator-picker', {id: prev}) }">
 	<div class="respirator-picker">  
 		{@html html }
 	</div>
@@ -11,7 +11,12 @@
 	export default {
 		components: {
 			RedNavigation
-		}
+		},
+/*		methods: {
+			goBack(prev) {
+				if(prev && )
+			}
+		}*/
 	}
 
 </script>

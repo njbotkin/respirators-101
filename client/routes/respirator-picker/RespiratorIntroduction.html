@@ -12,7 +12,24 @@
 
 <a class="start" href="{ asr.makePath( 'app.respirator-picker' ) }">Get Started</a>
 
+{ #if step }
+	<a class="start" href="{ asr.makePath( 'app.respirator-picker', {id: step} ) }">Resume where you left off</a>
+{ /if }
+
+
 </div>
+
+<script>
+
+	import { getStep } from 'lib/storage'
+
+	export default {
+		data: () => ({
+			step: getStep()
+		})
+	}
+
+</script>
 
 <style>
 	

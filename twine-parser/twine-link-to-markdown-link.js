@@ -11,20 +11,35 @@ const twineLinkRegex = r.combine(
 	`]]`
 )
 
-module.exports = (stringWithLinks, nameToId) => replace(
-	twineLinkRegex,
-	(linkText, pageNameFromOriginalLink) => {
-		const pageNameToLinkTo = pageNameFromOriginalLink.trim()
-		const pageIdToLinkTo = nameToId[pageNameToLinkTo]
+module.exports = {
 
-		// console.log(pageNameToLinkTo, pageIdToLinkTo) 
+	toMarkdown: (stringWithLinks, namesToIds) => replace(
+		twineLinkRegex,
+		(linkText, pageNameFromOriginalLink) => {
+			const pageNameToLinkTo = pageNameFromOriginalLink.trim()
+			const pageIdToLinkTo = namesToIds[pageNameToLinkTo]
 
-		if (!pageIdToLinkTo) {
-			throw new Error(`Could not find id for page |${ pageNameToLinkTo }|`)
+			// console.log(pageNameToLinkTo, pageIdToLinkTo) 
+
+			if (!pageIdToLinkTo) {
+				throw new Error(`Could not find id for page |${ pageNameToLinkTo }|`)
+			}
+
+			return `[${ linkText }](${ pageIdToLinkTo })`
 		}
+		,
+		stringWithLinks
+	),
 
-		return `[${ linkText }](${ pageIdToLinkTo })`
+	list: (stringWithLinks, namesToIds) => {
+
+		var matches = []
+
+		stringWithLinks.replace(r.flags('gi', twineLinkRegex), (match, linkText, pageNameFromOriginalLink) => {
+			matches.push(namesToIds[pageNameFromOriginalLink.trim()])
+		})
+
+		return matches
 	}
-	,
-	stringWithLinks
-)
+
+}

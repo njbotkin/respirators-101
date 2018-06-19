@@ -1,7 +1,7 @@
 const Remarkable = require(`remarkable`)
 
 const parse = require(`./parse-passages-from-html`)
-const convertLinksToMarkdown = require(`./twine-link-to-markdown-link`)
+const parseLinks = require(`./twine-link-to-markdown-link`)
 const addDivAroundFooter = require(`./add-div-around-footer`)
 const addUlAnswerLinksClass = require(`./add-ul-answer-links-class`)
 
@@ -17,15 +17,26 @@ function parseAndWriteOutput(inputPath, outputPath) {
 
 	const story = parse(html)
 
-	// console.log(story)
+	// console.log(story.passages[1].attributes)
 
 	const namesToIds = makeMapOfNamesToIds(story.passages)
+
+	// construct list where linkedto -> linkedfrom
+	var linkDestinations = []
+	for(let passage of story.passages) {
+		linkDestinations.push({
+			from: passage.attributes.pid,
+			to: parseLinks.list(passage.text, namesToIds)
+		}) 
+	}
+
+	// console.log(linkDestinations)
 
 	// console.log(JSON.stringify(namesToIds, null, `\t`))
 
 	const friendlyOutput = {
 		start: story.attributes.startnode,
-		decisions: makeMapOfIdsToFinalForm(story.passages, markdownToHtml(namesToIds)),
+		decisions: makeMapOfIdsToFinalForm(story.passages, markdownToObject(namesToIds, linkDestinations)),
 	}
 
 	// console.log(friendlyOutput)
@@ -33,13 +44,22 @@ function parseAndWriteOutput(inputPath, outputPath) {
 	writeFileSync(outputPath, JSON.stringify(friendlyOutput, null, `\t`))
 }
 
-const markdownToHtml = namesToIds => (markdown, title) => addDivAroundFooter(
-	addUlAnswerLinksClass(
-		remarkable.render(
-			passageTextToFinalMarkdown(markdown, title, namesToIds)
-		)
-	)
-)
+const markdownToObject = (namesToIds, linkDestinations) => (markdown, title, pid) => {
+	const prev = linkDestinations.find(e => e.to.indexOf(pid) > -1)
+
+	return {
+		title,
+		html: addDivAroundFooter(
+			addUlAnswerLinksClass(
+				remarkable.render(
+					parseLinks.toMarkdown(markdown, namesToIds)
+				)
+			)
+		),
+		prev: prev ? prev.from : undefined
+	}
+}
+
 
 const makeMapOfNamesToIds = passages => makeMap(
 	passages,
@@ -56,16 +76,16 @@ const makeMapOfNamesToIds = passages => makeMap(
 
 const makeMapOfIdsToFinalForm = (passages, transformToFinalForm) => makeMap(
 	passages,
-	({ attributes, text }) => [ attributes.pid, transformToFinalForm(text, attributes.name) ]
+	({ attributes, text }) => [ attributes.pid, transformToFinalForm(text, attributes.name, attributes.pid) ]
 )
 
-function passageTextToFinalMarkdown(text, title, namesToIds) {
-	return addTitleHeader(convertLinksToMarkdown(text, namesToIds), title)
+/*function passageTextToFinalMarkdown(text, title, namesToIds) {
+	return addTitleHeader(parseLinks(text, namesToIds), title)
 }
 
 function addTitleHeader(markdown, title) {
 	return `## ${ title }\n\n` + markdown
-}
+}*/
 
 
 function makeMap(array, fn) {
