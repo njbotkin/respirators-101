@@ -21,4 +21,3 @@ stateRouter.on(`stateChangeStart`, (state, params) => {
 })
 
 stateRouter.evaluateCurrentRoute(`app.home`)
-// context.emit(`stateChangeStart`, {id: 'home'}) 

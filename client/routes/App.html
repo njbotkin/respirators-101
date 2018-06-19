@@ -46,6 +46,12 @@
 
 	</div>
 
+	{ #if inSelection }
+	<div class="in-selection">
+		Return to Respirator Selection
+	</div>
+	{ /if }
+
 </div>
 
 <script>
@@ -53,6 +59,7 @@
 	import Menu from 'lib/Menu.html'
 	import categories from 'data/categories.json'
 	import posts from 'data/posts.json'
+	import { getStep } from 'lib/storage'
 
 	export default {
 		components: {
@@ -76,8 +83,7 @@
 
 			})
 
-			// captures event from router
-			this.on('stateChange', (e) => {
+			const stateChange = e => {
 				var params = e.params
 
 				if(e.state.name == 'app.categorycontent' || e.state.name == 'app.category') {
@@ -113,12 +119,19 @@
 				}
 
 				this.set({visibleSlideOut: false})
-			})
+
+				this.set({inSelection: getStep()})
+			}
+
+			// captures event from router
+			this.on('stateChange', stateChange)
+			stateChange(this.get().initialState)
 		}, 
 		data() {
 			return { 
 				visibleSlideOut: false,
-				title: ''
+				title: '',
+				inSelection: false
 			}
 		}
 	}
@@ -254,6 +267,13 @@
 		bottom:0;
 		left:0;
 		z-index: 1;
+	}
+
+	.in-selection {
+		position: absolute;
+		z-index: 200;
+		bottom: 0;
+		background: $blue1;
 	}
 
 </style>
