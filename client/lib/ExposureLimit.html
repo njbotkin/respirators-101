@@ -1,24 +1,27 @@
 { #if el }
 
 	{ #if el.ppm }
-		<div class="representation ppm">
-			{ el.ppm }
-			<div class="unit">
-				PPM
-			</div>
-		</div>
+		<UnitRepresentation number="{ el.ppm }" unit="PPM" />
 	{ /if }
 
 	{ #if el.mgm3 }
-		<div class="representation mgm3">
-			{ el.mgm3 }
-			<div class="unit">
-				mg/m<sup>3</sup>
-			</div>
-		</div>
+		<UnitRepresentation number="{ el.mgm3 }" unit="mg/m<sup>3</sup>" />
 	{ /if }
 
 { /if }
+
+<script>
+
+	import UnitRepresentation from 'lib/UnitRepresentation.html'
+
+	export default {
+		components: {
+			UnitRepresentation
+		}
+	}
+
+</script>
+
 
 <style>
 .representation {

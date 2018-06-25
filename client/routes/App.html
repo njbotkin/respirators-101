@@ -48,7 +48,7 @@
 
 	{ #if inSelection }
 	<a class="in-selection" href="{ asr.makePath('app.respirator-picker', {id: inSelection})}">
-		Return to Respirator Selection
+		Resume Respirator Selection
 	</a>
 	{ /if }
 
@@ -120,9 +120,9 @@
 
 				this.set({visibleSlideOut: false})
 
-				console.log(e)
+				// console.log(e)
 
-				this.set({inSelection: e.state.name !== 'app.respirator-picker' ? getStep() : false})
+				this.set({inSelection: e.state.name !== 'app.respirator-picker' && e.state.name !== 'app.options-list' ? getStep() : false})
 			}
 
 			// captures event from router

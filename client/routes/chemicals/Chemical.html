@@ -10,7 +10,7 @@
 
 		<div class="contents">
 
-			<table>
+			<table class="top-blocks">
 				<tr>
 					<td>
 						<label>CAS</label>
@@ -19,6 +19,28 @@
 					<td>
 						<label>IDLH</label>
 						{@html c.idlh }
+					</td>
+					<td>
+						{ #if c.one_ppm_in_mgm3 }
+						<label>Conversion</label>
+							
+						<div class="equation">
+
+							<div class="operand">
+								<div class="value">1</div>
+								<div class="unit">ppm</div>
+							</div>
+
+							<div class="operator">=</div>
+
+							<div class="operand">
+								<div class="value">{ c.one_ppm_in_mgm3 }</div>
+								<div class="unit">mg/m<sup>3</sup></div>
+							</div>
+
+						</div>
+
+						{ /if }
 					</td>
 				</tr>
 			</table>
@@ -149,6 +171,11 @@
 			}
 		}
 	}
+
+	.top-blocks td {
+		width: 33%;
+	}
+
 	.contents {
 		margin-top: 5px;
 		border-top: 1px solid #ddd;
@@ -224,6 +251,33 @@
 				border: 1px solid #ddd;
 				padding: 10px;
 			}
+		}
+	} 
+
+	.equation {
+		text-align: center;
+
+
+		> div {
+			display: inline-block;
+			margin: 0 3px;
+			vertical-align: middle;
+		}
+
+		.operand {
+			.value, .unit {
+				display: block;
+				text-align: center;
+			} 
+			.unit {
+				color: #666;
+				line-height: 1.2;
+				font-size: 90%;
+			}
+		}
+
+		.operator {
+			font-size: 120%;
 		}
 	}
 

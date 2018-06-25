@@ -130,6 +130,14 @@ for(var c of chemicals.chemicals) {
 	} 
 	if(c["c"]) name_to_chemical[c["c"]] = chemical_output.length
 
+	var one_ppm_in_mgm3 = ''
+	if(c["co"]) {
+		var validConversion = c["co"].match(/1 ppm = ([0-9.]+) mg\/m<SUP>3<\/SUP>$/)
+		if(validConversion) {
+			one_ppm_in_mgm3 = validConversion[1]
+		}
+	}
+
 	let chemical = {
 		name: c["c"],
 		synonyms: c["s"].join(', '),
@@ -141,6 +149,7 @@ for(var c of chemicals.chemicals) {
 		physical_description: c["p"],
 		exposure_routes: c["e"],
 		target_organs: c["to"],
+		one_ppm_in_mgm3,
 		forms: {},
 		notes: '', // for ambiguous things
 
@@ -439,8 +448,31 @@ for(let i = 0; i < all; i++) {
 		// console.log(cas)
 }
 
-console.log(found_by_cas, found_by_name, children)
+
+// run ppm/mgm3 conversions
+
+for(let chemical of chemical_output) {
+
+	if(!chemical.one_ppm_in_mgm3) continue
+
+	for(let form in chemical.forms) {
+		for(let el in chemical.forms[form]) {
+			for(let el_type in chemical.forms[form][el]) {
+				let cet = chemical.forms[form][el][el_type]
+				if(cet.ppm && !cet.mgm3) {
+					cet.mgm3 = Math.round((cet.ppm * chemical.one_ppm_in_mgm3) * 100) / 100
+				}
+				else if(!cet.ppm && cet.mgm3) {
+					cet.ppm = Math.round((cet.mgm3 / chemical.one_ppm_in_mgm3) * 100) / 100
+				}
+			}
+		}
+	}
+
+}
 
 
+
+// console.log(found_by_cas, found_by_name, children)
 
 writeFileSync(joinPath(__dirname, '../client/data/chemicals.json'), JSON.stringify(chemical_output), 'utf8')
