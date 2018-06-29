@@ -106,7 +106,7 @@ function test() {
 
 /* DEV */
 function dev_server() { 
-	run("live-server public", {
+	run("live-server public --no-browser", {
 		async: true
 	})
 }

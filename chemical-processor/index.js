@@ -31,7 +31,7 @@ function munge_exposure_limit(standard, forms, n) {
 	// breadth-last parse
 
 	var units = []
-	var types = []
+	var durations = []
 
 	// units
 	n = n.replace(/([0-9\.,]+) ppm/g, (match, p1) => {
@@ -47,24 +47,24 @@ function munge_exposure_limit(standard, forms, n) {
 		return '{'+(units.length-1)+'}'
 	})
 
-	// types of exposure limits
+	// durations of exposure limits
 	.replace(/TWA {([0-9])}( \({([0-9])}\))?/g, (match, p1, p2, p3) => {
 		var el = units[p1]
 		if(p3) el = Object.assign(units[p3], el)
-		types.push({ regular: el })
-		return '{{'+(types.length-1)+'}}'
+		durations.push({ regular: el })
+		return '{{'+(durations.length-1)+'}}'
 	})
 	.replace(/C {([0-9])}( \({([0-9])}\))?/g, (match, p1, p2, p3) => {
 		var el = units[p1]
 		if(p3) el = Object.assign(units[p3], el)
-		types.push({ ceiling: el })
-		return '{{'+(types.length-1)+'}}'
+		durations.push({ ceiling: el })
+		return '{{'+(durations.length-1)+'}}'
 	})
 	.replace(/ST {([0-9])}( \({([0-9])}\))?/g, (match, p1, p2, p3) => {
 		var el = units[p1]
 		if(p3) el = Object.assign(units[p3], el)
-		types.push({ stel: el })
-		return '{{'+(types.length-1)+'}}'
+		durations.push({ stel: el })
+		return '{{'+(durations.length-1)+'}}'
 	})
 
 	// forms of chemicals (format 1)
@@ -72,9 +72,10 @@ function munge_exposure_limit(standard, forms, n) {
 
 		if(!forms[p1]) forms[p1] = {}
 		if(!forms[p1][standard]) forms[p1][standard] = {}
+		if(!forms[p1][standard].durations) forms[p1][standard].durations = {}
 
 		match.replace(/{{([0-9])}}/g, (match, p2) => {
-			forms[p1][standard] = Object.assign(types[p2], forms[p1][standard])
+			forms[p1][standard].durations = Object.assign(durations[p2], forms[p1][standard].durations)
 		})
 
 		return ''
@@ -85,21 +86,23 @@ function munge_exposure_limit(standard, forms, n) {
 		
 		if(!forms[p2]) forms[p2] = {}
 		if(!forms[p2][standard]) forms[p2][standard] = {}
+		if(!forms[p2][standard].durations) forms[p2][standard].durations = {}
 
 		match.replace(/{{([0-9])}}/g, (match, p3) => {
-			forms[p2][standard] = Object.assign(types[p3], forms[p2][standard])
+			forms[p2][standard].durations = Object.assign(durations[p3], forms[p2][standard].durations)
 		})
 
 		return ''
 	})
 
-	// the rest of the types belong to the regular form
+	// the rest of the durations belong to the regular form
 	.replace(/{{([0-9])}}/g, (match, p1) => {
 
 		if(!forms['regular']) forms['regular'] = {}
 		if(!forms['regular'][standard]) forms['regular'][standard] = {}
+		if(!forms['regular'][standard].durations) forms['regular'][standard].durations = {}
 
-		forms['regular'][standard] = Object.assign(types[p1], forms['regular'][standard])
+		forms['regular'][standard].durations = Object.assign(durations[p1], forms['regular'][standard].durations)
 		return ''
 	})
 
@@ -138,12 +141,15 @@ for(var c of chemicals.chemicals) {
 		}
 	}
 
+	let idlh_split = c["i"].split('<br />')
+
 	let chemical = {
 		name: c["c"],
 		synonyms: c["s"].join(', '),
 		cas: c["cn"],
 		npg: 'https://www.cdc.gov/niosh/npg/npgd' + c["a"] + '.html',
-		idlh: linkify(c["i"]),
+		idlh: idlh_split.shift(),
+		idlh_notes: idlh_split.join('<br />'),
 		niosh_rel: linkify(c["n"]),
 		osha_pel: linkify(c["o"]),
 		physical_description: c["p"],
@@ -218,18 +224,23 @@ function carcinogens(s) {
 
 function fillOutExposureLimit(el) {
 	if(!el) el = {}
-	if(!el.regular) el.regular = {}
-	if(!el.ceiling) el.ceiling = {}
-	if(!el.stel) el.stel = {}
+	if(!el.durations) el.durations = {}
+	if(!el.durations.regular) el.durations.regular = {}
+	if(!el.durations.ceiling) el.durations.ceiling = {}
+	if(!el.durations.stel) el.durations.stel = {}
 	if(!el.notes) el.notes = []
 	if(!el.znotes) el.znotes = []
 
 	return el
 }
 function cleanupExposureLimit(el) {
-	if(el.regular && Object.keys(el.regular).length === 0) delete el.regular
-	if(el.ceiling && Object.keys(el.ceiling).length === 0) delete el.ceiling
-	if(el.stel && Object.keys(el.stel).length === 0) delete el.stel
+	if(el.durations && Object.keys(el.durations).length === 0) {
+		delete el.durations
+	} else if(el.durations) {
+		if(el.durations.regular && Object.keys(el.durations.regular).length === 0) delete el.durations.regular
+		if(el.durations.ceiling && Object.keys(el.durations.ceiling).length === 0) delete el.durations.ceiling
+		if(el.durations.stel && Object.keys(el.durations.stel).length === 0) delete el.durations.stel	
+	}
 	if(el.notes && el.notes.length === 0) delete el.notes
 	if(el.znotes && el.znotes.length === 0) delete el.znotes
 	if(Object.keys(el).length === 0) el = null
@@ -323,13 +334,13 @@ for(let i = 0; i < all; i++) {
 		el.osha_pel = fillOutExposureLimit(el.osha_pel)
 		for(let e of split(osha_pel_ppm)) {
 			if(ceiling(e)) {
-				el.osha_pel.ceiling.ppm = ceiling(e)
+				el.osha_pel.durations.ceiling.ppm = ceiling(e)
 			} 
 			else if(stel(e)) {
-				el.osha_pel.stel.ppm = stel(e) 
+				el.osha_pel.durations.stel.ppm = stel(e) 
 			} 
 			else if(Number(e)) {
-				el.osha_pel.regular.ppm = e
+				el.osha_pel.durations.regular.ppm = e
 			}
 			else {
 				el.osha_pel.znotes.push(e)
@@ -342,13 +353,13 @@ for(let i = 0; i < all; i++) {
 		el.osha_pel = fillOutExposureLimit(el.osha_pel)
 		for(let e of split(osha_pel_mgm3)) {
 			if(ceiling(e)) {
-				el.osha_pel.ceiling.mgm3 = ceiling(e)
+				el.osha_pel.durations.ceiling.mgm3 = ceiling(e)
 			} 
 			else if(stel(e)) {
-				el.osha_pel.stel.mgm3 = stel(e) 
+				el.osha_pel.durations.stel.mgm3 = stel(e) 
 			} 
 			else if(Number(e)) {
-				el.osha_pel.regular.mgm3 = e
+				el.osha_pel.durations.regular.mgm3 = e
 			}
 			else {
 				el.osha_pel.znotes.push(e)
@@ -364,10 +375,10 @@ for(let i = 0; i < all; i++) {
 		for(let e of split(cal_osha_pel)) {
 			if(ceiling(e)) {
 				if(ppm(ceiling(e))) {
-					el.cal_osha_pel.ceiling.ppm = ppm(ceiling(e))
+					el.cal_osha_pel.durations.ceiling.ppm = ppm(ceiling(e))
 				}
 				else if(mgm3(ceiling(e))) {
-					el.cal_osha_pel.ceiling.mgm3 = mgm3(ceiling(e))
+					el.cal_osha_pel.durations.ceiling.mgm3 = mgm3(ceiling(e))
 				}
 				else {
 					console.log("WHAT",  cal_osha_pel)
@@ -375,20 +386,20 @@ for(let i = 0; i < all; i++) {
 			}
 			else if(stel(e)) {
 				if(ppm(stel(e))) {
-					el.cal_osha_pel.stel.ppm = ppm(stel(e))
+					el.cal_osha_pel.durations.stel.ppm = ppm(stel(e))
 				}
 				else if(mgm3(stel(e))) {
-					el.cal_osha_pel.stel.mgm3 = mgm3(stel(e))
+					el.cal_osha_pel.durations.stel.mgm3 = mgm3(stel(e))
 				}
 				else {
 					console.log("WHAT",  cal_osha_pel)
 				}
 			} 
 			else if(ppm(e)) {
-				el.cal_osha_pel.regular.ppm = ppm(e)
+				el.cal_osha_pel.durations.regular.ppm = ppm(e)
 			}
 			else if(mgm3(e)) {
-				el.cal_osha_pel.regular.mgm3 = mgm3(e)
+				el.cal_osha_pel.durations.regular.mgm3 = mgm3(e)
 			}
 			else {
 				el.cal_osha_pel.znotes.push(e)
@@ -404,10 +415,10 @@ for(let i = 0; i < all; i++) {
 		for(let e of split(niosh_rel)) {
 			if(ceiling(e)) {
 				if(ppm(ceiling(e))) {
-					el.niosh_rel.ceiling.ppm = ppm(ceiling(e))
+					el.niosh_rel.durations.ceiling.ppm = ppm(ceiling(e))
 				}
 				else if(mgm3(ceiling(e))) {
-					el.niosh_rel.ceiling.mgm3 = mgm3(ceiling(e))
+					el.niosh_rel.durations.ceiling.mgm3 = mgm3(ceiling(e))
 				}
 				else {
 					console.log("WHAT",  niosh_rel)
@@ -415,20 +426,20 @@ for(let i = 0; i < all; i++) {
 			}
 			else if(stel(e)) {
 				if(ppm(stel(e))) {
-					el.niosh_rel.stel.ppm = ppm(stel(e))
+					el.niosh_rel.durations.stel.ppm = ppm(stel(e))
 				}
 				else if(mgm3(stel(e))) {
-					el.niosh_rel.stel.mgm3 = mgm3(stel(e))
+					el.niosh_rel.durations.stel.mgm3 = mgm3(stel(e))
 				}
 				else {
 					console.log("WHAT",  niosh_rel)
 				}
 			} 
 			else if(ppm(e)) {
-				el.niosh_rel.regular.ppm = ppm(e)
+				el.niosh_rel.durations.regular.ppm = ppm(e)
 			}
 			else if(mgm3(e)) {
-				el.niosh_rel.regular.mgm3 = mgm3(e)
+				el.niosh_rel.durations.regular.mgm3 = mgm3(e)
 			}
 			else if(carcinogens(e)) {
 				el.niosh_rel.carcinogens = true
@@ -457,13 +468,13 @@ for(let chemical of chemical_output) {
 
 	for(let form in chemical.forms) {
 		for(let el in chemical.forms[form]) {
-			for(let el_type in chemical.forms[form][el]) {
-				let cet = chemical.forms[form][el][el_type]
-				if(cet.ppm && !cet.mgm3) {
-					cet.mgm3 = Math.round((cet.ppm * chemical.one_ppm_in_mgm3) * 100) / 100
+			for(let duration in chemical.forms[form][el].durations) {
+				let cfed = chemical.forms[form][el].durations[duration]
+				if(cfed.ppm && !cfed.mgm3) {
+					cfed.mgm3 = Math.round((cfed.ppm * chemical.one_ppm_in_mgm3) * 100) / 100
 				}
-				else if(!cet.ppm && cet.mgm3) {
-					cet.ppm = Math.round((cet.mgm3 / chemical.one_ppm_in_mgm3) * 100) / 100
+				else if(!cfed.ppm && cfed.mgm3) {
+					cfed.ppm = Math.round((cfed.mgm3 / chemical.one_ppm_in_mgm3) * 100) / 100
 				}
 			}
 		}

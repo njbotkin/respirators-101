@@ -93,10 +93,6 @@
 		bottom: 0;
 		left: 0;
 
-		.results {
-			padding: 0 10px;
-		}
-
 		.chemicals {
 			position: absolute;
 			top: 0;
@@ -105,7 +101,6 @@
 			right: calc(2.65vh - 2.65px + 16px );
 			overflow-y: scroll;
 			overflow-x: hidden;
-			padding: 0 10px;
 		}
 		.alphabet {
 			position: absolute;
@@ -135,7 +130,7 @@
 
 	import chemicals from 'data/chemicals.json'
 	import Fuse from 'fuse.js'  
-	import Chemical from './Chemical.html'
+	import Chemical from 'lib/Chemical.html'
 
 	// I know this seems hacky.  Sorting chemicals by name is pretty arbitrary, what with the alpha- 1,2,3- o- style prefixes.  I'm not going to build a hideous regex for this.  The data source is already mostly sorted alphabetically, so I'm just picking up on the existing order.
 	const letters = 'abcdefghiklmnopqrstuvwxyz'.split('') // no J chemicals
@@ -178,6 +173,9 @@
 			letters
 		}),
 		oncreate() {
+
+			// scrolling through alphabet thingy
+
 			// would like to do this with CSS...
 			function adjustAlphabetHeight() {
 				var height = window.document.querySelector('.alphabet').getBoundingClientRect().height
