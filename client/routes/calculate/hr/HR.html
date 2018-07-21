@@ -16,7 +16,11 @@
 <div class="equation">
 
 	<div class="operand">
-		<div class="value"><input type="text" bind:value="twa" placeholder="0"></div>
+		<div class="value">
+			<PersistentWrite bind:value="twa" inherit="">
+				<input type="text" bind:value="twa" placeholder="0">
+			</PersistentWrite>
+		</div>
 		<div class="unit">TWA</div>
 	</div>
 
@@ -36,7 +40,7 @@
 
 </div>
 
-<div class="button valid{ valid }"> Use HR </div>
+<div class="button valid{ valid }" on:click="setHR()"> Use HR </div>
 
 <style>
 
@@ -109,7 +113,22 @@
 
 <script>
 
+import PersistentWrite from 'lib/PersistentWrite.html'
+import store from 'lib/storage.js'
+
 export default {
+	components: {
+		PersistentWrite
+	},
+	store: () => store,
+	methods: {
+		setHR() {
+			let state = this.get()
+			if(state.valid) {
+				this.store.updateCurrentJob({ 'HR': state.hr })
+			}
+		}
+	},
 	data: () => ({
 		exposureLimit: '',
 		twa: '',

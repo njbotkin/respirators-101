@@ -5,52 +5,104 @@
 </div>
 
 <div class="content">
-	<h2>PURPOSE</h2>
 
-	<p>The My Info tool gathers all the information each user needs into one place for handy reference. Some
-	information is entered by the user on this screen. Other information is saved here from the Chemical
-	Lookup or Respirator Selection tools.</p>
+	{ #if Object.keys($jobs).length === 0 }
 
-	<h2>DIRECTIONS</h2>
+		<div class="nojobs">
+			You haven't saved any jobs yet!
 
-	<p>My Info helps you to store all the information about your respirators. Job Names are stored along with
-	the chemical hazards and measured exposure concentrations.
+			Click 'add a job' to start, and any information you gather will be automatically saved to the current job.
+		</div>
 
-	<h2>EXAMPLE</h2>
+	{ /if }
+
+	<button class="addjob" on:click="$addJob()">Add a Job</button>
 
 	<div class="jobs">
 		
-		{ #each jobs as job }
-			<div class="job">
+		{ #each Object.entries($jobs) as [jobId, job] }
+			<div class="job currentJob{ jobId == $currentJobId } editing{ jobId === editingId }">
 				<div class="title">
-					<div class="name">{ job.name }</div>
-					<div class="date">{ job.date }</div>
+					<div class="name">
+						{ #if jobId === editingId }
+							<input type="text" bind:value="job.name">
+						{ :else }
+							{ job.name }
+						{ /if }
+					</div>
+					<div class="date">{ date(job.date) }</div>
 					<div class="cfx"></div>
 				</div>
 				<div class="content">
 					
-					<Chemical c="{ job.details.chemical }"></Chemical>
+					{ #if job.chemical }<Chemical c="{ job.chemical }"></Chemical>{ /if }
 
 				</div>
+
+				<div class="buttons">
+					{ #if jobId === editingId }
+						<button class="stopEditing" on:click="set({ 'editingId': null })">Done</button>
+					{ :else }
+						<button class="editJob" on:click="set({ 'editingId': jobId })">Edit Job</button>
+					{ /if }
+
+					<button class="deleteJob" on:click="set({ deleteModal: jobId })">Delete Job</button>
+				</div>
+
 			</div>
 		{ /each }
 
 	</div>
+
+	{ #if deleteModal }
+
+		<Modal bind:show="deleteModal">
+			<p>Are you sure want to delete <b>{ $jobs[deleteModal].name }</b>?  This cannot be undone.</p>
+			<div class="buttons">
+				<button class="deleteJob" on:click="deleteJob(deleteModal)">Delete Job</button>
+				<button class="deleteJob" on:click="set({ deleteModal: false })">Never mind</button>
+			</div>
+		</Modal>
+
+	{ /if }
+
 </div>
+
+<!-- computed: {
+	dynamicRef: (data) => data[data.key]
+} -->
 
 <script>
 
-	import chemicals from 'data/chemicals.json'
+	// import chemicals from 'data/chemicals.json'
 	import Chemical from 'lib/Chemical.html'
+	import jobs from 'lib/storage.js'
+	import date from 'date-and-time'
+	import Modal from 'lib/Modal.html'
 
 	// console.log(chemicals[0].forms.regular)
 	
 	export default {
 		components: {
-			Chemical
+			Chemical,
+			Modal
+		},
+		store: () => jobs,
+		methods: {
+			deleteJob(id) {
+				this.set({ deleteModal: 0 })
+				jobs.removeJob(id)
+			}
+		},
+		helpers: {
+			date: (d) => date.format(new Date(d), 'MMM D, YYYY h:mm A')
 		},
 		data: () => ({
-			jobs: [
+			editingId: null,
+			deleteModal: false,
+			// jobs: jobs.serializeJobs(),
+			// currentJobId: jobs.currentJobId
+/*			jobs: [
 				{
 					name: 'Clean  inside  tank  at  SpedCo',
 					date: 'May 11, 2017 1:35PM',
@@ -114,7 +166,7 @@
 						}
 					}
 				},
-			]
+			]*/
 		})
 	}
 
@@ -157,6 +209,10 @@
 		color: #999;
 	}
 
+	.buttons {
+		text-align: right;
+	}
+
 	.job {
 		position: relative;
 		background: #fff;
@@ -190,6 +246,10 @@
 					text-align: right;
 				}
 			}
+		}
+
+		&.currentJobtrue {
+			border: 1px solid green;
 		}
 	}
 

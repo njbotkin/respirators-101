@@ -1,0 +1,49 @@
+<div class="fixed">
+	<div class="bg" on:click="set({ show: false })"></div>
+	<div class="modal">
+		<div class="close" on:click="set({ show: false })"></div>
+		<slot></slot>
+	</div>
+</div>
+
+<style>
+	.fixed {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+	.bg {
+		position: absolute;
+		right: 0;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		background: #00000066;
+	}
+	.modal {
+		position: absolute;
+		right: 0;
+		left: 0;
+		margin: 0 auto;
+		top: 50%;
+		transform: translateY(-50%);
+		background: #fff;
+		padding: 20px 40px 40px;
+		min-width: 200px;
+		max-width: 300px;
+	}
+	.close {
+		position: absolute;
+		top: 0;
+		right: 0;
+		cursor: pointer;
+		line-height: 1;
+		padding: 10px;
+
+		&:before {
+			content: '✕';
+		}
+	}
+</style>

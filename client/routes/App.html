@@ -59,12 +59,13 @@
 	import Menu from 'lib/Menu.html'
 	import categories from 'data/categories.json'
 	import posts from 'data/posts.json'
-	import { getStep } from 'lib/storage'
+	import jobs from 'lib/storage.js'
 
 	export default {
 		components: {
 			Menu
 		},
+		store: () => jobs,
 		oncreate () {
 
 			// use event bubbling to make all external links open in new tab
@@ -122,7 +123,13 @@
 
 				// console.log(e)
 
-				this.set({inSelection: e.state.name !== 'app.respirator-picker' && e.state.name !== 'app.options-list' ? getStep() : false})
+				this.set({inSelection: 
+					e.state.name !== 'app.respirator-picker' && 
+					e.state.name !== 'app.options-list' && 
+					this.store.currentJob.RSLStep
+						? this.store.currentJob.RSLStep
+						: false
+					})
 			}
 
 			// captures event from router

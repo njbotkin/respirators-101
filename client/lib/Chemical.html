@@ -110,7 +110,7 @@
 			</div>
 
 			{ #if path.length > 0 }
-				Selection: <span class="form">{ path[0] }</span> -> <span class="standard">{ standardsPretty[path[1]] }</span> -> <span class="EL">{ durationsPretty[path[2]] }</span>
+				Selected Exposure Limit: <span class="form">{ path[0] }</span> -> <span class="standard">{ standardsPretty[path[1]] }</span> -> <span class="EL">{ durationsPretty[path[2]] }</span>
 			{ /if }
 
 			<div class="block">
@@ -393,10 +393,12 @@
 <script>
 
 	import UnitRepresentation from 'lib/UnitRepresentation.html'
+	import PersistentWrite from 'lib/PersistentWrite.html'
 
 	export default {
 		components: {
-			UnitRepresentation
+			UnitRepresentation,
+			PersistentWrite
 		},
 		data() {
 			return {
