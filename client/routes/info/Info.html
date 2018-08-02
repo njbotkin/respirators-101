@@ -6,7 +6,7 @@
 
 <div class="content">
 
-	{ #if Object.keys($jobs).length === 0 }
+	{ #if Object.keys(jobM.jobs).length === 0 }
 
 		<div class="nojobs">
 			You haven't saved any jobs yet!
@@ -16,12 +16,12 @@
 
 	{ /if }
 
-	<button class="addjob" on:click="$addJob()">Add a Job</button>
+	<button class="addjob" on:click="addJob()">Add a Job</button>
 
 	<div class="jobs">
 		
-		{ #each Object.entries($jobs) as [jobId, job] }
-			<div class="job currentJob{ jobId == $currentJobId } editing{ jobId === editingId }">
+		{ #each Object.entries(jobM.jobs) as [jobId, job] }
+			<div class="job currentJob{ jobId == $id } editing{ jobId === editingId }">
 				<div class="title">
 					<div class="name">
 						{ #if jobId === editingId }
@@ -57,7 +57,7 @@
 	{ #if deleteModal }
 
 		<Modal bind:show="deleteModal">
-			<p>Are you sure want to delete <b>{ $jobs[deleteModal].name }</b>?  This cannot be undone.</p>
+			<p>Are you sure want to delete <b>{ jobM.jobs[deleteModal].name }</b>?  This cannot be undone.</p>
 			<div class="buttons">
 				<button class="deleteJob" on:click="deleteJob(deleteModal)">Delete Job</button>
 				<button class="deleteJob" on:click="set({ deleteModal: false })">Never mind</button>
@@ -76,30 +76,40 @@
 
 	// import chemicals from 'data/chemicals.json'
 	import Chemical from 'lib/Chemical.html'
-	import jobs from 'lib/storage.js'
 	import date from 'date-and-time'
 	import Modal from 'lib/Modal.html'
+	import { jobManager, job, setJobManager, addJob, removeJob } from 'lib/storage.js'
 
-	// console.log(chemicals[0].forms.regular)
-	
 	export default {
 		components: {
 			Chemical,
 			Modal
 		},
-		store: () => jobs,
+		store: () => job,
 		methods: {
 			deleteJob(id) {
-				this.set({ deleteModal: 0 })
-				jobs.removeJob(id)
+				removeJob(id)
+				this.set({ jobM: jobManager, deleteModal: 0 })
+			},
+			addJob() {
+				addJob()
+				this.set({ jobM: jobManager })
 			}
 		},
 		helpers: {
 			date: (d) => date.format(new Date(d), 'MMM D, YYYY h:mm A')
 		},
+		// easiest way to trigger localstorage save
+		computed: {
+			updateJobs: data => {
+				setJobManager(data.jobM)
+				job.set( data.jobM.jobs[job.get().id] ) // update current job
+			}
+		},
 		data: () => ({
+			jobM: jobManager,
 			editingId: null,
-			deleteModal: false,
+			deleteModal: false
 			// jobs: jobs.serializeJobs(),
 			// currentJobId: jobs.currentJobId
 /*			jobs: [

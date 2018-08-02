@@ -15,11 +15,11 @@
 		</div>
 	{ :else }
 		<div class="chemicals">
-			{ #each results as c }
+			{ #each results as c, i }
 				{ #if c.id }
 					<div class="letter-heading">{ c.id }</div>
 				{ /if }
-				<Chemical {c}></Chemical>
+				<Chemical {c} bind:open=$openChemicals[i]></Chemical>
 			{ /each }
 		</div>
 
@@ -131,11 +131,13 @@
 	import chemicals from 'data/chemicals.json'
 	import Fuse from 'fuse.js'  
 	import Chemical from 'lib/Chemical.html'
+	import { job } from 'lib/storage.js'
 
 	// I know this seems hacky.  Sorting chemicals by name is pretty arbitrary, what with the alpha- 1,2,3- o- style prefixes.  I'm not going to build a hideous regex for this.  The data source is already mostly sorted alphabetically, so I'm just picking up on the existing order.
 	const letters = 'abcdefghiklmnopqrstuvwxyz'.split('') // no J chemicals
 	var letter = 0
 
+	// link letter in navigation to first chemical that starts with it
 	for(var c of chemicals) {
 		if(c.name.slice(0, 1).toLowerCase() === letters[letter] && c.name.slice(1, 2) !== '-') {
 			c.id = letters[letter]
@@ -172,9 +174,11 @@
 			search: '',
 			letters
 		}),
+		store: () => job,
 		oncreate() {
 
 			// scrolling through alphabet thingy
+			let container = container
 
 			// would like to do this with CSS...
 			function adjustAlphabetHeight() {
@@ -189,11 +193,11 @@
 
 			var mouseDown = false
 
-			document.querySelector('.container').addEventListener('mousedown', down)
-			document.querySelector('.container').addEventListener('touchstart', down)
-			document.querySelector('.container').addEventListener('mouseup', up)
-			document.querySelector('.container').addEventListener('touchend', up)
-			document.querySelector('.container').addEventListener('touchcancel', up)
+			container.addEventListener('mousedown', down)
+			container.addEventListener('touchstart', down)
+			container.addEventListener('mouseup', up)
+			container.addEventListener('touchend', up)
+			container.addEventListener('touchcancel', up)
 
 			function down(e) {
 				if(e.target.className.indexOf('letter') > -1) {
@@ -209,9 +213,9 @@
 				}
 			}
 
-			document.querySelector('.container').addEventListener('mousemove', selectLetter)
-			document.querySelector('.container').addEventListener('touchmove', selectLetter)
-			document.querySelector('.container').addEventListener('click', selectLetter)
+			container.addEventListener('mousemove', selectLetter)
+			container.addEventListener('touchmove', selectLetter)
+			container.addEventListener('click', selectLetter)
 
 			function selectLetter(e) {
 
@@ -249,6 +253,15 @@
 
 				}
 			}
+
+			let chemicals = document.querySelector('.chemicals')
+			if(job.get().chemicalsScrollTop) {
+				chemicals.scrollTop = job.get().chemicalsScrollTop
+			}
+
+			chemicals.addEventListener('scroll', () => {
+				job.set({ chemicalsScrollTop: chemicals.scrollTop })
+			})
 
 		},
 		computed: {

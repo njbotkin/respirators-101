@@ -26,7 +26,7 @@
 	$headers .= 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 	
-	if(mail('noah.botkin@firstpacificmedia.com', $subject, $comment, $headers)) {
+	if(mail('hazmat@iuoehazmat.org', $subject, $comment, $headers)) {
 		http_response_code(200);
 	} else {
 		http_response_code(500);

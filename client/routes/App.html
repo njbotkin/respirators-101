@@ -46,8 +46,8 @@
 
 	</div>
 
-	{ #if inSelection }
-	<a class="in-selection" href="{ asr.makePath('app.respirator-picker', {id: inSelection})}">
+	{ #if $RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list')  }
+	<a class="in-selection" href="{ asr.makePath('app.respirator-picker', {id: $RSLStep})}">
 		Resume Respirator Selection
 	</a>
 	{ /if }
@@ -59,13 +59,13 @@
 	import Menu from 'lib/Menu.html'
 	import categories from 'data/categories.json'
 	import posts from 'data/posts.json'
-	import jobs from 'lib/storage.js'
+	import { job } from 'lib/storage.js'
 
 	export default {
 		components: {
 			Menu
 		},
-		store: () => jobs,
+		store: () => job,
 		oncreate () {
 
 			// use event bubbling to make all external links open in new tab
@@ -123,13 +123,15 @@
 
 				// console.log(e)
 
-				this.set({inSelection: 
-					e.state.name !== 'app.respirator-picker' && 
-					e.state.name !== 'app.options-list' && 
-					this.store.currentJob.RSLStep
-						? this.store.currentJob.RSLStep
-						: false
-					})
+				this.set({stateName: e.state.name})
+
+				// this.set({inSelection: 
+				// 	e.state.name !== 'app.respirator-picker' && 
+				// 	e.state.name !== 'app.options-list' && 
+				// 	this.store.currentJob.RSLStep
+				// 		? this.store.currentJob.RSLStep
+				// 		: false
+				// 	})
 			}
 
 			// captures event from router
@@ -140,7 +142,8 @@
 			return { 
 				visibleSlideOut: false,
 				title: '',
-				inSelection: false
+				inSelection: false,
+				stateName: null
 			}
 		}
 	}

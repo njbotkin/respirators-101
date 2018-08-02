@@ -3,7 +3,7 @@ import RespiratorPicker from './RespiratorPicker.html'
 import decisionData from 'data/decision-data.json'
 import replaceDecisionLinkUrls from 'lib/replace-decision-link-urls'
 
-import jobs from 'lib/storage.js'
+import { job } from 'lib/storage.js'
 
 const { start, decisions } = decisionData
 
@@ -33,7 +33,7 @@ export default ({ makePath }) => ({
 
 		// const title = html.match(/<h2>([^<(:]+)/).pop()
 
-		jobs.updateCurrentJob({ 'RSLStep': params.id })
+		job.set({ RSLStep: params.id })
 
 		return Promise.resolve({
 			html: replaceDecisionLinkUrls(passage.html, makePath),

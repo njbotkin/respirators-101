@@ -13,23 +13,17 @@
 <a class="start" href="{ asr.makePath( 'app.respirator-picker' ) }">Get Started</a>
 
 { #if step }
-	<a class="start" href="{ asr.makePath( 'app.respirator-picker', {id: $currentJob.RSLStep} ) }">Resume where you left off</a>
+	<a class="start" href="{ asr.makePath( 'app.respirator-picker', {id: $RSLStep} ) }">Resume where you left off</a>
 { /if }
 
 
 </div>
 
 <script>
-
-	import jobs from 'lib/storage.js'
-
+	import { job } from 'lib/storage.js'
 	export default {
-		/*data: () => ({
-			step: jobs.currentJob.RSLStep
-		})*/
-		store: () => jobs
+		store: () => job
 	}
-
 </script>
 
 <style>

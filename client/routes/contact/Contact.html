@@ -1,5 +1,5 @@
 <div class="content">
-	<form>
+	<div class="form">
 		<div class="name">
 			<label for="name">Name</label>
 			<input type="text" bind:value="form.name" />
@@ -42,7 +42,7 @@
 			<div hidden="{connected}" class="bad"> You are not connected to the internet.  Please connect and try again. </div>
 			
 		</div>
-	</form>
+	</div>
 </div>
 
 <script>
@@ -197,7 +197,7 @@
 		padding: $padding/2 $padding;
 	}
 
-	form {
+	.form {
 		label, input, textarea {
 			display: block;
 			width: 100%;
