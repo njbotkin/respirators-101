@@ -1,5 +1,6 @@
-<div class="search">
+<div class="search" data-active="{ !!search }">
 	<input bind:value=search type="text" id="search" placeholder="Search" />
+	<div class="closeSearch" on:click="set({ search: '' })">×</div>
 </div>
 
 <div class="container">
@@ -72,6 +73,28 @@
 			/* Better Font Rendering =========== */
 			-webkit-font-smoothing: antialiased;
 			-moz-osx-font-smoothing: grayscale;
+		}
+
+		.closeSearch {
+			cursor: pointer;
+			display: none;
+			width: 30px;
+			text-align: center;
+			position: absolute;
+			top: 11px;
+			right: 11px;
+			font-size: 30px;
+			line-height: 30px;
+			z-index: 2;
+		}
+
+		&[data-active=true] {
+			.closeSearch {
+				display: block;
+			}
+			&:after {
+				display: none;
+			}
 		}
 
 	}
