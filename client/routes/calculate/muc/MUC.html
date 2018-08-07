@@ -103,17 +103,19 @@
 
 <script>
 
+import { number, round } from 'lib/util.js'
+
 export default {
 	data: () => ({
 		exposureLimit: '',
 		apf: '',
 	}),
 	computed: {
-		muc: ({ apf, exposureLimit }) => apf * exposureLimit || 0,
-		valid: ({ apf, exposureLimit}) => !(isNaN(apf) || isNaN(exposureLimit) || apf.trim().length === 0 || exposureLimit.trim().length === 0)
+		valid: ({ apf, exposureLimit}) => !!(number(apf) && number(exposureLimit)),
+		muc: ({ apf, exposureLimit, valid }) => valid ? apf * exposureLimit : 0
 	},
 	helpers: {
-		round: (v) => Math.round(v * 100) / 100 // 2 decimal places
+		round
 	}
 }
 

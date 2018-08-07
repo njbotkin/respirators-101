@@ -114,6 +114,7 @@
 <script>
 
 import PersistentWrite from 'lib/PersistentWrite.html'
+import { number, round } from 'lib/util.js'
 
 export default {
 	components: {
@@ -132,11 +133,11 @@ export default {
 		twa: '',
 	}),
 	computed: {
-		hr: ({ twa, exposureLimit }) => twa / exposureLimit || 0,
-		valid: ({ twa, exposureLimit}) => !(isNaN(twa) || isNaN(exposureLimit) || twa.trim().length === 0 || exposureLimit.trim().length === 0)
+		valid: ({ twa, exposureLimit}) => !!(number(twa) && number(exposureLimit)),
+		hr: ({ twa, exposureLimit, valid }) => valid ? (number(twa) / number(exposureLimit)) : 0
 	},
 	helpers: {
-		round: (v) => Math.round(v * 100) / 100 // 2 decimal places
+		round
 	}
 }
 

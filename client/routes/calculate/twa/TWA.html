@@ -180,14 +180,12 @@
 
 <script>
 
-function isNumber(v) {
-	return !(isNaN(v) || v.trim().length === 0)
-}
+import { number, round } from 'lib/util.js'
 
 export default {
 	computed: {
-		validSamples: ({ samples }) => samples.filter(s => isNumber(s.ppm) && isNumber(s.hours)),
-		sampleProducts: ({ samples }) => samples.map(s => isNumber(s.ppm) && isNumber(s.hours) ? s.ppm * s.hours : 0),
+		validSamples: ({ samples }) => samples.filter(s => !!(number(s.ppm) && number(s.hours))),
+		sampleProducts: ({ samples }) => samples.map(s => number(s.ppm) && number(s.hours) ? number(s.ppm) * number(s.hours) : 0),
 		valid: ({ sampleProducts, totalHours, hours, twa }) => { 
 			if(totalHours > hours || totalHours < hours) return false
 			for(var t of sampleProducts) { 
@@ -197,11 +195,11 @@ export default {
 			return true;
 		},
 		totalPPMHours: ({ sampleProducts }) => sampleProducts.reduce((a, t) => a + t, 0),
-		totalHours: ({ samples }) => samples.reduce((a, s) => isNumber(s.hours) ? a + Number(s.hours) : a, 0),
+		totalHours: ({ samples }) => samples.reduce((a, s) => number(s.hours) ? a + number(s.hours) : a, 0),
 		twa: ({ totalPPMHours, totalHours }) => totalPPMHours / totalHours || 0 
 	},
 	helpers: {
-		round: (v) => Math.round(v * 100) / 100 // 2 decimal places
+		round
 	}
 }
 
