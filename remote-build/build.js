@@ -11,7 +11,7 @@ function log(m) {
 	console.log({m: Date() + ' ' +m})
 }
 
-log('STARTING BUILD')
+log('STARTING BUILD') 
 var started = Date.now()
 
 async function attempt(name, task) {
