@@ -172,14 +172,15 @@ function android_all() {
 	cordova.test_android()
 }
 
-function push_public() {
-	run("rsync -W public "+creds.user+"@"+creds.host+":"+creds.path+"/app")
-}
+// window 
+// function push_public() {
+// 	run("rsync -W public "+creds.user+"@"+creds.host+":"+creds.path+"/app")
+// }
 
-function push_app() {
-	let exclude = gitignore('.gitignore', ['.git', 'cordova', 'public']).reduce((a, e) => a+' --exclude "'+e+'"', '')
-	run("rsync -azP --links --safe-links --remote-option=--log-file=/var/log/rsync.log --remote-option=--verbose "+exclude+" ./ "+buildcreds.user+"@"+buildcreds.host+":"+buildcreds.path)
-}
+// function push_app() {
+// 	let exclude = gitignore('.gitignore', ['.git', 'cordova', 'public']).reduce((a, e) => a+' --exclude "'+e+'"', '')
+// 	run("rsync -vv -azP --links --safe-links "+exclude+" -e 'ssh -i ~/.ssh/wsl_id_rsa' ./ " +buildcreds.user+"@"+buildcreds.host+":"+buildcreds.path)
+// }
 
 module.exports = {
 	test,
