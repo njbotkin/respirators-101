@@ -1,9 +1,9 @@
 const { run } = require('runjs')
 const creds = require('./remoteserver')
-const buildcreds = require('./buildserver')
+// const buildcreds = require('./buildserver')
 const SSH = require('simple-ssh')
 const fs = require('fs')
-const gitignore = require('parse-gitignore')
+// const gitignore = require('parse-gitignore')
 
 /* DATA */
 
