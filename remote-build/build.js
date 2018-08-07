@@ -8,7 +8,7 @@ var logfile = fs.createWriteStream('../build/build.log', { flags: 'a' })
 process.stdout.write = process.stderr.write = logfile.write.bind(logfile);
 
 function log(m) {
-	console.log({m: Date() + ' ' +m})
+	console.log(Date() + ' ' +m)
 }
 
 log('STARTING BUILD') 
