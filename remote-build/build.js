@@ -1,7 +1,7 @@
 process.chdir('../app');
 
 const { run } = require('runjs')
-const runfile = require('../app/runfile.js')
+const runfile = require('../runfile.js')
 const fs = require('fs')
 
 var logfile = fs.createWriteStream('../build/build.log', { flags: 'a' })
