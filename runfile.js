@@ -203,6 +203,6 @@ module.exports = {
 	fetch_google_fonts,
 	cordova,
 	android_all,
-	push_public,
-	push_app
+	// push_public,
+	// push_app
 }
