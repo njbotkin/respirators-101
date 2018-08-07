@@ -1,0 +1,51 @@
+[
+	{
+		"type": "custom",
+		"title": "Home",
+		"path": "#/home"
+	},
+	{
+		"type": "category",
+		"name": "getting-started"
+	},
+	{
+		"type": "custom",
+		"title": "Respirator Selection Tool",
+		"path": "#/respirator-introduction"
+	},
+	{
+		"type": "category",
+		"name": "all-about-respirators"
+	},
+	{
+		"type": "custom",
+		"title": "My Info",
+		"path": "#/info"
+	},
+	{
+		"type": "custom",
+		"title": "Chemical Lookup",
+		"path": "#/chemicals"
+	},
+	{
+		"type": "custom",
+		"title": "Calculations",
+		"path": "#/calculate"
+	},
+	{
+		"type": "category",
+		"name": "osha-standards"
+	},
+	{
+		"type": "post",
+		"name": "acronyms"
+	},
+	{
+		"type": "post",
+		"name": "glossary"
+	},
+	{
+		"type": "post",
+		"name": "resources"
+	}
+]

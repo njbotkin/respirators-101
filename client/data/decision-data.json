@@ -1,0 +1,749 @@
+{
+	"start": "3",
+	"decisions": {
+		"1": {
+			"title": "STEP 3 (Oxy)",
+			"html": "<p>Will you use the respirator in an unknown or IDLH* atmosphere?  For example, an emergency situation?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/3b\">Yes</a></li>\n<li><a href=\"7\">No</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>*Immediately dangerous to life or health (IDLH) means an atmosphere that poses an immediate threat to life, would cause irreversible adverse health effects, or would impair an individual's ability to escape from a dangerous atmosphere.</p>\n\n</div>",
+			"prev": "2"
+		},
+		"2": {
+			"title": "STEP 2",
+			"html": "<p>Will you use the respirator in an oxygen-deficient* atmosphere?</p>\n<ul class=\"answer-links\">\n<li><a href=\"4\">Yes</a></li>\n<li><a href=\"1\">No</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>*Oxygen deficient is less than 19.5% oxygen.</p>\n\n</div>",
+			"prev": "3"
+		},
+		"3": {
+			"title": "STEP 1",
+			"html": "<p>Will you use the respirator for fire fighting?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/1\">Yes</a></li>\n<li><a href=\"2\">No</a></li>\n</ul>\n"
+		},
+		"4": {
+			"title": "STEP 2B",
+			"html": "<p>Are there contaminants present?</p>\n<ul class=\"answer-links\">\n<li><a href=\"5\">Yes</a></li>\n<li><a href=\"#/options/2\">No</a></li>\n</ul>\n",
+			"prev": "2"
+		},
+		"5": {
+			"title": "STEP 3 (OxyDef)",
+			"html": "<p>Will you use the respirator in an unknown or IDLH* atmosphere?  For example, an emergency situation?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/3a\">Yes</a></li>\n<li><a href=\"6\">No</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>*Immediately dangerous to life or health (IDLH) means an atmosphere that poses an immediate threat to life, would cause irreversible adverse health effects, or would impair an individual's ability to escape from a dangerous atmosphere.</p>\n\n</div>",
+			"prev": "4"
+		},
+		"6": {
+			"title": "STEP 4 (OxyDef)",
+			"html": "<p>In your work space is the exposure concentration* of the contaminants less than the NIOSH REL or other applicable exposure limit**?</p>\n<ul class=\"answer-links\">\n<li><a href=\"8\">Exposure Under REL</a></li>\n<li><a href=\"10\">Exposure Over REL</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>*Before you can answer this question, you will need to collect data on the concentration of contaminants in the atmosphere in your work space.</p>\n<p>**Use the Chemical Lookup Tool to find the exposure limit for the contaminant. The NIOSH Recommended Exposure Limit is a non-mandatory, recommended occupational exposure limit.</p>\n\n</div>",
+			"prev": "5"
+		},
+		"7": {
+			"title": "STEP 4(Oxy)",
+			"html": "<p>In your work space is the exposure concentration* of the contaminants less than the NIOSH REL or other applicable exposure limit**?</p>\n<ul class=\"answer-links\">\n<li><a href=\"9\">Exposure Under REL</a></li>\n<li><a href=\"11\">Exposure Over REL</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>*Before you can answer this question, you will need to collect data on the concentration of contaminants in the atmosphere in your work space.</p>\n<p>**Use the Chemical Lookup Tool to find the exposure limit for the contaminant. The NIOSH Recommended Exposure Limit is a non-mandatory, recommended occupational exposure limit.</p>\n\n</div>",
+			"prev": "1"
+		},
+		"8": {
+			"title": "STEP 6 (OxyDef)(UnderEL)",
+			"html": "<p>Is the contaminant an eye irritant, or can the contaminant cause eye damage at the workplace concentration*?</p>\n<ul class=\"answer-links\">\n<li><a href=\"14\">Yes</a></li>\n<li><a href=\"15\">No</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>*Information on eye irritation is included in the Chemical Lookup Tool and may also be found in the <a href=\"https://www.cdc.gov/niosh/ipcs/\">International Chemical Safety Cards</a> put out by the International Programme on Chemical Safety.</p>\n\n</div>",
+			"prev": "6"
+		},
+		"9": {
+			"title": "STEP 6 (Oxy)(UnderEL)",
+			"html": "<p>Is the contaminant an eye irritant, or can the contaminant cause eye damage at the workplace concentration*?</p>\n<ul class=\"answer-links\">\n<li><a href=\"20\">Yes</a></li>\n<li><a href=\"21\">No</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>*Information on eye irritation is included in the Chemical Lookup Tool and may also be found in the <a href=\"https://www.cdc.gov/niosh/ipcs/\">International Chemical Safety Cards</a> put out by the International Programme on Chemical Safety.</p>\n\n</div>",
+			"prev": "7"
+		},
+		"10": {
+			"title": "STEP 5 (OxyDef)(OverEL)",
+			"html": "<p>Are conditions such that the respirator user can escape from the work area and not suffer loss of life or immediate or delayed irreversible health effects if the respirator fails? That is, are the conditions not immediately dangerous to life or health (IDLH)*?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/5a\">No. Conditions are considered IDLH.</a></li>\n<li><a href=\"12\">Yes. Conditions are not IDLH.</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>*IDLH values for certain compounds are found in the Chemical Lookup Tool tab, or the <a href=\"https://www.cdc.gov/niosh/npg/\">NIOSH Pocket Guide for Chemical Hazards</a>. IDLH values for some substances can also be found <a href=\"https://www.cdc.gov/niosh/idlh/\">here</a>.</p>\n\n</div>",
+			"prev": "6"
+		},
+		"11": {
+			"title": "STEP 5 (Oxy)(OverEL)",
+			"html": "<p>Are conditions such that the respirator user can escape from the work area and not suffer loss of life or immediate or delayed irreversible health effects if the respirator fails? That is, are the conditions not immediately dangerous to life or health (IDLH)*?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/5b\">No. Conditions are considered IDLH.</a></li>\n<li><a href=\"13\">Yes. Conditions are not IDLH.</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>*IDLH values for certain compounds are found in the Chemical Lookup Tool tab, or the <a href=\"https://www.cdc.gov/niosh/npg/\">NIOSH Pocket Guide for Chemical Hazards</a>. IDLH values for some substances can also be found <a href=\"https://www.cdc.gov/niosh/idlh/\">here</a>.</p>\n\n</div>",
+			"prev": "7"
+		},
+		"12": {
+			"title": "STEP 6 (OxyDef)(OverEL)",
+			"html": "<p>Is the contaminant an eye irritant, or can the contaminant cause eye damage at the workplace concentration*?</p>\n<ul class=\"answer-links\">\n<li><a href=\"16\">Yes</a></li>\n<li><a href=\"17\">No</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>*Information on eye irritation is included in the Chemical Lookup Tool and may also be found in the <a href=\"https://www.cdc.gov/niosh/ipcs/\">International Chemical Safety Cards</a> put out by the International Programme on Chemical Safety.</p>\n\n</div>",
+			"prev": "10"
+		},
+		"13": {
+			"title": "STEP 6 (Oxy)(OverEL)",
+			"html": "<p>Is the contaminant an eye irritant, or can the contaminant cause eye damage at the workplace concentration*?</p>\n<ul class=\"answer-links\">\n<li><a href=\"18\">Yes</a></li>\n<li><a href=\"19\">No</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>*Information on eye irritation is included in the Chemical Lookup Tool and may also be found in the <a href=\"https://www.cdc.gov/niosh/ipcs/\">International Chemical Safety Cards</a> put out by the International Programme on Chemical Safety.</p>\n\n</div>",
+			"prev": "11"
+		},
+		"14": {
+			"title": "STEP 7A (OxyDef)(UnderEL)(Eye)",
+			"html": "<p>Is the maximum hazard ratio (HR) greater than 1? The HR can be calculated by dividing the TWA (time-weighted average) by the applicable exposure limit. See below for more details on calculating the HR if the contaminant has a ceiling limit or STEL.</p>\n<ul class=\"answer-links\">\n<li><a href=\"22\">Yes. HR greater than 1.</a></li>\n<li><a href=\"23\">No. HR less than 1.</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>To calculate the maximum hazard ratio:</p>\n<ul>\n<li>Divide the time-weighted average (TWA) exposure concentration for the contaminant determined in Step 4 by the NIOSH REL or other applicable exposure limit. If the exposure limit is an 8 hour limit the TWA used must be on 8 hour average. If the exposure limit is based on 10 hours, use a 10 hour TWA.</li>\n<li>If the contaminant has a ceiling limit, divide the maximum exposure concentration for the contaminant determined in Step 4 by the ceiling limit.</li>\n<li>If the contaminant has a short term exposure limit (STEL), divide the maximum 15 min TWA exposure concentration for the contaminant determined in Step 4 by the STEL.</li>\n</ul>\n\n</div>",
+			"prev": "8"
+		},
+		"15": {
+			"title": "STEP 7A (OxyDef)(UnderEL)(NoEye)",
+			"html": "<p>Is the maximum hazard ratio (HR) greater than 1? The HR can be calculated by dividing the TWA (time-weighted average) by the applicable exposure limit. See below for more details on calculating the HR if the contaminant has a ceiling limit or STEL.</p>\n<ul class=\"answer-links\">\n<li><a href=\"24\">Yes. HR greater than 1.</a></li>\n<li><a href=\"25\">No. HR less than 1.</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>To calculate the maximum hazard ratio:</p>\n<ul>\n<li>Divide the time-weighted average (TWA) exposure concentration for the contaminant determined in Step 4 by the NIOSH REL or other applicable exposure limit. If the exposure limit is an 8 hour limit the TWA used must be on 8 hour average. If the exposure limit is based on 10 hours, use a 10 hour TWA.</li>\n<li>If the contaminant has a ceiling limit, divide the maximum exposure concentration for the contaminant determined in Step 4 by the ceiling limit.</li>\n<li>If the contaminant has a short term exposure limit (STEL), divide the maximum 15 min TWA exposure concentration for the contaminant determined in Step 4 by the STEL.</li>\n</ul>\n\n</div>",
+			"prev": "8"
+		},
+		"16": {
+			"title": "STEP 7A (OxyDef)(OverEL)(Eye)",
+			"html": "<p>Is the maximum hazard ratio (HR) greater than 1? The HR can be calculated by dividing the TWA (time-weighted average) by the applicable exposure limit. See below for more details on calculating the HR if the contaminant has a ceiling limit or STEL.</p>\n<ul class=\"answer-links\">\n<li><a href=\"27\">Yes. HR greater than 1.</a></li>\n<li><a href=\"26\">No. HR less than 1.</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>To calculate the maximum hazard ratio:</p>\n<ul>\n<li>Divide the time-weighted average (TWA) exposure concentration for the contaminant determined in Step 4 by the NIOSH REL or other applicable exposure limit. If the exposure limit is an 8 hour limit the TWA used must be on 8 hour average. If the exposure limit is based on 10 hours, use a 10 hour TWA.</li>\n<li>If the contaminant has a ceiling limit, divide the maximum exposure concentration for the contaminant determined in Step 4 by the ceiling limit.</li>\n<li>If the contaminant has a short term exposure limit (STEL), divide the maximum 15 min TWA exposure concentration for the contaminant determined in Step 4 by the STEL.</li>\n</ul>\n\n</div>",
+			"prev": "12"
+		},
+		"17": {
+			"title": "STEP 7A (OxyDef)(OverEL)(NoEye)",
+			"html": "<p>Is the maximum hazard ratio (HR) greater than 1? The HR can be calculated by dividing the TWA (time-weighted average) by the applicable exposure limit. See below for more details on calculating the HR if the contaminant has a ceiling limit or STEL.</p>\n<ul class=\"answer-links\">\n<li><a href=\"29\">Yes. HR greater than 1.</a></li>\n<li><a href=\"28\">No. HR less than 1.</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>To calculate the maximum hazard ratio:</p>\n<ul>\n<li>Divide the time-weighted average (TWA) exposure concentration for the contaminant determined in Step 4 by the NIOSH REL or other applicable exposure limit. If the exposure limit is an 8 hour limit the TWA used must be on 8 hour average. If the exposure limit is based on 10 hours, use a 10 hour TWA.</li>\n<li>If the contaminant has a ceiling limit, divide the maximum exposure concentration for the contaminant determined in Step 4 by the ceiling limit.</li>\n<li>If the contaminant has a short term exposure limit (STEL), divide the maximum 15 min TWA exposure concentration for the contaminant determined in Step 4 by the STEL.</li>\n</ul>\n\n</div>",
+			"prev": "12"
+		},
+		"18": {
+			"title": "STEP 7A (Oxy)(OverEL)(Eye)",
+			"html": "<p>Is the maximum hazard ratio (HR) greater than 1? The HR can be calculated by dividing the TWA (time-weighted average) by the applicable exposure limit. See below for more details on calculating the HR if the contaminant has a ceiling limit or STEL.</p>\n<ul class=\"answer-links\">\n<li><a href=\"31\">Yes. HR greater than 1.</a></li>\n<li><a href=\"30\">No. HR less than 1.</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>To calculate the maximum hazard ratio:</p>\n<ul>\n<li>Divide the time-weighted average (TWA) exposure concentration for the contaminant determined in Step 4 by the NIOSH REL or other applicable exposure limit. If the exposure limit is an 8 hour limit the TWA used must be on 8 hour average. If the exposure limit is based on 10 hours, use a 10 hour TWA.</li>\n<li>If the contaminant has a ceiling limit, divide the maximum exposure concentration for the contaminant determined in Step 4 by the ceiling limit.</li>\n<li>If the contaminant has a short term exposure limit (STEL), divide the maximum 15 min TWA exposure concentration for the contaminant determined in Step 4 by the STEL.</li>\n</ul>\n\n</div>",
+			"prev": "13"
+		},
+		"19": {
+			"title": "STEP 7A (Oxy)(OverEL)(NoEye)",
+			"html": "<p>Is the maximum hazard ratio (HR) greater than 1? The HR can be calculated by dividing the TWA (time-weighted average) by the applicable exposure limit. See below for more details on calculating the HR if the contaminant has a ceiling limit or STEL.</p>\n<ul class=\"answer-links\">\n<li><a href=\"33\">Yes. HR greater than 1.</a></li>\n<li><a href=\"32\">No. HR less than 1.</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>To calculate the maximum hazard ratio:</p>\n<ul>\n<li>Divide the time-weighted average (TWA) exposure concentration for the contaminant determined in Step 4 by the NIOSH REL or other applicable exposure limit. If the exposure limit is an 8 hour limit the TWA used must be on 8 hour average. If the exposure limit is based on 10 hours, use a 10 hour TWA.</li>\n<li>If the contaminant has a ceiling limit, divide the maximum exposure concentration for the contaminant determined in Step 4 by the ceiling limit.</li>\n<li>If the contaminant has a short term exposure limit (STEL), divide the maximum 15 min TWA exposure concentration for the contaminant determined in Step 4 by the STEL.</li>\n</ul>\n\n</div>",
+			"prev": "13"
+		},
+		"20": {
+			"title": "STEP 7A (Oxy)(UnderEL)(Eye)",
+			"html": "<p>Is the maximum hazard ratio (HR) greater than 1? The HR can be calculated by dividing the TWA (time-weighted average) by the applicable exposure limit. See below for more details on calculating the HR if the contaminant has a ceiling limit or STEL.</p>\n<ul class=\"answer-links\">\n<li><a href=\"34\">Yes. HR greater than 1.</a></li>\n<li><a href=\"35\">No. HR less than 1.</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>To calculate the maximum hazard ratio:</p>\n<ul>\n<li>Divide the time-weighted average (TWA) exposure concentration for the contaminant determined in Step 4 by the NIOSH REL or other applicable exposure limit. If the exposure limit is an 8 hour limit the TWA used must be on 8 hour average. If the exposure limit is based on 10 hours, use a 10 hour TWA.</li>\n<li>If the contaminant has a ceiling limit, divide the maximum exposure concentration for the contaminant determined in Step 4 by the ceiling limit.</li>\n<li>If the contaminant has a short term exposure limit (STEL), divide the maximum 15 min TWA exposure concentration for the contaminant determined in Step 4 by the STEL.</li>\n</ul>\n\n</div>",
+			"prev": "9"
+		},
+		"21": {
+			"title": "STEP 7A (Oxy)(UnderEL)(NoEye)",
+			"html": "<p>Is the maximum hazard ratio (HR) greater than 1? The HR can be calculated by dividing the TWA (time-weighted average) by the applicable exposure limit. See below for more details on calculating the HR if the contaminant has a ceiling limit or STEL.</p>\n<ul class=\"answer-links\">\n<li><a href=\"36\">Yes. HR greater than 1.</a></li>\n<li><a href=\"37\">No. HR less than 1.</a></li>\n</ul>\n<div class=\"decision-footer\">\n<p>To calculate the maximum hazard ratio:</p>\n<ul>\n<li>Divide the time-weighted average (TWA) exposure concentration for the contaminant determined in Step 4 by the NIOSH REL or other applicable exposure limit. If the exposure limit is an 8 hour limit the TWA used must be on 8 hour average. If the exposure limit is based on 10 hours, use a 10 hour TWA.</li>\n<li>If the contaminant has a ceiling limit, divide the maximum exposure concentration for the contaminant determined in Step 4 by the ceiling limit.</li>\n<li>If the contaminant has a short term exposure limit (STEL), divide the maximum 15 min TWA exposure concentration for the contaminant determined in Step 4 by the STEL.</li>\n</ul>\n\n</div>",
+			"prev": "9"
+		},
+		"22": {
+			"title": "ERROR MESSAGE 7A (OxyDef)(UnderEL)(Eye)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 4 (Contamination Concentration).</p>\n<ul class=\"answer-links\">\n<li><a href=\"14\">Okay</a></li>\n</ul>\n",
+			"prev": "14"
+		},
+		"23": {
+			"title": "STEP 7B (OxyDef)(UnderEL)(Eye)",
+			"html": "<p>For escape respirators, is there potential for generation of a hazardous condition caused by an accident or equipment failure?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/7b\">Yes</a></li>\n<li><a href=\"#/options/7d\">No</a></li>\n</ul>\n",
+			"prev": "14"
+		},
+		"24": {
+			"title": "ERROR MESSAGE 7A (OxyDef)(UnderEL)(NoEye)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 4 (Contamination Concentration).</p>\n<ul class=\"answer-links\">\n<li><a href=\"15\">Okay</a></li>\n</ul>\n",
+			"prev": "15"
+		},
+		"25": {
+			"title": "STEP 7B (OxyDef)(UnderEL)(NoEye)",
+			"html": "<p>For escape respirators, is there potential for generation of a hazardous condition caused by an accident or equipment failure?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/7a\">Yes</a></li>\n<li><a href=\"#/options/7c\">No</a></li>\n</ul>\n",
+			"prev": "15"
+		},
+		"26": {
+			"title": "ERROR MESSAGE 7A (OxyDef)(OverEL)(Eye)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 4 (Contamination Concentration).</p>\n<ul class=\"answer-links\">\n<li><a href=\"16\">Okay</a></li>\n</ul>\n",
+			"prev": "16"
+		},
+		"27": {
+			"title": "STEP 7B (OxyDef)(OverEL)(Eye)",
+			"html": "<p>For escape respirators, is there potential for generation of a hazardous condition caused by an accident or equipment failure?</p>\n<ul class=\"answer-links\">\n<li><a href=\"38\">Yes</a></li>\n<li><a href=\"39\">No</a></li>\n</ul>\n",
+			"prev": "16"
+		},
+		"28": {
+			"title": "ERROR MESSAGE 7A (OxyDef)(OverEL)(NoEye)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 4 (Contamination Concentration).</p>\n<ul class=\"answer-links\">\n<li><a href=\"17\">Okay</a></li>\n</ul>\n",
+			"prev": "17"
+		},
+		"29": {
+			"title": "STEP 7B (OxyDef)(OverEL)(NoEye)",
+			"html": "<p>For escape respirators, is there potential for generation of a hazardous condition caused by an accident or equipment failure?</p>\n<ul class=\"answer-links\">\n<li><a href=\"40\">Yes</a></li>\n<li><a href=\"41\">No</a></li>\n</ul>\n",
+			"prev": "17"
+		},
+		"30": {
+			"title": "ERROR MESSAGE 7A (Oxy)(OverEL)(Eye)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 4 (Contamination Concentration).</p>\n<ul class=\"answer-links\">\n<li><a href=\"18\">Okay</a></li>\n</ul>\n",
+			"prev": "18"
+		},
+		"31": {
+			"title": "STEP 7B (Oxy)(OverEL)(Eye)",
+			"html": "<p>For escape respirators, is there potential for generation of a hazardous condition caused by an accident or equipment failure?</p>\n<ul class=\"answer-links\">\n<li><a href=\"42\">Yes</a></li>\n<li><a href=\"43\">No</a></li>\n</ul>\n",
+			"prev": "18"
+		},
+		"32": {
+			"title": "ERROR MESSAGE 7A (Oxy)(OverEL)(NoEye)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 4 (Contamination Concentration).</p>\n<ul class=\"answer-links\">\n<li><a href=\"19\">Okay</a></li>\n</ul>\n",
+			"prev": "19"
+		},
+		"33": {
+			"title": "STEP 7B (Oxy)(OverEL)(NoEye)",
+			"html": "<p>For escape respirators, is there potential for generation of a hazardous condition caused by an accident or equipment failure?</p>\n<ul class=\"answer-links\">\n<li><a href=\"44\">Yes</a></li>\n<li><a href=\"45\">No</a></li>\n</ul>\n",
+			"prev": "19"
+		},
+		"34": {
+			"title": "ERROR MESSAGE 7A(Oxy)(UnderEL)(Eye)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 4 (Contamination Concentration).</p>\n<ul class=\"answer-links\">\n<li><a href=\"20\">Okay</a></li>\n</ul>\n",
+			"prev": "20"
+		},
+		"35": {
+			"title": "STEP 7B (Oxy)(UnderEL)(Eye)",
+			"html": "<p>For escape respirators, is there potential for generation of a hazardous condition caused by an accident or equipment failure?</p>\n<ul class=\"answer-links\">\n<li><a href=\"46\">Yes</a></li>\n<li><a href=\"#/options/7f\">No</a></li>\n</ul>\n",
+			"prev": "20"
+		},
+		"36": {
+			"title": "ERROR MESSAGE 7A(Oxy)(UnderEL)(NoEye)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 4 (Contamination Concentration).</p>\n<ul class=\"answer-links\">\n<li><a href=\"21\">Okay</a></li>\n</ul>\n",
+			"prev": "21"
+		},
+		"37": {
+			"title": "STEP 7B (Oxy)(UnderEL)(NoEye)",
+			"html": "<p>For escape respirators, is there potential for generation of a hazardous condition caused by an accident or equipment failure?</p>\n<ul class=\"answer-links\">\n<li><a href=\"47\">Yes</a></li>\n<li><a href=\"#/options/7e\">No</a></li>\n</ul>\n",
+			"prev": "21"
+		},
+		"38": {
+			"title": "STEP 8 (OxyDef)(OverEL)(Eye)(Esc)",
+			"html": "<p>If the physical state of the contaminant is:\na particulate (solid or liquid aerosol) during periods of respirator use, proceed to Step 9;\na gas or vapor, proceed to Step 10;\na combination of gas or vapor and particulate, proceed to Step 11.</p>\n<ul class=\"answer-links\">\n<li><a href=\"48\">Particulate</a></li>\n<li><a href=\"49\">Gas or Vapor</a></li>\n<li><a href=\"50\">Combination</a></li>\n</ul>\n",
+			"prev": "27"
+		},
+		"39": {
+			"title": "STEP 8 (OxyDef)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>If the physical state of the contaminant is:\na particulate (solid or liquid aerosol) during periods of respirator use, proceed to Step 9;\na gas or vapor, proceed to Step 10;\na combination of gas or vapor and particulate, proceed to Step 11.</p>\n<ul class=\"answer-links\">\n<li><a href=\"51\">Particulate</a></li>\n<li><a href=\"52\">Gas or Vapor</a></li>\n<li><a href=\"53\">Combination</a></li>\n</ul>\n",
+			"prev": "27"
+		},
+		"40": {
+			"title": "STEP 8 (OxyDef)(OverEL)(NoEye)(Esc)",
+			"html": "<p>If the physical state of the contaminant is:\na particulate (solid or liquid aerosol) during periods of respirator use, proceed to Step 9;\na gas or vapor, proceed to Step 10;\na combination of gas or vapor and particulate, proceed to Step 11.</p>\n<ul class=\"answer-links\">\n<li><a href=\"54\">Particulate</a></li>\n<li><a href=\"55\">Gas or Vapor</a></li>\n<li><a href=\"56\">Combination</a></li>\n</ul>\n",
+			"prev": "29"
+		},
+		"41": {
+			"title": "STEP 8 (OxyDef)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>If the physical state of the contaminant is:\na particulate (solid or liquid aerosol) during periods of respirator use, proceed to Step 9;\na gas or vapor, proceed to Step 10;\na combination of gas or vapor and particulate, proceed to Step 11.</p>\n<ul class=\"answer-links\">\n<li><a href=\"57\">Particulate</a></li>\n<li><a href=\"58\">Gas or Vapor</a></li>\n<li><a href=\"59\">Combination</a></li>\n</ul>\n",
+			"prev": "29"
+		},
+		"42": {
+			"title": "STEP 8 (Oxy)(OverEL)(Eye)(Esc)",
+			"html": "<p>If the physical state of the contaminant is:\na particulate (solid or liquid aerosol) during periods of respirator use, proceed to Step 9;\na gas or vapor, proceed to Step 10;\na combination of gas or vapor and particulate, proceed to Step 11.</p>\n<ul class=\"answer-links\">\n<li><a href=\"72\">Particulate</a></li>\n<li><a href=\"73\">Gas or Vapor</a></li>\n<li><a href=\"74\">Combination</a></li>\n</ul>\n",
+			"prev": "31"
+		},
+		"43": {
+			"title": "STEP 8 (Oxy)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>If the physical state of the contaminant is:\na particulate (solid or liquid aerosol) during periods of respirator use, proceed to Step 9;\na gas or vapor, proceed to Step 10;\na combination of gas or vapor and particulate, proceed to Step 11.</p>\n<ul class=\"answer-links\">\n<li><a href=\"75\">Particulate</a></li>\n<li><a href=\"76\">Gas or Vapor</a></li>\n<li><a href=\"77\">Combination</a></li>\n</ul>\n",
+			"prev": "31"
+		},
+		"44": {
+			"title": "STEP 8(Oxy)(OverEL)(NoEye)(Esc)",
+			"html": "<p>If the physical state of the contaminant is:\na particulate (solid or liquid aerosol) during periods of respirator use, proceed to Step 9;\na gas or vapor, proceed to Step 10;\na combination of gas or vapor and particulate, proceed to Step 11.</p>\n<ul class=\"answer-links\">\n<li><a href=\"81\">Particulate</a></li>\n<li><a href=\"82\">Gas or Vapor</a></li>\n<li><a href=\"83\">Combination</a></li>\n</ul>\n",
+			"prev": "33"
+		},
+		"45": {
+			"title": "STEP 8(Oxy)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>If the physical state of the contaminant is:\na particulate (solid or liquid aerosol) during periods of respirator use, proceed to Step 9;\na gas or vapor, proceed to Step 10;\na combination of gas or vapor and particulate, proceed to Step 11.</p>\n<ul class=\"answer-links\">\n<li><a href=\"78\">Particulate</a></li>\n<li><a href=\"79\">Gas or Vapor</a></li>\n<li><a href=\"80\">Combination</a></li>\n</ul>\n",
+			"prev": "33"
+		},
+		"46": {
+			"title": "STEP 8 (Oxy)(UnderEL)(Eye)(Esc)",
+			"html": "<p>If the physical state of the contaminant is:\na particulate (solid or liquid aerosol) during periods of respirator use, proceed to Step 9;\na gas or vapor, proceed to Step 10;\na combination of gas or vapor and particulate, proceed to Step 11.</p>\n<ul class=\"answer-links\">\n<li><a href=\"96\">Particulate</a></li>\n<li><a href=\"97\">Gas or Vapor</a></li>\n<li><a href=\"98\">Combination</a></li>\n</ul>\n",
+			"prev": "35"
+		},
+		"47": {
+			"title": "STEP 8(Oxy)(UnderEL)(NoEye)(Esc)",
+			"html": "<p>If the physical state of the contaminant is:\na particulate (solid or liquid aerosol) during periods of respirator use, proceed to Step 9;\na gas or vapor, proceed to Step 10;\na combination of gas or vapor and particulate, proceed to Step 11.</p>\n<ul class=\"answer-links\">\n<li><a href=\"99\">Particulate</a></li>\n<li><a href=\"100\">Gas or Vapor</a></li>\n<li><a href=\"101\">Combination</a></li>\n</ul>\n",
+			"prev": "37"
+		},
+		"48": {
+			"title": "Step 9.1 (OxyDef)(OverEL)(Eye)(Esc)",
+			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"118\">Yes</a></li>\n<li><a href=\"#/options/9-3c\">No</a></li>\n</ul>\n",
+			"prev": "38"
+		},
+		"49": {
+			"title": "Step 10.1 (OxyDef)(OverEL)(Eye)(Esc)",
+			"html": "<p>Is the gas-vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"119\">Yes</a></li>\n<li><a href=\"#/options/10-3c\">No</a></li>\n</ul>\n",
+			"prev": "38"
+		},
+		"50": {
+			"title": "Step 11.1 (OxyDef)(OverEL)(Eye)(Esc)",
+			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"120\">Yes</a></li>\n<li><a href=\"#/options/11-2c\">No</a></li>\n</ul>\n",
+			"prev": "38"
+		},
+		"51": {
+			"title": "Step 9.1 (OxyDef)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"121\">Yes</a></li>\n<li><a href=\"#/options/9-3d\">No</a></li>\n</ul>\n",
+			"prev": "39"
+		},
+		"52": {
+			"title": "Step 10.1 (OxyDef)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>Is the gas-vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"122\">Yes</a></li>\n<li><a href=\"#/options/10-3d\">No</a></li>\n</ul>\n",
+			"prev": "39"
+		},
+		"53": {
+			"title": "Step 11.1 (OxyDef)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"123\">Yes</a></li>\n<li><a href=\"#/options/11-2d\">No</a></li>\n</ul>\n",
+			"prev": "39"
+		},
+		"54": {
+			"title": "Step 9.1 (OxyDef)(OverEL)(NoEye)(Esc)",
+			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"124\">Yes</a></li>\n<li><a href=\"#/options/9-3a\">No</a></li>\n</ul>\n",
+			"prev": "40"
+		},
+		"55": {
+			"title": "Step 10.1 (OxyDef)(OverEL)(NoEye)(Esc)",
+			"html": "<p>Is the gas-vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"125\">Yes</a></li>\n<li><a href=\"#/options/10-3a\">No</a></li>\n</ul>\n",
+			"prev": "40"
+		},
+		"56": {
+			"title": "Step 11.1 (OxyDef)(OverEL)(NoEye)(Esc)",
+			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"126\">Yes</a></li>\n<li><a href=\"#/options/11-2a\">No</a></li>\n</ul>\n",
+			"prev": "40"
+		},
+		"57": {
+			"title": "Step 9.1 (OxyDef)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"127\">Yes</a></li>\n<li><a href=\"#/options/9-3b\">No</a></li>\n</ul>\n",
+			"prev": "41"
+		},
+		"58": {
+			"title": "Step 10.1 (OxyDef)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>Is the gas-vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"128\">Yes</a></li>\n<li><a href=\"#/options/10-3b\">No</a></li>\n</ul>\n",
+			"prev": "41"
+		},
+		"59": {
+			"title": "Step 11.1 (OxyDef)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"129\">Yes</a></li>\n<li><a href=\"#/options/11-2b\">No</a></li>\n</ul>\n",
+			"prev": "41"
+		},
+		"72": {
+			"title": "Step 9.1 (Oxy)(OverEL)(Eye)(Esc)",
+			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"130\">Yes</a></li>\n<li><a href=\"#/options/9-3g\">No</a></li>\n</ul>\n",
+			"prev": "42"
+		},
+		"73": {
+			"title": "Step 10.1 (Oxy)(OverEL)(Eye)(Esc)",
+			"html": "<p>Is the gas-vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"131\">Yes</a></li>\n<li><a href=\"#/options/10-3g\">No</a></li>\n</ul>\n",
+			"prev": "42"
+		},
+		"74": {
+			"title": "Step 11.1 (Oxy)(OverEL)(Eye)(Esc)",
+			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"132\">Yes</a></li>\n<li><a href=\"#/options/11-2g\">No</a></li>\n</ul>\n",
+			"prev": "42"
+		},
+		"75": {
+			"title": "Step 9.1 (Oxy)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"133\">Yes</a></li>\n<li><a href=\"#/options/9-3h\">No</a></li>\n</ul>\n",
+			"prev": "43"
+		},
+		"76": {
+			"title": "Step 10.1 (Oxy)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>Is the gas-vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"134\">Yes</a></li>\n<li><a href=\"#/options/10-3h\">No</a></li>\n</ul>\n",
+			"prev": "43"
+		},
+		"77": {
+			"title": "Step 11.1 (Oxy)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"135\">Yes</a></li>\n<li><a href=\"#/options/11-2h\">No</a></li>\n</ul>\n",
+			"prev": "43"
+		},
+		"78": {
+			"title": "Step 9.1 (Oxy)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"136\">Yes</a></li>\n<li><a href=\"#/options/9-3f\">No</a></li>\n</ul>\n",
+			"prev": "45"
+		},
+		"79": {
+			"title": "Step 10.1 (Oxy)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>Is the gas-vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"137\">Yes</a></li>\n<li><a href=\"#/options/10-3f\">No</a></li>\n</ul>\n",
+			"prev": "45"
+		},
+		"80": {
+			"title": "Step 11.1 (Oxy)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"138\">Yes</a></li>\n<li><a href=\"#/options/11-2f\">No</a></li>\n</ul>\n",
+			"prev": "45"
+		},
+		"81": {
+			"title": "Step 9.1 (Oxy)(OverEL)(NoEye)(Esc)",
+			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"139\">Yes</a></li>\n<li><a href=\"#/options/9-3e\">No</a></li>\n</ul>\n",
+			"prev": "44"
+		},
+		"82": {
+			"title": "Step 10.1 (Oxy)(OverEL)(NoEye)(Esc)",
+			"html": "<p>Is the gas-vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"140\">Yes</a></li>\n<li><a href=\"#/options/10-3e\">No</a></li>\n</ul>\n",
+			"prev": "44"
+		},
+		"83": {
+			"title": "Step 11.1 (Oxy)(OverEL)(NoEye)(Esc)",
+			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"141\">Yes</a></li>\n<li><a href=\"#/options/11-2e\">No</a></li>\n</ul>\n",
+			"prev": "44"
+		},
+		"96": {
+			"title": "Step 9.1 (Oxy)(UnderEL)(Eye)(Esc)",
+			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"143\">No</a></li>\n<li><a href=\"#/options/9-1b\">Yes</a></li>\n</ul>\n",
+			"prev": "46"
+		},
+		"97": {
+			"title": "Step 10.1 (Oxy)(UnderEL)(Eye)(Esc)",
+			"html": "<p>Is the gas-vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"144\">No</a></li>\n<li><a href=\"#/options/10-1b\">Yes</a></li>\n</ul>\n",
+			"prev": "46"
+		},
+		"98": {
+			"title": "Step 11.1 (Oxy)(UnderEL)(Eye)(Esc)",
+			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"145\">No</a></li>\n<li><a href=\"#/options/11-1b\">Yes</a></li>\n</ul>\n",
+			"prev": "46"
+		},
+		"99": {
+			"title": "Step 9.1 (Oxy)(UnderEL)(NoEye)(Esc)",
+			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"147\">No</a></li>\n<li><a href=\"#/options/9-1a\">Yes</a></li>\n</ul>\n",
+			"prev": "47"
+		},
+		"100": {
+			"title": "Step 10.1 (Oxy)(UnderEL)(NoEye)(Esc)",
+			"html": "<p>Is the gas-vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"148\">No</a></li>\n<li><a href=\"#/options/10-1a\">Yes</a></li>\n</ul>\n",
+			"prev": "47"
+		},
+		"101": {
+			"title": "Step 11.1 (Oxy)(UnderEL)(NoEye)(Esc)",
+			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"149\">No</a></li>\n<li><a href=\"#/options/11-1a\">Yes</a></li>\n</ul>\n",
+			"prev": "47"
+		},
+		"118": {
+			"title": "ERROR MESSAGE 9.1 (OxyDef)(OverEL)(Eye)(Esc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"48\">Okay</a></li>\n</ul>\n",
+			"prev": "48"
+		},
+		"119": {
+			"title": "ERROR MESSAGE 10.1 (OxyDef)(OverEL)(Eye)(Esc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"49\">Okay</a></li>\n</ul>\n",
+			"prev": "49"
+		},
+		"120": {
+			"title": "ERROR MESSAGE 11.1 (OxyDef)(OverEL)(Eye)(Esc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"50\">Okay</a></li>\n</ul>\n",
+			"prev": "50"
+		},
+		"121": {
+			"title": "ERROR MESSAGE 9.1 (OxyDef)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"51\">Okay</a></li>\n</ul>\n",
+			"prev": "51"
+		},
+		"122": {
+			"title": "ERROR MESSAGE 10.1 (OxyDef)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"52\">Okay</a></li>\n</ul>\n",
+			"prev": "52"
+		},
+		"123": {
+			"title": "ERROR MESSAGE 11.1 (OxyDef)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"53\">Okay</a></li>\n</ul>\n",
+			"prev": "53"
+		},
+		"124": {
+			"title": "ERROR MESSAGE 9.1 (OxyDef)(OverEL)(NoEye)(Esc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"54\">Okay</a></li>\n</ul>\n",
+			"prev": "54"
+		},
+		"125": {
+			"title": "ERROR MESSAGE 10.1 (OxyDef)(OverEL)(NoEye)(Esc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"55\">Okay</a></li>\n</ul>\n",
+			"prev": "55"
+		},
+		"126": {
+			"title": "ERROR MESSAGE 11.1 (OxyDef)(OverEL)(NoEye)(Esc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"56\">Okay</a></li>\n</ul>\n",
+			"prev": "56"
+		},
+		"127": {
+			"title": "ERROR MESSAGE 9.1 (OxyDef)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"57\">Okay</a></li>\n</ul>\n",
+			"prev": "57"
+		},
+		"128": {
+			"title": "ERROR MESSAGE 10.1 (OxyDef)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"58\">Okay</a></li>\n</ul>\n",
+			"prev": "58"
+		},
+		"129": {
+			"title": "ERROR MESSAGE 11.1 (OxyDef)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"59\">Okay</a></li>\n</ul>\n",
+			"prev": "59"
+		},
+		"130": {
+			"title": "ERROR MESSAGE 9.1 (Oxy)(OverEL)(Eye)(Esc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"72\">Okay</a></li>\n</ul>\n",
+			"prev": "72"
+		},
+		"131": {
+			"title": "ERROR MESSAGE 10.1 (Oxy)(OverEL)(Eye)(Esc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"73\">Okay</a></li>\n</ul>\n",
+			"prev": "73"
+		},
+		"132": {
+			"title": "ERROR MESSAGE 11.1 (Oxy)(OverEL)(Eye)(Esc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"74\">Okay</a></li>\n</ul>\n",
+			"prev": "74"
+		},
+		"133": {
+			"title": "ERROR MESSAGE 9.1 (Oxy)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"75\">Okay</a></li>\n</ul>\n",
+			"prev": "75"
+		},
+		"134": {
+			"title": "ERROR MESSAGE 10.1 (Oxy)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"76\">Okay</a></li>\n</ul>\n",
+			"prev": "76"
+		},
+		"135": {
+			"title": "ERROR MESSAGE 11.1 (Oxy)(OverEL)(Eye)(NoEsc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"77\">Okay</a></li>\n</ul>\n",
+			"prev": "77"
+		},
+		"136": {
+			"title": "ERROR MESSAGE 9.1 (Oxy)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"78\">Okay</a></li>\n</ul>\n",
+			"prev": "78"
+		},
+		"137": {
+			"title": "ERROR MESSAGE 10.1 (Oxy)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"79\">Okay</a></li>\n</ul>\n",
+			"prev": "79"
+		},
+		"138": {
+			"title": "ERROR MESSAGE 11.1 (Oxy)(OverEL)(NoEye)(NoEsc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"80\">Okay</a></li>\n</ul>\n",
+			"prev": "80"
+		},
+		"139": {
+			"title": "ERROR MESSAGE 9.1 (Oxy)(OverEL)(NoEye)(Esc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"81\">Okay</a></li>\n</ul>\n",
+			"prev": "81"
+		},
+		"140": {
+			"title": "ERROR MESSAGE 10.1 (Oxy)(OverEL)(NoEye)(Esc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"82\">Okay</a></li>\n</ul>\n",
+			"prev": "82"
+		},
+		"141": {
+			"title": "ERROR MESSAGE 11.1 (Oxy)(OverEL)(NoEye)(Esc)",
+			"html": "<p>Oops. This answer is inconsistent. Double check Step 2 and Step 2-Yes (Oxygen Deficiency/ Contamination).</p>\n<ul class=\"answer-links\">\n<li><a href=\"83\">Okay</a></li>\n</ul>\n",
+			"prev": "83"
+		},
+		"143": {
+			"title": "ERROR MESSAGE 9.1 (Oxy)(UnderEL)(Eye)(Esc)",
+			"html": "<p>Oops. You answered in a way inconsistent with your response on Step 7B (Potential Hazard). Double check yourself.</p>\n<ul class=\"answer-links\">\n<li><a href=\"96\">Okay</a></li>\n</ul>\n",
+			"prev": "96"
+		},
+		"144": {
+			"title": "ERROR MESSAGE 10.1 (Oxy)(UnderEL)(Eye)(Esc)",
+			"html": "<p>Oops. You answered in a way inconsistent with your response on Step 7B (Potential Hazard). Double check yourself.</p>\n<ul class=\"answer-links\">\n<li><a href=\"97\">Okay</a></li>\n</ul>\n",
+			"prev": "97"
+		},
+		"145": {
+			"title": "ERROR MESSAGE 11.1 (Oxy)(UnderEL)(Eye)(Esc)",
+			"html": "<p>Oops. You answered in a way inconsistent with your response on Step 7B (Potential Hazard). Double check yourself.</p>\n<ul class=\"answer-links\">\n<li><a href=\"98\">Okay</a></li>\n</ul>\n",
+			"prev": "98"
+		},
+		"147": {
+			"title": "ERROR MESSAGE 9.1 (Oxy)(UnderEL)(NoEye)(Esc)",
+			"html": "<p>Oops. You answered in a way inconsistent with your response on Step 7B (Potential Hazard). Double check yourself.</p>\n<ul class=\"answer-links\">\n<li><a href=\"99\">Okay</a></li>\n</ul>\n",
+			"prev": "99"
+		},
+		"148": {
+			"title": "ERROR MESSAGE 10.1 (Oxy)(UnderEL)(NoEye)(Esc)",
+			"html": "<p>Oops. You answered in a way inconsistent with your response on Step 7B (Potential Hazard). Double check yourself.</p>\n<ul class=\"answer-links\">\n<li><a href=\"100\">Okay</a></li>\n</ul>\n",
+			"prev": "100"
+		},
+		"149": {
+			"title": "ERROR MESSAGE 11.1 (Oxy)(UnderEL)(NoEye)(Esc)",
+			"html": "<p>Oops. You answered in a way inconsistent with your response on Step 7B (Potential Hazard). Double check yourself.</p>\n<ul class=\"answer-links\">\n<li><a href=\"101\">Okay</a></li>\n</ul>\n",
+			"prev": "101"
+		},
+		"#/options/9-3c": {
+			"title": "List 9.3C",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/9-3c/</p>\n",
+			"prev": "48"
+		},
+		"#/options/10-3c": {
+			"title": "List 10.3C",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/10-3c/</p>\n",
+			"prev": "49"
+		},
+		"#/options/11-2c": {
+			"title": "List 11.2C",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/11-2c/</p>\n",
+			"prev": "50"
+		},
+		"#/options/9-3d": {
+			"title": "List 9.3D",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/9-3d/</p>\n",
+			"prev": "51"
+		},
+		"#/options/10-3d": {
+			"title": "List 10.3D",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/10-3d/</p>\n",
+			"prev": "52"
+		},
+		"#/options/11-2d": {
+			"title": "List 11.2D",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/11-2d/</p>\n",
+			"prev": "53"
+		},
+		"#/options/9-3a": {
+			"title": "List 9.3A",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/9-3a/</p>\n",
+			"prev": "54"
+		},
+		"#/options/10-3a": {
+			"title": "List 10.3A",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/10-3a/</p>\n",
+			"prev": "55"
+		},
+		"#/options/11-2a": {
+			"title": "List 11.2A",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/11-2a/</p>\n",
+			"prev": "56"
+		},
+		"#/options/9-3b": {
+			"title": "List 9.3B",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/9-3b/</p>\n",
+			"prev": "57"
+		},
+		"#/options/10-3b": {
+			"title": "List 10.3B",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/10-3b/</p>\n",
+			"prev": "58"
+		},
+		"#/options/11-2b": {
+			"title": "List 11.2B",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/11-2b/</p>\n",
+			"prev": "59"
+		},
+		"#/options/9-3g": {
+			"title": "List 9.3G",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/9-3g/</p>\n",
+			"prev": "72"
+		},
+		"#/options/10-3g": {
+			"title": "List 10.3G",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/10-3g/</p>\n",
+			"prev": "73"
+		},
+		"#/options/11-2g": {
+			"title": "List 11.2G",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/11-2g/</p>\n",
+			"prev": "74"
+		},
+		"#/options/9-3h": {
+			"title": "List 9.3H",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/9-3h/</p>\n",
+			"prev": "75"
+		},
+		"#/options/10-3h": {
+			"title": "List 10.3H",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/10-3h/</p>\n",
+			"prev": "76"
+		},
+		"#/options/11-2h": {
+			"title": "List 11.2H",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/11-2h/</p>\n",
+			"prev": "77"
+		},
+		"#/options/9-3f": {
+			"title": "List 9.3F",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/9-3f/</p>\n",
+			"prev": "78"
+		},
+		"#/options/10-3f": {
+			"title": "List 10.3F",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/10-3f/</p>\n",
+			"prev": "79"
+		},
+		"#/options/11-2f": {
+			"title": "List 11.2F",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/11-2f/</p>\n",
+			"prev": "80"
+		},
+		"#/options/9-3e": {
+			"title": "List 9.3E",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/9-3e/</p>\n",
+			"prev": "81"
+		},
+		"#/options/10-3e": {
+			"title": "List 10.3E",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/10-3e/</p>\n",
+			"prev": "82"
+		},
+		"#/options/11-2e": {
+			"title": "List 11.2E",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/11-2e/</p>\n",
+			"prev": "83"
+		},
+		"#/options/9-1b": {
+			"title": "List 9.1B",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/9-1b/</p>\n",
+			"prev": "96"
+		},
+		"#/options/10-1b": {
+			"title": "List 10.1B",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/10-1b/</p>\n",
+			"prev": "97"
+		},
+		"#/options/11-1b": {
+			"title": "List 11.1B",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/11-1b/</p>\n",
+			"prev": "98"
+		},
+		"#/options/9-1a": {
+			"title": "List 9.1A",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/9-1a/</p>\n",
+			"prev": "99"
+		},
+		"#/options/10-1a": {
+			"title": "List 10.1A",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/10-1a/</p>\n",
+			"prev": "100"
+		},
+		"#/options/11-1a": {
+			"title": "List 11.1A",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/11-1a/</p>\n",
+			"prev": "101"
+		},
+		"#/options/1": {
+			"title": "List 1",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/1/</p>\n",
+			"prev": "3"
+		},
+		"#/options/2": {
+			"title": "List 2",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/2/</p>\n",
+			"prev": "4"
+		},
+		"#/options/3a": {
+			"title": "List 3A",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/3a/</p>\n",
+			"prev": "5"
+		},
+		"#/options/3b": {
+			"title": "List 3B",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/3b/</p>\n",
+			"prev": "1"
+		},
+		"#/options/5a": {
+			"title": "List 5A",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/5a/</p>\n",
+			"prev": "10"
+		},
+		"#/options/5b": {
+			"title": "List 5B",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/5b/</p>\n",
+			"prev": "11"
+		},
+		"#/options/7b": {
+			"title": "List 7B",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/7b/</p>\n",
+			"prev": "23"
+		},
+		"#/options/7d": {
+			"title": "List 7D",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/7d/</p>\n",
+			"prev": "23"
+		},
+		"#/options/7a": {
+			"title": "List 7A",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/7a/</p>\n",
+			"prev": "25"
+		},
+		"#/options/7c": {
+			"title": "List 7C",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/7c/</p>\n",
+			"prev": "25"
+		},
+		"#/options/7f": {
+			"title": "List 7F",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/7f/</p>\n",
+			"prev": "35"
+		},
+		"#/options/7e": {
+			"title": "List 7E",
+			"html": "<p>http://respirators101.iuoe-hazmat.com/respirator_options/7e/</p>\n",
+			"prev": "37"
+		}
+	}
+}
