@@ -5,7 +5,7 @@ package-lock.json
 node_modules
 npm-debug.log
 
-client/data/content
+client/data
 remoteserver.json
 buildserver.json
 

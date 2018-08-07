@@ -66,7 +66,6 @@ import client$47$data$47$content$47$employer$45$responsibilites$46$html from '..
 import client$47$data$47$content$47$fit$45$testing$46$html from '../../client/data/content/fit-testing.html'
 import client$47$data$47$content$47$glossary$46$html from '../../client/data/content/glossary.html'
 import client$47$data$47$content$47$noah$45$test__trashed$46$html from '../../client/data/content/noah-test__trashed.html'
-import client$47$data$47$content$47$osha$45$standards$46$html from '../../client/data/content/osha-standards.html'
 import client$47$data$47$content$47$osha$45$standards__trashed$46$html from '../../client/data/content/osha-standards__trashed.html'
 import client$47$data$47$content$47$purpose$45$of$45$respirators$46$html from '../../client/data/content/purpose-of-respirators.html'
 import client$47$data$47$content$47$resources$46$html from '../../client/data/content/resources.html'
@@ -76,7 +75,6 @@ import client$47$data$47$content$47$text$45$test__trashed$46$html from '../../cl
 import client$47$data$47$content$47$top$45$10$45$terms$45$to$45$know$46$html from '../../client/data/content/top-10-terms-to-know.html'
 import client$47$data$47$content$47$types$45$of$45$respirators$46$html from '../../client/data/content/types-of-respirators.html'
 import client$47$data$47$content$47$using$45$this$45$app$46$html from '../../client/data/content/using-this-app.html'
-import client$47$data$47$content$47$who$45$should$45$use$45$it$46$html from '../../client/data/content/who-should-use-it.html'
 
 export default [
 	{ path: 'client/data/content/1.html', export: client$47$data$47$content$47$1$46$html },
@@ -147,7 +145,6 @@ export default [
 	{ path: 'client/data/content/fit-testing.html', export: client$47$data$47$content$47$fit$45$testing$46$html },
 	{ path: 'client/data/content/glossary.html', export: client$47$data$47$content$47$glossary$46$html },
 	{ path: 'client/data/content/noah-test__trashed.html', export: client$47$data$47$content$47$noah$45$test__trashed$46$html },
-	{ path: 'client/data/content/osha-standards.html', export: client$47$data$47$content$47$osha$45$standards$46$html },
 	{ path: 'client/data/content/osha-standards__trashed.html', export: client$47$data$47$content$47$osha$45$standards__trashed$46$html },
 	{ path: 'client/data/content/purpose-of-respirators.html', export: client$47$data$47$content$47$purpose$45$of$45$respirators$46$html },
 	{ path: 'client/data/content/resources.html', export: client$47$data$47$content$47$resources$46$html },
@@ -156,6 +153,5 @@ export default [
 	{ path: 'client/data/content/text-test__trashed.html', export: client$47$data$47$content$47$text$45$test__trashed$46$html },
 	{ path: 'client/data/content/top-10-terms-to-know.html', export: client$47$data$47$content$47$top$45$10$45$terms$45$to$45$know$46$html },
 	{ path: 'client/data/content/types-of-respirators.html', export: client$47$data$47$content$47$types$45$of$45$respirators$46$html },
-	{ path: 'client/data/content/using-this-app.html', export: client$47$data$47$content$47$using$45$this$45$app$46$html },
-	{ path: 'client/data/content/who-should-use-it.html', export: client$47$data$47$content$47$who$45$should$45$use$45$it$46$html }
+	{ path: 'client/data/content/using-this-app.html', export: client$47$data$47$content$47$using$45$this$45$app$46$html }
 ]

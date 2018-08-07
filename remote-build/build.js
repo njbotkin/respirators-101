@@ -39,7 +39,8 @@ async function build() {
 				runfile.build_wordpress_data_to_svelte(),
 				runfile.create_symlinks(),
 				runfile.glob_all(),
-				// runfile.process_chemicals()
+				runfile.build_twine_data_to_decisions_html()
+				runfile.process_chemicals()
 			])
 		)
 
