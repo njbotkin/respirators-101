@@ -16,6 +16,8 @@ public/wp-images
 public/fonts
 public/blind-polyfill.js
 
+wordpress-data/wordpress.xml
+
 cordova/www
 cordova/platforms
 cordova/plugins
