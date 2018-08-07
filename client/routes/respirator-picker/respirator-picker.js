@@ -30,10 +30,8 @@ export default ({ makePath }) => ({
 				},
 			})
 		}
-
-		let job = store.get().job
-		job.RSLStep = params.id
-		store.set({ job })
+		
+		store.set({ job: { RSLStep: params.id } })
 
 		return Promise.resolve({
 			html: replaceDecisionLinkUrls(passage.html, makePath),

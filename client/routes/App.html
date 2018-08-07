@@ -46,8 +46,8 @@
 
 	</div>
 
-	{ #if $RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list')  }
-	<a class="button in-selection" href="{ asr.makePath('app.respirator-picker', {id: $RSLStep})}">
+	{ #if $job.RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list')  }
+	<a class="button in-selection" href="{ asr.makePath('app.respirator-picker', {id: $job.RSLStep})}">
 		Resume Respirator Selection
 	</a>
 	{ /if }
