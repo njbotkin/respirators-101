@@ -1,3 +1,5 @@
+@import "colors";
+
 body {
 	margin: 0;
 	overflow-x: hidden;
@@ -32,8 +34,6 @@ a[href^='http'], a[href^='//'] {
 	background-image: linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22%3E %3Cpath fill=%22%23fff%22 stroke=%22%2336c%22 d=%22M1.5 4.518h5.982V10.5H1.5z%22/%3E %3Cpath fill=%22%2336c%22 d=%22M5.765 1H11v5.39L9.427 7.937l-1.31-1.31L5.393 9.35l-2.69-2.688 2.81-2.808L4.2 2.544z%22/%3E %3Cpath fill=%22%23fff%22 d=%22M9.995 2.004l.022 4.885L8.2 5.07 5.32 7.95 4.09 6.723l2.882-2.88-1.85-1.852z%22/%3E %3C/svg%3E");
 	padding-right: 13px;
 } 
-
-@import "colors";
 
 .content {
 	margin-left: auto;
@@ -91,3 +91,167 @@ img.size-50 { width: 50%; }
 img.size-65 { width: 65%; }
 img.size-80 { width: 80%; }
 img.size-90 { width: 90%; }
+
+
+
+/* I'm pretty torn on whether these should be global css or components, 
+ * but global CSS gives me the flexibility that I want */
+
+.property {
+	display: inline-block;
+	vertical-align: top;
+	border-left: 2px solid transparent;
+	padding: 5px 10px;
+	margin: 5px 0;
+
+	label, .label {
+		font-size: 80%;
+		font-weight: bold;
+		display: block;
+		padding-right: 5px;
+	}
+	.notes {
+		display: block;
+		font-size: 70%;
+		opacity: .8;
+	}
+}
+
+.property-list > .property {
+	display: block;
+}
+
+.property.inline {
+	label, .label {
+		display: inline-block;
+		line-height: 1;
+		vertical-align: middle;
+	}
+	.value {
+		display: inline-block;
+		vertical-align: middle;
+	}
+}
+
+
+.equation {
+	text-align: center;
+
+
+	> div {
+		display: inline-block;
+		margin: 0 3px;
+		vertical-align: middle;
+	}
+
+	.operand {
+		.value, .unit {
+			display: block;
+			text-align: center;
+		} 
+		.unit {
+			color: #666;
+			line-height: 1.2;
+			font-size: 90%;
+		}
+	}
+
+	.operator {
+		font-size: 120%;
+	}
+}
+
+
+.representation {
+	display: inline-block;
+	text-align: center;
+	line-height: 1;
+	vertical-align: bottom;
+	.unit  {
+		display: block;
+		font-size: 70%;
+		opacity: .8;
+		padding: 0 2px;
+
+		sup {
+			vertical-align: top;
+		}
+	}
+}
+
+.button {
+	display: inline-block;
+	padding: 0 15px;
+	line-height: 40px;
+	color: #fff;
+	/*background: linear-gradient(#fff, #eee);*/
+	background: linear-gradient(#999);
+	font-size: 80%;
+	text-transform: uppercase;
+	font-weight: 600;
+	/*border-radius: 30px;*/
+	/*border: 2px solid;*/
+	text-decoration: none;
+	cursor: pointer;
+	position: relative;
+	text-shadow: 0px 0px 5px #00000099;
+	/*opacity: .6;*/
+	/*box-shadow: 0px 1px 6px #00000066;*/
+	letter-spacing: .5px;
+
+	&:active {
+		background: linear-gradient(#888, #aaa);
+ 		bottom: -1px;
+	}
+}
+
+.save-value, .read-value {
+	padding: 20px 20px 30px 20px;
+	border: 1px solid #ddd;
+	display: inline-block;
+	margin: 20px 0;
+	position: relative;
+	border-radius: 5px;
+    vertical-align: top;
+
+	.legend {
+		display: block;
+		padding: 0 2px;
+		position: absolute;
+		top: -20px;
+		line-height: 40px;
+		color: #bbb;
+		background: #fff;
+		font-size: 80%;
+		text-transform: uppercase;
+		font-weight: 900;
+	} 
+
+    &.livetrue {
+		border: 1px solid color($green l(+10%));
+
+		.legend {
+			color: $green;
+		}
+    }
+
+    .cont {
+    	height:0;
+    	text-align: right;
+    }
+
+	.button {
+		color: #fff;
+		/*border: 1px solid color($green l(+10%));*/
+		/*bottom: -22px;*/
+		background: $green;
+		/*background: #fff;*/
+		/*text-shadow: none;*/
+		white-space: nowrap;
+		margin-top: 10px;
+		
+		&:active {
+			background: linear-gradient(color($green l(-5%)), color($green l(+5%)));
+		}
+	}
+}

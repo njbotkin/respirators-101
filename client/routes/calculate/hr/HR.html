@@ -114,18 +114,16 @@
 <script>
 
 import PersistentWrite from 'lib/PersistentWrite.html'
-import { job } from 'lib/storage.js'
 
 export default {
 	components: {
 		PersistentWrite
 	},
-	store: () => job,
 	methods: {
 		setHR() {
 			let state = this.get()
 			if(state.valid) {
-				job.set({ HR: state.hr })
+				this.store.set({ job: { HR: state.hr } })
 			}
 		}
 	},

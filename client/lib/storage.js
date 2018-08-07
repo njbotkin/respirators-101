@@ -3,257 +3,130 @@
 var storage = localStorage
 
 import { Store } from 'svelte/store.js'
-// import merge from 'deepmerge'
+import merge from 'deepmerge'
 
-// // Store with LocalStorage backend
-// class LocalStore extends Store {
-// 	constructor(storageId, schema) {
-// 		super(schema)
+// Makes setting deep properties easier (eg. { job: { chemicalsScrollTop: chemicals.scrollTop } })
+class MergeStore extends Store {
+	constructor(schema) {
+		super(schema)
+	}
+	set(newState) {
+		const oldState = this._state
+		const changed = this._changed = {}
+		let dirty = false
 
-// 		this.storageId = storageId
+		for (const key in newState) {
+			if (this._computed[key]) throw new Error(`'${key}' is a read-only property`)
+			if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true
+		}
+		if (!dirty) return
 
-// 		let retrieved = storage.getItem(storageId)
-// 		if(retrieved) {
-// 			super.set(JSON.parse(retrieved))
-// 		}
-// 	}
-// 	set(o) {
-// 		super.set(o)
-// 		storage.setItem(this.storageId, JSON.stringify(super.get()))
-// 	}
-// }
-
-// class JobStore extends LocalStore {
-// 	constructor(jobId) {
-
-// 	}
-// }
-
-var jobsString = storage.getItem('jobs')
-export var jobManager
-
-if(jobsString) {
-	jobManager = JSON.parse(jobsString)
-} else {
-	jobManager = {
-		jobIncrement: 0,
-		currentJobId: null,
-		jobs: {}
+		this._set(merge(this._state, newState), changed)
 	}
 }
 
-var currentJob = new Store()
-export var job = currentJob
+// LocalStorage backend
+class LocalStore extends MergeStore {
+	constructor(storageId, schema) {
+		super(schema)
 
-currentJob.on('state', ({current}) => {
-	jobManager.jobs[current.id] = current
-	saveJobs()
-})
+		this.storageId = storageId
 
-if(jobManager.currentJobId) {
-	currentJob.set(jobManager.jobs[jobManager.currentJobId])
-} else {
-	addJob()
-	saveJobs()
-}
-function saveJobs() {
-	storage.setItem('jobs', JSON.stringify(jobManager))
-}
-
-
-export function switchJob(id) {
-	jobManager.currentJobId = id
-	currentJob.set(jobManager.jobs[id])
-	saveJobs()
-}
-
-export function addJob() {
-	jobManager.jobIncrement++
-	jobManager.jobs[jobManager.jobIncrement] = {
-		id: jobManager.jobIncrement,
-		date: new Date(),
-		openChemicals: []
+		let retrieved = storage.getItem(storageId)
+		if(retrieved) {
+			this._state = JSON.parse(retrieved)
+		}
 	}
-
-	if(jobManager.currentJobId == null) {
-		switchJob(jobManager.jobIncrement)
+	_set(newState, changed) {
+		super._set(newState, changed)
+		storage.setItem(this.storageId, JSON.stringify(this._state))
 	}
 }
 
-export function removeJob(id) {
-	delete jobManager.jobs[id]
-
-	let jobsArr = Object.keys(jobManager.jobs)
-
-	if(jobsArr.length == 0) {
-		jobManager.currentJobId = null
-		saveJobs()
-	} else if(id == jobManager.currentJobId) {
-		switchJob(jobManager.jobs[jobsArr[0]].id)
-	}
-}
-
-export function setJobManager(jm) {
-	jobManager = jm
-	saveJobs()
-}
-
-
-
-
-// const allJobs = []
-
-// class JobStore extends LocalStore {
-// 	constructor(storageId) {
-// 		super(storageId, {
-// 			jobIncrement: 0,
-// 			currentJobId: null,
-// 			jobs: {}
-// 		})
-// 	}
-// 	set(obj) {
-// 		super.set(merge(this.get(), obj))
-// 	}
-// 	addJob() {
-// 		let state = this.get()
-// 		let jobIncrement = state.jobIncrement+1
-// 		let currentJobId = state.currentJobId ? state.currentJobId : jobIncrement
-
-// 		state.jobs[jobIncrement] = {
-// 			date: new Date()
-// 		}
-
-// 		super.set( state )
-// 		super.set({ jobIncrement })
-// 		super.set({ currentJobId })
-// 	}
-// 	removeJob(id) {
-// 		let state = this.get()
-// 		delete state.jobs[id]
-
-// 		let currentJobId = state.currentJobId == id ? null : state.currentJobId
-
-// 		super.set(state)
-// 		super.set({ currentJobId })
-// 	}
-// 	get currentJob() {
-// 		let state = this.get()
-// 		if(state.currentJobId) {
-// 			return state.jobs[state.currentJobId]
-// 		}
-// 		return {}
-// 	}
-// 	updateCurrentJob(obj) {
-// 		if(!this.get().currentJobId) {
-// 			this.addJob()
-// 		}
-
-// 		let jobs = {}
-// 		jobs[this.get().currentJobId] = obj
-
-// 		this.set({ jobs })
-// 	}
-// }
-
-// const jobs = []
-
-// class JobManager extends LocalStore {
-// 	constructor(storageId) {
-// 		super(storageId, {
-// 			jobIncrement: 0,
-// 			currentJobId: null,
-// 			jobs: []
-// 		})
-
-// 		// no jobs yet.  Create a default
-// 		if(this.get().jobIncrement == 0) {
-// 			this.addJob()
-// 		}
-// 	}
-// 	addJob() {
-// 		let i = this.get().jobIncrement + 1
-// 		this.set({jobIncrement: i})
-// 		new LocalStore(i)
-// 	}
-// 	get currentJob() {
-// 		return 
-// 	}
-
-// }
-
-
-
-// export const jobs = new JobManager('jobManager')
-// export const currentJob = new jobs.currentJob
-
-// class JobStore extends Store {
-// 	constructor(obj) {
-// 		super(obj)
-// 		this.on('state', () => jobs.save())
-// 	}
-// }
-
-/*class Jobs {
+class JobStore extends LocalStore {
 	constructor() {
-		this.currentJobId = null
-		this.jobIncrementor = 0
+		super('store', {
+			jobIncrement: 0,
+			job: null,
+			jobs: {}
+		})
 
-		this.restore()
-	}
-	addJob(name) {
-		this.jobs[++this.jobIncrementor] = new JobStore({ name })
-
-		if(this.currentJobId === null) {
-			this.currentJobId = this.jobIncrementor
-		}
-		this.save()
-	}
-	removeJob(id) {
-		delete this.jobs[id]
-
-		console.log(id, this.currentJobId)
-
-		if(this.currentJobId == id) {
-			this.currentJobId = null
-		}
-		this.save()
-	}
-	get currentJob() {
-		return this.currentJobId ? this.jobs[this.currentJobId].get() : {}
-	}
-	currentJobSet(obj) {
-		if(!this.currentJobId) {
+		if(!this._state.job) {
 			this.addJob()
 		}
-		return this.jobs[this.currentJobId].set(obj)
 	}
-	serializeJobs() {
-		let jobs = {}
+	_set(newState, changed) {
 
-		for(let key in this.jobs) {
-			jobs[key] = this.jobs[key].get()
+		// keep job and jobs synced
+		if(this._state.job) {
+			if(changed.job && !changed.jobs) {
+				newState.jobs = this._state.jobs
+				newState.jobs[newState.job.id] = newState.job
+				changed.jobs = true
+			}
+			if(!changed.job && changed.jobs) {
+				if(newState.jobs[this._state.job.id]) {
+					newState.job = newState.jobs[this._state.job.id]
+					changed.job = true
+				} else {
+					// job deleted
+					newState.job = null
+					changed.job = true
+				}
+			}
 		}
 
-		return jobs
-	}
-	save() {
-		var state = {}
-		Object.assign(state, this)
-
-		state.jobs = this.serializeJobs()
-
-		storage.setItem('state', JSON.stringify(state))
-	}
-	restore() {
-		var state = JSON.parse(storage.getItem('state'))
-		Object.assign(this, state)
-
-		this.jobs = {}
-
-		for(let key in state.jobs) {
-			this.jobs[key] = new JobStore(state.jobs[key])
+		// if no current job, set one
+		if(newState.jobs) {
+			let jobsArr = Object.keys(newState.jobs)
+			if(jobsArr.length > 0) {
+				if(!newState.job) {
+					newState.job = newState.jobs[jobsArr[jobsArr.length-1]]
+					changed.job = true
+				}
+			}
 		}
+
+		super._set(newState, changed)
+	}
+	switchJob(id) {
+		this._state.job = this._state.jobs[id]
+		this._set(this._state, { job: true})
+	}
+	addJob() {
+		this._state.jobIncrement++
+		this._state.jobs[this._state.jobIncrement] = {
+			id: this._state.jobIncrement,
+			date: new Date(),
+			name: 'New Job',
+			openChemicals: [],
+			chemicalsScrollTop: 0,
+			chemical: null,
+			exposureLimit: {
+				formKey: NaN,
+				standardKey: NaN,
+				durationKey: NaN,
+				value: NaN,
+				unit: NaN
+			},
+			samples: [],
+			TWA: null,
+			HR: null,
+		}
+		this._set(this._state, { jobs: true })
+	}
+	removeJob(id) {
+		delete this._state.jobs[id]
+		this._set(this._state, { jobs: true })
 	}
 }
 
-export const jobs = new Jobs()*/
+export const store = new JobStore()
+
+export const valueSources = {
+	chemical: 'app.chemicals',
+	exposureLimit: 'app.chemicals',
+	samples: 'app.generate-tabl',
+	TWA: 'app.calculate-twa',
+	HR: 'app.calculate-hr',
+}

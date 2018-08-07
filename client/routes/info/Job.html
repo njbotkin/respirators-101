@@ -1,0 +1,196 @@
+{ #if job && $job } <!-- because weird binding issues -->
+{ #if job.id == $job.id && !only }<div class="currentJob">Current Job</div>{ /if }
+
+<div class="job currentJob{ job.id == $job.id } editing{ editing }">
+	<div class="title">
+		<div class="name">
+			{ #if editing }
+				<input type="text" bind:value="job.name">
+				<a class="stopEditing edit" on:click="set({ 'editing': false })">[done]</a>
+			{ :else }
+				<span>{ job.name }</span>
+				<a class="editJob edit" on:click="set({ 'editing': true })">[edit]</a>
+			{ /if }
+		</div>
+		<div class="date">{ date(job.date) }</div>
+		<div class="cfx"></div>
+	</div>
+	<div class="content">
+
+			<div class="read-value live{job.id == $job.id }">
+				<div class="legend"> Exposure Limit </div>
+					{ #if job.exposureLimit.value }
+						<ExposureLimits exposureLimit="{job.exposureLimit}" />
+					{ :else }
+						No exposure limit selected yet!
+					{ /if }
+				<div class="cont"><a class="button edit" href="{ asr.makePath(valueSources['exposureLimit']) }"> Edit </a></div>
+			</div>
+
+			<div class="read-value live{job.id == $job.id }">
+				<div class="legend"> TWA </div>
+					{ #if job.TWA }
+						{ job.TWA }
+					{ :else }
+						No TWA set yet!
+					{ /if }
+				<div class="cont"><a class="button edit" href="{ asr.makePath(valueSources['TWA']) }"> Edit </a></div>
+			</div>
+
+			<div class="read-value live{job.id == $job.id }">
+				<div class="legend"> HR </div>
+					{ #if job.HR }
+						{ job.HR }
+					{ :else }
+						No HR set yet!
+					{ /if }
+				<div class="cont"><a class="button edit" href="{ asr.makePath(valueSources['HR']) }"> Edit </a></div>
+			</div>
+		
+		{ #if job.chemical }<Chemical c="{ job.chemical }"></Chemical>{ /if }
+
+	</div>
+
+	{ #if !only }
+		<div class="buttons">
+			{ #if job.id !== $job.id }<div class="button switchJob" on:click="fire('switchJob', job.id)">Select Job</div>{ /if }
+			<div class="button deleteJob" on:click="fire('confirmDelete', job.id)">Delete Job</div>
+		</div>
+	{ /if }
+
+</div>
+
+{ /if }
+
+<script>
+
+	import Chemical from 'lib/Chemical.html'
+	import ExposureLimits from 'lib/ExposureLimits.html'
+	import date from 'date-and-time'
+	import { valueSources } from 'lib/storage.js'
+
+	export default {
+		components: {
+			Chemical,
+			ExposureLimits
+		},
+		helpers: {
+			date: (d) => date.format(new Date(d), 'MMM D, YYYY h:mm A')
+		},
+		data: () => ({
+			valueSources,
+			only: false
+		})
+	}
+</script>
+
+<style>
+
+	@import 'colors';
+
+	.currentJob {
+		color: $green;
+		font-size: 80%;
+		text-transform: uppercase;
+		font-weight: bold;
+		margin-bottom: -10px;
+		margin-top: 10px;
+	}
+	
+	.job {
+		position: relative;
+		padding: 20px;
+		overflow: hidden;
+		margin: 10px 0;
+		/*border: 2px solid #fff;*/
+
+		.name {
+			float:left;
+
+			span, input {
+     			display: inline-block;
+				border: 1px solid;
+				padding: 1px 4px;
+				font-size: 100%;
+				line-height: 1.4;
+				font-family: 'Open Sans';
+				font-weight: bold;
+			}
+
+			span { border-color: transparent; }
+			input { border-color: grey; }
+		}
+		.date {
+			float:right;
+		}
+		.cfx {
+			clear:both;
+			content: ' ';
+		}
+
+		.content {
+			margin-top: 10px;
+			border-top: 1px solid #ddd;
+			padding: 10px 0 0;
+		}
+
+		.editJob, .stopEditing {
+			font-size: 80%;
+			color: #4260b5;
+			cursor: pointer;
+			font-weight: 400;
+			margin-left: 5px;
+		}
+
+		/*table {
+			border-collapse: collapse;
+			td {
+				border: 1px solid #ddd;
+				&.sub {
+					text-align: right;
+				}
+			}
+		}*/
+
+		&.currentJobtrue {
+			background: #fff;
+			/*border-color: color($green l(+20%));*/
+		}
+
+		&.currentJobfalse {
+			.edit {
+				display: none;
+			}
+			.read-value {
+				.legend {
+					background: #eaedf1;
+				}
+			}
+		}
+
+		.buttons {
+			text-align: right;
+		}
+
+		.deleteJob.button {
+			/*color: $red2;*/
+			/*border-color: color($red2 l(+10%));*/
+			/*background: linear-gradient(color($red2 l(+5%)), color($red2 l(-5%)));*/
+			background: $red2;
+			&:active {
+				background: linear-gradient(color($red2 l(-5%)), color($red2 l(+5%)));
+			}
+		}
+
+		.switchJob.button {
+			/*color: color($green l(+10%));*/
+			/*border-color: color($green l(+10%));*/
+			/*background: linear-gradient(color($green l(+5%)), color($green l(-5%)));*/
+			background: $green;
+			&:active {
+				background: linear-gradient(color($green l(-5%)), color($green l(+5%)));
+			}
+		}
+	}
+
+</style>

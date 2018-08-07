@@ -94,7 +94,7 @@ function fetch_blind_polyfill() {
 }
 
 function fetch_google_fonts() { 
-	run("npx goofoffline outDir=public/fonts \"https://fonts.googleapis.com/css?family=Roboto+Condensed\" \"https://fonts.googleapis.com/css?family=Open+Sans\"")
+	run("npx goofoffline outDir=public/fonts \"https://fonts.googleapis.com/css?family=Roboto+Condensed\" \"https://fonts.googleapis.com/css?family=Open+Sans:400,600\"")
 }
 
 

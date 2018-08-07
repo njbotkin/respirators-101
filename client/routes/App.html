@@ -47,10 +47,20 @@
 	</div>
 
 	{ #if $RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list')  }
-	<a class="in-selection" href="{ asr.makePath('app.respirator-picker', {id: $RSLStep})}">
+	<a class="button in-selection" href="{ asr.makePath('app.respirator-picker', {id: $RSLStep})}">
 		Resume Respirator Selection
 	</a>
 	{ /if }
+
+	<div class="job-slider" data-open="{ jobOpen }" bind:offsetHeight="jobHeight" style="{ jobOpen ? 'top: calc(100% - ' + jobHeight + 'px)' : '' }">
+
+		<div class="alignright"><a class="button current-job" on:click="set({ jobOpen: !jobOpen })"> Current Job </a></div>
+
+		<div class="job">
+			<Job bind:job="$job" {asr} only="true" />
+		</div>
+
+	</div>
 
 </div>
 
@@ -59,13 +69,15 @@
 	import Menu from 'lib/Menu.html'
 	import categories from 'data/categories.json'
 	import posts from 'data/posts.json'
-	import { job } from 'lib/storage.js'
+	import { store } from 'lib/storage.js'
+	import Job from './info/Job.html'
 
 	export default {
 		components: {
-			Menu
+			Menu,
+			Job
 		},
-		store: () => job,
+		store: () => store,
 		oncreate () {
 
 			// use event bubbling to make all external links open in new tab
@@ -143,7 +155,9 @@
 				visibleSlideOut: false,
 				title: '',
 				inSelection: false,
-				stateName: null
+				stateName: null,
+				jobOpen: false,
+				jobHeight: 0
 			}
 		}
 	}
@@ -240,6 +254,7 @@
 		bottom: 0;
 		overflow-y: auto;
 		overflow-x: hidden;
+		padding-bottom: 60px;
 	}
 
 	.appname {
@@ -251,27 +266,28 @@
 		background: $blue5;
 	}
 
-	button, .button {
-		padding: 0;
-		width: 50px;
-		height: 50px;
-		display: block;
-		border: 0;
-		color: #fff;
-		text-decoration: none;
-		font-size: 30px;
-		line-height: 50px;
-		text-align: center;
-		cursor: pointer;
-		background-color: $blue3;
-		background-size: 60%;
-		background-repeat: no-repeat;
-		background-position: center;
+	nav {
+		button, .button {
+			padding: 0;
+			width: 50px;
+			height: 50px;
+			display: block;
+			border: 0;
+			color: #fff;
+			text-decoration: none;
+			font-size: 30px;
+			line-height: 50px;
+			text-align: center;
+			cursor: pointer;
+			background: $blue3;
+			background-size: 60%;
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+		a.back::before {
+			margin-left: -2px;
+		}
 	}
-	a.back::before {
-		margin-left: -2px;
-	}
-
 	.anythingelsebutton, .debutterfinger {
 		position:absolute;
 		top:0;
@@ -286,14 +302,47 @@
 		z-index: 200;
 		bottom: 0;
 		background: $blue2;
-		padding: 10px;
-		color: #fff;
+		padding: 10px 15px 10px 45px;
+		color: #ffffffee;
 		text-decoration: none;
-		padding-left: 40px;
+		/*padding-left: 40px;*/
 		background-image: url(icons/respirator.png);
 		background-size: 10%;
 		background-position: 8px center;
 		background-repeat: no-repeat;
+		line-height: 20px;
+	}
+
+	/*.job*/
+
+	.job-slider {
+		transition: all .5s ease;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: calc(100% - 40px);
+
+		.job {
+			background: #fff;
+			box-shadow: 0px 0px 20px #00000099;
+
+			:global(.job) {
+				margin: 0;	
+			}
+		}
+
+		.alignright {
+			text-align: right;
+		}
+
+		.current-job {
+			margin: 0;
+			background: $green;
+		}
+
+		&[data-open=true] {
+			/*bottom: 0;*/
+		}
 	}
 
 </style>

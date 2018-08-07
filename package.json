@@ -53,6 +53,7 @@
     "cheerio-tableparser": "^1.0.1",
     "cordova": "^7.1.0",
     "date-and-time": "^0.6.2",
+    "deep-equal": "^1.0.1",
     "del-cli": "^1.1.0",
     "download": "^6.2.5",
     "fuse.js": "^3.2.0",
@@ -80,7 +81,6 @@
     "rollup-plugin-string": "^2.0.2",
     "rollup-plugin-svelte": "4.1.0",
     "svelte": "^2.9.7",
-    "svelte-preprocess-postcss": "^1.0.0",
     "svelte-state-renderer": "^2.0.0",
     "symlink-cli": "^1.0.0",
     "tape": "4.8.0",
@@ -89,13 +89,20 @@
     "validator": "^9.4.0"
   },
   "devDependencies": {
+    "balanced-match": "^1.0.0",
     "gaze": "^1.1.2",
+    "html-tags": "^2.0.0",
     "jsoncomp": "^1.6.1",
     "live-server": "^1.2.0",
     "parse-gitignore": "^0.4.0",
+    "postcss-color-function": "^4.0.1",
+    "posthtml": "^0.11.3",
+    "posthtml-custom-elements": "^1.1.2",
+    "rollup-plugin-posthtml": "^1.0.1",
     "rollup-plugin-progress": "^0.4.0",
     "runjs": "^4.3.0",
     "simple-ssh": "^1.0.0",
+    "svelte-preprocess-postcss": "^1.0.0",
     "watch": "^1.0.2"
   }
 }

@@ -2,9 +2,10 @@ import StateRouter from 'abstract-state-router'
 import makeSvelteStateRenderer from 'svelte-state-renderer'
 import createEmitter from 'better-emitter'
 
+import { store } from 'lib/storage.js'
 import states from 'data/globbed-routes.js'
 
-const stateRouter = StateRouter(makeSvelteStateRenderer(), document.querySelector(`#target`))
+const stateRouter = StateRouter(makeSvelteStateRenderer({ store }), document.querySelector(`#target`))
 
 const context = createEmitter({
 	makePath: stateRouter.makePath,

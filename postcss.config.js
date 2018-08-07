@@ -7,5 +7,6 @@ module.exports = {
 			},
 		}),
 		require(`autoprefixer`),
+		require(`postcss-color-function`)
 	],
 }

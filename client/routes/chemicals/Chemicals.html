@@ -20,7 +20,7 @@
 				{ #if c.id }
 					<div class="letter-heading">{ c.id }</div>
 				{ /if }
-				<Chemical {c} bind:open=$openChemicals[i]></Chemical>
+				<Chemical {c} bind:open=$job.openChemicals[i]></Chemical>
 			{ /each }
 		</div>
 
@@ -154,7 +154,6 @@
 	import chemicals from 'data/chemicals.json'
 	import Fuse from 'fuse.js'  
 	import Chemical from 'lib/Chemical.html'
-	import { job } from 'lib/storage.js'
 
 	// I know this seems hacky.  Sorting chemicals by name is pretty arbitrary, what with the alpha- 1,2,3- o- style prefixes.  I'm not going to build a hideous regex for this.  The data source is already mostly sorted alphabetically, so I'm just picking up on the existing order.
 	const letters = 'abcdefghiklmnopqrstuvwxyz'.split('') // no J chemicals
@@ -197,11 +196,10 @@
 			search: '',
 			letters
 		}),
-		store: () => job,
 		oncreate() {
 
 			// scrolling through alphabet thingy
-			let container = container
+			let container = document.querySelector('.container')
 
 			// would like to do this with CSS...
 			function adjustAlphabetHeight() {
@@ -278,12 +276,23 @@
 			}
 
 			let chemicals = document.querySelector('.chemicals')
-			if(job.get().chemicalsScrollTop) {
-				chemicals.scrollTop = job.get().chemicalsScrollTop
-			}
+			chemicals.scrollTop = this.store.get().job.chemicalsScrollTop
+			var scrolls = 0
 
 			chemicals.addEventListener('scroll', () => {
-				job.set({ chemicalsScrollTop: chemicals.scrollTop })
+				let job = this.store.get().job
+				// The first scroll is premature because the layout isn't finished.  When layout finishes, the browser wrongly scrolls again to compensate.  Set the scroll to the first scroll.
+				if(scrolls < 2) {
+					if(++scrolls == 1) {
+						// first scroll
+					} else {
+						// second scroll
+						chemicals.scrollTop = job.chemicalsScrollTop
+					}
+				} else {
+					// subsequent scrolls
+					this.store.set({ job: { chemicalsScrollTop: chemicals.scrollTop } })
+				}
 			})
 
 		},
