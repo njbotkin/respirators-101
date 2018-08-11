@@ -11,7 +11,7 @@ export function round(v) {
 
 // serves as a validator and a transformer.  Removes commas
 export function number(v) {
-	if(!isNaN(v)) return v
+	if(!isNaN(v)) return Number(v)
 	v = v.trim().replace(',', '')
 	if(v.length === 0) return false;
 	v = Number(v)

@@ -1,74 +1,177 @@
 
 <div class="description content" style="margin-top: 20px">
 
+<p>Time-Weighted Average (TWA) is used to measure a worker's daily exposure to hazardous substances, averaged on an 8 or 10 hour workday. The average is calculated from:</p>
+	
+<ul>
+	<li>air samples taken during the workday</li>
+	<li>the amount of time spent working in those conditions</li>
+</ul>
+
+<h3>Instructions</h3>
+
 <ol>
 	<li>Use buttons below to enter sample information . </li>
 	<li>Press Calculate button to get TWA </li>
 </ol>
 
 <p>NOTE ON HOURS: Take into account time when workers were NOT exposed to the hazard (for instance, on breaks). If a sample was taken at 11am and then again at 2pm, but the lunch hour was between 12pm and 1pm, the sample taken at 11am only represents 2 hours. </p>
-	
+
+	<div class="read-value">
+		<div class="legend"> Exposure Limit </div>
+			{ #if $job.exposureLimit.value }
+				<ExposureLimits exposureLimit="{ $job.exposureLimit }" />
+			{ :else }
+				No exposure limit selected yet!
+			{ /if }
+		<div class="cont"><a class="button edit" href="{ asr.makePath(valueSources['exposureLimit']) }"> Edit </a></div>
+	</div>
+
 </div>
 
-<table>
-	<thead>
-		<tr>
-			<th></th><th>PPM <br>Measured</th><th></th><th>Hours <br>Represented</th><th></th><th>PPM-hours</th>
-		</tr>
-	</thead>
-	<tbody>
+{ #if $job.exposureLimit.value }
 
-	{ #each samples as sample, i }
-		<tr class="sample">
-			<td><label><span class="optional">Sample </span>{i + 1}</label></td>
-			<td><input type="text" bind:value="sample.ppm" placeholder="0" /></td>
-			<td>&#215;</td>
-			<td><input type="text" bind:value="sample.hours" placeholder="0" /></td>
-			<td>=</td>
-			<td><div class="result">{ round(sampleProducts[i]) }</div></td>
-		</tr>
-	{ /each }
-		
-	</tbody>
-</table>
+	<div class="samples">
 
-{ #if validSamples.length === samples.length && (totalHours > hours || totalHours < hours) }
-	<div class="wrong-hours">The total hours of the samples you've entered is { totalHours > hours ? 'greater' : 'less' } than the length of workday you selected ({hours} hours).  If you need, <a href="{asr.makePath('app.generate-table')}">go back</a> and change your workday length.</div>
+		<table>
+			<thead>
+				<tr>
+					<th></th><th>{ @html unitsPretty[$job.exposureLimit.unit] } <br>Measured</th><th></th><th>{ timeUnit } <br>Represented</th><th></th><th>{ @html unitsPretty[$job.exposureLimit.unit] }-<br>{ timeUnit.toLowerCase() }</th><th></th>
+				</tr>
+			</thead>
+			<tbody>
+
+			{ #each $job.samples as sample, i }
+				<tr class="sample">
+					<td><label><span class="optional">Sample </span>{i + 1}</label></td>
+					<td><input type="text" bind:value="sample.value" placeholder="0" /></td>
+					<td>&#215;</td>
+					<td><input type="text" bind:value="sample.period" placeholder="0" /></td>
+					<td>=</td>
+					<td><div class="result">{ round(sampleProducts[i]) }</div></td>
+					<td><div class="removeSample" on:click="removeSample(i)">&#215;</div></td>
+				</tr>
+			{ /each }
+				
+			</tbody>
+		</table>
+
+		<div style="text-align: center"><div class="button addSample" on:click="addSample()">Add sample + </div></div>
+
+	</div>
+
+	{ #if validSamples.length === $job.samples.length && (totalMinutes > $job.exposureLimit.duration || totalMinutes < $job.exposureLimit.duration) }
+		<div class="wrong-hours">The total { timeUnit.toLowerCase() } of the samples you've entered is { totalMinutes > $job.exposureLimit.duration ? 'greater' : 'less' } than the measurement period of the selected exposure limit ({$job.exposureLimit.duration / timeUnitMultiplier} { timeUnit.toLowerCase() }).</div>
+	{ /if }
+
+	<h3>TWA Equation:</h3>
+
+	<div class="equation">
+
+		<div class="operand">
+			<div class="value">{ round(totalValueMinutes / timeUnitMultiplier) }</div>
+			<div class="unit">Total <br>{ @html unitsPretty[$job.exposureLimit.unit] }-{ timeUnit.toLowerCase() }</div>
+		</div>
+
+		<div class="operator">&#247;</div>
+
+		<div class="operand">
+			<div class="value">{ round(totalMinutes / timeUnitMultiplier) }</div>
+			<div class="unit">Total <br>{ timeUnit }</div>
+		</div>
+
+		<div class="operator">=</div>
+
+		<div class="operand">
+			<div class="value">{ round(twa) }</div>
+			<div class="unit">TWA</div>
+		</div>
+
+	</div>
+
+	<div class="button valid{ valid } useTWA"> Use TWA </div>
+
+{ :else }
+
+	<p>Please select an exposure limit first.</p>
+
 { /if }
 
-<h3>TWA Equation:</h3>
 
-<div class="equation">
+<script>
 
-	<div class="operand">
-		<div class="value">{ round(totalPPMHours) }</div>
-		<div class="unit">Total <br>PPM-hours</div>
-	</div>
+import { number, round } from 'lib/util.js'
+import { valueSources } from 'lib/storage.js'
 
-	<div class="operator">&#247;</div>
+export default {
+	components : {
+		ExposureLimits: 'lib/ExposureLimits.html'
+	},
+	methods: {
+		addSample() {
+			let samples = this.store.get().job.samples
+			samples.push({
+				value: '',
+				period: ''
+			})
+			this.store.set({ job: { samples } })
+		},
+		removeSample(i) {
+			let samples = this.store.get().job.samples
+			samples.splice(i, 1)
+			this.store.set({ job: { samples } })
+		}
+	},
+	computed: {
+		timeUnitMultiplier: ({ $job }) => ($job.exposureLimit.duration && $job.exposureLimit.duration > 15) ? 60 : 1,
+		timeUnit: ({ timeUnitMultiplier }) => timeUnitMultiplier == 1 ? 'Minutes' : 'Hours',
+		validSamples: ({ $job }) => $job.samples.filter(s => !!(number(s.value) && number(s.period))),
+		sampleProducts: ({ $job, timeUnitMultiplier }) => $job.samples.map(s => (number(s.value) && number(s.period)) ? number(s.value) * (number(s.period) * timeUnitMultiplier) : 0),
+		valid: ({ sampleProducts, totalMinutes, $job, twa }) => { 
+			if(totalMinutes > $job.exposureLimit.duration || totalMinutes < $job.exposureLimit.duration) return false
+			for(var t of sampleProducts) { 
+				if(t === 0) return false
+			} 
+			if(twa === Infinity) return false
+			return true;
+		},
+		totalValueMinutes: ({ sampleProducts }) => sampleProducts.reduce((a, t) => a + t, 0),
+		totalMinutes: ({ validSamples, timeUnitMultiplier }) => validSamples.reduce((a, s) => number(s.period) ? a + (number(s.period) * timeUnitMultiplier) : a, 0),
+		twa: ({ totalValueMinutes, totalMinutes }) => (totalValueMinutes / totalMinutes) || 0 
+	},
+	helpers: {
+		round
+	},
+	data: () => ({
+		valueSources,
+		unitsPretty: {
+			ppm: 'PPM',
+			mgm3: 'mg/m<sup>3</sup>'
+		}
+	})
+}
 
-	<div class="operand">
-		<div class="value">{ round(totalHours) }</div>
-		<div class="unit">Total <br>hours</div>
-	</div>
-
-	<div class="operator">=</div>
-
-	<div class="operand">
-		<div class="value">{ round(twa) }</div>
-		<div class="unit">TWA</div>
-	</div>
-
-</div>
-
-<div class="button valid{ valid }"> Use TWA </div>
+</script>
 
 <style>
 
 	@import 'colors';
 
+	.read-value {
+		.legend {
+			background: #eaedf1;
+		}
+	}
+
+	.samples {
+		border: 1px solid #aaa;
+		display: table;
+		padding: 15px;
+		margin: 20px auto 0;
+	}
+
 	table {
-		margin: 20px auto;
+		margin: 0 auto 15px;
 
 		th {
 			font-weight: normal;
@@ -93,6 +196,12 @@
 				line-height: 40px;
 				padding: 0 10px;
 				border: 1px solid #aaa;
+
+				@media screen and (max-width: 400px) {
+					line-height: 30px;
+					padding: 0 5px;
+					width: 40px;
+				}
 			}
 
 			.result {
@@ -101,7 +210,24 @@
 				margin: 0 10px;
 			}
 
+			.removeSample {
+				display:block;
+				width: 20px;
+				text-align: center;
+				color: #fff;
+				background: $red2;
+				cursor: pointer;
+				font-size: 14px;
+				line-height: 20px;
+				border-radius: 100%;
+				vertical-align: middle;
+			}
+
 		}
+	}
+
+	.addSample {
+		background: $blue2;
 	}
 
 	@media screen and (max-width: 400px) {
@@ -149,13 +275,14 @@
 		color: #fff;
 		padding: 15px;
 		font-size: 80%;
+		margin-top: 15px;
 
 		a {
 			color: #fff;
 		}
 	}
 
-	.button {
+	.useTWA {
 
 		padding: 30px;
 		display: block;
@@ -176,31 +303,3 @@
 	}
 
 </style>
-
-
-<script>
-
-import { number, round } from 'lib/util.js'
-
-export default {
-	computed: {
-		validSamples: ({ samples }) => samples.filter(s => !!(number(s.ppm) && number(s.hours))),
-		sampleProducts: ({ samples }) => samples.map(s => number(s.ppm) && number(s.hours) ? number(s.ppm) * number(s.hours) : 0),
-		valid: ({ sampleProducts, totalHours, hours, twa }) => { 
-			if(totalHours > hours || totalHours < hours) return false
-			for(var t of sampleProducts) { 
-				if(t === 0) return false
-			} 
-			if(twa === Infinity) return false
-			return true;
-		},
-		totalPPMHours: ({ sampleProducts }) => sampleProducts.reduce((a, t) => a + t, 0),
-		totalHours: ({ samples }) => samples.reduce((a, s) => number(s.hours) ? a + number(s.hours) : a, 0),
-		twa: ({ totalPPMHours, totalHours }) => totalPPMHours / totalHours || 0 
-	},
-	helpers: {
-		round
-	}
-}
-
-</script>

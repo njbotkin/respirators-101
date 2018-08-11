@@ -482,6 +482,24 @@ for(let chemical of chemical_output) {
 
 }
 
+// set exposure limit durations in minutes
+// const durations = {
+// 	osha_pel: {
+// 		regular: 8 * 60,
+// 		ceiling: 8 * 60,
+// 		stel: 15
+// 	},
+// 	cal_osha_pel: {
+// 		regular: 8 * 60,
+// 		ceiling: 8 * 60,
+// 		stel: 15
+// 	},
+// 	niosh_rel: {
+// 		regular: 10 * 60,
+// 		ceiling: 10 * 60,
+// 		stel: 15
+// 	}
+// }
 
 
 // console.log(found_by_cas, found_by_name, children)

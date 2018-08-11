@@ -101,7 +101,7 @@
 	
 	import ExposureLimits from 'lib/ExposureLimits.html'
 
-	function objectsShallowEquivalence(a, b) {
+	function propertiesMatch(a, b) {
 		for(let k in a) if(a[k] !== b[k]) return false
 		return true
 	}
@@ -124,13 +124,12 @@
 					for(let durationKey in forms[formKey][standardKey].durations) {
 						for(let unit in forms[formKey][standardKey].durations[durationKey]) {
 
-							if(objectsShallowEquivalence(exposureLimit, {
+							if(propertiesMatch({
 								formKey,
 								standardKey,
 								durationKey,
-								unit,
-								value: forms[formKey][standardKey].durations[durationKey][unit]
-							})) {
+								unit
+							}, exposureLimit)) {
 								this.set({ exposureLimit })
 							}
 
@@ -141,7 +140,7 @@
 
 		},
 		computed: {
-			elSame: ({ $job, exposureLimit }) => objectsShallowEquivalence($job.exposureLimit, exposureLimit)
+			elSame: ({ $job, exposureLimit }) => propertiesMatch($job.exposureLimit, exposureLimit)
 		},
 		methods: {
 			saveEL() {

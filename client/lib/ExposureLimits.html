@@ -31,8 +31,8 @@
 										{ #each Object.entries(duration) as [unit, value] }
 
 											<div class="representation select-el EL" on:click="set({
-												exposureLimit: { formKey, standardKey, durationKey, value, unit }
-											})" data-active="{ elSame({ formKey, standardKey, durationKey, value, unit }, $job.exposureLimit) }">
+												exposureLimit: { formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey] }
+											})" data-active="{ elSame({ formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey] }, $job.exposureLimit) }">
 												{ value }
 												<div class="unit">{ @html unitsPretty[unit] }</div>
 											</div>

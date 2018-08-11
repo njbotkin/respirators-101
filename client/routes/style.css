@@ -207,12 +207,12 @@ img.size-90 { width: 90%; }
 
 .save-value, .read-value {
 	padding: 20px 20px 30px 20px;
-	border: 1px solid #ddd;
 	display: inline-block;
 	margin: 20px 0;
 	position: relative;
 	border-radius: 5px;
     vertical-align: top;
+	border: 1px solid color($green l(+10%));
 
 	.legend {
 		display: block;
@@ -220,18 +220,18 @@ img.size-90 { width: 90%; }
 		position: absolute;
 		top: -20px;
 		line-height: 40px;
-		color: #bbb;
 		background: #fff;
 		font-size: 80%;
 		text-transform: uppercase;
 		font-weight: 900;
+		color: $green;
 	} 
 
-    &.livetrue {
-		border: 1px solid color($green l(+10%));
+    &.livefalse {
+		border: 1px solid #ddd;
 
 		.legend {
-			color: $green;
+			color: #bbb;
 		}
     }
 

@@ -188,6 +188,13 @@
 		threshold: 0.4,
 	})
 
+	// would like to do this with CSS...
+	function adjustAlphabetHeight() {
+		var height = window.document.querySelector('.alphabet').getBoundingClientRect().height
+		var fontSize = height / 25 / 1.5 // height / # of letters / line height
+		document.querySelector('.alphabet').style.fontSize = `${fontSize}px`
+	}
+
 	export default {
 		components: {
 			Chemical
@@ -201,16 +208,8 @@
 			// scrolling through alphabet thingy
 			let container = document.querySelector('.container')
 
-			// would like to do this with CSS...
-			function adjustAlphabetHeight() {
-				var height = window.document.querySelector('.alphabet').getBoundingClientRect().height
-				var fontSize = height / 25 / 1.5 // height / # of letters / line height
-				document.querySelector('.alphabet').style.fontSize = `${fontSize}px`
-			}
-
-			window.addEventListener('resize', adjustAlphabetHeight)
+			this.onresize = window.addEventListener('resize', adjustAlphabetHeight)
 			adjustAlphabetHeight()
-
 
 			var mouseDown = false
 
@@ -295,6 +294,9 @@
 				}
 			})
 
+		},
+		ondestroy() {
+			window.removeEventListener('resize', adjustAlphabetHeight)
 		},
 		computed: {
 			results: ({ search }) => {

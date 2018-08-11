@@ -106,6 +106,7 @@ class JobStore extends LocalStore {
 				formKey: NaN,
 				standardKey: NaN,
 				durationKey: NaN,
+				duration: NaN,
 				value: NaN,
 				unit: NaN
 			},
