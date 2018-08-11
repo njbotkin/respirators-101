@@ -48,10 +48,10 @@
 
 			{ #if exposureLimit.value }
 
-				<div class="save-value" data-el-same="{ elSame }" >
-					<div class="legend"> Exposure Limit </div>
+				<div class="save-value live{ elSame }" >
+					<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
 					<ExposureLimits {exposureLimit} />
-					<div class="cont"><div class="button" on:click="saveEL()"> { elSame ? 'Current' : 'Save' } Exposure Limit </div></div>
+					<div class="button-cont"><div class="button" on:click="saveEL()"> { elSame ? 'Current' : 'Save' } Exposure Limit </div></div>
 				</div>
 
 				<!-- <h3>State of contaminant: </h3>
@@ -248,29 +248,6 @@
 
 		.contents {
 			display: block;
-		}
-	}
-
-
-
-	.save-value[data-el-same=true] {
-		.button {
-			background: #fff;
-			padding-right: 40px;
-			color: #666;
-			cursor: default;
-			border: 1px solid color($green l(+10%));
-			text-shadow: none;
-
-			&:after {
-				content: '\2714';
-				position: absolute;
-				line-height: 40px;
-				font-size: 120%;
-				right: 15px;
-				top: 0;
-				color: $green;
-			}
 		}
 	}
 

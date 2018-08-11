@@ -11,130 +11,82 @@
 	
 </div>
 
-<h3>HR Equation:</h3>
+<div class="save-value live{ $job.hr == hr}">
+	<div class="legend-cont"><div class="legend"> HR </div></div>
 
-<div class="equation">
+	<div class="equation">
 
-	<div class="operand">
-		<div class="value">
-			<PersistentWrite bind:value="twa" inherit="">
-				<input type="text" bind:value="twa" placeholder="0">
-			</PersistentWrite>
+		<div class="operand">
+			
+			<div class="read-value livetrue">
+				<div class="legend-cont"><div class="legend"> TWA </div></div>
+					{ #if $job.twa }
+						{ $job.twa }
+					{ :else }
+						No TWA set yet!
+					{ /if }
+				<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['twa']) }"> Edit </a></div>
+			</div>
+
 		</div>
-		<div class="unit">TWA</div>
+
+		<div class="operator">&#247;</div>
+
+		<div class="operand">
+
+			<div class="read-value">
+				<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
+					{ #if $job.exposureLimit.value }
+						<div class="representation">
+							{ $job.exposureLimit.value }
+							<div class="unit">{ @html $job.exposureLimit.unit }</div>
+						</div>
+					{ :else }
+						No exposure limit selected yet!
+					{ /if }
+				<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['exposureLimit']) }"> Edit </a></div>
+			</div>
+
+		</div>
+
+		<div class="operator">=</div>
+
+		<div class="operand HR">
+			<div class="value">{ round(hr) }</div>
+			<div class="unit">HR</div>
+		</div>
+
 	</div>
 
-	<div class="operator">&#247;</div>
-
-	<div class="operand">
-		<div class="value"><input type="text" bind:value="exposureLimit" placeholder="0"></div>
-		<div class="unit">Exposure limit</div>
-	</div>
-
-	<div class="operator">=</div>
-
-	<div class="operand">
-		<div class="value">{ round(hr) }</div>
-		<div class="unit">HR</div>
-	</div>
+	<div class="button-cont"><div class="button valid{ valid }" on:click="setHR()"> { $job.hr == hr ? 'Current' : 'Save' } HR  </div></div>
 
 </div>
 
-<div class="button valid{ valid }" on:click="setHR()"> Use HR </div>
-
-<style>
-
-	@import 'colors';
-
-	h3 {
-		text-align: center;
-	}
-
-	.equation {
-		text-align: center;
-
-		> div {
-			display: inline-block;
-			margin: 0 6px;
-			vertical-align: middle;
-		}
-
-		.operand {
-			.value, .unit {
-				display: block;
-				text-align: center;
-			}
-
-			.value {
-				font-size: 150%;
-				input {
-					font-size: 100%;
-					line-height: 40px;
-					padding: 0 10px;
-					width: 60px;
-					border: 1px solid #aaa;
-				}
-			}
-			.unit {
-				margin-top: 5px;
-				color: #666;
-				line-height: 1.2;
-				font-size: 90%;
-			}
-		}
-
-		.operator {
-			font-size: 120%;
-		}
-	}
-
-	.button {
-
-		padding: 30px;
-		display: block;
-		text-decoration: none;
-		max-width: 300px;
-		margin: 20px auto;
-		cursor: default;
-		background: #aaa;
-		color: #666;
-		text-align: center;
-		font-size: 20px;
-
-		&.validtrue {
-			cursor: pointer;
-			background: $blue2;
-			color: #fff;
-		}
-	}
-
-</style>
-
-
 <script>
 
-import PersistentWrite from 'lib/PersistentWrite.html'
 import { number, round } from 'lib/util.js'
+import { valueSources } from 'lib/storage.js'
 
 export default {
 	components: {
-		PersistentWrite
+		ExposureLimits: 'lib/ExposureLimits.html'
 	},
 	methods: {
 		setHR() {
 			let state = this.get()
 			if(state.valid) {
-				this.store.set({ job: { HR: state.hr } })
+				this.store.set({ job: { hr: state.hr } })
 			}
 		}
 	},
 	data: () => ({
 		exposureLimit: '',
 		twa: '',
+		valueSources
 	}),
 	computed: {
-		valid: ({ twa, exposureLimit}) => !!(number(twa) && number(exposureLimit)),
-		hr: ({ twa, exposureLimit, valid }) => valid ? (number(twa) / number(exposureLimit)) : 0
+		valid: ({ $job }) => !!(number($job.twa) && number($job.exposureLimit.value)),
+		hr: ({ $job, valid }) => valid ? (number($job.twa) / number($job.exposureLimit.value)) : 0
 	},
 	helpers: {
 		round
@@ -142,3 +94,18 @@ export default {
 }
 
 </script>
+
+<style>
+
+	@import 'colors';
+
+	.save-value {
+		display: table;
+		margin: 0 auto;
+	}
+
+	.read-value {
+		margin: 10px 0 20px 0;
+	}
+
+</style>

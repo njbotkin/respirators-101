@@ -1,32 +1,34 @@
 
 <div class="description content" style="margin-top: 20px">
 
-<p>Time-Weighted Average (TWA) is used to measure a worker's daily exposure to hazardous substances, averaged on an 8 or 10 hour workday. The average is calculated from:</p>
-	
-<ul>
-	<li>air samples taken during the workday</li>
-	<li>the amount of time spent working in those conditions</li>
-</ul>
+	<p>Time-Weighted Average (TWA) is used to measure a worker's daily exposure to hazardous substances, averaged on an 8 or 10 hour workday. The average is calculated from:</p>
+		
+	<ul>
+		<li>air samples taken during the workday</li>
+		<li>the amount of time spent working in those conditions</li>
+	</ul>
 
-<h3>Instructions</h3>
+	<h3>Instructions</h3>
 
-<ol>
-	<li>Use buttons below to enter sample information . </li>
-	<li>Press Calculate button to get TWA </li>
-</ol>
+	<ol>
+		<li>Use buttons below to enter sample information . </li>
+		<li>Press Calculate button to get TWA </li>
+	</ol>
 
-<p>NOTE ON HOURS: Take into account time when workers were NOT exposed to the hazard (for instance, on breaks). If a sample was taken at 11am and then again at 2pm, but the lunch hour was between 12pm and 1pm, the sample taken at 11am only represents 2 hours. </p>
+	<p>NOTE ON HOURS: Take into account time when workers were NOT exposed to the hazard (for instance, on breaks). If a sample was taken at 11am and then again at 2pm, but the lunch hour was between 12pm and 1pm, the sample taken at 11am only represents 2 hours. </p>
 
-	<div class="read-value">
-		<div class="legend"> Exposure Limit </div>
-			{ #if $job.exposureLimit.value }
-				<ExposureLimits exposureLimit="{ $job.exposureLimit }" />
-			{ :else }
-				No exposure limit selected yet!
-			{ /if }
-		<div class="cont"><a class="button edit" href="{ asr.makePath(valueSources['exposureLimit']) }"> Edit </a></div>
-	</div>
+</div>
 
+<div class="read-value">
+	<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
+
+	{ #if $job.exposureLimit.value }
+		<ExposureLimits exposureLimit="{ $job.exposureLimit }" />
+	{ :else }
+		No exposure limit selected yet!
+	{ /if }
+
+	<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['exposureLimit']) }"> Edit </a></div>
 </div>
 
 { #if $job.exposureLimit.value }
@@ -60,40 +62,48 @@
 
 	</div>
 
-	{ #if validSamples.length === $job.samples.length && (totalMinutes > $job.exposureLimit.duration || totalMinutes < $job.exposureLimit.duration) }
+	{ #if $job.samples.length > 0 && validSamples.length === $job.samples.length && (totalMinutes > $job.exposureLimit.duration || totalMinutes < $job.exposureLimit.duration) }
 		<div class="wrong-hours">The total { timeUnit.toLowerCase() } of the samples you've entered is { totalMinutes > $job.exposureLimit.duration ? 'greater' : 'less' } than the measurement period of the selected exposure limit ({$job.exposureLimit.duration / timeUnitMultiplier} { timeUnit.toLowerCase() }).</div>
 	{ /if }
 
-	<h3>TWA Equation:</h3>
+	<div class="save-value live{ $job.twa == twa }">
 
-	<div class="equation">
+		<div class="legend-cont"><div class="legend">TWA</div></div>
 
-		<div class="operand">
-			<div class="value">{ round(totalValueMinutes / timeUnitMultiplier) }</div>
-			<div class="unit">Total <br>{ @html unitsPretty[$job.exposureLimit.unit] }-{ timeUnit.toLowerCase() }</div>
+		<div class="equation">
+
+			<div class="operand">
+				<div class="value">{ round(totalValueMinutes / timeUnitMultiplier) }</div>
+				<div class="unit">Total <br>{ @html unitsPretty[$job.exposureLimit.unit] }-{ timeUnit.toLowerCase() }</div>
+			</div>
+
+			<div class="operator">&#247;</div>
+
+			<div class="operand">
+				<div class="value">{ round(totalMinutes / timeUnitMultiplier) }</div>
+				<div class="unit">Total <br>{ timeUnit }</div>
+			</div>
+
+			<div class="operator">=</div>
+
+			<div class="operand">
+				<div class="value">{ round(twa) }</div>
+				<div class="unit">TWA</div>
+			</div>
+
 		</div>
 
-		<div class="operator">&#247;</div>
-
-		<div class="operand">
-			<div class="value">{ round(totalMinutes / timeUnitMultiplier) }</div>
-			<div class="unit">Total <br>{ timeUnit }</div>
-		</div>
-
-		<div class="operator">=</div>
-
-		<div class="operand">
-			<div class="value">{ round(twa) }</div>
-			<div class="unit">TWA</div>
-		</div>
+		<div class="button-cont"><div class="button valid{ valid }" on:click="setTWA()"> { $job.twa == twa ? 'Current' : 'Save' } TWA  </div></div>
 
 	</div>
 
-	<div class="button valid{ valid } useTWA"> Use TWA </div>
+	<!-- <div class="button valid{ valid } useTWA"> Use TWA </div> -->
 
 { :else }
 
-	<p>Please select an exposure limit first.</p>
+	<div class="description content">
+		<p>Please select an exposure limit first.</p>
+	</div>
 
 { /if }
 
@@ -120,6 +130,12 @@ export default {
 			let samples = this.store.get().job.samples
 			samples.splice(i, 1)
 			this.store.set({ job: { samples } })
+		},
+		setTWA() {
+			let state = this.get()
+			if(state.valid) {
+				this.store.set({ job: { twa: state.twa } })
+			}
 		}
 	},
 	computed: {
@@ -156,12 +172,6 @@ export default {
 <style>
 
 	@import 'colors';
-
-	.read-value {
-		.legend {
-			background: #eaedf1;
-		}
-	}
 
 	.samples {
 		border: 1px solid #aaa;
@@ -240,36 +250,6 @@ export default {
 		text-align: center;
 	}
 
-	.equation {
-		text-align: center;
-
-		> div {
-			display: inline-block;
-			margin: 0 6px;
-			vertical-align: middle;
-		}
-
-		.operand {
-			.value, .unit {
-				display: block;
-				text-align: center;
-			}
-
-			.value {
-				font-size: 150%;
-			}
-			.unit {
-				color: #666;
-				line-height: 1.2;
-				font-size: 90%;
-			}
-		}
-
-		.operator {
-			font-size: 120%;
-		}
-	}
-
 	.wrong-hours {
 		background: $red3;
 		color: #fff;
@@ -282,24 +262,12 @@ export default {
 		}
 	}
 
-	.useTWA {
-
-		padding: 30px;
-		display: block;
-		text-decoration: none;
-		max-width: 300px;
-		margin: 20px auto;
-		cursor: default;
-		background: #aaa;
-		color: #666;
-		text-align: center;
-		font-size: 20px;
-
-		&.validtrue {
-			cursor: pointer;
-			background: $blue2;
-			color: #fff;
-		}
+	.save-value, .read-value {
+		display: table;
+		margin: 0 auto;
+	}
+	.save-value {
+		margin-top: 20px;
 	}
 
 </style>

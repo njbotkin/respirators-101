@@ -149,7 +149,7 @@ for(var c of chemicals.chemicals) {
 		cas: c["cn"],
 		npg: 'https://www.cdc.gov/niosh/npg/npgd' + c["a"] + '.html',
 		idlh: idlh_split.shift(),
-		idlh_notes: idlh_split.join('<br />'),
+		idlh_notes: linkify(idlh_split.join('<br />')),
 		niosh_rel: linkify(c["n"]),
 		osha_pel: linkify(c["o"]),
 		physical_description: c["p"],

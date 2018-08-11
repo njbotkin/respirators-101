@@ -14,15 +14,17 @@
 
 <script>
 	// would like to do this with CSS...
+	function adjustMainHeight() {
+		var height = document.querySelector('.rednav').getBoundingClientRect().height
+		document.querySelector('.rednav-main').style.top = height + 'px'
+	}
 	export default {
 		oncreate() {
-			function adjustMainHeight() {
-				var height = document.querySelector('.rednav').getBoundingClientRect().height
-				document.querySelector('.rednav-main').style.top = height + 'px'
-			}
-
 			window.addEventListener('resize', adjustMainHeight)
 			adjustMainHeight()
+		},
+		ondestroy() {
+			window.removeEventListener('resize', adjustMainHeight)
 		}
 	}
 </script>

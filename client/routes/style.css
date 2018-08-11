@@ -149,6 +149,9 @@ img.size-90 { width: 90%; }
 			display: block;
 			text-align: center;
 		} 
+		.value {
+			font-size: 150%;
+		}
 		.unit {
 			color: #666;
 			line-height: 1.2;
@@ -203,10 +206,17 @@ img.size-90 { width: 90%; }
 		background: linear-gradient(#888, #aaa);
  		bottom: -1px;
 	}
+
+	&.validfalse {
+		background: #aaa !important;
+		text-shadow: none;
+		color: #666 !important;
+		cursor: default;
+	}
 }
 
 .save-value, .read-value {
-	padding: 20px 20px 30px 20px;
+	padding: 10px 10px 20px 10px;
 	display: inline-block;
 	margin: 20px 0;
 	position: relative;
@@ -214,16 +224,22 @@ img.size-90 { width: 90%; }
     vertical-align: top;
 	border: 1px solid color($green l(+10%));
 
+    .legend-cont {
+    	height:0;
+    	margin-top: -23px;
+    	text-align: left; 
+    	margin-bottom: 23px;
+    }
+
 	.legend {
-		display: block;
-		padding: 0 2px;
-		position: absolute;
-		top: -20px;
-		line-height: 40px;
-		background: #fff;
-		font-size: 80%;
-		text-transform: uppercase;
-		font-weight: 900;
+	    padding: 0 2px;
+	    line-height: 20px;
+	    background: $bg;
+	    font-size: 80%;
+	    text-align: left;
+	    text-transform: uppercase;
+	    font-weight: 900;
+	    display: inline;
 		color: $green;
 	} 
 
@@ -235,7 +251,7 @@ img.size-90 { width: 90%; }
 		}
     }
 
-    .cont {
+    .button-cont {
     	height:0;
     	text-align: right;
     }
@@ -248,10 +264,33 @@ img.size-90 { width: 90%; }
 		/*background: #fff;*/
 		/*text-shadow: none;*/
 		white-space: nowrap;
-		margin-top: 10px;
+		margin-top: 5px;
+		padding: 0 10px;
+		line-height: 30px;
 		
 		&:active {
 			background: linear-gradient(color($green l(-5%)), color($green l(+5%)));
+		}
+	}
+}
+
+.save-value.livetrue {
+	> .button-cont > .button {
+		background: #fff;
+		padding-right: 30px;
+		color: #666;
+		cursor: default;
+		border: 1px solid color($green l(+10%));
+		text-shadow: none;
+
+		&:after {
+			content: '\2714';
+			position: absolute;
+			line-height: 30px;
+			font-size: 120%;
+			right: 10px;
+			top: 0;
+			color: $green;
 		}
 	}
 }

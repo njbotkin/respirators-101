@@ -111,8 +111,8 @@ class JobStore extends LocalStore {
 				unit: NaN
 			},
 			samples: [],
-			TWA: null,
-			HR: null,
+			twa: null,
+			hr: null,
 		}
 		this._set(this._state, { jobs: true })
 	}
@@ -128,6 +128,6 @@ export const valueSources = {
 	chemical: 'app.chemicals',
 	exposureLimit: 'app.chemicals',
 	samples: 'app.generate-tabl',
-	TWA: 'app.calculate-twa',
-	HR: 'app.calculate-hr',
+	twa: 'app.calculate-twa',
+	hr: 'app.calculate-hr',
 }

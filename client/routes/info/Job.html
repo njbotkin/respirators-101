@@ -18,33 +18,33 @@
 	<div class="content">
 
 			<div class="read-value live{job.id == $job.id }">
-				<div class="legend"> Exposure Limit </div>
+				<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
 					{ #if job.exposureLimit.value }
 						<ExposureLimits exposureLimit="{job.exposureLimit}" />
 					{ :else }
 						No exposure limit selected yet!
 					{ /if }
-				<div class="cont"><a class="button edit" href="{ asr.makePath(valueSources['exposureLimit']) }"> Edit </a></div>
+				<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['exposureLimit']) }"> Edit </a></div>
 			</div>
 
 			<div class="read-value live{job.id == $job.id }">
-				<div class="legend"> TWA </div>
-					{ #if job.TWA }
-						{ job.TWA }
+				<div class="legend-cont"><div class="legend"> TWA </div></div>
+					{ #if job.twa }
+						{ round(job.twa) }
 					{ :else }
 						No TWA set yet!
 					{ /if }
-				<div class="cont"><a class="button edit" href="{ asr.makePath(valueSources['TWA']) }"> Edit </a></div>
+				<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['twa']) }"> Edit </a></div>
 			</div>
 
 			<div class="read-value live{job.id == $job.id }">
-				<div class="legend"> HR </div>
-					{ #if job.HR }
-						{ job.HR }
+				<div class="legend-cont"><div class="legend"> HR </div></div>
+					{ #if job.hr }
+						{ round(job.hr) }
 					{ :else }
 						No HR set yet!
 					{ /if }
-				<div class="cont"><a class="button edit" href="{ asr.makePath(valueSources['HR']) }"> Edit </a></div>
+				<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['hr']) }"> Edit </a></div>
 			</div>
 		
 		{ #if job.chemical }<Chemical c="{ job.chemical }"></Chemical>{ /if }
@@ -68,6 +68,7 @@
 	import ExposureLimits from 'lib/ExposureLimits.html'
 	import date from 'date-and-time'
 	import { valueSources } from 'lib/storage.js'
+	import { round } from 'lib/util.js'
 
 	export default {
 		components: {
@@ -75,7 +76,8 @@
 			ExposureLimits
 		},
 		helpers: {
-			date: (d) => date.format(new Date(d), 'MMM D, YYYY h:mm A')
+			date: (d) => date.format(new Date(d), 'MMM D, YYYY h:mm A'),
+			round
 		},
 		data: () => ({
 			valueSources,
@@ -155,16 +157,15 @@
 		&.currentJobtrue {
 			background: #fff;
 			/*border-color: color($green l(+20%));*/
+
+			.legend {
+				background: #fff;
+			}
 		}
 
 		&.currentJobfalse {
 			.edit {
 				display: none;
-			}
-			.read-value {
-				.legend {
-					background: #eaedf1;
-				}
 			}
 		}
 
