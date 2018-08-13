@@ -3,21 +3,9 @@
 
 	<p>A Time-Weighted Average (TWA) is used to measure a worker's daily exposure to hazardous substances, averaged over an 8- or 10-hour workday.</p>
 
-	<div class="equation">
-		<div class="operand">((Measured Concentration1</div>
-		<div class="operator">&#215;</div>
-		<div class="operand">Measurement Duration1)</div>
-		<div class="operator">+</div>
-		<div class="operand">(Measured Concentration2</div>
-		<div class="operator">&#215;</div>
-		<div class="operand">Measurement Duration2)</div>
-		<div class="operator">+</div>
-		<div class="operand">...)</div>
-		<div class="operator">&#247;</div>
-		<div class="operand">Sum of Measurement Durations</div>
-		<div class="operator">=</div>
-		<div class="operand">TWA</div>
-	</div>
+	<img class="latex" src="images/twa.svg" />
+
+	<p class="latex-desc">where <i>t</i> is the measurement duration, and <i>c</i> is the measurement concentration.</p>
 
 	<p>The average is calculated from:</p>
 
@@ -201,6 +189,22 @@ export default {
 <style>
 
 	@import 'colors';
+
+	.latex {
+		margin: 0 auto;
+		max-width: 100%;
+	}
+	.latex-desc {
+		color: #000;
+		max-width: 314px;
+		margin: 20px auto;
+		font-style: italic;
+		font-size: 90%;
+
+		i {
+			font-style: normal;
+		}
+	}
 
 	.samples {
 		border: 1px solid #aaa;
