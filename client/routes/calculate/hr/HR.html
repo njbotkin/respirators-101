@@ -1,8 +1,24 @@
 
-<div class="description content" style="margin-top: 20px">
+<div class="description content" style="margin-top: 20px; margin-bottom: 30px;">
+	<p>A Hazard Ratio is used to determine if a respirator is required for work. If the ratio is greater than 1, then a respirator is required.</p>
 
-<p>A Hazard Ratio is used to determine if a respirator is required for work. If the ratio is greater than 1, then a respirator is required.</p>
+	<div class="equation">
+		<div class="operand">TWA</div>
+		<div class="operator">&#247;</div>
+		<div class="operand">Exposure Limit</div>
+		<div class="operator">=</div>
+		<div class="operand">HR</div>
+	</div>
 
+	<p>To calculate the HR:</p>
+
+	<div class="indent">
+		<strong>Step 1:</strong> Enter the Time-Weighted Average (TWA) for the contaminant. <br>
+		<strong>Step 2:</strong> Enter the NIOSH REL or other applicable exposure limit. <br>
+		<strong>Step 3:</strong> Select "Save HR" to save to Current Job. <br>
+	</div>
+
+	<p><em>NOTE: The TWA and exposure limit values MUST be based on the same time period (e.g. a 10-hr TWA CANNOT be used with an 8-hr exposure limit).</em></p>
 </div>
 
 <div class="save-value live{ $job.hr == hr}">
@@ -54,18 +70,6 @@
 
 	<div class="button-cont"><div class="button valid{ valid }" on:click="setHR()"> { $job.hr == hr ? 'Current' : 'Save' } HR  </div></div>
 
-</div>
-
-<div class="description content">
-	<p>To calculate the HR:</p>
-
-	<div class="indent">
-		<strong>Step 1:</strong> Enter the Time-Weighted Average (TWA) for the contaminant. <br>
-		<strong>Step 2:</strong> Enter the NIOSH REL or other applicable exposure limit. <br>
-		<strong>Step 3:</strong> Select "Save HR" to save to Current Job. <br>
-	</div>
-
-	<p><em>NOTE: The TWA and exposure limit values MUST be based on the same time period (e.g. a 10-hr TWA CANNOT be used with an 8-hr exposure limit).</em></p>
 </div>
 
 <script>

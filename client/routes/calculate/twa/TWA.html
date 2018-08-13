@@ -54,7 +54,7 @@
 					<td>&#215;</td>
 					<td><input type="text" bind:value="sample.period" placeholder="0" /></td>
 					<td>=</td>
-					<td><div class="result">{ round(sampleProducts[i]) }</div></td>
+					<td><div class="result">{ round(sampleProducts[i] / timeUnitMultiplier) }</div></td>
 					<td><div class="removeSample" on:click="removeSample(i)">&#215;</div></td>
 				</tr>
 			{ /each }
@@ -119,6 +119,16 @@ import { valueSources } from 'lib/storage.js'
 export default {
 	components : {
 		ExposureLimits: 'lib/ExposureLimits.html'
+	},
+	oncreate() {
+		let samples = this.store.get().job.samples
+		if(samples.length === 0) {
+			samples.push({
+				value: '',
+				period: ''
+			})
+		}
+		this.store.set({ job: { samples } })
 	},
 	methods: {
 		addSample() {
