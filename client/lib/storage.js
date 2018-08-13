@@ -111,6 +111,7 @@ class JobStore extends LocalStore {
 				unit: NaN
 			},
 			samples: [],
+			concentrations: [],
 			twa: null,
 			hr: null,
 		}

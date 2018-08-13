@@ -11,10 +11,8 @@ import client$47$routes$47$options$45$list$47$content$46$js from '../../client/r
 import client$47$routes$47$respirator$45$picker$47$respirator$45$introduction$46$js from '../../client/routes/respirator-picker/respirator-introduction.js'
 import client$47$routes$47$respirator$45$picker$47$respirator$45$picker$46$js from '../../client/routes/respirator-picker/respirator-picker.js'
 import client$47$routes$47$calculate$47$hr$47$hr$46$js from '../../client/routes/calculate/hr/hr.js'
-import client$47$routes$47$calculate$47$mcmuc$47$generate$45$table$46$js from '../../client/routes/calculate/mcmuc/generate-table.js'
 import client$47$routes$47$calculate$47$mcmuc$47$mcmuc$46$js from '../../client/routes/calculate/mcmuc/mcmuc.js'
 import client$47$routes$47$calculate$47$muc$47$muc$46$js from '../../client/routes/calculate/muc/muc.js'
-import client$47$routes$47$calculate$47$twa$47$generate$45$table$46$js from '../../client/routes/calculate/twa/generate-table.js'
 import client$47$routes$47$calculate$47$twa$47$twa$46$js from '../../client/routes/calculate/twa/twa.js'
 import client$47$routes$47$category$47$content$47$content$46$js from '../../client/routes/category/content/content.js'
 
@@ -32,10 +30,8 @@ export default [
 	client$47$routes$47$respirator$45$picker$47$respirator$45$introduction$46$js,
 	client$47$routes$47$respirator$45$picker$47$respirator$45$picker$46$js,
 	client$47$routes$47$calculate$47$hr$47$hr$46$js,
-	client$47$routes$47$calculate$47$mcmuc$47$generate$45$table$46$js,
 	client$47$routes$47$calculate$47$mcmuc$47$mcmuc$46$js,
 	client$47$routes$47$calculate$47$muc$47$muc$46$js,
-	client$47$routes$47$calculate$47$twa$47$generate$45$table$46$js,
 	client$47$routes$47$calculate$47$twa$47$twa$46$js,
 	client$47$routes$47$category$47$content$47$content$46$js
 ]

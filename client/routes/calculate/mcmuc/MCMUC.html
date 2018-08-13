@@ -10,28 +10,32 @@
 
 </div>
 
-<table>
-	<thead>
-		<tr>
-			<th></th><th>Concentration</th><th></th><th>MUC</th><th></th><th>Ratio</th>
-		</tr>
-	</thead>
-	<tbody>
+<div class="samples">
+	<table>
+		<thead>
+			<tr>
+				<th></th><th>Concentration</th><th></th><th>MUC</th><th></th><th>Ratio</th>
+			</tr>
+		</thead>
+		<tbody>
 
-	{ #each concentrations as concentration, i }
-		<tr class="concentration">
-			<td><label><span class="optional">Component </span>{i + 1}</label></td>
-			<td><input type="text" bind:value="concentration.ppm" placeholder="0" /></td>
-			<td>&#247;</td>
-			<td><input type="text" bind:value="concentration.muc" placeholder="0" /></td>
-			<td>=</td>
-			<td><div class="result">{ round(componentRatios[i]) }</div></td>
-		</tr>
-	{ /each }
+		{ #each $job.concentrations as concentration, i }
+			<tr class="concentration">
+				<td><label><span class="optional">Component </span>{i + 1}</label></td>
+				<td><input type="text" bind:value="concentration.value" placeholder="0" /></td>
+				<td>&#247;</td>
+				<td><input type="text" bind:value="concentration.muc" placeholder="0" /></td>
+				<td>=</td>
+				<td><div class="result">{ round(componentRatios[i]) }</div></td>
+				<td><div class="removeConcentration" on:click="removeConcentration(i)">&#215;</div></td>
+			</tr>
+		{ /each }
 
-	</tbody>
-</table>
+		</tbody>
+	</table>
 
+	<div style="text-align: center"><div class="button addConcentration" on:click="addConcentration()">Add concentration + </div></div>
+</div>
 
 <h3>Multi-component MUC Equation:</h3>
 
@@ -44,14 +48,70 @@
 
 </div>
 
-<div class="button valid{ valid }"> Use multi-component MUC </div>
+<script>
+
+import { number, round } from 'lib/util.js'
+
+export default {
+	oncreate() {
+		let concentrations = this.store.get().job.concentrations
+		while(concentrations.length < 2) {
+			concentrations.push({
+				value: '',
+				muc: ''
+			})
+		}
+		this.store.set({ job: { concentrations } })
+	},
+	methods: {
+		addConcentration() {
+			let concentrations = this.store.get().job.concentrations
+			concentrations.push({
+				value: '',
+				muc: ''
+			})
+			this.store.set({ job: { concentrations } })
+		},
+		removeConcentration(i) {
+			let concentrations = this.store.get().job.concentrations
+			concentrations.splice(i, 1)
+			this.store.set({ job: { concentrations } })
+		}
+	},
+	computed: {
+		validConcentrations: ({ $job }) => $job.concentrations.filter(c => !!(number(c.value) && number(c.muc))),
+		componentRatios: ({ validConcentrations }) => validConcentrations.map( c => number(c.value) / number(c.muc) ),
+		valid: ({ componentRatios, validConcentrations, $job, ratioSum }) => { 
+			for(var t of componentRatios) { 
+				if(t === 0) return false 
+			} 
+			if(validConcentrations.length !== $job.concentrations.length) return false
+			if(ratioSum === Infinity) return false
+			return true 
+		},
+		ratioSum: ({ componentRatios }) => componentRatios.reduce((a, t) => a + t, 0),
+		// mcmuc: ({ averageRatio, exposureLimit }) => isNumber(exposureLimit) ? (averageRatio / exposureLimit || 0) : 0
+	},
+	helpers: {
+		round
+	}
+}
+
+</script>
 
 <style>
 
 	@import 'colors';
 
+	.samples {
+		border: 1px solid #aaa;
+		display: table;
+		padding: 15px;
+		margin: 20px auto 0;
+	}
+
 	table {
-		margin: 20px auto;
+		margin: 0 auto 15px;
 
 		th {
 			font-weight: normal;
@@ -76,6 +136,12 @@
 				line-height: 40px;
 				padding: 0 10px;
 				border: 1px solid #aaa;
+
+				@media screen and (max-width: 400px) {
+					line-height: 30px;
+					padding: 0 5px;
+					width: 40px;
+				}
 			}
 
 			.result {
@@ -84,7 +150,24 @@
 				margin: 0 10px;
 			}
 
+			.removeConcentration {
+				display:block;
+				width: 20px;
+				text-align: center;
+				color: #fff;
+				background: $red2;
+				cursor: pointer;
+				font-size: 14px;
+				line-height: 20px;
+				border-radius: 100%;
+				vertical-align: middle;
+			}
+
 		}
+	}
+
+	.addConcentration {
+		background: $blue2;
 	}
 
 	@media screen and (max-width: 400px) {
@@ -97,90 +180,6 @@
 		text-align: center;
 	}
 
-	.equation {
-		text-align: center;
 
-		> div {
-			display: inline-block;
-			margin: 0 6px;
-			vertical-align: middle;
-		}
-
-		.operand {
-			.value, .unit {
-				display: block;
-				text-align: center;
-			}
-			.value {
-				font-size: 150%;
-				input {
-					font-size: 100%;
-					line-height: 40px;
-					padding: 0 10px;
-					width: 60px;
-					border: 1px solid #aaa;
-				}
-			}
-			.unit {
-				color: #666;
-				line-height: 1.2;
-				font-size: 90%;
-			}
-		}
-
-		.operator {
-			font-size: 120%;
-		}
-	}
-
-	.button {
-
-		padding: 30px;
-		display: block;
-		text-decoration: none;
-		max-width: 300px;
-		margin: 20px auto;
-		cursor: default;
-		background: #aaa;
-		color: #666;
-		text-align: center;
-		font-size: 20px;
-
-		&.validtrue {
-			cursor: pointer;
-			background: $blue2;
-			color: #fff;
-		}
-	}
 
 </style>
-
-
-<script>
-
-import { number, round } from 'lib/util.js'
-
-export default {
-	data: () => ({
-		// exposureLimit: ''
-	}),
-	computed: {
-		validConcentrations: ({ concentrations }) => concentrations.filter(c => !!(number(c.ppm) && number(c.muc))),
-		componentRatios: ({ validConcentrations }) => validConcentrations.map( c => number(c.ppm) / number(c.muc) ),
-		valid: ({ componentRatios, validConcentrations, concentrations, ratioSum }) => { 
-			for(var t of componentRatios) { 
-				if(t === 0) return false 
-			} 
-			if(validConcentrations.length !== concentrations.length) return false
-			if(ratioSum === Infinity) return false
-			return true 
-		},
-		ratioSum: ({ componentRatios }) => componentRatios.reduce((a, t) => a + t, 0),
-		// mcmuc: ({ averageRatio, exposureLimit }) => isNumber(exposureLimit) ? (averageRatio / exposureLimit || 0) : 0
-	},
-	helpers: {
-		round
-	}
-}
-
-</script>
