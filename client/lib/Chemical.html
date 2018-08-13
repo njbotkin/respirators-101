@@ -144,7 +144,11 @@
 		},
 		methods: {
 			saveEL() {
-				this.store.set({ job: { exposureLimit: this.get().exposureLimit } })
+				if(!this.get().elSame) {
+					this.store.set({ job: { exposureLimit: this.get().exposureLimit } })
+					this.store.set({ job: { samples: false } }) // old samples invalid 
+					this.store.set({ job: { samples: [] } }) // not sure why this is necessary, don't feel like investigating
+				}
 			}
 		}
 	}
