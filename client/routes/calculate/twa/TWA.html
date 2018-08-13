@@ -1,21 +1,26 @@
 
-<div class="description content" style="margin-top: 20px">
+<div class="description content" style="margin-top: 20px; margin-bottom: 30px;">
 
-	<p>Time-Weighted Average (TWA) is used to measure a worker's daily exposure to hazardous substances, averaged on an 8 or 10 hour workday. The average is calculated from:</p>
-		
-	<ul>
-		<li>air samples taken during the workday</li>
-		<li>the amount of time spent working in those conditions</li>
-	</ul>
+	<p>A Time-Weighted Average (TWA) is used to measure a worker's daily exposure to hazardous substances, averaged over an 8- or 10-hour workday.</p>
 
-	<h3>Instructions</h3>
+	<p>The average is calculated from:</p>
 
 	<ol>
-		<li>Use buttons below to enter sample information . </li>
-		<li>Press Calculate button to get TWA </li>
+		<li>Air samples taken during the workday.</li>
+		<li>Work time represented by the sample.</li>
 	</ol>
 
-	<p>NOTE ON HOURS: Take into account time when workers were NOT exposed to the hazard (for instance, on breaks). If a sample was taken at 11am and then again at 2pm, but the lunch hour was between 12pm and 1pm, the sample taken at 11am only represents 2 hours. </p>
+	<p>To calculate the TWA:</p>
+
+	<div class="indent">
+		<strong>Step 1:</strong> Choose an exposure limit (NIOSH REL or other).<br>
+		<strong>Step 2:</strong> Select "Add Sample".<br>
+		<strong>Step 3:</strong> Enter sample information.<br>
+		<strong>Step 4:</strong> Continue adding samples and information until all samples have been entered.<br>
+		<strong>Step 5:</strong> Select "Save TWA" to save to your Current Job in My Info.
+	</div>
+
+	<p><em>NOTE ON HOURS: Take into account time when workers were NOT exposed to the hazard (for instance, on breaks). If a sample was taken at 11am and then again at 2pm, but the lunch hour was between 12pm and 1pm, the sample only represents 2 work hours.</em></p>
 
 </div>
 
@@ -34,7 +39,6 @@
 { #if $job.exposureLimit.value }
 
 	<div class="samples">
-
 		<table>
 			<thead>
 				<tr>
@@ -59,7 +63,6 @@
 		</table>
 
 		<div style="text-align: center"><div class="button addSample" on:click="addSample()">Add sample + </div></div>
-
 	</div>
 
 	{ #if $job.samples.length > 0 && validSamples.length === $job.samples.length && (totalMinutes > $job.exposureLimit.duration || totalMinutes < $job.exposureLimit.duration) }

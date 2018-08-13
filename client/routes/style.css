@@ -92,6 +92,14 @@ img.size-65 { width: 65%; }
 img.size-80 { width: 80%; }
 img.size-90 { width: 90%; }
 
+.indent {
+	padding-left: 20px;
+
+	@media (max-width: 400px) {
+		padding-left: 10px;
+	}
+}
+
 
 
 /* I'm pretty torn on whether these should be global css or components, 
@@ -245,9 +253,15 @@ img.size-90 { width: 90%; }
 
     &.livefalse {
 		border: 1px solid #ddd;
-
 		.legend {
 			color: #bbb;
+		}
+    }
+
+    &.livetrue {
+		border: 1px solid color($green l(+10%));
+		.legend {
+			color: $green;
 		}
     }
 
