@@ -1,7 +1,7 @@
 
 <div class="description content" style="margin-top: 20px; margin-bottom: 30px;">
 
-	<p>A Time-Weighted Average (TWA) is used to measure a worker's daily exposure to hazardous substances, averaged over an 8- or 10-hour workday.</p>
+	<p>A Time-Weighted Average (TWA) is used to measure a worker's daily exposure to hazardous substances, averaged over an 8- or 10-hour workday. </p>
 
 	<img class="latex" src="images/twa.svg" />
 
@@ -191,15 +191,20 @@ export default {
 	@import 'colors';
 
 	.latex {
-		margin: 40px auto;
-		max-width: 100%;
+		margin: 30px auto 20px;
+		max-width: 170px;
+
+		@media (max-width: 600px) {
+			max-width:150px;
+		}
+
 	}
 	.latex-desc {
-		color: #000;
-		max-width: 314px;
-		margin: 20px auto;
+		max-width: 300px;
+		margin: 20px auto 30px;
 		font-style: italic;
 		font-size: 90%;
+		color: #666;
 
 		i {
 			font-style: normal;
