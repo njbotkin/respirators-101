@@ -1,117 +1,45 @@
 
-<!-- <div class="buttons">
-
-	<a class="twa" href="{ asr.makePath('app.calculate', { id: 'twa' }) }">
-		<label>Calculate TWA</label>
-		(Time-Weighted Average)
-	</a>
-	<a class="hr" href="{ asr.makePath('app.calculate', { id: 'hr' }) }">
-		<label>Calculate Hr</label>
-		(Hazard Ratio)
-	</a>
-
-</div> -->
-
-<div class="body">
-	<div class="construction">
-		Under construction
-	</div>
-</div>
-
-<a class="button" href="{ asr.makePath('app.calculate-twa') }"> Calculate TWA </a>
-<a class="button" href="{ asr.makePath('app.calculate-hr') }"> Calculate HR </a>
-<a class="button" href="{ asr.makePath('app.calculate-muc') }"> Calculate MUC </a>
-<a class="button" href="{ asr.makePath('app.calculate-mcmuc') }"> Calculate multi-component MUC </a>
-
 <div class="content">
 
 	<p>The Calculations Tool is intended to help the user to conduct several calculations relevant to respirator selection:</p>
 
-	<blockquote>
-		<p><b>MUC</b>: Calculation of Maximum Use Concentration using the APF and the Exposure Limit</p>
-
-		<p><b>TWA:</b> Calculation of the Time-Weighted Average using measured workplace concentrations across several samples over an 8- or 10-hour period</p>
-
-		<p><b>HR:</b> Calculation of the Hazard Ratio based on TWA and Exposure Limit</p>
-
-		<p><b>Multi-Component MUC:</b> Calculation of Multi-Component MUCs</p>
-	</blockquote>
 </div>
- 
+
+<a class="button" href="{ asr.makePath('app.calculate-twa') }"> Calculate TWA </a>
+<div class="description">Calculation of the Time-Weighted Average using measured workplace concentrations across several samples over an 8- or 10-hour period</div>
+
+<a class="button" href="{ asr.makePath('app.calculate-hr') }"> Calculate HR </a>
+<div class="description">Calculation of the Hazard Ratio based on TWA and Exposure Limit</div>
+
+<a class="button" href="{ asr.makePath('app.calculate-muc') }"> Calculate MUC </a>
+<div class="description">Calculation of Maximum Use Concentration using the APF and the Exposure Limit</div>
+
+<a class="button" href="{ asr.makePath('app.calculate-mcmuc') }"> Calculate multi-component MUC </a>
+<div class="description">Calculation of Multi-Component MUCs</div>
+
 <style>
 
 	@import 'colors';
 
 	.button {
-		display: block;
-		padding: 30px;
 		background: $blue2;
-		color: #fff;
-		width: 300px;
-		margin: 20px auto;
-		cursor: pointer;
+		font-size: 130%;
+		padding: 10px;
+		max-width: 340px;
 		text-align: center;
-		font-size: 20px;
+		margin: 0 auto;
+    	display: block;
+    	box-sizing: border-box;
 	}
-
-	.body {
-		text-align: center;
+	.description {
+		max-width: 320px;
+		margin: 0 auto;
+    	display: block;
+    	font-size: 80%;
+    	font-style: italic;
+    	padding: 5px 10px 20px 10px;
+    	box-sizing: border-box;
 	}
-
-	.construction {
-		display: inline-block;
-		margin: 50px auto 30px;
-		padding: 20px 40px;
-		font-size: 200%;
-		position: relative;
-	}
-
-	.construction:before {
-		position: absolute;
-		top: 50%;
-		left: 0;
-		margin-top: -16px;
-		content: "\f06a";
-		/* use !important to prevent issues with browser extensions that change fonts */
-		font-family: 'icomoon' !important;
-		speak: none;
-		font-style: normal;
-		font-weight: normal;
-		font-variant: normal;
-		text-transform: none;
-		line-height: 1;
-
-		/* Better Font Rendering =========== */
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-
-		font-size: 30px;
-		color: #999;
-	}
-
-/*	$cyan: #00b1f0;
-	
-	.buttons a {
-		margin: 20px auto;
-		font-size: 3vh;
-		width: 80%;
-		box-sizing: content-box;
-		max-width: 400px;
-		color: $cyan;
-		display: block;
-		border: 3px solid $cyan;
-		padding: 20px 0;
-		border-radius: 20px;
-		text-decoration: none;
-		text-align: center;
-		background: #fff;
-
-		label {
-			text-transform: uppercase;
-			display: block;
-			cursor: inherit;
-		}
-	}*/
 
 </style>
 

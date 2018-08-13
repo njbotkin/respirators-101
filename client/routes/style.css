@@ -63,14 +63,14 @@ p:nth-child(even) {
 		background: #fff !important;
 	}
 }
-
+/*
 blockquote {
 	border: 2px solid #2c3b70;
 	font-style: italic;
 	margin: 0 0 0 20px;
 	padding: 20px;
 }
-
+*/
 /* image alignment */
 img.aligncenter {
 	margin: 0 auto;
