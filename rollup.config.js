@@ -6,6 +6,7 @@ import svelte from 'rollup-plugin-svelte'
 import json from 'rollup-plugin-json'
 import sveltePreprocessPostcss from 'svelte-preprocess-postcss'
 import progress from 'rollup-plugin-progress'
+import builtins from 'rollup-plugin-node-builtins'
 // import rollupPosthtml from 'rollup-plugin-posthtml'
 // import posthtml from 'posthtml'
 // import customElements from 'posthtml-custom-elements'
@@ -67,12 +68,6 @@ export default {
 		// string({
 		// 	include: `**/static-html/**/*.html`,
 		// }),
-		// rollupPosthtml({
-		// 	plugins: customElements({ 
-		// 		defaultTag: 'div',
-		// 		skipTags: ['script', 'style']
-		// 	})
-		//    }),
 		json(),
 		svelte({
 
@@ -107,10 +102,14 @@ export default {
 			},
 
 		}),
-		commonjs(),
 		resolve({
 			browser: true,
+			preferBuiltins: true
 		}),
+		commonjs({
+			include: 'node_modules/**',  // Default: undefined
+		}),
+		builtins(),
 		babel({
 			babelrc: false,
 			presets: [

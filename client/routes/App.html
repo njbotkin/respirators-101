@@ -2,6 +2,7 @@
 
 	<div class="wrapper out{visibleSlideOut}">
 
+		<div id="flapsleft">
 		<div class="left">
 
 			<div class="appname">Respirators 101</div>
@@ -13,6 +14,7 @@
 			{#if !visibleSlideOut}
 			<div class="debutterfinger"></div>
 			{/if}
+		</div>
 		</div>
 
 
@@ -72,6 +74,8 @@
 	import { store } from 'lib/storage.js'
 	import Job from './info/Job.html'
 
+	import position from 'touch-position'
+
 	export default {
 		components: {
 			Menu,
@@ -79,6 +83,49 @@
 		},
 		store: () => store,
 		oncreate () {
+
+			// var down = false, direction = false
+
+			// window.addEventListener('mousedown', () => down = true )
+			// window.addEventListener('mouseup', () => down = direction = false )
+
+			// const wrapper = document.querySelector('.wrapper')
+
+			// const touch = position.emitter()
+			// touch.on('move', function({ clientX, clientY, movementX, movementY }) {
+			// 	if(!down) return
+
+			// 	if(!direction) {
+			// 		let angleDegrees = Math.atan2(clientY - clientY + movementY, clientX - clientX + movementX) * 180 / Math.PI
+
+			// 		if(angleDegrees == 0) return
+
+			// 		if(angleDegrees > -45 && angleDegrees <= 45) {
+			// 			direction = 'right'
+			// 		} else 
+			// 		if(angleDegrees > 45 && angleDegrees <= 135) {
+			// 			direction = 'down'
+			// 		} else 
+			// 		if(angleDegrees > 135 || angleDegrees <= -135) {
+			// 			direction = 'left'
+			// 		} else 
+			// 		if(angleDegrees > -135 && angleDegrees <= -45) {
+			// 			direction = 'up'
+			// 		}
+
+			// 		// console.log(direction)
+			// 	}
+
+			// 	if(direction == 'right') {
+			// 		let currentLeft  = ((Number(wrapper.style.left.slice(0, -2)) || 0 - 300) + 300) / 300
+			// 		let proposedLeft = currentLeft + (movementX / 300)
+
+			// 		proposedLeft = Math.max(Math.min(proposedLeft, 1), 0)
+
+			// 		wrapper.style.left = ((proposedLeft * 300) - 300) + 'px'
+			// 	}
+
+			// })
 
 			// use event bubbling to make all external links open in new tab
 			this.options.target.addEventListener('click', e => {
@@ -187,7 +234,7 @@
 		bottom: 0;
 		left: 0;
 		width: calc(100% + 300px);
-		transition: all .2s ease;
+		/*transition: all .2s ease;*/
 
 		&.outfalse {
 			left: -300px;
@@ -298,19 +345,27 @@
 	}
 
 	.in-selection {
-		position: absolute;
-		z-index: 200;
-		bottom: 0;
-		background: $blue2;
-		padding: 10px 15px 10px 45px;
-		color: #ffffffee;
-		text-decoration: none;
-		/*padding-left: 40px;*/
-		background-image: url(icons/respirator.png);
-		background-size: 10%;
-		background-position: 8px center;
-		background-repeat: no-repeat;
-		line-height: 20px;
+	    position: absolute;
+	    z-index: 200;
+	    bottom: 0;
+	    max-width: 60%;
+	    background: #4c5a8d;
+	    padding: 13px 15px 13px 45px;
+	    vertical-align: middle;
+	    color: #ffffffee;
+	    text-decoration: none;
+	    background-image: url(icons/respirator.png);
+	    background-size: 25px;
+	    background-position: 8px center;
+	    background-repeat: no-repeat;
+	    line-height: 14px;
+	    box-sizing: border-box;
+
+	    @media (max-width: 400px) {
+	    	padding: 8px 10px 8px 40px;
+	    	background-size: 20px;
+	    	font-size: 70%;
+	    }
 	}
 
 	/*.job*/ 
@@ -321,6 +376,10 @@
 		left: 0;
 		right: 0;
 		top: calc(100% - 40px);
+
+		@media (max-width: 400px) {
+			top: calc(100% - 30px);
+	    }
 
 		.job {
 			background: #fff;
@@ -338,6 +397,12 @@
 		.current-job {
 			margin: 0;
 			background: $green; 
+
+		    @media (max-width: 400px) {
+		    	line-height: 30px;
+		    	padding: 0 8px;
+		    	font-size: 70%;
+		    }
 		}
 
 		&[data-open=true] {
