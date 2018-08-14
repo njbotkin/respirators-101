@@ -86,8 +86,11 @@
 
 			// var down = false, direction = false
 
-			// window.addEventListener('mousedown', () => down = true )
-			// window.addEventListener('mouseup', () => down = direction = false )
+			// window.addEventListener('mousedown', () => down = true)
+			// window.addEventListener('touchstart', () => down = true)
+			// window.addEventListener('mouseup', () => down = direction = false)
+			// window.addEventListener('touchend', () => down = direction = false)
+			// window.addEventListener('touchcancel', () => down = direction = false)
 
 			// const wrapper = document.querySelector('.wrapper')
 
@@ -116,8 +119,8 @@
 			// 		// console.log(direction)
 			// 	}
 
-			// 	if(direction == 'right') {
-			// 		let currentLeft  = ((Number(wrapper.style.left.slice(0, -2)) || 0 - 300) + 300) / 300
+			// 	if(direction == 'right' || direction == 'left') {
+			// 		let currentLeft  = (wrapper.style.left ? ((Number(wrapper.style.left.slice(0, -2))) + 300) : 0) / 300
 			// 		let proposedLeft = currentLeft + (movementX / 300)
 
 			// 		proposedLeft = Math.max(Math.min(proposedLeft, 1), 0)
