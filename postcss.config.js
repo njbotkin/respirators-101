@@ -1,4 +1,5 @@
 module.exports = {
+	from: undefined,
 	plugins: [
 		require(`precss`)({
 			import: {

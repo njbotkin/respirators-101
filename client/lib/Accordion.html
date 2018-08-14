@@ -2,73 +2,70 @@
 	<div class="clickable" on:click="set({ open: !open })">
 		{title}
 
-			{#if open}
+		{#if open}
 			<div class="icon icon-remove_circle"></div>
-			{:else}
+		{:else}
 			<div class="icon icon-add_circle"></div>
-			{/if}
+		{/if}
 	</div>
+
 	{#if open}
-	<div class="contents">
-		<slot></slot>
-	</div>
+		<div class="contents">
+			<slot></slot>
+		</div>
 	{/if}
 </div>
 
+<script>
+	export default {
+		data: () => ({
+			open: false
+		})
+	}
+</script>
+
 <style>
 
-@import 'colors';
+	@import 'colors';
 
-.clickable {
-	cursor: pointer;
-	font-size: 100%;
-	position: relative;
-	line-height: 1.5;
-	padding: 13px 50px 13px 15px;
-	font-weight: bold;
-}
-.icon {	
-	position: absolute;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	width: 50px;
-	color: $red4;
-	line-height: 50px;
-	text-align: center;
-	font-size: 156.25%;
-}
-
-.expand {
-	background: #fff;
-	margin-right: -20px;
-	margin-left: -20px;
-}
-.expand:nth-child(odd) {
-	background: #ddd;
-}
-
-:global(.expand .contents) {
-	padding: 10px 30px 30px 30px;
-
-	p:first-child {
-		margin-top: 0;
+	.clickable {
+		cursor: pointer;
+		font-size: 100%;
+		position: relative;
+		line-height: 1.5;
+		padding: 13px 50px 13px 15px;
+		font-weight: bold;
 	}
-	p:last-child {
-		margin-bottom: 0;
+	.icon {	
+		position: absolute;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		width: 50px;
+		color: $red4;
+		line-height: 50px;
+		text-align: center;
+		font-size: 156.25%;
 	}
-}
 
-</style>
+	.expand {
+		background: #fff;
+		margin-right: -20px;
+		margin-left: -20px;
+	}
+	.expand:nth-child(odd) {
+		background: #ddd;
+	}
 
-<script>
+	:global(.expand .contents) {
+		padding: 10px 30px 30px 30px;
 
-export default {
-	data() {
-		return {
-			open: false
+		p:first-child {
+			margin-top: 0;
+		}
+		p:last-child {
+			margin-bottom: 0;
 		}
 	}
-}
 
-</script>
+</style>

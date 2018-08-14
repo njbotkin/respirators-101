@@ -2,58 +2,69 @@ import commonjs from 'rollup-plugin-commonjs'
 import resolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
 import svelte from 'rollup-plugin-svelte'
-// import string from 'rollup-plugin-string'
 import json from 'rollup-plugin-json'
 import sveltePreprocessPostcss from 'svelte-preprocess-postcss'
 import progress from 'rollup-plugin-progress'
 import builtins from 'rollup-plugin-node-builtins'
-// import rollupPosthtml from 'rollup-plugin-posthtml'
-// import posthtml from 'posthtml'
-// import customElements from 'posthtml-custom-elements'
+import includePaths from 'rollup-plugin-includepaths';
 
-// var tags = require('html-tags')
-// var voidTags = require('html-tags/void')
+{
+	// import rollupPosthtml from 'rollup-plugin-posthtml'
+	// import posthtml from 'posthtml'
+	// import customElements from 'posthtml-custom-elements'
 
-// import balanced from 'balanced-match'
+	// var tags = require('html-tags')
+	// var voidTags = require('html-tags/void')
 
-// there was a time I tried to use post-html to do HTML transforms, but that doesn't work because Svelte's markup isn't valid html.  Using an AST-based html transformer blows up svelte.
+	// import balanced from 'balanced-match'
 
-// function crudeCustomElements(html) {
+	// there was a time I tried to use post-html to do HTML transforms, but that doesn't work because Svelte's markup isn't valid html.  Using an AST-based html transformer blows up svelte.
 
-// 	let matches = []
-// 	html.replace(/<([^/ >]+)/g, (m, p, l) => matches.push({m, p, l}))
+	// function crudeCustomElements(html) {
 
-// 	matches = matches.filter(m => tags.indexOf(m.p) === -1 && 
-// 		voidTags.indexOf(m.p) === -1 && 
-// 		m.p === m.p.toLowerCase() && // lowercase only
-// 		m.p[0] !== '!') // no comments
+	// 	let matches = []
+	// 	html.replace(/<([^/ >]+)/g, (m, p, l) => matches.push({m, p, l}))
 
-// 	var offset = 0
-	
-// 	// transform open tags
-// 	for(let i = 0; i < matches.length; i++) {
-// 		let m = matches[i]
+	// 	matches = matches.filter(m => tags.indexOf(m.p) === -1 && 
+	// 		voidTags.indexOf(m.p) === -1 && 
+	// 		m.p === m.p.toLowerCase() && // lowercase only
+	// 		m.p[0] !== '!') // no comments
+
+	// 	var offset = 0
 		
-// 		console.log(m.p)
+	// 	// transform open tags
+	// 	for(let i = 0; i < matches.length; i++) {
+	// 		let m = matches[i]
+			
+	// 		console.log(m.p)
+			
+	// 		let string = `<div class="`+ m.p +`"`
+			
+	// 		let firsthalf = html.substr(0, m.l+offset)
+	// 		let secondhalf = html.substr(m.l+m.m.length+offset)
+			
+	// 		html = firsthalf + string + secondhalf
+			
+	// 		offset += string.length - m.m.length
+	// 	}
 		
-// 		let string = `<div class="`+ m.p +`"`
-		
-// 		let firsthalf = html.substr(0, m.l+offset)
-// 		let secondhalf = html.substr(m.l+m.m.length+offset)
-		
-// 		html = firsthalf + string + secondhalf
-		
-// 		offset += string.length - m.m.length
-// 	}
-	
-// 	// transform close tags
-// 	for(let i = 0; i < matches.length; i++) {
-// 		let m = matches[i]
-// 		html = html.replace('</'+m.p+'>', '</div>')
-// 	}
+	// 	// transform close tags
+	// 	for(let i = 0; i < matches.length; i++) {
+	// 		let m = matches[i]
+	// 		html = html.replace('</'+m.p+'>', '</div>')
+	// 	}
 
-// 	return html
-// }
+	// 	return html
+	// }
+}
+
+// necessary on windows
+let includePathOptions = {
+    include: {},
+    paths: ['client'],
+    external: [],
+    extensions: ['.js', '.json', '.html']
+}
 
 export default {
 	name: `respiratorsStructure`,
@@ -65,14 +76,9 @@ export default {
 	sourcemap: true,
 	plugins: [
 		progress(),
-		// string({
-		// 	include: `**/static-html/**/*.html`,
-		// }),
+		includePaths(includePathOptions),
 		json(),
 		svelte({
-
-			// exclude: `**/static-html/**/*.html`,
-
 			preprocess: {
 				// markup: ({content}) => {
 
@@ -96,18 +102,16 @@ export default {
 				// markup: ({content}) => ({ code: crudeCustomElements(content) }),
 				style: sveltePreprocessPostcss(),
 			},
-
 			css(css) {
 				css.write(`public/components.css`)
 			},
-
 		}),
 		resolve({
 			browser: true,
 			preferBuiltins: true
 		}),
 		commonjs({
-			include: 'node_modules/**',  // Default: undefined
+			// include: 'node_modules/**',  // Default: undefined
 		}),
 		builtins(),
 		babel({

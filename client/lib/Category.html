@@ -1,7 +1,7 @@
-<div class="category open{open}">
+<div class="category open{ item.id == currentExpand }">
 	<div class="clickable category-title">
 		<a href="{ item.path }">{item.title}</a>
-		<div class="chevron icon-angle-left" on:click="clicky( open )"></div>
+		<div class="chevron icon-angle-left" on:click="set({ currentExpand: currentExpand == item.id ? -1 : item.id })"></div>
 	</div>
 	<div class="expand">
 		<slot></slot>
@@ -20,7 +20,6 @@
 	.category.opentrue .chevron {
 		transform: rotate(90deg);
 	}
-
 
 	.category-title {
 		position:relative;
@@ -44,39 +43,18 @@
 		}
 	}
 
-.clickable {
-	cursor: pointer; 
-}
+	.clickable {
+		cursor: pointer; 
+	}
 
-:global(.expand.initialized) {
-	transition: height 0.2s ease-out;
-	height: auto;
-	overflow: hidden;
-}
+	:global(.expand.initialized) {
+		transition: height 0.2s ease-out;
+		height: auto;
+		overflow: hidden;
+	}
 
-:global(.category.openfalse .expand.initialized) {
-	height: 0 !important;
-}
+	:global(.category.openfalse .expand.initialized) {
+		height: 0 !important;
+	}
 
 </style>
-
-<script>
-
-export default {
-	data() {
-		return {
-			open: false
-		}
-	},
-	oncreate() {
-		this._state.registerExpand(this);
-	},
-	methods: {
-		clicky(open) {
-			this._state.closeAllExpands()
-			this._set({open: !open})
-		}
-	}
-}
-
-</script>

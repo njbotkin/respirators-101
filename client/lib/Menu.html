@@ -1,29 +1,20 @@
-
 <ul class="menu">
-	{#each navigation as item}
-
-	<li class="{ item.id }">
-	
-		{#if item.children}
-			
-		<Category {asr} {item} {closeAllExpands} {registerExpand}>
-			<ul>
-				{#each item.children as page}
-				<li class="{ page.id }">
-					<a href="{ page.path }">{page.title}</a>
-				</li>
-				{/each}
-			</ul> 
-		</Category>
-
-		{:else}
-
-		<a href="{ item.path }">{item.title}</a>
-
-		{/if}
-
-	</li>
-
+	{#each navigation as item, i}
+		<li class="{ item.id }">
+			{#if item.children}
+				<Category {item} bind:currentExpand="currentExpand">
+					<ul>
+						{#each item.children as page}
+							<li class="{ page.id }">
+								<a href="{ page.path }">{page.title}</a>
+							</li>
+						{/each}
+					</ul> 
+				</Category>
+			{:else}
+				<a href="{ item.path }">{item.title}</a>
+			{/if}
+		</li>
 	{/each}
 </ul>
 
@@ -57,28 +48,16 @@
 			Category
 		},
 		oncreate() {
-
+			// CSS transitions for the expands
 			for(var e of document.querySelectorAll('.expand')) {
 				e.style.height = e.clientHeight + 'px'
 				e.setAttribute('class', 'expand initialized')
 			}
-
 		},
-		// until https://github.com/sveltejs/svelte/issues/881 lands, this is the best way to do dynamic refs that I can think of
-		data() {
-			var expands = []
-			return { 
-				closeAllExpands() {
-					for(var e of expands) {
-						e._set({ open: false })
-					}
-				},
-				registerExpand(expand) {
-					expands.push(expand)
-				},
-				copyrightDate
-			}
-		},
+		data: () => ({
+			copyrightDate,
+			currentExpand: -1
+		}),
 		computed: {
 			navigation: ({ asr }) => {
 
@@ -116,7 +95,7 @@
 
 			}
 		}
-	}
+	} 
 
 </script>
 
@@ -124,21 +103,20 @@
 
 	@import "colors";
 
-	:global(.menu) {
-
+	.menu {
 		list-style: none;
 		display: block;
 		padding: 0;
 		margin: 0;
 
-		 ul, li {
+		ul, li {
 			list-style: none;
 			display: block;
 			padding: 0;
 			margin: 0;
-		}
+		} 
 
-		a {
+		:global(a) {
 			color: #fff;
 			display: block;
 			line-height: 20px;
@@ -152,10 +130,9 @@
 			}
 		}
 
-
 		/* brown */
 		li.getting-started, li.respirator-selection-tool, li.all-about-respirators {
-			a {
+			:global(a) {
 				background: $yellow3;
 				border-bottom: 1px solid $yellow4;
 				&:hover {
@@ -170,8 +147,8 @@
 		} 
 
 		/* red */
-		 li.osha-standards, li.my-info, li.chemical-lookup, li.calculations {
-			a {
+		li.osha-standards, li.my-info, li.chemical-lookup, li.calculations {
+			:global(a) {
 				background: $red3;
 				border-bottom: 1px solid $red4;
 				&:hover {
@@ -187,11 +164,11 @@
 
 		/* hast icon */
 		li.home, li.getting-started, li.all-about-respirators, li.conversion-tables, li.osha-standards, li.respirator-selection-tool, li.my-info, li.chemical-lookup, li.calculations {
-			> a, .clickable a {
+			> :global(a), :global(.clickable a) {
 				padding-left: 50px;
 				position: relative;
 			}
-			> a::before, .clickable a::before {
+			> :global(a)::before, :global(.clickable a)::before {
 				content: ' ';
 				position: absolute;
 				left: 0;
@@ -212,7 +189,7 @@
 	  		content: "\f015";
 		}
 
-		li.getting-started .clickable a::before {
+		li.getting-started :global(.clickable a)::before {
 			content: "\ea34";
 		}
 
@@ -221,7 +198,7 @@
 			background-size: 50%;
 		}
 
-		li.all-about-respirators a::before {
+		li.all-about-respirators :global(a)::before {
 			background-image: url(icons/all-about-respirators.png);
 			background-size: 50%;
 		}
@@ -241,57 +218,57 @@
 			background-size: 40%;
 		}
 
-		li.osha-standards a::before {
+		li.osha-standards :global(a)::before {
 			background-image: url(icons/osha-standards.png);
 			background-size: 50%;
 		}
 
 	}
 
-		.copyright {
-			padding: 20px;
+	.copyright {
+		padding: 20px;
+		text-align: center;
+		font-style: italic;
+		font-size: smaller;
+	}
+	.toes {
+		display: table;
+		width: 100%;
+		padding:0;
+		margin: 0;
+
+		a {
+			display: table-cell;
+			width: 50%;
 			text-align: center;
-			font-style: italic;
-			font-size: smaller;
+			padding: 20px 0 10px;
+			vertical-align: top;
+			cursor: pointer;
+			background: none;
+			color: #fff;
+			text-decoration: none;
 		}
-		.toes {
-			display: table;
-			width: 100%;
-			padding:0;
-			margin: 0;
 
-			a {
-				display: table-cell;
-				width: 50%;
-				text-align: center;
-				padding: 20px 0 10px;
-				vertical-align: top;
-				cursor: pointer;
-				background: none;
-				color: #fff;
-				text-decoration: none;
-			}
-
-			.youtube {
-				.icon {
-					font-size: 50px;
-				}
-			}
-
-			.contact {
-				.icon {
-					height: 50px;
-					background-image: url(icons/contact-us.png);
-					background-size: 35%;
-					background-position: center center;
-					background-repeat: no-repeat;
-				}
-			}
-
-			.text {
-				padding: 10px;
+		.youtube {
+			.icon {
+				font-size: 50px;
 			}
 		}
+
+		.contact {
+			.icon {
+				height: 50px;
+				background-image: url(icons/contact-us.png);
+				background-size: 35%;
+				background-position: center center;
+				background-repeat: no-repeat;
+			}
+		}
+
+		.text {
+			padding: 10px;
+		}
+	}
 
 
 </style>

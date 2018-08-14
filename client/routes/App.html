@@ -74,7 +74,7 @@
 	import { store } from 'lib/storage.js'
 	import Job from './info/Job.html'
 
-	import position from 'touch-position'
+	// import position from 'touch-position'
 
 	export default {
 		components: {
@@ -84,51 +84,128 @@
 		store: () => store,
 		oncreate () {
 
-			// var down = false, direction = false
+			const wrapper = document.querySelector('.wrapper')
+			position({x: -300, y: 0}) 
 
-			// window.addEventListener('mousedown', () => down = true)
-			// window.addEventListener('touchstart', () => down = true)
-			// window.addEventListener('mouseup', () => down = direction = false)
-			// window.addEventListener('touchend', () => down = direction = false)
-			// window.addEventListener('touchcancel', () => down = direction = false)
+			function position({x, y}) {
+				wrapper.x = x
+				wrapper.y = y
+				let value = `translate(${x}px, ${y}px)`
+				wrapper.style.cssText = `
+					-webkit-transform: ${value};
+					transform: ${value};`
+			}
 
-			// const wrapper = document.querySelector('.wrapper')
+			function direction({x, y}) {
+				if(x > Math.abs(y)) {
+					return 'right'
+				} else if(y > Math.abs(x)) {
+					return 'down'
+				} else if(Math.abs(x) > Math.abs(y)) {
+					return 'left'
+				} else if(Math.abs(y) > Math.abs(x)) {
+					return 'up'
+				}
+			}
 
-			// const touch = position.emitter()
-			// touch.on('move', function({ clientX, clientY, movementX, movementY }) {
-			// 	if(!down) return
+			function animate(e) {
+				start = {x: wrapper.x, y: wrapper.y}
+				end = e
+				animationStarted = Date.now()
+			}
 
-			// 	if(!direction) {
-			// 		let angleDegrees = Math.atan2(clientY - clientY + movementY, clientX - clientX + movementX) * 180 / Math.PI
+			var prev = false, initialDirection = false, movement = {}
 
-			// 		if(angleDegrees == 0) return
+			window.addEventListener('touchstart', down)
+			window.addEventListener('touchend', up)
+			window.addEventListener('touchcancel', up)
 
-			// 		if(angleDegrees > -45 && angleDegrees <= 45) {
-			// 			direction = 'right'
-			// 		} else 
-			// 		if(angleDegrees > 45 && angleDegrees <= 135) {
-			// 			direction = 'down'
-			// 		} else 
-			// 		if(angleDegrees > 135 || angleDegrees <= -135) {
-			// 			direction = 'left'
-			// 		} else 
-			// 		if(angleDegrees > -135 && angleDegrees <= -45) {
-			// 			direction = 'up'
-			// 		}
+			function down() {
+				prev = true
+			}
+			function up() {
+				prev = false
 
-			// 		// console.log(direction)
-			// 	}
+				// swipe
+				let latestDirection = direction(movement)
+				if(latestDirection == 'right') animate({x: 0, y: 0}) // open
+				else if(latestDirection == 'left') animate({x: -300, y: 0}) // closed
+				else animate({x: wrapper.x > -150 ? 0 : -300, y: 0}) // either side of halfway
+			}
 
-			// 	if(direction == 'right' || direction == 'left') {
-			// 		let currentLeft  = (wrapper.style.left ? ((Number(wrapper.style.left.slice(0, -2))) + 300) : 0) / 300
-			// 		let proposedLeft = currentLeft + (movementX / 300)
+			window.addEventListener('touchmove', move)
 
-			// 		proposedLeft = Math.max(Math.min(proposedLeft, 1), 0)
+			function move(e) {
+				if(prev === false) return
+				let target = e.touches ? e.touches[0] : e
 
-			// 		wrapper.style.left = ((proposedLeft * 300) - 300) + 'px'
-			// 	}
+				let { clientX, clientY } = target
 
-			// })
+				// first move
+ 				if(prev === true) {
+ 					initialDirection = false
+					prev = { x: clientX, y: clientY }
+					return
+				}
+				movement.x = clientX - prev.x
+				movement.y = clientY - prev.y
+				if(movement.x == 0 && movement.y == 0) return
+
+				prev = { x: clientX, y: clientY }
+
+				if(!initialDirection) initialDirection = direction(movement)
+
+				// drag around
+				if(initialDirection == 'right' || initialDirection == 'left') {
+					position({x: Math.max(Math.min(wrapper.x + movement.x, 0), -300), y: 0})
+				}
+			}
+
+			var animationStarted = 0
+			var start = {x: 0, y: 0}
+			var end = {x: 0, y: 0}
+			var animationDuration = 250 // quarter second
+
+  			const easeOutCubic = function (t) { return (--t)*t*t+1 } 
+
+			function renderSlide() {
+				if(!prev) { // not touching
+					let animationElapsed = (Date.now() - animationStarted) / animationDuration
+					if(animationElapsed > 1.1) return
+
+					let ease = animationElapsed < 1 ? easeOutCubic(animationElapsed) : 1
+					let move = {
+						x: (end.x - start.x) * ease,
+						y: (end.y - start.y) * ease
+					}
+					position({x: start.x + move.x, y: start.y + move.y})
+				}
+			}
+
+			function render() {
+				renderSlide()
+				window.requestAnimationFrame(render)
+			}
+			render()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 			// use event bubbling to make all external links open in new tab
 			this.options.target.addEventListener('click', e => {
@@ -237,11 +314,6 @@
 		bottom: 0;
 		left: 0;
 		width: calc(100% + 300px);
-		/*transition: all .2s ease;*/
-
-		&.outfalse {
-			left: -300px;
-		}
 
 		&.outtrue {
 			left: 0;
