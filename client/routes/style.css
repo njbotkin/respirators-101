@@ -3,6 +3,7 @@
 body {
 	margin: 0;
 	overflow-x: hidden;
+	overflow-y: hidden;
 	background: #eaedf1; 
 	color: #333;
 	line-height: 1.5;
@@ -63,14 +64,7 @@ p:nth-child(even) {
 		background: #fff !important;
 	}
 }
-/*
-blockquote {
-	border: 2px solid #2c3b70;
-	font-style: italic;
-	margin: 0 0 0 20px;
-	padding: 20px;
-}
-*/
+
 /* image alignment */
 img.aligncenter {
 	margin: 0 auto;

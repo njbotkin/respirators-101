@@ -1,65 +1,51 @@
 <div class="maxwidth">
 
-	<div class="wrapper out{visibleSlideOut}">
+	<div class="wrapper shifted{ shifted }">
 
-		<div id="flapsleft">
 		<div class="left">
-
 			<div class="appname">Respirators 101</div>
-
 			<div class="main">
 				<Menu asr="{ asr }"></Menu>
 			</div>
-
-			{#if !visibleSlideOut}
-			<div class="debutterfinger"></div>
-			{/if}
 		</div>
-		</div>
-
 
 		<div class="right">
-			{#if visibleSlideOut}
-			<div class="anythingelsebutton" on:click="set({visibleSlideOut: false})"></div>
-			{/if}
+			<div class="elsewhere"></div>
 
 			<nav>
-				<div class="one">
-					{ #if categoryParent }
+				{ #if categoryParent }
 					<a class="back button icon-angle-left" href="{ categoryParent }"></a>
-					{ :elseif backButton }
+				{ :elseif backButton }
 					<a class="back button icon-angle-left" href="javascript:window.history.go(-1);"></a>
-					{ :else }
-						{#if visibleSlideOut}
-						<button class="close icon-close"></button>
-						{:else}
-						<button class="menu icon-menu" on:click="set({visibleSlideOut: true})"></button>
-						{/if}
-					{/if}
-				</div>
-				<div class="title">{ title }</div>
-				<div class="two"><a class="button home icon-home2" href="{ asr.makePath('app.home') }"></a></div>
+				{ /if }
+
+				<button class="close icon-close"></button>
+				<button class="menu icon-menu"></button>
+
+				<div class="title"><div class="inner">{ title }</div></div>
+
+				<a class="button home icon-home2" href="{ asr.makePath('app.home') }"></a>
 			</nav>
 
 			<div class="main">
 				<uiView></uiView>
 			</div>
+
+			{ #if $job.RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list')  }
+			<a class="button in-selection" href="{ asr.makePath('app.respirator-picker', {id: $job.RSLStep})}">
+				Resume Respirator Selection
+			</a>
+			{ /if }
+
+			<div class="alignright"><a class="button current-job"> Current Job </a></div>
 		</div>
 
-	</div>
+		<div class="bottom">
+			
+			<div class="job" bind:offsetHeight="jobHeight">
+				<Job bind:job="$job" {asr} only="true" />
+			</div>
 
-	{ #if $job.RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list')  }
-	<a class="button in-selection" href="{ asr.makePath('app.respirator-picker', {id: $job.RSLStep})}">
-		Resume Respirator Selection
-	</a>
-	{ /if }
-
-	<div class="job-slider" data-open="{ jobOpen }" bind:offsetHeight="jobHeight" style="{ jobOpen ? 'top: calc(100% - ' + jobHeight + 'px)' : '' }">
-
-		<div class="alignright"><a class="button current-job" on:click="set({ jobOpen: !jobOpen })"> Current Job </a></div>
-
-		<div class="job">
-			<Job bind:job="$job" {asr} only="true" />
 		</div>
 
 	</div>
@@ -74,8 +60,6 @@
 	import { store } from 'lib/storage.js'
 	import Job from './info/Job.html'
 
-	// import position from 'touch-position'
-
 	export default {
 		components: {
 			Menu,
@@ -85,27 +69,18 @@
 		oncreate () {
 
 			const wrapper = document.querySelector('.wrapper')
-			position({x: -300, y: 0}) 
+			wrapper.next = {x: -300, y: 0}
 
-			function position({x, y}) {
-				wrapper.x = x
-				wrapper.y = y
-				let value = `translate(${x}px, ${y}px)`
-				wrapper.style.cssText = `
-					-webkit-transform: ${value};
-					transform: ${value};`
-			}
+			var animationStarted = 0
+			var start = {x: 0, y: 0}
+			var end = {x: 0, y: 0}
+			var animationDuration = 250 // quarter second
 
 			function direction({x, y}) {
-				if(x > Math.abs(y)) {
-					return 'right'
-				} else if(y > Math.abs(x)) {
-					return 'down'
-				} else if(Math.abs(x) > Math.abs(y)) {
-					return 'left'
-				} else if(Math.abs(y) > Math.abs(x)) {
-					return 'up'
-				}
+				if(x > Math.abs(y)) return 'right'
+				else if(y > Math.abs(x)) return 'down'
+				else if(Math.abs(x) > Math.abs(y)) return 'left'
+				else if(Math.abs(y) > Math.abs(x)) return 'up'
 			}
 
 			function animate(e) {
@@ -116,29 +91,49 @@
 
 			var prev = false, initialDirection = false, movement = {}
 
-			window.addEventListener('touchstart', down)
-			window.addEventListener('touchend', up)
-			window.addEventListener('touchcancel', up)
+			window.addEventListener('touchstart', () => prev = true)
+			window.addEventListener('touchend', () => up())
+			window.addEventListener('touchcancel', () => up())
 
-			function down() {
-				prev = true
-			}
-			function up() {
+			const up = () => {
 				prev = false
 
 				// swipe
+				if(movement.x == 0 && movement.y == 0)  return
+
 				let latestDirection = direction(movement)
-				if(latestDirection == 'right') animate({x: 0, y: 0}) // open
-				else if(latestDirection == 'left') animate({x: -300, y: 0}) // closed
-				else animate({x: wrapper.x > -150 ? 0 : -300, y: 0}) // either side of halfway
+
+				if(wrapper.y == 0) { //sidebar
+					if(latestDirection == 'right') animate({x: 0, y: 0}) // open
+					else if(latestDirection == 'left') animate({x: -300, y: 0}) // closed
+					else animate({x: wrapper.x > -150 ? 0 : -300, y: 0}) // either side of halfway
+				} else {
+					// current job
+					let height = this.get().jobHeight
+					if(latestDirection == 'up') animate({x: -300, y: -height}) // open
+					else if(latestDirection == 'down') animate({x: -300, y: 0}) // closed
+					else animate({x: -300, y: wrapper.y > -height/2 ? 0 : -height}) // either side of halfway
+				}
+				movement = {x:0, y:0}
 			}
 
-			window.addEventListener('touchmove', move)
+			document.querySelector('.elsewhere').addEventListener('click', () => {
+				animate({x: -300, y: 0})
+			})
 
-			function move(e) {
-				if(prev === false) return
+			document.querySelector('.menu.icon-menu').addEventListener('click', () => {
+				animate({x: 0, y: 0})
+			})
+
+			document.querySelector('.current-job').addEventListener('click', () => {
+				let height = this.get().jobHeight
+				animate({x: -300, y: -height})
+			})
+
+			window.addEventListener('touchmove', e => {
+				e.stopPropagation()
+
 				let target = e.touches ? e.touches[0] : e
-
 				let { clientX, clientY } = target
 
 				// first move
@@ -149,36 +144,59 @@
 				}
 				movement.x = clientX - prev.x
 				movement.y = clientY - prev.y
-				if(movement.x == 0 && movement.y == 0) return
 
 				prev = { x: clientX, y: clientY }
 
 				if(!initialDirection) initialDirection = direction(movement)
 
 				// drag around
-				if(initialDirection == 'right' || initialDirection == 'left') {
-					position({x: Math.max(Math.min(wrapper.x + movement.x, 0), -300), y: 0})
+				if(wrapper.y == 0) { //sidebar
+					if(initialDirection == 'right' || initialDirection == 'left') {
+						wrapper.next = { x: Math.max(Math.min(wrapper.x + movement.x, 0), -300), y: 0 }
+					}
+				} else { // current job
+					if(initialDirection == 'down' || initialDirection == 'up') {
+						let height = this.get().jobHeight
+						wrapper.next = { x: -300, y: Math.max(Math.min(wrapper.y + movement.y, 0), -height) }
+					}
 				}
-			}
-
-			var animationStarted = 0
-			var start = {x: 0, y: 0}
-			var end = {x: 0, y: 0}
-			var animationDuration = 250 // quarter second
+			})
 
   			const easeOutCubic = function (t) { return (--t)*t*t+1 } 
 
-			function renderSlide() {
-				if(!prev) { // not touching
+			const renderSlide = () => {
+
+				if(wrapper.next.x != wrapper.x || wrapper.next.y != wrapper.y) {
+					// manual movement
+				} else if(!prev && (wrapper.x != end.x || wrapper.y != end.y) && (start.x !== end.x || start.y !== end.y)) {
+					// animation in progress
+
 					let animationElapsed = (Date.now() - animationStarted) / animationDuration
-					if(animationElapsed > 1.1) return
 
 					let ease = animationElapsed < 1 ? easeOutCubic(animationElapsed) : 1
 					let move = {
 						x: (end.x - start.x) * ease,
 						y: (end.y - start.y) * ease
 					}
-					position({x: start.x + move.x, y: start.y + move.y})
+					wrapper.next = {x: start.x + move.x, y: start.y + move.y}
+				} else {
+					return // nothing to do
+				}
+
+				if(wrapper.next.x != -300 || wrapper.next.y !== 0) {
+					this.set({shifted: true})
+				} else {
+					this.set({shifted: false})
+				}
+
+				if(wrapper.next.x !== wrapper.x || wrapper.next.y !== wrapper.y) {
+					let {x, y} = wrapper.next
+					let value = `translate(${x}px, ${y}px)`
+					wrapper.style.cssText = `
+						-webkit-transform: ${value};
+						transform: ${value};`
+					wrapper.x = x
+					wrapper.y = y
 				}
 			}
 
@@ -188,34 +206,14 @@
 			}
 			render()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 			// use event bubbling to make all external links open in new tab
-			this.options.target.addEventListener('click', e => {
+			window.addEventListener('click', e => {
 
 				if(e.target.tagName !== 'a') return true
 
 				const a = e
 
 				if(a && a.host !== window.location.host && a.href.indexOf('javascript:') === -1) {
-					// console.log(a.href.indexOf('javascript:'))
 					event.preventDefault()
 					event.stopPropagation() 
 					window.open(a.href, '_blank')
@@ -258,19 +256,8 @@
 					this.set({ categoryParent: false })
 				}
 
-				this.set({visibleSlideOut: false})
-
-				// console.log(e)
-
+				animate({x: -300, y: 0})
 				this.set({stateName: e.state.name})
-
-				// this.set({inSelection: 
-				// 	e.state.name !== 'app.respirator-picker' && 
-				// 	e.state.name !== 'app.options-list' && 
-				// 	this.store.currentJob.RSLStep
-				// 		? this.store.currentJob.RSLStep
-				// 		: false
-				// 	})
 			}
 
 			// captures event from router
@@ -279,7 +266,7 @@
 		}, 
 		data() {
 			return { 
-				visibleSlideOut: false,
+				shifted: false,
 				title: '',
 				inSelection: false,
 				stateName: null,
@@ -307,7 +294,6 @@
 	}
 
 	.wrapper {
-
 		position: absolute;
 		top: 0;
 		right: 0;
@@ -315,58 +301,108 @@
 		left: 0;
 		width: calc(100% + 300px);
 
-		&.outtrue {
+		.left {
+			position: absolute;
+			top: 0;
+			right: calc(100% - 300px); 
+			bottom: 0;
 			left: 0;
+			background: $blue3;
+			color: #fff;
+			font-size: 14px;
+		}
 
-			.left {
-				box-shadow: 0px 0px 40px 0px #00000066;
+		.right {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 300px;
+			z-index: 3;
+
+			.elsewhere {
+				display: none;
+				position:absolute;
+				top:0;
+				right:0;
+				bottom:0;
+				left:0;
+				z-index: 3;
+			}
+
+			nav {
+				width: 100%;
+				height: 50px;
+				background: $blue3;
+
+				.title {
+					display: table;
+					width: 100%;
+					.inner {
+						display: table-cell;
+						text-align: center;
+						font-family: "Roboto Condensed";
+						text-transform: uppercase;
+						color: #fff;
+						height: 50px;
+						vertical-align: middle;
+					}
+				}
+				button, .button {
+					position: absolute;
+					top: 0;
+					padding: 0;
+					width: 50px;
+					height: 50px;
+					display: block;
+					border: 0;
+					color: #fff;
+					text-decoration: none;
+					font-size: 30px;
+					line-height: 50px;
+					text-align: center;
+					cursor: pointer;
+					background: $blue3;
+
+					&.back {
+						z-index: 2;
+					}
+				}
+				a.back::before {
+					margin-left: -2px;
+				}
+				a.back, button.close, button.menu {
+					left: 0;
+				}
+				a.home {
+					right: 0;
+				}
 			}
 		}
 
-	}
-
-	.left {
-		position: absolute;
-		top: 0;
-		right: calc(100% - 300px); 
-		bottom: 0;
-		left: 0;
-		background: $blue3;
-		color: #fff;
-		font-size: 14px;
-		z-index: 3;
-	}
-
-	.right {
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 300px;
-	}
-	
-	nav {
-		width: 100%;
-		height: 50px;
-		background: $blue3;
-		display: table;
-
-		> div {
-			display: table-cell;
-			vertical-align: middle;
-			color: #fff;
+		.bottom {
+			position: absolute;
+			top: 100%;
+			left: 300px;
+			background: #fff;
 		}
 
-		.one, .two {
-			width: 50px;
-		}
-		.title {
-			width: 100%;
-			text-align: center;
-			font-family: "Roboto Condensed";
-			text-transform: uppercase;
+		&.shiftedtrue {
+
+			.right {
+				box-shadow: 0px 0px 40px 0px #00000066;
+				.elsewhere {
+					display: block;
+				}
+				nav {
+					button.close {
+						z-index: 1;
+					}
+				}
+			}
 		}
 	}
+
 
 	.main {
 		position: absolute;
@@ -388,40 +424,9 @@
 		background: $blue5;
 	}
 
-	nav {
-		button, .button {
-			padding: 0;
-			width: 50px;
-			height: 50px;
-			display: block;
-			border: 0;
-			color: #fff;
-			text-decoration: none;
-			font-size: 30px;
-			line-height: 50px;
-			text-align: center;
-			cursor: pointer;
-			background: $blue3;
-			background-size: 60%;
-			background-repeat: no-repeat;
-			background-position: center;
-		}
-		a.back::before {
-			margin-left: -2px;
-		}
-	}
-	.anythingelsebutton, .debutterfinger {
-		position:absolute;
-		top:0;
-		right:0;
-		bottom:0;
-		left:0;
-		z-index: 1;
-	}
-
 	.in-selection {
 	    position: absolute;
-	    z-index: 200;
+	    z-index: 2;
 	    bottom: 0;
 	    max-width: 60%;
 	    background: #4c5a8d;
@@ -442,47 +447,19 @@
 	    	font-size: 70%;
 	    }
 	}
-
-	/*.job*/ 
-
-	.job-slider {
-		transition: all .5s ease;
+	.current-job {
+		margin: 0;
+		background: $green; 
 		position: absolute;
-		left: 0;
+		bottom: 0;
 		right: 0;
-		top: calc(100% - 40px);
+		z-index: 2;
 
-		@media (max-width: 400px) {
-			top: calc(100% - 30px);
+	    @media (max-width: 400px) {
+	    	line-height: 30px;
+	    	padding: 0 8px;
+	    	font-size: 70%;
 	    }
-
-		.job {
-			background: #fff;
-			box-shadow: 0px 0px 20px #00000099;
-
-			:global(.job) {
-				margin: 0;	
-			}
-		}
-
-		.alignright {
-			text-align: right;
-		}
-
-		.current-job {
-			margin: 0;
-			background: $green; 
-
-		    @media (max-width: 400px) {
-		    	line-height: 30px;
-		    	padding: 0 8px;
-		    	font-size: 70%;
-		    }
-		}
-
-		&[data-open=true] {
-			/*bottom: 0;*/
-		}
 	}
 
 </style>
