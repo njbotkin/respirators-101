@@ -183,9 +183,8 @@
 			}
 		],
 		shouldSort: true,
-		includeScore: true,
 		includeMatches: true,
-		threshold: 0.4,
+		threshold: 0.3,
 	})
 
 	// would like to do this with CSS...
@@ -307,11 +306,12 @@
 
 				var results = fuse.search(search)
 					.filter(r => {
+						// ignore results with just a bunch of empty matches
 						var emptyMatches = r.matches.filter(m => m.value === '')
 						return emptyMatches.length < r.matches.length
 					})
 					.slice(0, 50) // maximum number for rendering speed
-
+					
 				for(var r of results) {
 					for(var m of r.matches) {
 
