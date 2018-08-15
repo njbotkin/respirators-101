@@ -17,36 +17,39 @@
 	</div>
 	<div class="content">
 
-			<div class="read-value live{job.id == $job.id }">
-				<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
-					{ #if job.exposureLimit.value }
-						<ExposureLimits exposureLimit="{job.exposureLimit}" />
-					{ :else }
-						No exposure limit selected yet!
-					{ /if }
-				<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['exposureLimit']) }"> Edit </a></div>
-			</div>
+		<div class="read-value live{job.id == $job.id }">
+			<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
+				{ #if job.exposureLimit.value }
+					<ExposureLimits exposureLimit="{job.exposureLimit}" />
+				{ :else }
+					No exposure limit selected yet!
+				{ /if }
+			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['exposureLimit']) }"> Edit </a></div>
+		</div>
 
-			<div class="read-value live{job.id == $job.id }">
-				<div class="legend-cont"><div class="legend"> TWA </div></div>
-					{ #if job.twa }
-						{ round(job.twa) }
-					{ :else }
-						No TWA set yet!
-					{ /if }
-				<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['twa']) }"> Edit </a></div>
-			</div>
+		<div class="read-value live{job.id == $job.id }">
+			<div class="legend-cont"><div class="legend"> TWA </div></div>
+				{ #if job.twa }
+					<div class="representation">
+						{ round($job.twa) }
+						<div class="unit">{ @html unitsPretty[$job.exposureLimit.unit] }</div>
+					</div>
+				{ :else }
+					No TWA set yet!
+				{ /if }
+			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['twa']) }"> Edit </a></div>
+		</div>
 
-			<div class="read-value live{job.id == $job.id }">
-				<div class="legend-cont"><div class="legend"> HR </div></div>
-					{ #if job.hr }
-						{ round(job.hr) }
-					{ :else }
-						No HR set yet!
-					{ /if }
-				<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['hr']) }"> Edit </a></div>
-			</div>
-		
+		<div class="read-value live{job.id == $job.id }">
+			<div class="legend-cont"><div class="legend"> HR </div></div>
+				{ #if job.hr }
+					{ round(job.hr) }
+				{ :else }
+					No HR set yet!
+				{ /if }
+			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['hr']) }"> Edit </a></div>
+		</div>
+
 		{ #if job.chemical }<Chemical c="{ job.chemical }"></Chemical>{ /if }
 
 	</div>
@@ -68,7 +71,7 @@
 	import ExposureLimits from 'lib/ExposureLimits.html'
 	import date from 'date-and-time'
 	import { valueSources } from 'lib/storage.js'
-	import { round } from 'lib/util.js'
+	import { round, unitsPretty } from 'lib/util.js'
 
 	export default {
 		components: {
@@ -81,7 +84,8 @@
 		},
 		data: () => ({
 			valueSources,
-			only: false
+			only: false,
+			unitsPretty
 		})
 	}
 </script>
@@ -105,6 +109,10 @@
 		overflow: hidden;
 		margin: 10px 0;
 		/*border: 2px solid #fff;*/
+
+		@media (max-width: 400px) {
+			padding: 10px;
+		}
 
 		.name {
 			float:left;
@@ -133,7 +141,7 @@
 		.content {
 			margin-top: 10px;
 			border-top: 1px solid #ddd;
-			padding: 10px 0 0;
+			padding: 0;
 		}
 
 		.editJob, .stopEditing {
@@ -192,6 +200,12 @@
 				background: linear-gradient(color($green l(-5%)), color($green l(+5%)));
 			}
 		}
+
+		/* slightly less awkward layout */
+		/*.clump {
+		    display: inline-block;
+		    width: 100px;
+		}*/
 	}
 
 </style>

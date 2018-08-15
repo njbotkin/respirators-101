@@ -26,3 +26,8 @@ export function number(v) {
 	v = Number(v)
 	return !isNaN(v) && v
 }
+
+export const unitsPretty = {
+	ppm: 'PPM',
+	mgm3: 'mg/m<sup>3</sup>'
+}

@@ -73,6 +73,8 @@
 
 <script>
 
+	import { unitsPretty } from 'lib/util.js'
+
 	function objectsShallowEquivalence(a, b) {
 		for(let k in a) if(a[k] !== b[k]) return false
 		return true
@@ -124,10 +126,7 @@
 				ceiling: "Ceiling",
 				stel: "STEL"
 			},
-			unitsPretty: {
-				ppm: 'PPM',
-				mgm3: 'mg/m<sup>3</sup>'
-			},
+			unitsPretty,
 
 			// durations in minutes
 			durations: {

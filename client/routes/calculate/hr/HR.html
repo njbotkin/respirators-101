@@ -21,8 +21,6 @@
 	<p><em>NOTE: The TWA and exposure limit values MUST be based on the same time period (e.g. a 10-hr TWA CANNOT be used with an 8-hr exposure limit).</em></p>
 </div>
 
-<div class="save-value live{ $job.hr == hr}">
-	<div class="legend-cont"><div class="legend"> HR </div></div>
 
 	<div class="equation">
 
@@ -31,7 +29,10 @@
 			<div class="read-value livetrue">
 				<div class="legend-cont"><div class="legend"> TWA </div></div>
 					{ #if $job.twa }
-						{ $job.twa }
+						<div class="representation">
+							{ round($job.twa) }
+							<div class="unit">{ @html unitsPretty[$job.exposureLimit.unit] }</div>
+						</div>
 					{ :else }
 						No TWA set yet!
 					{ /if }
@@ -49,7 +50,7 @@
 					{ #if $job.exposureLimit.value }
 						<div class="representation">
 							{ $job.exposureLimit.value }
-							<div class="unit">{ @html $job.exposureLimit.unit }</div>
+							<div class="unit">{ @html unitsPretty[$job.exposureLimit.unit] }</div>
 						</div>
 					{ :else }
 						No exposure limit selected yet!
@@ -62,19 +63,23 @@
 		<div class="operator">=</div>
 
 		<div class="operand HR">
-			<div class="value">{ round(hr) }</div>
-			<div class="unit">HR</div>
+
+			<div class="save-value live{ $job.hr == hr}">
+				<div class="legend-cont"><div class="legend"> HR </div></div>
+				
+				<div class="value">{ round(hr) }</div>
+
+				<div class="button-cont"><div class="button valid{ valid }" on:click="setHR()"> { $job.hr == hr ? 'Current' : 'Save' } HR  </div></div>
+
+			</div>
+
 		</div>
 
 	</div>
 
-	<div class="button-cont"><div class="button valid{ valid }" on:click="setHR()"> { $job.hr == hr ? 'Current' : 'Save' } HR  </div></div>
-
-</div>
-
 <script>
 
-import { number, round } from 'lib/util.js'
+import { number, round, unitsPretty } from 'lib/util.js'
 import { valueSources } from 'lib/storage.js'
 
 export default {
@@ -92,7 +97,8 @@ export default {
 	data: () => ({
 		exposureLimit: '',
 		twa: '',
-		valueSources
+		valueSources,
+		unitsPretty
 	}),
 	computed: {
 		valid: ({ $job }) => !!(number($job.twa) && number($job.exposureLimit.value)),
@@ -114,7 +120,7 @@ export default {
 		margin: 0 auto;
 	}
 
-	.read-value {
+	.read-value, .save-value {
 		margin: 10px 0 20px 0;
 	}
 

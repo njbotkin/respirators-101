@@ -171,8 +171,8 @@
 		keys: [
 			{
 				name: 'name',
-				weight: 0.7
-			}, 
+				weight: 0.8
+			},
 			{
 				name: 'synonyms',
 				weight: 0.5
@@ -208,7 +208,7 @@
 			// scrolling through alphabet thingy
 			let container = document.querySelector('.container')
 
-			this.onresize = window.addEventListener('resize', adjustAlphabetHeight)
+			window.addEventListener('resize', adjustAlphabetHeight)
 			adjustAlphabetHeight()
 
 			var mouseDown = false

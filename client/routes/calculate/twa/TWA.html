@@ -117,7 +117,7 @@
 
 <script>
 
-import { number, round } from 'lib/util.js'
+import { number, round, unitsPretty } from 'lib/util.js'
 import { valueSources } from 'lib/storage.js'
 
 export default {
@@ -177,10 +177,7 @@ export default {
 	},
 	data: () => ({
 		valueSources,
-		unitsPretty: {
-			ppm: 'PPM',
-			mgm3: 'mg/m<sup>3</sup>'
-		}
+		unitsPretty
 	})
 }
 
