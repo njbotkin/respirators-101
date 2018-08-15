@@ -77,10 +77,11 @@
 			var animationDuration = 250 // quarter second
 
 			function direction({x, y}) {
-				if(x > Math.abs(y)) return 'right'
-				else if(y > Math.abs(x)) return 'down'
-				else if(Math.abs(x) > Math.abs(y)) return 'left'
-				else if(Math.abs(y) > Math.abs(x)) return 'up'
+				let threshold = 1 // pixels (arbitrary)
+				if(x - Math.abs(y) > threshold) return 'right'
+				else if(y - Math.abs(x) > threshold) return 'down'
+				else if(Math.abs(x) - Math.abs(y) > threshold) return 'left'
+				else if(Math.abs(y) - Math.abs(x) > threshold) return 'up'
 			}
 
 			function animate(e) {
