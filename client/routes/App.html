@@ -209,17 +209,14 @@
 
 			// use event bubbling to make all external links open in new tab
 			window.addEventListener('click', e => {
+				if(e.target.tagName !== 'A') return true
+				const a = e.target
 
-				if(e.target.tagName !== 'a') return true
-
-				const a = e
-
-				if(a && a.host !== window.location.host && a.href.indexOf('javascript:') === -1) {
-					event.preventDefault()
-					event.stopPropagation() 
+				if(a.host !== window.location.host && a.href.indexOf('javascript:') === -1) {
+					e.preventDefault()
+					e.stopPropagation() 
 					window.open(a.href, '_blank')
 				}
-
 			})
 
 			const stateChange = e => {
