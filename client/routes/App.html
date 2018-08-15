@@ -212,7 +212,7 @@
 				if(e.target.tagName !== 'A') return true
 				const a = e.target
 
-				if(a.host !== window.location.host && a.href.indexOf('javascript:') === -1) {
+				if(a.href && a.host !== window.location.host && a.href.indexOf('javascript:') === -1) {
 					e.preventDefault()
 					e.stopPropagation() 
 					window.open(a.href, '_blank')
