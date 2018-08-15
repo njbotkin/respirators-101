@@ -56,7 +56,7 @@
 					<td><label><span class="optional">Sample </span>{i + 1}</label></td>
 					<td><input type="number" bind:value="sample.value" placeholder="0" /></td>
 					<td>&#215;</td>
-					<td><input type="text" bind:value="sample.period" placeholder="0" /></td>
+					<td><input type="number" bind:value="sample.period" placeholder="0" /></td>
 					<td>=</td>
 					<td><div class="result">{ round(sampleProducts[i] / timeUnitMultiplier) }</div></td>
 					<td><div class="removeSample" on:click="removeSample(i)">&#215;</div></td>

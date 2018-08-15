@@ -19,10 +19,3 @@ $red5: #520907;
 $green: $yellow2;
 
 $bg: #eaedf1;
-
-$width: 1242;
-$height: 1959;
-$viewport_height: 2130; /* this number doesn't make sense, but it works okay */
-
-$home_ar: $width/$height;
-$viewport_ar: $width/$viewport_height;

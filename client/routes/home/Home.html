@@ -1,4 +1,6 @@
-<div class="bg">
+<svelte:window bind:innerWidth="innerWidth" bind:innerHeight="innerHeight"/>
+
+<div class="bg" style="width: {width}px; height: {height}px; padding-bottom: {paddingBottom}px" >
 	
 	<div class="buttons">
 
@@ -15,31 +17,48 @@
 
 </div>
 
+<script>
+
+	var width = 1242
+	var height = 1959
+	var ratio = width/height
+	
+	export default {
+		computed: {
+			mainHeight: ({ innerHeight }) => innerHeight - 50,
+			height: ({ innerWidth, mainHeight }) => {
+				if(innerWidth / mainHeight > ratio) { // wide
+					return mainHeight
+				} else { //narrow
+					return 0
+				}
+			},
+			width: ({ innerWidth, mainHeight }) => {
+				if(innerWidth / mainHeight > ratio) { // wide
+					return mainHeight * ratio
+				} else { //narrow
+					return innerWidth
+				}
+			},
+			paddingBottom: ({ innerWidth, mainHeight }) => {
+				if(innerWidth / mainHeight > ratio) { // wide
+					return 0
+				} else { //narrow
+					return innerWidth * (height/width)
+				}
+			}
+		}
+	}
+
+</script>
+
 <style>
 
-	@import 'colors';
-	
 	.bg {
 		position: relative;
 		margin: 0 auto;
 		background: url('images/Homescreen-V1.jpg') center no-repeat;
 		background-size: 100%; 
-	}
-
-	/* dis real wide */
-	@media screen and (min-aspect-ratio: $viewport_ar) {
-		.bg {
-			height: calc(100vh - 50px);
-			width: calc( calc(100vh - 50px) * $width / $height ); 
-		}
-	}
-
-	/* dis real narra */
-	@media screen and (max-aspect-ratio: $viewport_ar) {
-		.bg {
-			width: 100vw;
-			padding-bottom: calc( 100vw * $height / $width );
-		}
 	}
 
 	.buttons {
