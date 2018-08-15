@@ -37,7 +37,7 @@
 			</a>
 			{ /if }
 
-			<div class="alignright"><a class="button current-job"> Current Job </a></div>
+			<a class="button current-job visible{ /app\.((calculate\-)|(respirator\-)|(chemicals))/.test(stateName) }"> Current Job </a>
 		</div>
 
 		<div class="bottom">
@@ -384,6 +384,7 @@
 			position: absolute;
 			top: 100%;
 			left: 300px;
+			right: 0;
 			background: #fff;
 		}
 
@@ -449,6 +450,7 @@
 	}
 	.current-job {
 		margin: 0;
+		display: none;
 		background: $green; 
 		position: absolute;
 		bottom: 0;
@@ -459,6 +461,10 @@
 	    	line-height: 30px;
 	    	padding: 0 8px;
 	    	font-size: 70%;
+	    }
+
+	    &.visibletrue {
+	    	display:block;
 	    }
 	}
 
