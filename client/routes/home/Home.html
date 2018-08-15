@@ -1,6 +1,6 @@
 <svelte:window bind:innerWidth="innerWidth" bind:innerHeight="innerHeight"/>
 
-<div class="bg" style="width: {width}px; height: {height}px; padding-bottom: {paddingBottom}px" >
+<div class="bg" style="width: {width}px; height: {height}px;" >
 	
 	<div class="buttons">
 
@@ -30,7 +30,7 @@
 				if(innerWidth / mainHeight > ratio) { // wide
 					return mainHeight
 				} else { //narrow
-					return 0
+					return innerWidth * (height/width)
 				}
 			},
 			width: ({ innerWidth, mainHeight }) => {
@@ -38,13 +38,6 @@
 					return mainHeight * ratio
 				} else { //narrow
 					return innerWidth
-				}
-			},
-			paddingBottom: ({ innerWidth, mainHeight }) => {
-				if(innerWidth / mainHeight > ratio) { // wide
-					return 0
-				} else { //narrow
-					return innerWidth * (height/width)
 				}
 			}
 		}
