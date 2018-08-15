@@ -14,17 +14,17 @@
 
 			<nav>
 				{ #if categoryParent }
-					<a class="back button icon-angle-left" href="{ categoryParent }"></a>
+					<a class="back nav-button icon-angle-left" href="{ categoryParent }">back</a>
 				{ :elseif backButton }
-					<a class="back button icon-angle-left" href="javascript:window.history.go(-1);"></a>
+					<a class="back nav-button icon-angle-left" href="javascript:window.history.go(-1);">back</a>
 				{ /if }
 
-				<button class="close icon-close"></button>
-				<button class="menu icon-menu"></button>
+				<div class="nav-button close icon-close">close menu</div>
+				<div class="nav-button menu icon-menu">open menu</div>
 
 				<div class="title"><div class="inner">{ title }</div></div>
 
-				<a class="button home icon-home2" href="{ asr.makePath('app.home') }"></a>
+				<a class="nav-button home icon-home2" href="{ asr.makePath('app.home') }">go home</a>
 			</nav>
 
 			<div class="main">
@@ -37,7 +37,7 @@
 			</a>
 			{ /if }
 
-			<a class="button current-job visible{ /app\.((calculate\-)|(respirator\-)|(chemicals))/.test(stateName) }"> Current Job </a>
+			<div class="button current-job visible{ /app\.((calculate\-)|(respirator\-)|(chemicals))/.test(stateName) }"> Current Job </div>
 		</div>
 
 		<div class="bottom">
@@ -346,34 +346,35 @@
 						vertical-align: middle;
 					}
 				}
-				button, .button {
+				.nav-button {
 					position: absolute;
 					top: 0;
-					padding: 0;
-					width: 50px;
 					height: 50px;
-					display: block;
-					border: 0;
-					color: #fff;
+					text-indent: -99999px;
+					overflow: hidden;
 					text-decoration: none;
-					font-size: 30px;
-					line-height: 50px;
-					text-align: center;
-					cursor: pointer;
-					background: $blue3;
+
+					&::before {
+						text-indent: 0;
+						width: 50px;
+						font-size: 30px;
+						line-height: 50px;
+						color: #fff;
+						background: $blue3;
+						cursor: pointer;
+						text-align: center;
+						display: block;
+					}
 
 					&.back {
 						z-index: 2;
+						&::before {
+							margin-left: -2px;
+						}
 					}
-				}
-				a.back::before {
-					margin-left: -2px;
-				}
-				a.back, button.close, button.menu {
-					left: 0;
-				}
-				a.home {
-					right: 0;
+					&.home {
+						right: 0;
+					}
 				}
 			}
 		}
@@ -394,7 +395,7 @@
 					display: block;
 				}
 				nav {
-					button.close {
+					.close {
 						z-index: 1;
 					}
 				}
