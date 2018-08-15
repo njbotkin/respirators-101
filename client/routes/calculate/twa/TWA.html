@@ -46,7 +46,7 @@
 		<table>
 			<thead>
 				<tr>
-					<th></th><th>{ @html unitsPretty[$job.exposureLimit.unit] } <br>Measured</th><th></th><th>{ timeUnit } <br>Represented</th><th></th><th>{ @html unitsPretty[$job.exposureLimit.unit] }-<br>{ timeUnit.toLowerCase() }</th><th></th>
+					<th></th><th>{ @html unitsPretty[$job.exposureLimit.unit] } <br>Measured</th><th></th><th>{ timeUnit } <br>Represented</th><th></th><th>{ @html unitsPretty[$job.exposureLimit.unit] }-<br>{ timeUnit }</th><th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -70,7 +70,7 @@
 	</div>
 
 	{ #if $job.samples.length > 0 && validSamples.length === $job.samples.length && (totalMinutes > $job.exposureLimit.duration || totalMinutes < $job.exposureLimit.duration) }
-		<div class="wrong-hours">The total { timeUnit.toLowerCase() } of the samples you've entered is { totalMinutes > $job.exposureLimit.duration ? 'greater' : 'less' } than the measurement period of the selected exposure limit ({$job.exposureLimit.duration / timeUnitMultiplier} { timeUnit.toLowerCase() }).</div>
+		<div class="wrong-hours">The total { timeUnit } of the samples you've entered is { totalMinutes > $job.exposureLimit.duration ? 'greater' : 'less' } than the measurement period of the selected exposure limit ({$job.exposureLimit.duration / timeUnitMultiplier} { timeUnit }).</div>
 	{ /if }
 
 	<div class="save-value live{ $job.twa == twa }">
@@ -81,7 +81,7 @@
 
 			<div class="operand">
 				<div class="value">{ round(totalValueMinutes / timeUnitMultiplier) }</div>
-				<div class="unit">Total <br>{ @html unitsPretty[$job.exposureLimit.unit] }-{ timeUnit.toLowerCase() }</div>
+				<div class="unit">Total <br>{ @html unitsPretty[$job.exposureLimit.unit] }-{ timeUnit }</div>
 			</div>
 
 			<div class="operator">&#247;</div>
