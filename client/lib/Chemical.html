@@ -44,21 +44,7 @@
 			<h2>Exposure Limits</h2>
 			<div class="instructions">Select a number to select an exposure limit.</div>
 
-			<ExposureLimits forms="{c.forms}" bind:exposureLimit showKeys="true" />
-
-			{ #if exposureLimit.value }
-
-				<div class="save-value live{ elSame }" >
-					<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
-					<ExposureLimits {exposureLimit} />
-					<div class="button-cont"><div class="button" on:click="saveEL()"> { elSame ? 'Current' : 'Save' } Exposure Limit </div></div>
-				</div>
-
-				<!-- <h3>State of contaminant: </h3>
-				{ path[0] } -->
-				
-			{ /if }
-
+			<ExposureLimits forms="{c.forms}" on:confirmSaveEL="confirmSaveEL(event)" showKeys="true" />
 
 			<div class="block">
 				<label>Physical Description</label>
@@ -82,12 +68,12 @@
 				<label>Personal Protection/Sanitation</label>
 
 				<table class="table">	
-					<tr><td><label> Skin		 </label></td><td>{@html c.ps }</td></tr>
-					<tr><td><label> Eyes		 </label></td><td>{@html c.pe }</td></tr>
-					<tr><td><label> Wash Skin	 </label></td><td>{@html c.pw }</td></tr>
-					<tr><td><label> Remove		 </label></td><td>{@html c.pr }</td></tr>
-					<tr><td><label> Change		 </label></td><td>{@html c.pc }</td></tr>
-					<tr><td><label> Provide		 </label></td><td>{@html c.pp }</td></tr>
+					<tr><td><label> Skin		</label></td><td>{@html c.ps }</td></tr>
+					<tr><td><label> Eyes		</label></td><td>{@html c.pe }</td></tr>
+					<tr><td><label> Wash Skin	</label></td><td>{@html c.pw }</td></tr>
+					<tr><td><label> Remove		</label></td><td>{@html c.pr }</td></tr>
+					<tr><td><label> Change		</label></td><td>{@html c.pc }</td></tr>
+					<tr><td><label> Provide		</label></td><td>{@html c.pp }</td></tr>
 				</table>
 			</div>
 
@@ -97,9 +83,22 @@
 
 </div>
 
+{ #if ELModal }
+
+	<Modal bind:show="ELModal">
+		This will be set as the current job ({$job.name})'s exposure limit.
+		<br><br>
+		<ExposureLimits exposureLimit="{ELModal}" />
+
+		<div class="buttons">
+			<div class="button saveEL" on:click="saveEL(ELModal)">Okay</div>
+			<div class="button neverMind" on:click="set({ ELModal: false })">Never mind</div>
+		</div>
+	</Modal>
+
+{ /if }
+
 <script>
-	
-	import ExposureLimits from 'lib/ExposureLimits.html'
 
 	function propertiesMatch(a, b) {
 		for(let k in a) if(a[k] !== b[k]) return false
@@ -108,46 +107,22 @@
 
 	export default {
 		components: {
-			ExposureLimits
+			ExposureLimits: 'lib/ExposureLimits.html',
+			Modal: 'lib/Modal.html'
 		},
 		data: () => ({
 			exposureLimit: {}
 		}),
-		oncreate() {
-
-			// tell us if the global exposure limit is any of this chemical's exposure limits
-			var forms = this.get().c.forms
-			let exposureLimit = this.store.get().job.exposureLimit
-
-			for(let formKey in forms) {
-				for(let standardKey in forms[formKey]) {
-					for(let durationKey in forms[formKey][standardKey].durations) {
-						for(let unit in forms[formKey][standardKey].durations[durationKey]) {
-
-							if(propertiesMatch({
-								formKey,
-								standardKey,
-								durationKey,
-								unit
-							}, exposureLimit)) {
-								this.set({ exposureLimit })
-							}
-
-						}
-					}
-				}
-			}
-
-		},
-		computed: {
-			elSame: ({ $job, exposureLimit }) => propertiesMatch($job.exposureLimit, exposureLimit)
-		},
 		methods: {
-			saveEL() {
-				if(!this.get().elSame) {
-					this.store.set({ job: { exposureLimit: this.get().exposureLimit } })
+			confirmSaveEL(el) {
+				this.set({ ELModal: el })
+			},
+			saveEL(el) {
+				if(!propertiesMatch(el, this.store.get().job.exposureLimit)) {
+					this.store.set({ job: { exposureLimit: el } })
 					this.store.set({ job: { samples: false } }) // old samples invalid 
 					this.store.set({ job: { samples: [] } }) // not sure why this is necessary, don't feel like investigating
+					this.set({ ELModal: false })
 				}
 			}
 		}
@@ -259,6 +234,14 @@
 		.legend {
 			background: #fff;
 		}
+	}
+
+	.buttons {
+		text-align: right;
+	}
+
+	.saveEL.button {
+		background: $green;
 	}
 
 </style>

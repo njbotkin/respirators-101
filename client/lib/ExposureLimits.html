@@ -2,7 +2,7 @@
 	<div class="keys">
 		<div class="key form">Form</div>
 		<div class="key standard">Standard</div>
-		<div class="key duration">Measurement period/duration</div>
+		<div class="key duration">Measurement duration</div>
 		<div class="key EL">Exposure Limit</div>
 	</div>
 { /if }
@@ -30,9 +30,7 @@
 
 										{ #each Object.entries(duration) as [unit, value] }
 
-											<div class="representation select-el EL" on:click="set({
-												exposureLimit: { formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey] }
-											})" data-active="{ elSame({ formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey] }, $job.exposureLimit) }">
+											<div class="representation select-el EL" on:click="fire('confirmSaveEL', { formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey] })" data-active="{ elSame({ formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey] }, $job.exposureLimit) }">
 												{ value }
 												<div class="unit">{ @html unitsPretty[unit] }</div>
 											</div>

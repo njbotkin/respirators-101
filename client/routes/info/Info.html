@@ -42,15 +42,12 @@
 
 <script>
 
-	// import chemicals from 'data/chemicals.json'
-	import Job from './Job.html'
-	import Modal from 'lib/Modal.html'
 	import { store } from 'lib/storage.js'
 
 	export default {
 		components: {
-			Modal,
-			Job
+			Modal: 'lib/Modal.html',
+			Job: './Job.html'
 		},
 		methods: {
 			confirmDelete(id) {
