@@ -5,15 +5,15 @@
 	<div class="title">
 
 		<div class="name">
-			{ #if editingName }
-				<input type="text" bind:value="job.name"><a class="stopEditing edit" on:click="set({ editingName: false })">[done]</a>
+			{ #if editingName && job.id == $job.id }
+				<input type="text" bind:value="job.name" style="width:{nameWidth}px"><a class="stopEditing edit" on:click="set({ editingName: false })">[done]</a>
 			{ :else }
-				<span>{ job.name }</span><a class="editJob edit" on:click="set({ editingName: true })">[edit]</a>
+				<span>{ job.name }</span><a class="editJob edit" on:click="set({ editingName: true, nameWidth: this.previousSibling.offsetWidth })">[edit]</a>
 			{ /if }
 		</div>
 
 		<div class="date">
-			{ #if editingDate }
+			{ #if editingDate && job.id == $job.id }
 				<input type="date" bind:value="job.date"><a class="stopEditing edit" on:click="set({ editingDate: false })">[done]</a>
 			{ :else }
 				<span>{ date(job.date) }</span><a class="editDate edit" on:click="set({ editingDate: true })">[edit]</a>
@@ -133,6 +133,7 @@
 				line-height: 1.4;
 				font-family: 'Open Sans';
 				font-weight: bold;
+				box-sizing: border-box;
 			}
 
 			span { border-color: transparent; }
