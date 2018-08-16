@@ -1,18 +1,25 @@
 { #if job && $job } <!-- because weird binding issues -->
 { #if job.id == $job.id && !only }<div class="currentJob">Current Job</div>{ /if }
 
-<div class="job currentJob{ job.id == $job.id } editing{ editing }">
+<div class="job currentJob{ job.id == $job.id }">
 	<div class="title">
+
 		<div class="name">
-			{ #if editing }
-				<input type="text" bind:value="job.name">
-				<a class="stopEditing edit" on:click="set({ 'editing': false })">[done]</a>
+			{ #if editingName }
+				<input type="text" bind:value="job.name"><a class="stopEditing edit" on:click="set({ editingName: false })">[done]</a>
 			{ :else }
-				<span>{ job.name }</span>
-				<a class="editJob edit" on:click="set({ 'editing': true })">[edit]</a>
+				<span>{ job.name }</span><a class="editJob edit" on:click="set({ editingName: true })">[edit]</a>
 			{ /if }
 		</div>
-		<div class="date">{ date(job.date) }</div>
+
+		<div class="date">
+			{ #if editingDate }
+				<input type="date" bind:value="job.date"><a class="stopEditing edit" on:click="set({ editingDate: false })">[done]</a>
+			{ :else }
+				<span>{ date(job.date) }</span><a class="editDate edit" on:click="set({ editingDate: true })">[edit]</a>
+			{ /if }
+		</div>
+
 		<div class="cfx"></div>
 	</div>
 	<div class="content">
@@ -79,7 +86,7 @@
 			ExposureLimits
 		},
 		helpers: {
-			date: (d) => date.format(new Date(d), 'MMM D, YYYY'),
+			date: (d) => date.format(new Date(d), 'MMM D, YYYY', true),
 			round
 		},
 		data: () => ({
@@ -88,6 +95,7 @@
 			unitsPretty
 		})
 	}
+
 </script>
 
 <style>
@@ -130,9 +138,6 @@
 			span { border-color: transparent; }
 			input { border-color: grey; }
 		}
-		.date {
-			float:right;
-		}
 		.cfx {
 			clear:both;
 			content: ' ';
@@ -144,12 +149,15 @@
 			padding: 0;
 		}
 
-		.editJob, .stopEditing {
+		.editJob, .editDate, .stopEditing {
 			font-size: 80%;
 			color: #4260b5;
 			cursor: pointer;
 			font-weight: 400;
 			margin-left: 5px;
+		}
+		.date {
+			float:right;
 		}
 
 		/*table {

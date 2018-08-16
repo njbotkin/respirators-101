@@ -95,9 +95,13 @@ class JobStore extends LocalStore {
 	}
 	addJob() {
 		this._state.jobIncrement++
+
+		const time = new Date()
+		const zeroify = n => String(n).length < 2 ? '0'+n : n
+
 		this._state.jobs[this._state.jobIncrement] = {
 			id: this._state.jobIncrement,
-			date: new Date(),
+			date: `${time.getFullYear()}-${zeroify(time.getMonth())}-${zeroify(time.getDate())}`,
 			name: 'New Job',
 			openChemicals: [],
 			chemicalsScrollTop: 0,
