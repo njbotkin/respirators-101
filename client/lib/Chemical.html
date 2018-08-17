@@ -10,10 +10,12 @@
 
 		<div class="contents">
 
-			<div class="property inline">
-				<div class="label">CAS</div>
-				<div class="value">{ @html c.cas }</div>
-			</div>
+			{ #if c.cas }
+				<div class="property inline">
+					<div class="label">CAS</div>
+					<div class="value">{ @html c.cas }</div>
+				</div>
+			{ /if }
 
 			<div class="property inline">
 				<div class="label">IDLH</div>
@@ -25,7 +27,7 @@
 			<div class="property inline">
 				<div class="label">Conversion</div>
 					
-				<div class="equation value">
+				<div class="equation value" style="font-size:70%">
 					<div class="operand">
 						<div class="value">1</div>
 						<div class="unit">ppm</div>
@@ -44,7 +46,7 @@
 			<h2>Exposure Limits</h2>
 			<div class="instructions">Select a number to select an exposure limit.</div>
 
-			<ExposureLimits forms="{c.forms}" on:confirmSaveEL="confirmSaveEL(event)" showKeys="true" />
+			<ExposureLimits {c} forms="{c.forms}" on:confirmSaveEL="confirmSaveEL(event)" showKeys="true" />
 
 			<div class="block">
 				<label>Physical Description</label>
@@ -87,8 +89,8 @@
 
 	<Modal bind:show="ELModal">
 		This will be set as the current job({$job.name})'s exposure limit.
-		<br><br>
-		<ExposureLimits exposureLimit="{ELModal}" />
+		
+		<div style="margin: 10px 0"><ExposureLimits exposureLimit="{ELModal}" /></div>
 
 		<div class="buttons">
 			<div class="button saveEL" on:click="saveEL(ELModal)">Okay</div>
@@ -227,12 +229,6 @@
 
 		.contents {
 			display: block;
-		}
-	}
-
-	.save-value {
-		.legend {
-			background: #fff;
 		}
 	}
 

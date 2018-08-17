@@ -155,6 +155,7 @@ for(var c of chemicals.chemicals) {
 		physical_description: c["p"],
 		exposure_routes: c["e"],
 		target_organs: c["to"],
+		eye: /eye/i.test(c["to"]) ? 1 : 0,
 		one_ppm_in_mgm3,
 		forms: {},
 		notes: '', // for ambiguous things

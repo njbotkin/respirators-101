@@ -7,73 +7,119 @@
 	</div>
 { /if }
 
-<div class="property-list">
-	{ #each Object.entries(ELs) as [formKey, form] }
+{ #if forms }
+	<div class="property-list">
+		{ #each Object.entries(forms) as [formKey, form] }
 
-		<div class="property color-form"> 
-			<div class="label">{ formsPretty[formKey] }</div>
-			<div class="value">
+			<div class="property form"> 
+				<div class="label">{ formsPretty[formKey] }</div>
+				<div class="value">
 
-				{ #each Object.entries(form) as [standardKey, standard] }
+					{ #each Object.entries(form) as [standardKey, standard] }
 
-					<div class="property color-standard">
-						<div class="label">{ standardsPretty[standardKey] }</div>
-						<div class="value property-list">
+						<div class="property standard">
+							<div class="label">{ standardsPretty[standardKey] }</div>
+							<div class="value property-list">
 
-							{ #if standard.durations }{ #each Object.entries(standard.durations) as [durationKey, duration] }
+								{ #if standard.durations }{ #each Object.entries(standard.durations) as [durationKey, duration] }
 
-								<div class="property color-duration">
-									<div class="label">{ durationsPretty[durationKey] }</div>
-									<div class="value">
+									<div class="property duration">
+										<div class="label">{ durationsPretty[durationKey] }</div>
+										<div class="value">
 
-										{ humanTime(durations[standardKey][durationKey]) }
+											{ humanTime(durations[standardKey][durationKey]) }
 
-										{ #each Object.entries(duration) as [unit, value] }
+											{ #each Object.entries(duration) as [unit, value] }
 
-											<div class="representation select-el EL" on:click="fire('confirmSaveEL', { formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey] })" data-active="{ elSame({ formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey] }, $job.exposureLimit) }">
-												{ value }
-												<div class="unit">{ @html unitsPretty[unit] }</div>
-											</div>
+												<div class="representation select-el EL" on:click="fire('confirmSaveEL', { formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey], eye: c.eye, idlh: c.idlh, idlh_notes: c.idlh_notes })" data-active="{ elSame({ formKey, standardKey, durationKey, unit }, $job.exposureLimit) }">
+													{ value }
+													<div class="unit">{ @html unitsPretty[unit] }</div>
+												</div>
 
-										{ /each }
+											{ /each }
 
+										</div>
 									</div>
-								</div>
 
-							{ /each }{ /if }
+								{ /each }{ /if }
+
+							</div>
+
+							{ #if standard.carcinogens }
+								<span class="carcinogens">carcinogens</span>
+							{ /if }
+
+							{ #if standard.znotes }
+								{ #each standard.znotes as znote }
+									<div class="notes">{@html znote }</div>
+								{ /each }
+							{ :elseif standard.notes }
+								{ #each standard.notes as note }
+									<div class="notes">{@html note }</div>
+								{ /each }
+							{ /if }
 
 						</div>
 
-						{ #if standard.carcinogens }
-							<span class="carcinogens">carcinogens</span>
-						{ /if }
+					{ /each }
 
-						{ #if standard.znotes }
-							{ #each standard.znotes as znote }
-								<div class="notes">{@html znote }</div>
-							{ /each }
-						{ :elseif standard.notes }
-							{ #each standard.notes as note }
-								<div class="notes">{@html note }</div>
-							{ /each }
-						{ /if }
-
-					</div>
-
-				{ /each }
+				</div>
 
 			</div>
 
-		</div>
+		{ /each }
+	</div>
+{ /if }
 
-	{ /each }
-</div>
+{ #if exposureLimit }
+	<div class="property form"> 
+		<div class="label">{ formsPretty[exposureLimit.formKey] }</div>
+		<div class="value">
+
+			<div class="property standard">
+				<div class="label">{ standardsPretty[exposureLimit.standardKey] }</div>
+				<div class="value property-list">
+
+					<div class="property duration">
+						<div class="label">{ durationsPretty[exposureLimit.durationKey] }</div>
+						<div class="value">
+
+							{ humanTime(exposureLimit.duration) }
+
+							<div class="representation select-el EL" data-active="{ elSame({ formKey, standardKey, durationKey, value, unit }, $job.exposureLimit) }">
+								{ exposureLimit.value }
+								<div class="unit">{ @html unitsPretty[exposureLimit.unit] }</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<br>
+
+	{ #if exposureLimit.idlh }
+		<div class="property inline" style="padding: 0; margin: 0">
+			<div class="label">IDLH</div>
+			<div class="value">{ @html exposureLimit.idlh }</div>
+			<div class="notes">{ @html exposureLimit.idlh_notes }</div>
+		</div>
+	{ /if }
+
+	{ #if exposureLimit.eye }
+		<div class="eye">Eye irritant</div>
+	{ /if }
+
+{ /if }
 
 <script>
 
 	import { unitsPretty } from 'lib/util.js'
 
-	function objectsShallowEquivalence(a, b) {
+	function propertiesMatch(a, b) {
 		for(let k in a) if(a[k] !== b[k]) return false
 		return true
 	}
@@ -81,32 +127,10 @@
 	export default {
 		helpers: {
 			humanTime: time => time >= 60 ? (time/60) + ' hours' : time + ' minutes',
-			elSame: objectsShallowEquivalence
-		},
-		computed: {
-			// transform a single exposure limit into a structure that plays nice with the loop
-			ELs: ({ forms, exposureLimit }) => {
-				if(forms) {
-					return forms
-				}
-				if(exposureLimit) {
-					let mockForms = {},
-						mockStandards = {},
-						mockDurations = {}
-
-					mockDurations[exposureLimit.durationKey] = {}
-					mockDurations[exposureLimit.durationKey][exposureLimit.unit] = exposureLimit.value
-					mockStandards[exposureLimit.standardKey] = { durations: mockDurations }
-					mockForms[exposureLimit.formKey] = mockStandards
-
-					return mockForms
-				}
-			}
+			elSame: propertiesMatch
 		},
 		data: () => ({
 			showKeys: false,
-			forms: false,
-			exposureLimit: {},
 			formsPretty: {
 				regular: 'Gas/Vapor',
 				total: 'Total dust',
@@ -160,7 +184,7 @@
 	$standardText: #7580AA;
 
 	$durationSolid: #999;
-	$durationText: #666;
+	$durationText: #777;
 
 	$ELSolid: $red1;
 	$ELText: #ce817f;
@@ -173,50 +197,58 @@
 		font-weight: bold;
 		padding: 0 4px;
 	}
+	.form {
+		border-color: $formSolid;
+		color: $formText; 
+	}
+	.standard {
+		border-color: $standardSolid;
+		color: $standardText;
+	}
+	.duration {
+		border-color: $durationSolid;
+		color: $durationText;
+	}
+	.EL {
+		border-color: $ELSolid;
+		color: $ELText;
+	}
 
 	.select-el {
 		cursor: pointer;
 		padding: 5px;
 		border: 1px solid;
+		vertical-align: middle;
+		margin: 4px;
 
 		&:hover {
 			background: #eee;
 		}
 
-		&.active {
-			background: $ELSolid;
-			color: #fff;
-		}
-	}
-
-	.property.color-form, .form {
-		border-color: $formSolid;
-		color: $formText; 
-	}
-
-	.property.color-standard, .standard {
-		border-color: $standardSolid;
-		color: $standardText;
-	}
-
-	.property.color-duration, .duration {
-		border-color: $durationSolid;
-		color: $durationText;
-	}
-
-	.property.color-EL, .EL {
-		border-color: $ELSolid;
-		color: $ELText;
-	}
-
-	.representation {
-		vertical-align: middle;
-		margin: 4px;
-
 		&[data-active=true] {
 			background: $ELText;
 			color: #fff;
 		}
+	}
+
+	.eye {
+		display: inline-block;
+	    border: 1px solid $red1;
+	    line-height: 2;
+	    padding: 0 5px;
+	    color: $red1;
+	    font-size: 70%;
+	    text-transform: uppercase;
+	    margin-left: 5px;
+
+	    &::before {    
+	    	content: '\e8f4';
+		    font-family: 'icomoon' !important;
+		    font-size: 140%;
+		    line-height: 1;
+		    vertical-align: text-top;
+		    margin-right: 3px;
+	    }
 	}
 
 </style>
