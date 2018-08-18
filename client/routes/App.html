@@ -70,11 +70,11 @@
 		store: () => store,
 		oncreate () {
 
-			console.log = console.error = m => {
-				let div = document.createElement('div')
-				div.innerText = m 
-				document.getElementById('domlog').appendChild(div)
-			}
+			// console.log = console.error = m => {
+			// 	let div = document.createElement('div')
+			// 	div.innerText = m 
+			// 	document.getElementById('domlog').appendChild(div)
+			// }
 
 			const wrapper = document.querySelector('.wrapper')
 			wrapper.next = {x: -300, y: 0}
