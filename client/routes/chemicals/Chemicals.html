@@ -4,35 +4,230 @@
 </div>
 
 <div class="container">
-	{ #if search !== '' }
-		<div class="results">
-			{ #if results.length > 0 }
-				{ #each results as r }
-					<Chemical highlight="true" c="{ r.item }"></Chemical>
-				{ /each }
-			{ :else }
-				<div class="empty">No search results.</div>
-			{ /if }
-		</div>
-	{ :else }
-		<div class="chemicals">
-			{ #each results as c, i }
-				{ #if c.id }
-					<div class="letter-heading">{ c.id }</div>
-				{ /if }
-				<Chemical {c} bind:open=$job.openChemicals[i]></Chemical>
-			{ /each }
-		</div>
 
+	<div class="items { search == '' && 'full' }">
+		{ #if items.length }
+			{#each Object.entries(items) as [i, c]}
+				{ #if search == '' && letters[i] }
+					<div class="letter-heading" id="{ letters[i] }">{ letters[i] }</div>
+				{ /if }
+				<Chemical search={!search} {i} {...c} on:confirmSaveEL="confirmSaveEL(event)"  />
+			{/each}
+		{ :else }
+			<div class="empty">No search results.</div>
+		{ /if }
+	</div>
+
+	{ #if search == '' }
 		<div class="alphabet">
-			{ #each letters as l }
+			{ #each Object.entries(letters) as [i, l] }
 				<div class="letter">{ l }</div>
 			{ /each }
 		</div>
 	{ /if }
+
 </div>
 
+<Modal bind:show="ELModal">
+	This will be set as the current job({$job.name})'s exposure limit.
+
+	<div style="margin: 10px 0"><ExposureLimits exposureLimit="{ELModal}" /></div>
+
+	<div class="buttons">
+		<div class="button saveEL" on:click="saveEL(ELModal)">Okay</div>
+		<div class="button neverMind" on:click="set({ ELModal: false })">Never mind</div>
+	</div>
+</Modal>
+
+<script>
+
+	import chemicals from 'data/chemicals.json'
+	import letters from 'data/letters.json'
+	import Fuse from 'fuse.js'
+
+	var fuse = new Fuse(chemicals, {
+		keys: [
+			{
+				name: 'name',
+				weight: 0.8
+			},
+			{
+				name: 'synonyms',
+				weight: 0.5
+			},
+			{
+				name: 'cas',
+				weight: 0.9
+			}
+		],
+		shouldSort: true,
+		includeMatches: true,
+		threshold: 0.3,
+	})
+
+	function propertiesMatch(a, b) {
+		for(let k in a) if(a[k] !== b[k]) return false
+		return true
+	}
+
+	export default {
+		components: {
+			ExposureLimits: 'lib/ExposureLimits.html',
+			Modal: 'lib/Modal.html',
+			Chemical: 'lib/Chemical.html'
+		},
+		data: () => ({
+			search: '',
+			letters,
+			ELModal: false
+		}),
+		oncreate() {
+
+			// scrolling through alphabet thingy
+			let container = document.querySelector('.container')
+			var mouseDown = false
+
+			container.addEventListener('mousedown', down)
+			container.addEventListener('touchstart', down)
+			container.addEventListener('mouseup', up)
+			container.addEventListener('touchend', up)
+			container.addEventListener('touchcancel', up)
+
+			function down(e) {
+				if(e.target.className.indexOf('letter') > -1) {
+					mouseDown = true
+				}
+			}
+			function up() {
+				mouseDown = false
+
+				for(var l of document.querySelectorAll('.letter')) {
+					l.classList.remove('active')
+				}
+			}
+
+			container.addEventListener('mousemove', selectLetter)
+			container.addEventListener('touchmove', selectLetter)
+			container.addEventListener('click', selectLetter)
+
+			function selectLetter(e) {
+				var target
+				if(e.type == 'touchmove') {
+					let myLocation = e.touches[0];
+					target = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
+				} else {
+					target = e.target
+				}
+
+				if(mouseDown || e.type == 'click') {
+					if(target.className && target.className.indexOf('letter') > -1) {
+						e.preventDefault()
+
+						var chemicalBox = document.querySelector('.items')
+						var chemicalBoxOffset = chemicalBox.getBoundingClientRect()
+
+						for(var l of document.querySelectorAll('.letter')) {
+							l.classList.remove('active')
+						}
+						target.classList.add('active')
+
+						var chemical = document.getElementById(target.innerText.toLowerCase())
+						if(chemical) {
+							var scrollTop = chemicalBox.scrollTop + chemical.getBoundingClientRect().top - chemicalBoxOffset.top - chemicalBoxOffset.height/3
+							chemicalBox.scrollTop = scrollTop
+						}
+					}
+				}
+			}
+
+			// save scroll position
+			let chemicals = document.querySelector('.items')
+			chemicals.scrollTop = this.store.get().job.chemicalsScrollTop
+			var scrolls = 0
+
+			chemicals.addEventListener('scroll', () => {
+				let { job } = this.store.get()
+				let { search } = this.get()
+				if(search !== '') return
+				// The first scroll is premature because the layout isn't finished.  When layout finishes, the browser wrongly scrolls again to compensate.  Set the scroll to the first scroll.
+				if(scrolls < 2) {
+					if(++scrolls == 1) {
+						// first scroll
+					} else {
+						// second scroll
+						chemicals.scrollTop = job.chemicalsScrollTop
+					}
+				} else {
+					// subsequent scrolls
+					this.store.set({ job: { chemicalsScrollTop: chemicals.scrollTop } })
+				}
+			})
+
+			this.on('update', ({changed, current}) => {
+				if(!changed.search) return
+				if(current.search == '') {
+					chemicals.scrollTop = this.store.get().job.chemicalsScrollTop
+				} else {
+					chemicals.scrollTop = 0
+				}
+			})
+
+		},
+		computed: {
+			items: ({ search }) => {
+
+				if(search === '') return chemicals
+
+				var results = fuse.search(search)
+					.filter(r => {
+						// ignore results with just a bunch of empty matches
+						var emptyMatches = r.matches.filter(m => m.value === '')
+						return emptyMatches.length < r.matches.length
+					})
+					.slice(0, 50) // maximum number for rendering speed
+
+				// highlight matched characters
+				for(var r of results) {
+					for(var m of r.matches) {
+						var highlit = ''
+						if(m.indices.length > 0) {
+							highlit += m.value.slice(0, m.indices[0][0])
+							for(var i = 0; i < m.indices.length; i++) {
+								let indice = m.indices[i]
+								
+								highlit += '<em>' + m.value.slice(indice[0], indice[1]+1) + '</em>'
+								if(i+1 < m.indices.length) {
+									highlit += m.value.slice(indice[1]+1, m.indices[i+1][0])
+								}							
+							}
+							highlit += m.value.slice(m.indices[m.indices.length-1][1]+1)
+						}
+						r.item[m.key + 'Highlit'] = highlit
+					}
+				}
+
+				return results.map(r => r.item)
+			}
+		},
+		methods: {
+			confirmSaveEL(el) {
+				this.set({ ELModal: el })
+			},
+			saveEL(el) {
+				if(!propertiesMatch(el, this.store.get().job.exposureLimit)) {
+					this.store.set({ job: { exposureLimit: el } })
+					this.store.set({ job: { samples: false } }) // old samples invalid 
+					this.store.set({ job: { samples: [] } }) // not sure why this is necessary, don't feel like investigating
+					this.set({ ELModal: false })
+				}
+			}
+		}
+	}
+
+</script>
+
 <style>
+
 	.search {
 		height: 50px;
 		position: relative;
@@ -116,14 +311,18 @@
 		bottom: 0;
 		left: 0;
 
-		.chemicals {
+		.items {
 			position: absolute;
 			top: 0;
 			left: 0;
 			bottom: 0;
-			right: calc(2.65vh - 2.65px + 16px );
 			overflow-y: scroll;
 			overflow-x: hidden;
+			right: 0;
+
+			&.full {
+				right: calc(2.65vh - 2.65px + 16px );
+			}
 		}
 		.alphabet {
 			position: absolute;
@@ -139,207 +338,8 @@
 				width: calc(2.65vh - 2.65px );
 				padding: 0 8px;
 				text-transform: uppercase;
-
-				&.active {
-					background: #ddd;
-				}
 			}
 		}
 	}
 	
 </style> 
-
-<script>
-
-	import chemicals from 'data/chemicals.json'
-	import Fuse from 'fuse.js'  
-	import Chemical from 'lib/Chemical.html'
-
-	// I know this seems hacky.  Sorting chemicals by name is pretty arbitrary, what with the alpha- 1,2,3- o- style prefixes.  I'm not going to build a hideous regex for this.  The data source is already mostly sorted alphabetically, so I'm just picking up on the existing order.
-	const letters = 'abcdefghiklmnopqrstuvwxyz'.split('') // no J chemicals
-	var letter = 0
-
-	// link letter in navigation to first chemical that starts with it
-	for(var c of chemicals) {
-		if(c.name.slice(0, 1).toLowerCase() === letters[letter] && c.name.slice(1, 2) !== '-') {
-			c.id = letters[letter]
-			letter++
-		}
-	}
-
-	var fuse = new Fuse(chemicals, {
-		keys: [
-			{
-				name: 'name',
-				weight: 0.8
-			},
-			{
-				name: 'synonyms',
-				weight: 0.5
-			},
-			{
-				name: 'cas',
-				weight: 0.9
-			}
-		],
-		shouldSort: true,
-		includeMatches: true,
-		threshold: 0.3,
-	})
-
-	// would like to do this with CSS...
-	function adjustAlphabetHeight() {
-		var height = window.document.querySelector('.alphabet').getBoundingClientRect().height
-		var fontSize = height / 25 / 1.5 // height / # of letters / line height
-		document.querySelector('.alphabet').style.fontSize = `${fontSize}px`
-	}
-
-	export default {
-		components: {
-			Chemical
-		},
-		data: () => ({
-			search: '',
-			letters
-		}),
-		oncreate() {
-
-			// scrolling through alphabet thingy
-			let container = document.querySelector('.container')
-
-			window.addEventListener('resize', adjustAlphabetHeight)
-			adjustAlphabetHeight()
-
-			var mouseDown = false
-
-			container.addEventListener('mousedown', down)
-			container.addEventListener('touchstart', down)
-			container.addEventListener('mouseup', up)
-			container.addEventListener('touchend', up)
-			container.addEventListener('touchcancel', up)
-
-			function down(e) {
-				if(e.target.className.indexOf('letter') > -1) {
-					mouseDown = true
-				}
-			}
-
-			function up() {
-				mouseDown = false
-
-				for(var l of document.querySelectorAll('.letter')) {
-					l.classList.remove('active')
-				}
-			}
-
-			container.addEventListener('mousemove', selectLetter)
-			container.addEventListener('touchmove', selectLetter)
-			container.addEventListener('click', selectLetter)
-
-			function selectLetter(e) {
-
-				var target
-
-				if(e.type == 'touchmove') {
-					let myLocation = e.touches[0];
-					target = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
-				} else {
-					target = e.target
-				}
-
-				if(mouseDown || e.type == 'click') {
-
-					if(target.className && target.className.indexOf('letter') > -1) {
-
-						e.preventDefault()
-
-						var chemicalBox = document.querySelector('.chemicals')
-						var chemicalBoxOffset = chemicalBox.getBoundingClientRect()
-
-						for(var l of document.querySelectorAll('.letter')) {
-							l.classList.remove('active')
-						}
-						target.classList.add('active')
-
-						var chemical = document.getElementById(target.innerText.toLowerCase())
-
-						if(chemical) {
-							var scrollTop = chemicalBox.scrollTop + chemical.getBoundingClientRect().top - chemicalBoxOffset.top - chemicalBoxOffset.height/3
-							chemicalBox.scrollTop = scrollTop
-						}
-
-					}
-
-				}
-			}
-
-			let chemicals = document.querySelector('.chemicals')
-			chemicals.scrollTop = this.store.get().job.chemicalsScrollTop
-			var scrolls = 0
-
-			chemicals.addEventListener('scroll', () => {
-				let job = this.store.get().job
-				// The first scroll is premature because the layout isn't finished.  When layout finishes, the browser wrongly scrolls again to compensate.  Set the scroll to the first scroll.
-				if(scrolls < 2) {
-					if(++scrolls == 1) {
-						// first scroll
-					} else {
-						// second scroll
-						chemicals.scrollTop = job.chemicalsScrollTop
-					}
-				} else {
-					// subsequent scrolls
-					this.store.set({ job: { chemicalsScrollTop: chemicals.scrollTop } })
-				}
-			})
-
-		},
-		ondestroy() {
-			window.removeEventListener('resize', adjustAlphabetHeight)
-		},
-		computed: {
-			results: ({ search }) => {
-
-				if(search === '') {
-					return chemicals
-				} 
-
-				var results = fuse.search(search)
-					.filter(r => {
-						// ignore results with just a bunch of empty matches
-						var emptyMatches = r.matches.filter(m => m.value === '')
-						return emptyMatches.length < r.matches.length
-					})
-					.slice(0, 50) // maximum number for rendering speed
-					
-				for(var r of results) {
-					for(var m of r.matches) {
-
-						var highlit = ''
-
-						if(m.indices.length > 0) {
-
-							highlit += m.value.slice(0, m.indices[0][0])
-
-							for(var i = 0; i < m.indices.length; i++) {
-								let indice = m.indices[i]
-								
-								highlit += '<em>' + m.value.slice(indice[0], indice[1]+1) + '</em>'
-								if(i+1 < m.indices.length) {
-									highlit += m.value.slice(indice[1]+1, m.indices[i+1][0])
-								}							
-							}
-
-							highlit += m.value.slice(m.indices[m.indices.length-1][1]+1)
-						}
-
-						r.item[m.key + 'Highlit'] = highlit
-					}
-				}
-
-				return results
-			}
-		}
-	}
-
-</script>

@@ -1,16 +1,26 @@
 @import "colors";
 
+html {
+    overflow: hidden;
+    height: 100%;
+}
+
+
 body {
 	margin: 0;
-	overflow-x: hidden;
-	overflow-y: hidden;
 	background: #eaedf1; 
 	color: #333;
 	line-height: 1.5;
 	font-size: 16px;
-}
-@media (max-width: 600px) {
-	body {
+
+	/* trying to ditch overscroll */
+	overscroll-behavior-y: none;
+	-webkit-overflow-scrolling: touch;
+
+    height: 100%;
+    overflow: auto;
+
+	@media (max-width: 600px) {
 		font-size: 14px;
 	}
 }
@@ -110,7 +120,7 @@ img.size-90 { width: 90%; }
 		font-size: 80%;
 		font-weight: bold;
 		display: block;
-		padding-right: 5px;
+		padding-right: 2px;
 	}
 	.notes {
 		display: block;

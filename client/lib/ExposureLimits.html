@@ -31,7 +31,7 @@
 
 											{ #each Object.entries(duration) as [unit, value] }
 
-												<div class="representation select-el EL" on:click="fire('confirmSaveEL', { formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey], eye: c.eye, idlh: c.idlh, idlh_notes: c.idlh_notes })" data-active="{ elSame({ formKey, standardKey, durationKey, unit }, $job.exposureLimit) }">
+												<div class="representation select-el EL" on:click="fire('confirmSaveEL', { formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey], eye: eye, idlh: idlh, idlh_notes: idlh_notes })" data-active="{ elSame({ formKey, standardKey, durationKey, unit }, $job.exposureLimit) }">
 													{ value }
 													<div class="unit">{ @html unitsPretty[unit] }</div>
 												</div>

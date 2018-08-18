@@ -503,6 +503,21 @@ for(let chemical of chemical_output) {
 // }
 
 
+// I know this seems hacky.  Sorting chemicals by name is pretty arbitrary, what with the alpha- 1,2,3- o- style prefixes.  I'm not going to build a hideous regex for this.  The data source is already mostly sorted alphabetically, so I'm just picking up on the existing order.
+const letters = 'abcdefghiklmnopqrstuvwxyz'.split('') // no J chemicals
+let letter = 0
+let letterIndexes = {}
+
+// link letter in navigation to first chemical that starts with it
+for(let i = 0; i < chemical_output.length; i++) {
+	let c = chemical_output[i]
+	if(c.name.slice(0, 1).toLowerCase() === letters[letter] && c.name.slice(1, 2) !== '-') {
+		letterIndexes[i] = letters[letter]
+		letter++
+	}
+}
+
 // console.log(found_by_cas, found_by_name, children)
 
 writeFileSync(joinPath(__dirname, '../client/data/chemicals.json'), JSON.stringify(chemical_output), 'utf8')
+writeFileSync(joinPath(__dirname, '../client/data/letters.json'), JSON.stringify(letterIndexes), 'utf8')

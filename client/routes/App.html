@@ -31,6 +31,8 @@
 				<uiView></uiView>
 			</div>
 
+			<div id="domlog"></div>
+
 			{ #if $job.RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list')  }
 			<a class="button in-selection" href="{ asr.makePath('app.respirator-picker', {id: $job.RSLStep})}">
 				Resume Respirator Selection
@@ -67,6 +69,12 @@
 		},
 		store: () => store,
 		oncreate () {
+
+			console.log = console.error = m => {
+				let div = document.createElement('div')
+				div.innerText = m 
+				document.getElementById('domlog').appendChild(div)
+			}
 
 			const wrapper = document.querySelector('.wrapper')
 			wrapper.next = {x: -300, y: 0}
@@ -465,6 +473,12 @@
 	    &.visibletrue {
 	    	display:block;
 	    }
+	}
+
+	#domlog	{
+		position: absolute;
+		bottom: 0;
+		z-index: 1000;
 	}
 
 </style>

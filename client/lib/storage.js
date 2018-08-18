@@ -103,7 +103,7 @@ class JobStore extends LocalStore {
 			id: this._state.jobIncrement,
 			date: `${time.getFullYear()}-${zeroify(time.getMonth())}-${zeroify(time.getDate())}`,
 			name: 'New Job',
-			openChemicals: [],
+			openChemicals: {},
 			chemicalsScrollTop: 0,
 			chemical: null,
 			exposureLimit: {
