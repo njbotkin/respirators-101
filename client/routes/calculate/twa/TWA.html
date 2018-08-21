@@ -66,7 +66,7 @@
 			</tbody>
 		</table>
 
-		<div style="text-align: center"><div class="button addSample" on:click="addSample()">Add sample + </div></div>
+		<div style="text-align: center"><div class="addSample" on:click="addSample()">[ Add sample + ]</div></div>
 	</div>
 
 	{ #if $job.samples.length > 0 && validSamples.length === $job.samples.length && (totalMinutes > $job.exposureLimit.duration || totalMinutes < $job.exposureLimit.duration) }
@@ -272,7 +272,10 @@ export default {
 	}
 
 	.addSample {
-		background: $blue2;
+		font-size: 80%;
+		color: #4260b5;
+		cursor: pointer;
+		font-weight: 400;
 	}
 
 	@media screen and (max-width: 400px) {

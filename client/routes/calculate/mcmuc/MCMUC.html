@@ -47,7 +47,7 @@
 		</tbody>
 	</table>
 
-	<div style="text-align: center"><div class="button addConcentration" on:click="addConcentration()">Add concentration + </div></div>
+	<div class="addConcentration" on:click="addConcentration()">[ Add concentration + ]</div>
 </div>
 
 <h3>Sum of component ratios (MCMUC):</h3>
@@ -179,7 +179,11 @@ export default {
 	}
 
 	.addConcentration {
-		background: $blue2;
+		font-size: 80%;
+		color: #4260b5;
+		cursor: pointer;
+		font-weight: 400;
+		text-align: center;
 	}
 
 	@media screen and (max-width: 400px) {
