@@ -96,37 +96,49 @@ class JobStore extends LocalStore {
 		this._state.job = this._state.jobs[id]
 		this._set(this._state, { job: true})
 	}
-	addJob() {
+	addJob(job) {
 		this._state.jobIncrement++
 
-		const time = new Date()
-		const zeroify = n => String(n).length < 2 ? '0'+n : n
+		if(!job) {
+			const time = new Date()
+			const zeroify = n => String(n).length < 2 ? '0'+n : n
 
-		this._state.jobs[this._state.jobIncrement] = {
-			id: this._state.jobIncrement,
-			date: `${time.getFullYear()}-${zeroify(time.getMonth())}-${zeroify(time.getDate())}`,
-			name: 'New Job',
-			openChemicals: {},
-			chemicalsScrollTop: 0,
-			chemical: null,
-			exposureLimit: {
-				formKey: NaN,
-				standardKey: NaN,
-				durationKey: NaN,
-				duration: NaN,
-				value: NaN,
-				unit: NaN
-			},
-			samples: [],
-			concentrations: [],
-			twa: null,
-			hr: null,
+			job = {
+				date: `${time.getFullYear()}-${zeroify(time.getMonth())}-${zeroify(time.getDate())}`,
+				name: 'New Job',
+				openChemicals: {},
+				chemicalsScrollTop: 0,
+				chemical: null,
+				exposureLimit: {
+					formKey: NaN,
+					standardKey: NaN,
+					durationKey: NaN,
+					duration: NaN,
+					value: NaN,
+					unit: NaN
+				},
+				samples: [],
+				concentrations: [],
+				twa: null,
+				hr: null,
+			}
 		}
+
+		job.id = this._state.jobIncrement
+
+		this._state.jobs[this._state.jobIncrement] = job
 		this._set(this._state, { jobs: true })
+
+		return job.id
 	}
 	removeJob(id) {
 		delete this._state.jobs[id]
 		this._set(this._state, { jobs: true })
+	}
+	duplicateJob(id) {
+		let job = Object.assign({}, this._state.jobs[id])
+		job.name += ' (Copy)'
+		return this.addJob(job)
 	}
 }
 

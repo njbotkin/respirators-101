@@ -15,7 +15,7 @@
 	<div class="jobs">
 		
 		{ #each Object.entries($jobs).reverse() as [jobId, job] }
-			<Job bind:job="job" on:confirmDelete="confirmDelete(event)" on:switchJob="switchJob(event)" {asr} />
+			<Job bind:job="job" on:confirmDelete="confirmDelete(event)" on:switchJob="switchJob(event)" on:duplicate="duplicate(event)" {asr} />
 		{ /each }
 
 	</div>
@@ -44,6 +44,10 @@
 			Job: './Job.html'
 		},
 		methods: {
+			duplicate(id) {
+				let newJobId = store.duplicateJob(id)
+				store.switchJob(newJobId)
+			},
 			confirmDelete(id) {
 				this.set({ deleteModal: id })
 			},

@@ -38,8 +38,8 @@
 			<div class="legend-cont"><div class="legend"> TWA </div></div>
 				{ #if job.twa }
 					<div class="representation">
-						{ round($job.twa) }
-						<div class="unit">{ @html unitsPretty[$job.exposureLimit.unit] }</div>
+						{ round(job.twa) }
+						<div class="unit">{ @html unitsPretty[job.exposureLimit.unit] }</div>
 					</div>
 				{ :else }
 					No TWA set yet!
@@ -63,8 +63,9 @@
 
 	{ #if !only }
 		<div class="buttons">
-			{ #if job.id !== $job.id }<div class="button switchJob" on:click="fire('switchJob', job.id)">Select Job</div>{ /if }
-			<div class="button deleteJob" on:click="fire('confirmDelete', job.id)">Delete Job</div>
+			{ #if job.id !== $job.id }<div class="button switchJob" on:click="fire('switchJob', job.id)">Select</div>{ /if }
+			<div class="button duplicateJob" on:click="fire('duplicate', job.id)">Duplicate</div>
+			<div class="button deleteJob" on:click="fire('confirmDelete', job.id)">Delete</div>
 		</div>
 	{ /if }
 
@@ -161,16 +162,6 @@
 			float:right;
 		}
 
-		/*table {
-			border-collapse: collapse;
-			td {
-				border: 1px solid #ddd;
-				&.sub {
-					text-align: right;
-				}
-			}
-		}*/
-
 		&.currentJobtrue {
 			background: #fff;
 			/*border-color: color($green l(+20%));*/
@@ -187,23 +178,25 @@
 		}
 
 		.buttons {
+			margin-top: 10px;
 			text-align: right;
 		}
 
 		.deleteJob.button {
-			/*color: $red2;*/
-			/*border-color: color($red2 l(+10%));*/
-			/*background: linear-gradient(color($red2 l(+5%)), color($red2 l(-5%)));*/
 			background: $red2;
 			&:active {
 				background: linear-gradient(color($red2 l(-5%)), color($red2 l(+5%)));
 			}
 		}
 
+		.duplicateJob.button {
+			background: $blue2;
+			&:active {
+				background: linear-gradient(color($blue2 l(-5%)), color($blue2 l(+5%)));
+			}
+		}
+
 		.switchJob.button {
-			/*color: color($green l(+10%));*/
-			/*border-color: color($green l(+10%));*/
-			/*background: linear-gradient(color($green l(+5%)), color($green l(-5%)));*/
 			background: $green;
 			&:active {
 				background: linear-gradient(color($green l(-5%)), color($green l(+5%)));

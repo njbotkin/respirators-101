@@ -35,6 +35,10 @@ body {
 
 #content {
 	padding: 10px 20px;
+
+	@media (max-width: 400px) {
+		padding: 10px;
+	}
 }
 
 uiview {
