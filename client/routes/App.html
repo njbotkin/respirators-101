@@ -28,7 +28,7 @@
 			</nav>
 
 			{ #if $nav.sub }
-				<div class="rednav">
+				<div class="rednav" bind:offsetHeight="redNavHeight">
 						
 					{ #if $nav.sub.prev }<div class="prev"><a class="icon-chevron-circle-left" href="{ $nav.sub.prev }"><span class="text">Previous page</span></a></div>{ /if }
 
@@ -39,7 +39,7 @@
 				</div> 
 			{ /if }
 
-			<div class="main" id="aperture">
+			<div class="main" id="aperture" style="top: { ($nav.sub ? redNavHeight : 0) + 50 }px">
 				<uiView></uiView> 
 			</div>
 
@@ -237,19 +237,7 @@
 				}
 			})
 
-
-			// would like to do this with CSS...
-			function adjustMainHeight() {
-				let rednav = document.querySelector('.rednav')
-				let height = (rednav ? rednav.getBoundingClientRect().height : 0) + 50
-				document.querySelector('#aperture').style.top = height + 'px'
-			}
-
-			window.addEventListener('resize', adjustMainHeight)
-			adjustMainHeight()
-
 			const stateChange = e => {
-				adjustMainHeight()
 				animate({x: -300, y: 0})
 				this.set({stateName: e.state.name})
 			}
@@ -257,7 +245,7 @@
 			// captures event from router
 			this.on('stateChange', stateChange)
 			stateChange(this.get().initialState)
-		}, 
+		},
 		data() {
 			return { 
 				shifted: false,
