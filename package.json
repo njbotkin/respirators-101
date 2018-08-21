@@ -51,7 +51,6 @@
     "better-replace": "^1.0.2",
     "cheerio": "^1.0.0-rc.2",
     "cheerio-tableparser": "^1.0.1",
-    "cordova": "^7.1.0",
     "date-and-time": "^0.6.2",
     "deep-equal": "^1.0.1",
     "del-cli": "^1.1.0",
@@ -93,6 +92,7 @@
   },
   "devDependencies": {
     "balanced-match": "^1.0.0",
+    "cordova": "^7.1.0",
     "gaze": "^1.1.2",
     "html-tags": "^2.0.0",
     "jsoncomp": "^1.6.1",
