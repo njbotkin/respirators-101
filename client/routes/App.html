@@ -22,12 +22,12 @@
 				<div class="nav-button close icon-close">close menu</div>
 				<div class="nav-button menu icon-menu">open menu</div>
 
-				<div class="title"><div class="inner">{ $nav.title }</div></div>
+				<div class="title"><div class="inner">{ $nav && $nav.title }</div></div>
 
 				<a class="nav-button home icon-home2" href="{ asr.makePath('app.home') }">go home</a>
 			</nav>
 
-			{ #if $nav.sub }
+			{ #if $nav && $nav.sub }
 				<div class="rednav" bind:offsetHeight="redNavHeight">
 						
 					{ #if $nav.sub.prev }<div class="prev"><a class="icon-chevron-circle-left" href="{ $nav.sub.prev }"><span class="text">Previous page</span></a></div>{ /if }
@@ -39,7 +39,7 @@
 				</div> 
 			{ /if }
 
-			<div class="main" id="aperture" style="top: { ($nav.sub ? redNavHeight : 0) + 50 }px">
+			<div class="main" id="aperture" style="top: { (($nav && $nav.sub) ? redNavHeight : 0) + 50 }px">
 				<uiView></uiView> 
 			</div>
 

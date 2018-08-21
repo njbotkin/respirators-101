@@ -31,8 +31,6 @@ export default () => ({
 		let store = context.domApi.store
 		let params = context.parameters
 
-		const page = idToPage[params.id] 
-
 		store.set({ nav: {
 			title: 'Respirator Selection',
 			sub: {

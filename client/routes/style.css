@@ -5,7 +5,6 @@ html {
     height: 100%;
 }
 
-
 body {
 	margin: 0;
 	background: #eaedf1; 
@@ -36,6 +35,10 @@ body {
 
 #content {
 	padding: 10px 20px;
+}
+
+uiview {
+	display: block;
 }
 
 a {

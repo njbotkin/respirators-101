@@ -11,17 +11,22 @@ export default ({ on }) => {
 		name: `app`,
 		route: ``,
 		template: App,
-		activate(stateContext) {
-			// forward events
-			const unsubscribe = on(`stateChangeStart`, (e) => { 
-				stateContext.domApi.fire(`stateChange`, e)
-			})
-			stateContext.on(`destroy`, unsubscribe)
-		},
 		resolve() {
 			return Promise.resolve({
 				initialState
 			})
+		},
+		activate(context) {
+			// forward events
+			const unsubscribe = on(`stateChangeStart`, (e) => { 
+				context.domApi.fire(`stateChange`, e)
+			})
+			context.on(`destroy`, unsubscribe)
+
+			let store = context.domApi.store
+			store.set({ nav: {
+				title: ''
+			} }, false)
 		}
 	}
 }
