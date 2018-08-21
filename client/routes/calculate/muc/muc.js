@@ -1,8 +1,13 @@
 import MUC from './MUC.html'
 
 export default () => ({
-	title: 'Calculate MUC',
 	name: `app.calculate-muc`,
 	route: `calculate/muc`,
-	template: MUC
+	template: MUC,
+	activate(context) {
+		let store = context.domApi.store
+		store.set({ nav: {
+			title: 'Calculate MUC'
+		} }, false)
+	}
 })

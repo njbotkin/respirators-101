@@ -3,7 +3,6 @@ import StaticContent from './Content.html'
 import idToPage from 'lib/static-content-by-id.js'
 
 export default () => ({
-	title: 'Respirator Selection',
 	name: `app.options-list`,
 	route: `/options/:id(.+)`,
 	template: StaticContent,
@@ -24,8 +23,22 @@ export default () => ({
 		const { component } = page
 
 		return Promise.resolve({
-			component,
-			title: page.name
+			component
 		})
+	},
+	activate(context) {
+
+		let store = context.domApi.store
+		let params = context.parameters
+
+		const page = idToPage[params.id] 
+
+		store.set({ nav: {
+			title: 'Respirator Selection',
+			sub: {
+				title: 'Acceptable Respirator Options',
+				prev: 'javascript:window.history.go(-1)'
+			}
+		} }, false)
 	}
 })

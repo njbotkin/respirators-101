@@ -1,10 +1,4 @@
-<div class="body">
-	<div class="construction">
-		Under construction
-	</div>
-</div>
-
-<div class="content">
+<div id="content">
 
 	{ #if Object.keys($jobs).length === 0 }
 
@@ -70,18 +64,6 @@
 <style>
 
 	@import 'colors';
-
-	.body {
-		text-align: center;
-	}
-
-	.construction {
-		display: inline-block;
-		margin: 50px auto 20px;
-		padding: 20px 40px;
-		font-size: 200%;
-		position: relative;
-	}
 
 	.construction:before {
 		position: absolute;

@@ -1,8 +1,13 @@
 import MCMUC from './MCMUC.html'
 
 export default () => ({
-	title: 'Calculate Multi-component MUC',
 	name: `app.calculate-mcmuc`,
 	route: `calculate/mcmuc`,
-	template: MCMUC
+	template: MCMUC,
+	activate(context) {
+		let store = context.domApi.store
+		store.set({ nav: {
+			title: 'Calculate Multi-component MUC'
+		} }, false)
+	}
 })

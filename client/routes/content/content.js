@@ -23,8 +23,16 @@ export default () => ({
 		const { component } = page
 
 		return Promise.resolve({
-			component,
-			title: page.name
+			component
 		})
+	},
+	activate(context) {
+		const store = context.domApi.store
+		const params = context.parameters
+		const page = idToPage[params.id] 
+
+		store.set({ nav: {
+			title: page.name
+		} }, false)
 	}
 })

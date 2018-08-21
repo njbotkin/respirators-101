@@ -1,20 +1,14 @@
-<div class="content">
-	<h1>{ title }</h1>
-
+<div id="content">
 	<div class="desc">{@html description }</div>
 
 	<ul class="links">
 		{#each children as item}
-
-		<li>
-
-			<a href="{ asr.makePath('app.categorycontent', { id: item.id, catid: catid }) }">
-				{item.title}
-				<div class="icon icon-angle-left"></div>
-			</a>
-
-		</li>
-
+			<li>
+				<a href="{ asr.makePath('app.categorycontent', { id: item.id, catid }) }">
+					{item.title}
+					<div class="icon icon-angle-left"></div>
+				</a>
+			</li>
 		{/each}
 	</ul>
 </div>
@@ -22,10 +16,6 @@
 <style>
 
 	@import 'colors';
-
-	h1 {
-		display: none;
-	}
 
 	.desc {
 		padding: 20px;

@@ -1,8 +1,6 @@
-<RedNavigation title="Acceptable Respirator Options" prev="back" prev_href="javascript:window.history.go(-1);">
-	<div class="content options-list">
-		<svelte:component this={component} />
-	</div>
-</RedNavigation>
+<div id=content class="options-list">
+	<svelte:component this={component} />
+</div>
 
 <style>
 
@@ -51,15 +49,3 @@
 	}
 
 </style>
-
-<script>
-
-	import RedNavigation from 'lib/RedNavigation.html'
-
-	export default {
-		components: {
-			RedNavigation
-		}
-	}
-
-</script>

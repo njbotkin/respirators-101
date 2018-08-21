@@ -5,7 +5,7 @@
 		<div class="left">
 			<div class="appname">Respirators 101</div>
 			<div class="main">
-				<Menu asr="{ asr }"></Menu>
+				<Menu {asr} />
 			</div>
 		</div>
 
@@ -22,13 +22,25 @@
 				<div class="nav-button close icon-close">close menu</div>
 				<div class="nav-button menu icon-menu">open menu</div>
 
-				<div class="title"><div class="inner">{ title }</div></div>
+				<div class="title"><div class="inner">{ $nav.title }</div></div>
 
 				<a class="nav-button home icon-home2" href="{ asr.makePath('app.home') }">go home</a>
 			</nav>
 
-			<div class="main">
-				<uiView></uiView>
+			{ #if $nav.sub }
+				<div class="rednav">
+						
+					{ #if $nav.sub.prev }<div class="prev"><a class="icon-chevron-circle-left" href="{ $nav.sub.prev }"><span class="text">Previous page</span></a></div>{ /if }
+
+					<div class="title"><div class="inner">{ $nav.sub.title }</div></div>
+
+					{ #if $nav.sub.next }<div class="next"><a class="icon-chevron-circle-right" href="{ $nav.sub.next }"><span class="text">Next page</span></a></div> { /if }
+
+				</div> 
+			{ /if }
+
+			<div class="main" id="aperture">
+				<uiView></uiView> 
 			</div>
 
 			<div id="domlog"></div>
@@ -57,8 +69,6 @@
 <script>
 
 	import Menu from 'lib/Menu.html'
-	import categories from 'data/categories.json'
-	import posts from 'data/posts.json'
 	import { store } from 'lib/storage.js'
 	import Job from './info/Job.html'
 
@@ -227,41 +237,19 @@
 				}
 			})
 
+
+			// would like to do this with CSS...
+			function adjustMainHeight() {
+				let rednav = document.querySelector('.rednav')
+				let height = (rednav ? rednav.getBoundingClientRect().height : 0) + 50
+				document.querySelector('#aperture').style.top = height + 'px'
+			}
+
+			window.addEventListener('resize', adjustMainHeight)
+			adjustMainHeight()
+
 			const stateChange = e => {
-				var params = e.params
-
-				if(e.state.name == 'app.categorycontent' || e.state.name == 'app.category') {
-					if(params.catid && categories[params.catid]) {
-						this.set({ title: categories[params.catid].title })
-					}
-				}
-
-				else if(e.state.name == 'app.content') {
-					if(params.id && posts[params.id]) {
-						this.set({ title: posts[params.id] })
-					}
-				}
-
-				else if(e.state.title) {
-					this.set({ title: e.state.title })
-				}
-
-				else {
-					this.set({ title: "" })
-				}
-
-				// back button for category contents
-				if(params.catid && params.id) {
-					this.set({ backButton: false })
-					this.set({ categoryParent: this._state.asr.makePath('app.category', { catid: params.catid }) })
-				} else if(e.state.route.slice(0, 9) === 'calculate' && e.state.route.length > 9) {
-					this.set({ backButton: true })
-					this.set({ categoryParent: false })
-				} else {
-					this.set({ backButton: false })
-					this.set({ categoryParent: false })
-				}
-
+				adjustMainHeight()
 				animate({x: -300, y: 0})
 				this.set({stateName: e.state.name})
 			}
@@ -273,7 +261,6 @@
 		data() {
 			return { 
 				shifted: false,
-				title: '',
 				inSelection: false,
 				stateName: null,
 				jobOpen: false,
@@ -385,6 +372,54 @@
 					}
 				}
 			}
+
+			.rednav {
+				position: relative;
+				background: $red4;
+				width:100%;
+
+				.title {
+					display: table;
+					color: #fff;
+					width: 100%;
+
+					.inner {
+						display: table-cell;
+						text-align: center;
+						font-family: "Roboto Condensed";
+						color: #fff;
+						padding: 10px 40px;
+						line-height: 20px;
+						vertical-align: middle;
+					}
+				}
+
+				.prev, .next {
+					position: absolute;
+					top: 50%;
+					margin-top: -20px;
+
+					a { 
+						padding: 0;
+						display: block;
+						width: 26px;
+						height: 26px;
+						text-align: center;
+						line-height: 26px;
+						color: #fff;
+						text-decoration: none;
+						font-size: 26px;
+						margin: 7px 10px;
+
+						.text {
+							text-indent: -9999px;
+							display: block;
+						}
+					}
+				}
+				.prev { left: 0; }
+				.next { right: 0; }
+			}
 		}
 
 		.bottom {
@@ -410,7 +445,6 @@
 			}
 		}
 	}
-
 
 	.main {
 		position: absolute;

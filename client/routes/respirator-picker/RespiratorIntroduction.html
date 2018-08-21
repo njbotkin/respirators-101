@@ -1,31 +1,24 @@
 <img src="images/Section-Banner-RSL.jpg" class="size-stretch banner" />
 
-<div class="content">
+<div id="content">
 
-<p>Don’t know which respirator to use?</p>
+	<p>Don’t know which respirator to use?</p>
 
-<p>The NIOSH Respirator Selection Logic can help. It provides a series of Yes/No questions to help you decide. </p>
+	<p>The NIOSH Respirator Selection Logic can help. It provides a series of Yes/No questions to help you decide. </p>
 
-<p>Before you start, you will need to know the name of the chemical you are working with and its concentration in the air at your worksite. Use the <a href="{ asr.makePath( 'app.chemicals' ) }">Chemical Lookup Tool</a> to find the chemical. Use the <a href="{ asr.makePath( 'app.info' ) }">My Info Tool</a> to input the concentration at your jobsite. </p>
+	<p>Before you start, you will need to know the name of the chemical you are working with and its concentration in the air at your worksite. Use the <a href="{ asr.makePath( 'app.chemicals' ) }">Chemical Lookup Tool</a> to find the chemical. Use the <a href="{ asr.makePath( 'app.info' ) }">My Info Tool</a> to input the concentration at your jobsite. </p>
 
-<p>For more information about the NIOSH Respirator Selection Logic see the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH website</a>.</p>
+	<p>For more information about the NIOSH Respirator Selection Logic see the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH website</a>.</p>
 
-<a class="start" href="{ asr.makePath( 'app.respirator-picker' ) }">Get Started</a>
+	<a class="start" href="{ asr.makePath( 'app.respirator-picker' ) }">Get Started</a>
 
-{ #if step }
-	<a class="start" href="{ asr.makePath( 'app.respirator-picker', {id: $job.RSLStep} ) }">Resume where you left off</a>
-{ /if }
-
+	{ #if step }
+		<a class="start" href="{ asr.makePath( 'app.respirator-picker', {id: $job.RSLStep} ) }">Resume where you left off</a>
+	{ /if }
 
 </div>
 
 <style>
-	
-	@import 'spacing';
-
-	.content {
-		padding: $padding/2 $padding;
-	}
 
 	.banner {
 		margin-bottom: 10px;

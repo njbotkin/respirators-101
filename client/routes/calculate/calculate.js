@@ -1,8 +1,13 @@
 import Calculate from './Calculate.html'
 
 export default () => ({
-	title: 'Calculate',
 	name: `app.calculate`,
 	route: `calculate`,
-	template: Calculate
+	template: Calculate,
+	activate(context) {
+		let store = context.domApi.store
+		store.set({ nav: {
+			title: 'Calculate'
+		} }, false)
+	}
 })

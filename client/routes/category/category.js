@@ -23,7 +23,6 @@ export default () => ({
 		}
 
 		return Promise.resolve({ 
-			title: category.title,
 			description: category.description,
 			catid: params.catid,
 			children: category.children.map(e => ({
@@ -32,4 +31,11 @@ export default () => ({
 			})) 
 		})
 	},
+	activate(context) {
+		const category = categories[context.parameters.catid]
+		let store = context.domApi.store
+		store.set({ nav: {
+			title: category.title
+		} }, false)
+	}
 })

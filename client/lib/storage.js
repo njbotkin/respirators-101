@@ -3,14 +3,17 @@
 var storage = localStorage
 
 import { Store } from 'svelte/store.js'
-import merge from 'deepmerge'
+import deepMerge from 'deepmerge'
 
 // Makes setting deep properties easier (eg. { job: { chemicalsScrollTop: chemicals.scrollTop } })
 class MergeStore extends Store {
 	constructor(schema) {
 		super(schema)
 	}
-	set(newState) {
+	set(newState, merge = true) {
+
+		if(!merge) return super.set(newState)
+
 		const oldState = this._state
 		const changed = this._changed = {}
 		let dirty = false
@@ -21,7 +24,7 @@ class MergeStore extends Store {
 		}
 		if (!dirty) return
 
-		this._set(merge(this._state, newState), changed)
+		this._set(deepMerge(this._state, newState), changed)
 	}
 }
 

@@ -1,31 +1,12 @@
-<RedNavigation title="{ prettyTitle }" prev="back" prev_href="{ asr.makePath('app.respirator-picker', {id: prev}) }">
-	<div class="respirator-picker">  
-		{@html html }
-	</div>
-</RedNavigation>
-
-<script>
-
-	export default {
-		components: {
-			RedNavigation: 'lib/RedNavigation.html'
-		}
-	}
-
-</script>
+<div id="content" class="respirator-picker">  
+	{@html html }
+</div>
 
 <style>
 
 	@import 'colors';
-	@import 'spacing';
 
 	:global(.respirator-picker) {
-		padding: calc($padding/2) $padding;
-
-		h2 {
-			display: none;
-		}
-
 		p {
 			font-size: 130%;
 			text-align: center;
@@ -35,7 +16,7 @@
 			margin: 40px auto;
 			padding: 0;
 			list-style-type: none;
-		}
+		} 
 
 		ul.answer-links li {
 			padding: 8px 0;

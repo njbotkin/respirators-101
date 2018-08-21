@@ -1,8 +1,13 @@
 import Contact from './Contact.html'
 
 export default () => ({
-	title: 'Contact Us',
 	name: `app.contact`,
 	route: `/contact`,
-	template: Contact
+	template: Contact,
+	activate(context) {
+		let store = context.domApi.store
+		store.set({ nav: {
+			title: 'Contact Us'
+		} }, false)
+	}
 })

@@ -8,7 +8,6 @@ import { store } from 'lib/storage.js'
 const { start, decisions } = decisionData
 
 export default ({ makePath }) => ({
-	title: 'Respirator Selection',
 	name: `app.respirator-picker`,
 	route: `/respirator-picker`,
 	template: RespiratorPicker,
@@ -35,9 +34,22 @@ export default ({ makePath }) => ({
 
 		return Promise.resolve({
 			html: replaceDecisionLinkUrls(passage.html, makePath),
-			title: passage.title,
-			prettyTitle: passage.title.match(/^([^<(:]+)/).pop(),
-			prev: passage.prev
 		})
 	},
+	activate(context) {
+
+		let store = context.domApi.store
+		let params = context.parameters
+		let makePath = context.domApi._state.asr.makePath
+
+		const passage = decisions[params.id]
+
+		store.set({ nav: {
+			title: 'Respirator Selection',
+			sub: {
+				title: passage.title.match(/^([^<(:]+)/).pop(),
+				prev: makePath('app.respirator-picker', {id: passage.prev})
+			}
+		} }, false)
+	}
 })
