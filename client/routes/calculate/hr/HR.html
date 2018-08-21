@@ -1,5 +1,5 @@
 
-<div id="content" class="description">
+<div id="content">
 	<p>A Hazard Ratio is used to determine if a respirator is required for work. If the ratio is greater than 1, then a respirator is required.</p>
 
 	<div class="equation">
@@ -83,9 +83,6 @@ import { number, round, unitsPretty } from 'lib/util.js'
 import { valueSources } from 'lib/storage.js'
 
 export default {
-	components: {
-		ExposureLimits: 'lib/ExposureLimits.html'
-	},
 	methods: {
 		setHR() {
 			let state = this.get()
@@ -114,11 +111,6 @@ export default {
 <style>
 
 	@import 'colors';
-
-	.description {
-		margin-top: 20px;
-		margin-bottom: 30px;
-	}
 
 	.save-value {
 		display: table;
