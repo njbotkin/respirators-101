@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="inner" ref:inner>
-		<slot></slot>
+		<div class="padding"><slot></slot></div>
 	</div>
 </div>
 
@@ -121,13 +121,14 @@
 		}
 	}
 
-	:global(.expand .inner) {
+	:global(.expand .inner .padding) {
+		padding: 0 0 20px 0;
 		p:first-child {
 			margin-top: 0;
 		}
-		/*p:last-child {
+		p:last-child {
 			margin-bottom: 0;
-		}*/
+		}
 	}
 
 </style>
