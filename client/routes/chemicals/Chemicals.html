@@ -217,8 +217,6 @@
 			},
 			saveEL(el) {
 				this.store.set({ job: { exposureLimit: el } })
-				this.store.set({ job: { samples: false } }) // old samples invalid 
-				this.store.set({ job: { samples: [] } }) // not sure why this is necessary, don't feel like investigating
 				this.set({ ELModal: false })
 			}
 		}

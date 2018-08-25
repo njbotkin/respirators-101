@@ -1,0 +1,41 @@
+{ #if Object.keys($job.warnings).length }
+	<div class="warnings">
+		<div class="resolve">Resolve these:</div>
+		<ul>
+			{ #each Object.entries($job.warnings) as [id, warning] }
+				<li class="warning {id}">{@html warning }</li>		
+			{ /each }
+		</ul>
+	</div>
+{ /if }
+
+<style>
+	@import 'colors';
+
+	.warnings {
+		background: $red3;
+		padding: 10px;
+		color: #fff;
+		font-size: 90%;
+		max-width: 400px;
+		margin: 20px auto;
+
+		.resolve {
+			text-transform: uppercase;
+			font-size: 90%;
+			font-weight: bold;
+			letter-spacing: 0.1rem;
+		}
+
+		ul {
+			padding-left: 20px;
+			margin: 0;
+		}
+
+		.warning {
+			margin: 10px 0;
+			background: #f00;
+			padding: 5px;
+		}
+	}
+</style>

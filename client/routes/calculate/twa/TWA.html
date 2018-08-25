@@ -43,68 +43,74 @@
 { #if $job.exposureLimit.value }
 
 	<div class="samples">
-		<table>
-			<thead>
-				<tr>
-					<th></th><th>{ @html unitsPretty[$job.exposureLimit.unit] } <br>Measured</th><th></th><th>{ timeUnit } <br>Represented</th><th></th><th>{ @html unitsPretty[$job.exposureLimit.unit] }-<br>{ timeUnit }</th><th></th>
-				</tr>
-			</thead>
-			<tbody>
 
-			{ #each $job.samples as sample, i }
-				<tr class="sample">
-					<td><label><span class="optional">Sample </span>{i + 1}</label></td>
-					<td><input type="number" bind:value="sample.value" placeholder="0" /></td>
-					<td>&#215;</td>
-					<td><input type="number" bind:value="sample.period" placeholder="0" /></td>
-					<td>=</td>
-					<td><div class="result">{ round(sampleProducts[i] / timeUnitMultiplier) }</div></td>
-					<td><div class="removeSample" on:click="removeSample(i)">&#215;</div></td>
-				</tr>
-			{ /each }
-				
-			</tbody>
-		</table>
+		{ #if $job.twa.unit }
+			<table>
+				<thead>
+					<tr>
+						<th></th><th>{ @html unitsPretty[$job.twa.unit] } <br>Measured</th><th></th><th>{ $job.exposureLimit.timeUnit } <br>Represented</th><th></th><th>{ @html unitsPretty[$job.twa.unit] }-<br>{ $job.exposureLimit.timeUnit }</th><th></th>
+					</tr>
+				</thead>
+				<tbody>
+
+				{ #each $job.twa.samples as sample, i }
+					<tr class="sample">
+						<td><label><span class="optional">Sample </span>{i + 1}</label></td>
+						<td><input type="number" bind:value="sample.value" placeholder="0" /></td>
+						<td>&#215;</td>
+						<td><input type="number" bind:value="sample.period" placeholder="0" /></td>
+						<td>=</td>
+						<td><div class="result">{ round($job.twa.sampleProducts[i] / $job.exposureLimit.timeUnitMultiplier) }</div></td>
+						<td><div class="removeSample" on:click="removeSample(i)">&#215;</div></td>
+					</tr>
+				{ /each }
+					
+				</tbody>
+			</table>
+		{ /if }
 
 		<div style="text-align: center"><div class="addSample" on:click="addSample()">[ Add sample + ]</div></div>
+
+		{ #if $job.warnings['unit-mismatch'] }
+			<div class="convert-units">
+				Click here to convert your {@html unitsPretty[$job.twa.unit] } measurements to {@html unitsPretty[$job.exposureLimit.unit] } measurements: 
+				<div class="button convert" on:click="$set({ job: { twa: { unit: $job.exposureLimit.unit } } })">Convert Units</div>
+			</div>
+		{ /if }
 	</div>
 
-	{ #if $job.samples.length > 0 && validSamples.length === $job.samples.length && (totalMinutes > $job.exposureLimit.duration || totalMinutes < $job.exposureLimit.duration) }
-		<div class="wrong-hours">The total { timeUnit } of the samples you've entered is { totalMinutes > $job.exposureLimit.duration ? 'greater' : 'less' } than the measurement period of the selected exposure limit ({$job.exposureLimit.duration / timeUnitMultiplier} { timeUnit }).</div>
-	{ /if }
+	<Warnings />
 
-	<div class="save-value live{ $job.twa == twa }">
+	{ #if $job.twa.final }
+		<div class="save-value livetrue">
+			<div class="legend-cont"><div class="legend">TWA</div></div>
 
-		<div class="legend-cont"><div class="legend">TWA</div></div>
+			<div class="equation">
 
-		<div class="equation">
+				<div class="operand">
+					<div class="value">{ round($job.twa.totalValueMinutes / $job.exposureLimit.timeUnitMultiplier) }</div>
+					<div class="unit">Total <br>{ @html unitsPretty[$job.twa.unit] }-{ $job.exposureLimit.timeUnit }</div>
+				</div>
 
-			<div class="operand">
-				<div class="value">{ round(totalValueMinutes / timeUnitMultiplier) }</div>
-				<div class="unit">Total <br>{ @html unitsPretty[$job.exposureLimit.unit] }-{ timeUnit }</div>
+				<div class="operator">&#247;</div>
+
+				<div class="operand">
+					<div class="value">{ round($job.twa.totalMinutes / $job.exposureLimit.timeUnitMultiplier) }</div>
+					<div class="unit">Total <br>{ $job.exposureLimit.timeUnit }</div>
+				</div>
+
+				<div class="operator">=</div>
+
+				<div class="operand">
+					<div class="value">{ round($job.twa.final) }</div>
+					<div class="unit">TWA</div>
+				</div>
+
 			</div>
 
-			<div class="operator">&#247;</div>
-
-			<div class="operand">
-				<div class="value">{ round(totalMinutes / timeUnitMultiplier) }</div>
-				<div class="unit">Total <br>{ timeUnit }</div>
-			</div>
-
-			<div class="operator">=</div>
-
-			<div class="operand">
-				<div class="value">{ round(twa) }</div>
-				<div class="unit">TWA</div>
-			</div>
-
+			<div class="button-cont"><div class="button"> Current TWA  </div></div>
 		</div>
-
-		<div class="button-cont"><div class="button valid{ valid }" on:click="setTWA()"> { $job.twa == twa ? 'Current' : 'Save' } TWA  </div></div>
-
-	</div>
-
-	<!-- <div class="button valid{ valid } useTWA"> Use TWA </div> -->
+	{ /if }
 
 { :else }
 
@@ -117,60 +123,38 @@
 
 <script>
 
-import { number, round, unitsPretty } from 'lib/util.js'
+import { round, unitsPretty } from 'lib/util.js'
 import { valueSources } from 'lib/storage.js'
 
 export default {
 	components : {
-		ExposureLimits: 'lib/ExposureLimits.html'
+		ExposureLimits: 'lib/ExposureLimits.html',
+		Warnings: 'lib/Warnings.html'
 	},
 	oncreate() {
-		let samples = this.store.get().job.samples
+		let samples = this.store.get().job.twa.samples
 		if(samples.length === 0) {
 			samples.push({
 				value: '',
 				period: ''
 			})
 		}
-		this.store.set({ job: { samples } })
+		this.store.set({ job: { twa: { samples } } })
 	},
 	methods: {
 		addSample() {
-			let samples = this.store.get().job.samples
+			let samples = this.store.get().job.twa.samples
 			samples.push({
 				value: '',
 				period: ''
 			})
-			this.store.set({ job: { samples } })
+			this.store.set({ job: { twa: { samples } } })
 		},
 		removeSample(i) {
-			let samples = this.store.get().job.samples
+			let samples = this.store.get().job.twa.samples
 			samples.splice(i, 1)
-			this.store.set({ job: { samples } })
-		},
-		setTWA() {
-			let state = this.get()
-			if(state.valid) {
-				this.store.set({ job: { twa: state.twa } })
-			}
+			this.store.set({ job: { twa: { samples } } })
 		}
-	},
-	computed: {
-		timeUnitMultiplier: ({ $job }) => ($job.exposureLimit.duration && $job.exposureLimit.duration > 15) ? 60 : 1,
-		timeUnit: ({ timeUnitMultiplier }) => timeUnitMultiplier == 1 ? 'Minutes' : 'Hours',
-		validSamples: ({ $job }) => $job.samples.filter(s => !!(number(s.value) && number(s.period))),
-		sampleProducts: ({ $job, timeUnitMultiplier }) => $job.samples.map(s => (number(s.value) && number(s.period)) ? number(s.value) * (number(s.period) * timeUnitMultiplier) : 0),
-		valid: ({ sampleProducts, totalMinutes, $job, twa }) => { 
-			if(totalMinutes > $job.exposureLimit.duration || totalMinutes < $job.exposureLimit.duration) return false
-			for(var t of sampleProducts) { 
-				if(t === 0) return false
-			} 
-			if(twa === Infinity) return false
-			return true;
-		},
-		totalValueMinutes: ({ sampleProducts }) => sampleProducts.reduce((a, t) => a + t, 0),
-		totalMinutes: ({ validSamples, timeUnitMultiplier }) => validSamples.reduce((a, s) => number(s.period) ? a + (number(s.period) * timeUnitMultiplier) : a, 0),
-		twa: ({ totalValueMinutes, totalMinutes }) => (totalValueMinutes / totalMinutes) || 0 
 	},
 	helpers: {
 		round
@@ -284,20 +268,18 @@ export default {
 		}
 	}
 
-	h3 {
-		text-align: center;
+	.convert-units {
+		max-width: 400px;
+	    display: block;
+	    font-size: 90%;
+	    margin-top: 10px;
 	}
 
-	.wrong-hours {
-		background: $red3;
-		color: #fff;
-		padding: 15px;
-		font-size: 80%;
-		margin-top: 15px;
-
-		a {
-			color: #fff;
-		}
+	.button.convert {
+		background: $blue2;
+		line-height: 30px;
+		padding: 0 10px;
+		margin-left: 3px;
 	}
 
 	.save-value, .read-value {

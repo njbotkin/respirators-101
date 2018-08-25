@@ -24,6 +24,8 @@
 	</div>
 	<div class="content">
 
+		<Warnings />
+
 		<div class="read-value live{job.id == $job.id }">
 			<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
 				{ #if job.exposureLimit.value }
@@ -36,10 +38,10 @@
 
 		<div class="read-value live{job.id == $job.id }">
 			<div class="legend-cont"><div class="legend"> TWA </div></div>
-				{ #if job.twa }
+				{ #if job.twa.final }
 					<div class="representation">
-						{ round(job.twa) }
-						<div class="unit">{ @html unitsPretty[job.exposureLimit.unit] }</div>
+						{ round(job.twa.final) }
+						<div class="unit">{ @html unitsPretty[job.twa.unit] }</div>
 					</div>
 				{ :else }
 					No TWA set yet!
@@ -57,8 +59,6 @@
 			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['hr']) }"> Edit </a></div>
 		</div>
 
-		{ #if job.chemical }<Chemical c="{ job.chemical }"></Chemical>{ /if }
-
 	</div>
 
 	{ #if !only }
@@ -75,16 +75,14 @@
 
 <script>
 
-	import Chemical from 'lib/Chemical.html'
-	import ExposureLimits from 'lib/ExposureLimits.html'
 	import date from 'date-and-time'
 	import { valueSources } from 'lib/storage.js'
 	import { round, unitsPretty } from 'lib/util.js'
 
 	export default {
 		components: {
-			Chemical,
-			ExposureLimits
+			ExposureLimits: 'lib/ExposureLimits.html',
+			Warnings: 'lib/Warnings.html'
 		},
 		helpers: {
 			date: (d) => date.format(new Date(d), 'MMM D, YYYY', true),
