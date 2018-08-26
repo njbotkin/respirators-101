@@ -1,4 +1,4 @@
-{ #if Object.keys($job.warnings).length }
+{ #if $job.warnings && Object.keys($job.warnings).length }
 	<div class="warnings">
 		<div class="resolve">Resolve these:</div>
 		<ul>
@@ -19,6 +19,10 @@
 		font-size: 90%;
 		max-width: 400px;
 		margin: 20px auto;
+
+		@media (max-width: 400px) {
+			margin: 10px auto;
+		}
 
 		.resolve {
 			text-transform: uppercase;

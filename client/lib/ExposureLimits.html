@@ -72,45 +72,65 @@
 { /if }
 
 { #if exposureLimit }
-	<div class="property form"> 
-		<div class="label">{ formsPretty[exposureLimit.formKey] }</div>
-		<div class="value">
 
-			<div class="property standard">
-				<div class="label">{ standardsPretty[exposureLimit.standardKey] }</div>
-				<div class="value property-list">
+	{ #if exposureLimit.manual }
 
-					<div class="property duration">
-						<div class="label">{ durationsPretty[exposureLimit.durationKey] }</div>
-						<div class="value">
+		<div class="lone property">
+			<div class="value">
 
-							{ humanTime(exposureLimit.duration) }
+				{ humanTime(exposureLimit.duration) }
 
-							<div class="representation select-el EL">
-								{ exposureLimit.value }
-								<div class="unit">{ @html unitsPretty[exposureLimit.unit] }</div>
-							</div>
-
-						</div>
-					</div>
-
+				<div class="representation select-el EL">
+					{ exposureLimit.value }
+					<div class="unit">{ @html unitsPretty[exposureLimit.unit] }</div>
 				</div>
+
 			</div>
-
 		</div>
-	</div>
-	<br>
 
-	{ #if exposureLimit.idlh }
-		<div class="property inline" style="padding: 0; margin: 0">
-			<div class="label">IDLH</div>
-			<div class="value">{ @html exposureLimit.idlh }</div>
-			<div class="notes">{ @html exposureLimit.idlh_notes }</div>
+	{ :else }
+
+		<div class="property form"> 
+			<div class="label">{ formsPretty[exposureLimit.formKey] }</div>
+			<div class="value">
+
+				<div class="property standard">
+					<div class="label">{ standardsPretty[exposureLimit.standardKey] }</div>
+					<div class="value property-list">
+
+						<div class="property duration">
+							<div class="label">{ durationsPretty[exposureLimit.durationKey] }</div>
+							<div class="value">
+
+								{ humanTime(exposureLimit.duration) }
+
+								<div class="representation select-el EL">
+									{ exposureLimit.value }
+									<div class="unit">{ @html unitsPretty[exposureLimit.unit] }</div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
 		</div>
-	{ /if }
+		<br>
 
-	{ #if exposureLimit.eye }
-		<div class="eye">Eye irritant</div>
+		{ #if exposureLimit.idlh }
+			<div class="property inline" style="padding: 0; margin: 0">
+				<div class="label">IDLH</div>
+				<div class="value">{ @html exposureLimit.idlh }</div>
+				<div class="notes">{ @html exposureLimit.idlh_notes }</div>
+			</div>
+		{ /if }
+
+		{ #if exposureLimit.eye }
+			<div class="eye">Eye irritant</div>
+		{ /if }
+
 	{ /if }
 
 { /if }

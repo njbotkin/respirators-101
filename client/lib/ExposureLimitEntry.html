@@ -1,0 +1,92 @@
+<div class="property">
+	<div class="label">Exposure Limit</div>
+	<input type="number" bind:value="value" />
+	<ButtonSelect options="{ unitsPretty }" bind:value="unit" />
+</div>
+
+<div class="property">
+	<div class="label">Measurement Duration</div>
+	{ #if timeUnit }
+		<input type="number" bind:value="duration" />
+	{ /if}
+	<ButtonSelect options="{ timeUnits }" bind:value="timeUnit" />
+</div>
+
+<div style="text-align: right"><div class="button { valid && 'valid' }" on:click='save()'>Save</div></div>
+
+<script>
+
+	import { number, unitsPretty } from 'lib/util.js'
+	let timeUnits = {
+		'Hours': 'Hours',
+		'Minutes': 'Minutes'
+	}
+
+	export default {
+		components: {
+			ButtonSelect: 'lib/ButtonSelect.html'
+		},
+		data: () => ({
+			unitsPretty,
+			timeUnits
+		}),
+		oncreate() {
+			this.set( this.store.get().job.exposureLimit )
+		},
+		onstate({current, changed, previous}) {
+			if(changed.timeUnit && previous.timeUnit) {
+				if(current.timeUnit == 'Hours') {
+					current.duration /= 60
+				} else {
+					current.duration *= 60
+				}
+				this.set( current )
+			}
+		},
+		computed: {
+			valid: ({ duration, value, unit }) => {
+				if(!number(duration) || !number(value) || !unit) return false
+				return true
+			}
+		},
+		methods: {
+			save() {
+				let { valid, unit, duration, value, timeUnit } = this.get()
+				if(!valid) return
+				if(timeUnit == 'Hours') duration *= 60
+				this.store.set({ job: { exposureLimit: { unit, duration, value, manual: true } }, editEL: false })
+			}
+		}
+	}
+
+</script>
+
+<style>
+
+	@import 'colors';
+	
+	.property {
+		display: block;
+		padding: 0;
+		margin: 10px 0;
+
+		input {
+			line-height: 30px;
+			padding: 0 8px;
+			width: 50px;
+			font-size: 120%;
+			font-family: 'Open Sans';
+		}
+	}
+
+	.button {
+		cursor: default;
+
+		&.valid {
+			cursor: pointer;
+			background: $blue2;
+		}
+	}
+
+</style>
+

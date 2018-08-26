@@ -216,6 +216,7 @@
 				}
 			},
 			saveEL(el) {
+				el.manual = false
 				this.store.set({ job: { exposureLimit: el } })
 				this.set({ ELModal: false })
 			}

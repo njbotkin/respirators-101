@@ -33,10 +33,10 @@
 				{ :else }
 					No exposure limit selected yet!
 				{ /if }
-			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['exposureLimit']) }"> Edit </a></div>
+			<div class="button-cont"><div class="button edit" on:click="$set({ editEL: true })"> Edit </div></div>
 		</div>
 
-		<div class="read-value live{job.id == $job.id }">
+		<div class="read-value live{job.id == $job.id }" style="text-align: center">
 			<div class="legend-cont"><div class="legend"> TWA </div></div>
 				{ #if job.twa.final }
 					<div class="representation">
@@ -206,6 +206,10 @@
 		    display: inline-block;
 		    width: 100px;
 		}*/
+
+		.read-value {
+			margin: 10px 0;
+		}
 	}
 
 </style>

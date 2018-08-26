@@ -52,6 +52,7 @@
 			{ /if }
 
 			<div class="button current-job visible{ /app\.((calculate\-)|(respirator\-)|(chemicals))/.test(stateName) }"> Current Job </div>
+
 		</div>
 
 		<div class="bottom">
@@ -64,18 +65,35 @@
 
 	</div>
 
+	<Modal bind:show="$editEL">
+		{ #if manualELEdit }
+			<ExposureLimitEntry />
+		{ :else }
+			<p>Would you like to select an exposure limit via the Chemical Tool, or enter it manually?</p>
+
+			<div class="buttons editEL">
+				<a class="button chemtool" href="{ asr.makePath('app.chemicals') }" on:click="$set({ editEL: false })">Chemical Tool</a>
+				<div class="button manual" on:click="set({ manualELEdit: true })">Manually</div>
+			</div>
+		{ /if }
+	</Modal>
+
 </div>
 
 <script>
 
-	import Menu from 'lib/Menu.html'
 	import { store } from 'lib/storage.js'
-	import Job from './info/Job.html'
 
 	export default {
 		components: {
-			Menu,
-			Job
+			Menu: 'lib/Menu.html',
+			Job: './info/Job.html',
+			Modal: 'lib/Modal.html',
+			ExposureLimitEntry: 'lib/ExposureLimitEntry.html'
+		},
+		onstate({current}) {
+			let manualELEdit = current.$editEL ? current.manualELEdit : 0
+			this.set({ manualELEdit })
 		},
 		store: () => store,
 		oncreate () {
@@ -272,6 +290,11 @@
 		max-width: 800px;
 		margin: 0 auto;
 		overflow:hidden;
+
+		/* modal */
+		:global(> .fixed) {
+			left: 0;
+		}
 	}
 
 	.wrapper {
@@ -508,5 +531,13 @@
 		bottom: 0;
 		z-index: 1000;
 	}
+
+	.buttons.editEL {
+		text-align: right;
+
+		.chemtool { background: $red2; }
+		.manual { background: $blue2; }
+	}
+
 
 </style>

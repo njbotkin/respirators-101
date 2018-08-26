@@ -1,0 +1,33 @@
+<span class="option target { value === id && 'active' }">
+	<div class="name" on:click="set({ value: id })">{@html name }</div>
+</span>
+
+<style>
+
+	@import 'colors';
+	
+	.option {
+		margin: 5px;
+		display: inline-block;
+		user-select: none;
+		box-sizing: border-box;
+		background: #fff;
+		border: 2px solid #eee;
+
+		&.active {
+			border-color: $blue2;
+			color: $blue2;
+			font-weight: bold;
+			letter-spacing: -.5px;
+		}
+
+		.name {
+			padding: 0 15px;
+			line-height: 48px;
+			text-align: center;
+			cursor: pointer;
+			display: block;
+		}
+	}
+
+</style>

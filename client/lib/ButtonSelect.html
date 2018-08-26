@@ -1,0 +1,19 @@
+<div class="select">
+	{ #each Object.entries(options) as [id, name] }
+		<Option {id} {name} bind:value="value"></Option>
+	{ /each } 
+</div>
+
+<script>
+	export default {
+		components: {
+			Option: './Option.html'
+		}
+	}
+</script>
+
+<style>
+	.select {
+		display: inline-block;
+	}
+</style>

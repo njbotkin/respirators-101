@@ -37,7 +37,7 @@
 		No exposure limit selected yet!
 	{ /if }
 
-	<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['exposureLimit']) }"> Edit </a></div>
+	<div class="button-cont"><div class="button edit" on:click="$set({ editEL: true })"> Edit </div></div>
 </div>
 
 { #if $job.exposureLimit.value }
