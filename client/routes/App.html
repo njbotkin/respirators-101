@@ -1,6 +1,8 @@
+<svelte:window bind:innerHeight="windowHeight" />
+
 <div class="maxwidth">
 
-	<div class="wrapper shifted{ shifted }">
+	<div class="wrapper { sidebarOpen && 'sidebarOpen' } { jobOpen && 'jobOpen' }" style="transform: translate({ wrapperX }px, 0)">
 
 		<div class="left">
 			<div class="appname">Respirators 101</div>
@@ -10,7 +12,7 @@
 		</div>
 
 		<div class="right">
-			<div class="elsewhere"></div>
+			<div class="elsewhere" on:click="set({ sidebarOpen: false, jobOpen: false })"></div>
 
 			<nav>
 				{ #if categoryParent }
@@ -20,7 +22,7 @@
 				{ /if }
 
 				<div class="nav-button close icon-close">close menu</div>
-				<div class="nav-button menu icon-menu">open menu</div>
+				<div class="nav-button menu icon-menu" on:click="set({ sidebarOpen: true })">open menu</div>
 
 				<div class="title"><div class="inner">{ $nav && $nav.title }</div></div>
 
@@ -39,30 +41,26 @@
 				</div> 
 			{ /if }
 
-			<div class="main" id="aperture" style="top: { (($nav && $nav.sub) ? redNavHeight : 0) + 50 }px">
+			<div class="main" id="aperture" style="top: { apertureMarginTop }px; padding-bottom: { showResumeSelectionButton || showCurrentJobButton ? 20 : 0 }px">
 				<uiView></uiView> 
 			</div>
 
 			<div id="domlog"></div>
 
-			{ #if $job.RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list')  }
-			<a class="button in-selection" href="{ asr.makePath('app.respirator-picker', {id: $job.RSLStep})}">
-				Resume Respirator Selection
-			</a>
+			{ #if showResumeSelectionButton }
+				<a class="button in-selection" href="{ asr.makePath('app.respirator-picker', {id: $job.RSLStep})}">
+					Resume Respirator Selection
+				</a>
 			{ /if }
-
-			<div class="button current-job visible{ /app\.((calculate\-)|(respirator\-)|(chemicals))/.test(stateName) }"> Current Job </div>
-
-		</div>
-
-		<div class="bottom">
 			
-			<div class="job" bind:offsetHeight="jobHeight">
-				<Job bind:job="$job" {asr} only="true" />
+			<div class="job" bind:offsetHeight="jobHeight" id="job" style="transform: translate(0, { jobY }px)">
+				<div class="button current-job { showCurrentJobButton && 'visible' }" ref:currentJobButton on:click="set({ jobOpen: !jobOpen })"> Current Job </div>
+				<div class="inner" style="max-height: { jobMaxHeight }px;">
+					<Job bind:job="$job" {asr} only="true" />
+				</div>
 			</div>
 
 		</div>
-
 	</div>
 
 	<Modal bind:show="$editEL">
@@ -91,9 +89,19 @@
 			Modal: 'lib/Modal.html',
 			ExposureLimitEntry: 'lib/ExposureLimitEntry.html'
 		},
-		onstate({current}) {
+		onstate({current, changed}) {
 			let manualELEdit = current.$editEL ? current.manualELEdit : 0
 			this.set({ manualELEdit })
+
+			if(changed.windowHeight || changed.apertureMarginTop) {
+				let jobMaxHeight = current.windowHeight - current.apertureMarginTop - this.refs.currentJobButton.offsetHeight
+				this.set({ jobMaxHeight })
+			}
+		},
+		computed: {
+			apertureMarginTop: ({ $nav, redNavHeight }) => (($nav && $nav.sub) ? redNavHeight : 0) + 50,
+			showCurrentJobButton: ({ stateName }) => !/app\.((calculate-)|(respirator-)|(chemicals))/.test(stateName),
+			showResumeSelectionButton: ({ $job, stateName }) => $job.RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list')
 		},
 		store: () => store,
 		oncreate () {
@@ -104,14 +112,6 @@
 			// 	document.getElementById('domlog').appendChild(div)
 			// }
 
-			const wrapper = document.querySelector('.wrapper')
-			wrapper.next = {x: -300, y: 0}
-
-			var animationStarted = 0
-			var start = {x: 0, y: 0}
-			var end = {x: 0, y: 0}
-			var animationDuration = 250 // quarter second
-
 			function direction({x, y}) {
 				let threshold = 1 // pixels (arbitrary)
 				if(x - Math.abs(y) > threshold) return 'right'
@@ -120,17 +120,11 @@
 				else if(Math.abs(y) - Math.abs(x) > threshold) return 'up'
 			}
 
-			function animate(e) {
-				start = {x: wrapper.x, y: wrapper.y}
-				end = e
-				animationStarted = Date.now()
-			}
-
 			var prev = false, initialDirection = false, movement = {}
 
-			window.addEventListener('touchstart', () => prev = true)
-			window.addEventListener('touchend', () => up())
-			window.addEventListener('touchcancel', () => up())
+			window.addEventListener('touchstart', () => prev = true )
+			window.addEventListener('touchend', () => up() )
+			window.addEventListener('touchcancel', () => up() )
 
 			const up = () => {
 				prev = false
@@ -139,102 +133,59 @@
 				if(movement.x == 0 && movement.y == 0)  return
 
 				let latestDirection = direction(movement)
+				let { wrapperX } = this.get()
 
-				if(wrapper.y == 0) { //sidebar
-					if(latestDirection == 'right') animate({x: 0, y: 0}) // open
-					else if(latestDirection == 'left') animate({x: -300, y: 0}) // closed
-					else animate({x: wrapper.x > -150 ? 0 : -300, y: 0}) // either side of halfway
-				} else {
-					// current job
-					let height = this.get().jobHeight
-					if(latestDirection == 'up') animate({x: -300, y: -height}) // open
-					else if(latestDirection == 'down') animate({x: -300, y: 0}) // closed
-					else animate({x: -300, y: wrapper.y > -height/2 ? 0 : -height}) // either side of halfway
-				}
+				if(latestDirection == 'right') this.set({ sidebarOpen: true })
+				else if(latestDirection == 'left') this.set({ sidebarOpen: false })
+				else this.set({ sidebarOpen: wrapperX > -150 }) // either side of halfway
+
 				movement = {x:0, y:0}
 			}
 
-			document.querySelector('.elsewhere').addEventListener('click', () => {
-				animate({x: -300, y: 0})
-			})
-
-			document.querySelector('.menu.icon-menu').addEventListener('click', () => {
-				animate({x: 0, y: 0})
-			})
-
-			document.querySelector('.current-job').addEventListener('click', () => {
-				let height = this.get().jobHeight
-				animate({x: -300, y: -height})
-			})
-
 			window.addEventListener('touchmove', e => {
 				e.stopPropagation()
-
-				let target = e.touches ? e.touches[0] : e
-				let { clientX, clientY } = target
+				let event = e.touches ? e.touches[0] : e
 
 				// first move
  				if(prev === true) {
  					initialDirection = false
-					prev = { x: clientX, y: clientY }
+					prev = event
 					return
 				}
-				movement.x = clientX - prev.x
-				movement.y = clientY - prev.y
-
-				prev = { x: clientX, y: clientY }
+				movement.x = event.clientX - prev.clientX
+				movement.y = event.clientY - prev.clientY
+				prev = event
 
 				if(!initialDirection) initialDirection = direction(movement)
 
+				let { wrapperX } = this.get()
+
 				// drag around
-				if(wrapper.y == 0) { //sidebar
-					if(initialDirection == 'right' || initialDirection == 'left') {
-						wrapper.next = { x: Math.max(Math.min(wrapper.x + movement.x, 0), -300), y: 0 }
-					}
-				} else { // current job
-					if(initialDirection == 'down' || initialDirection == 'up') {
-						let height = this.get().jobHeight
-						wrapper.next = { x: -300, y: Math.max(Math.min(wrapper.y + movement.y, 0), -height) }
-					}
+				if(initialDirection == 'right' || initialDirection == 'left') {
+					this.set({ wrapperX: Math.max(Math.min(wrapperX + movement.x, 0), -300) })
 				}
 			})
 
-  			const easeOutCubic = function (t) { return (--t)*t*t+1 } 
+			const closeTo = (a, b) => a > (b-.1) && a < (b+.1)
+			const snapTo = (a, b) => closeTo(a, b) ? b : a
 
 			const renderSlide = () => {
 
-				if(wrapper.next.x != wrapper.x || wrapper.next.y != wrapper.y) {
-					// manual movement
-				} else if(!prev && (wrapper.x != end.x || wrapper.y != end.y) && (start.x !== end.x || start.y !== end.y)) {
-					// animation in progress
+				let { wrapperX, jobY, sidebarOpen, jobOpen, jobHeight } = this.get()
 
-					let animationElapsed = (Date.now() - animationStarted) / animationDuration
+				let target = sidebarOpen ? 0 : -300
+				if(!prev && target !== wrapperX) wrapperX += (target - wrapperX) * .3
 
-					let ease = animationElapsed < 1 ? easeOutCubic(animationElapsed) : 1
-					let move = {
-						x: (end.x - start.x) * ease,
-						y: (end.y - start.y) * ease
-					}
-					wrapper.next = {x: start.x + move.x, y: start.y + move.y}
-				} else {
-					return // nothing to do
-				}
+				wrapperX = snapTo(wrapperX, -300)
+				wrapperX = snapTo(wrapperX, 0)
 
-				if(wrapper.next.x != -300 || wrapper.next.y !== 0) {
-					this.set({shifted: true})
-				} else {
-					this.set({shifted: false})
-				}
+				let target2 = jobOpen ? -jobHeight : 0
+				if(target2 !== jobY) jobY += (target2 - jobY) * .3
 
-				if(wrapper.next.x !== wrapper.x || wrapper.next.y !== wrapper.y) {
-					let {x, y} = wrapper.next
-					let value = `translate(${x}px, ${y}px)`
-					wrapper.style.cssText = `
-						-webkit-transform: ${value};
-						transform: ${value};`
-					wrapper.x = x
-					wrapper.y = y
-				}
+				jobY = snapTo(jobY, -jobHeight)
+				jobY = snapTo(jobY, 0)
+
+				this.set({ wrapperX, jobY })
 			}
 
 			function render() {
@@ -255,10 +206,7 @@
 				}
 			})
 
-			const stateChange = e => {
-				animate({x: -300, y: 0})
-				this.set({stateName: e.state.name})
-			}
+			const stateChange = e => this.set({ stateName: e.state.name, sidebarOpen: false, jobOpen: false })
 
 			// captures event from router
 			this.on('stateChange', stateChange)
@@ -266,11 +214,8 @@
 		},
 		data() {
 			return { 
-				shifted: false,
-				inSelection: false,
-				stateName: null,
-				jobOpen: false,
-				jobHeight: 0
+				jobY: 0,
+				wrapperX: -300
 			}
 		}
 	}
@@ -304,6 +249,16 @@
 		bottom: 0;
 		left: 0;
 		width: calc(100% + 300px);
+
+		.main {
+			position: absolute;
+			top: 50px;
+			right: 0;
+			left:0;
+			bottom: 0;
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
 
 		.left {
 			position: absolute;
@@ -431,23 +386,68 @@
 				.prev { left: 0; }
 				.next { right: 0; }
 			}
+
+			.job {
+				position: absolute;
+				top: 100%;
+				left: 0;
+				right: 0;
+				background: #fff;
+				z-index: 4;
+
+				.current-job {
+					position: absolute;
+					top: -40px;
+					right: 0;
+					margin: 0;
+					display: none;
+					background: $green; 
+					z-index: 2;
+					padding-left: 42px;
+				    background-image: url(icons/my-info.png);
+				    background-size: 25px;
+				    background-position: 8px center;
+				    background-repeat: no-repeat;
+
+				    @media (max-width: 400px) {
+						top: -30px;
+				    	line-height: 30px;
+				    	padding: 0 8px 0 36px;
+				    	background-size: 20px;
+				    	font-size: 70%;
+				    }
+
+				    &.visible {
+				    	display:block;
+				    }
+
+				    &:active {
+				    	bottom: auto;
+				    }
+				}
+
+				.inner {
+					overflow: auto;
+				}
+			}
 		}
 
-		.bottom {
-			position: absolute;
-			top: 100%;
-			left: 300px;
-			right: 0;
-			background: #fff;
+		&.jobOpen, &.sidebarOpen {
+			.elsewhere {
+				display: block;
+			}
 		}
 
-		&.shiftedtrue {
+		&.jobOpen {
+			.job {
+				box-shadow: 0px 0px 40px 0px #00000066;
+			}
+		}
 
+		&.sidebarOpen {
 			.right {
 				box-shadow: 0px 0px 40px 0px #00000066;
-				.elsewhere {
-					display: block;
-				}
+				
 				nav {
 					.close {
 						z-index: 1;
@@ -455,17 +455,6 @@
 				}
 			}
 		}
-	}
-
-	.main {
-		position: absolute;
-		top: 50px;
-		right: 0;
-		left:0;
-		bottom: 0;
-		overflow-y: auto;
-		overflow-x: hidden;
-		padding-bottom: 60px;
 	}
 
 	.appname {
@@ -498,31 +487,6 @@
 	    	padding: 8px 10px 8px 38px;
 	    	background-size: 20px;
 	    	font-size: 70%;
-	    }
-	}
-	.current-job {
-		margin: 0;
-		display: none;
-		background: $green; 
-		position: absolute;
-		bottom: 0;
-		right: 0;
-		z-index: 2;
-		padding-left: 42px;
-	    background-image: url(icons/my-info.png);
-	    background-size: 25px;
-	    background-position: 8px center;
-	    background-repeat: no-repeat;
-
-	    @media (max-width: 400px) {
-	    	line-height: 30px;
-	    	padding: 0 8px 0 36px;
-	    	background-size: 20px;
-	    	font-size: 70%;
-	    }
-
-	    &.visibletrue {
-	    	display:block;
 	    }
 	}
 

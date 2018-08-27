@@ -132,14 +132,14 @@ export default {
 		Warnings: 'lib/Warnings.html'
 	},
 	oncreate() {
-		let samples = this.store.get().job.twa.samples
-		if(samples.length === 0) {
-			samples.push({
-				value: '',
-				period: ''
-			})
-		}
-		this.store.set({ job: { twa: { samples } } })
+		// let samples = this.store.get().job.twa.samples
+		// if(samples.length === 0) {
+		// 	samples.push({
+		// 		value: '',
+		// 		period: ''
+		// 	})
+		// }
+		// this.store.set({ job: { twa: { samples } } })
 	},
 	methods: {
 		addSample() {
