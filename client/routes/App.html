@@ -1,11 +1,11 @@
-<svelte:window bind:innerHeight="windowHeight" />
+<svelte:window bind:innerHeight="windowHeight" bind:innerWidth="windowWidth" />
 
 <div class="maxwidth">
 
 	<div class="wrapper { sidebarOpen && 'sidebarOpen' } { jobOpen && 'jobOpen' }" style="transform: translate({ wrapperX }px, 0)">
 
 		<div class="left">
-			<div class="appname">Respirators 101</div>
+			<div class="appname">Respirators 101 <div class="nav-button close icon-close" on:click="set({ sidebarOpen: false })">close menu</div></div>
 			<div class="main">
 				<Menu {asr} />
 			</div>
@@ -53,12 +53,14 @@
 				</a>
 			{ /if }
 			
-			<div class="job" bind:offsetHeight="jobHeight" id="job" style="transform: translate(0, { jobY }px)">
-				<div class="button current-job { showCurrentJobButton && 'visible' }" ref:currentJobButton on:click="set({ jobOpen: !jobOpen })"> Current Job </div>
-				<div class="inner" style="max-height: { jobMaxHeight }px;">
-					<Job bind:job="$job" {asr} only="true" />
+			{ #if showCurrentJobButton } 
+				<div class="job" bind:offsetHeight="jobHeight" id="job" style="transform: translate(0, { jobY }px)">
+					<div class="button current-job" on:click="set({ jobOpen: !jobOpen })"> Current Job </div>
+					<div class="inner" style="max-height: { jobMaxHeight }px;">
+						<Job bind:job="$job" {asr} only="true" />
+					</div>
 				</div>
-			</div>
+			{ /if }
 
 		</div>
 	</div>
@@ -89,18 +91,14 @@
 			Modal: 'lib/Modal.html',
 			ExposureLimitEntry: 'lib/ExposureLimitEntry.html'
 		},
-		onstate({current, changed}) {
+		onstate({ current }) {
 			let manualELEdit = current.$editEL ? current.manualELEdit : 0
 			this.set({ manualELEdit })
-
-			if(changed.windowHeight || changed.apertureMarginTop) {
-				let jobMaxHeight = current.windowHeight - current.apertureMarginTop - this.refs.currentJobButton.offsetHeight
-				this.set({ jobMaxHeight })
-			}
 		},
 		computed: {
+			jobMaxHeight: ({ windowHeight, apertureMarginTop, windowWidth}) => windowHeight - apertureMarginTop - (windowWidth < 400 ? 30 : 40),
 			apertureMarginTop: ({ $nav, redNavHeight }) => (($nav && $nav.sub) ? redNavHeight : 0) + 50,
-			showCurrentJobButton: ({ stateName }) => !/app\.((calculate-)|(respirator-)|(chemicals))/.test(stateName),
+			showCurrentJobButton: ({ stateName }) => /app\.((calculate-)|(respirator-)|(chemicals))/.test(stateName),
 			showResumeSelectionButton: ({ $job, stateName }) => $job.RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list')
 		},
 		store: () => store,
@@ -179,11 +177,13 @@
 				wrapperX = snapTo(wrapperX, -300)
 				wrapperX = snapTo(wrapperX, 0)
 
-				let target2 = jobOpen ? -jobHeight : 0
-				if(target2 !== jobY) jobY += (target2 - jobY) * .3
+				if(jobHeight) {
+					let target2 = jobOpen ? -jobHeight : 0
+					if(target2 !== jobY) jobY += (target2 - jobY) * .3
 
-				jobY = snapTo(jobY, -jobHeight)
-				jobY = snapTo(jobY, 0)
+					jobY = snapTo(jobY, -jobHeight)
+					jobY = snapTo(jobY, 0)
+				}
 
 				this.set({ wrapperX, jobY })
 			}
@@ -259,6 +259,37 @@
 			overflow-y: auto;
 			overflow-x: hidden;
 		}
+		
+		.nav-button {
+			position: absolute;
+			top: 0;
+			height: 50px;
+			text-indent: -99999px;
+			overflow: hidden;
+			text-decoration: none;
+
+			&::before {
+				text-indent: 0;
+				width: 50px;
+				font-size: 30px;
+				line-height: 50px;
+				color: #fff;
+				background: $blue3;
+				cursor: pointer;
+				text-align: center;
+				display: block;
+			}
+
+			&.back {
+				z-index: 2;
+				&::before {
+					margin-left: -2px;
+				}
+			}
+			&.home {
+				right: 0;
+			}
+		}
 
 		.left {
 			position: absolute;
@@ -269,6 +300,15 @@
 			background: $blue3;
 			color: #fff;
 			font-size: 14px;
+
+			.nav-button {
+				left: auto;
+				right: 0;
+
+				&::before {
+					background: $blue5;
+				}
+			}
 		}
 
 		.right {
@@ -305,36 +345,6 @@
 						color: #fff;
 						height: 50px;
 						vertical-align: middle;
-					}
-				}
-				.nav-button {
-					position: absolute;
-					top: 0;
-					height: 50px;
-					text-indent: -99999px;
-					overflow: hidden;
-					text-decoration: none;
-
-					&::before {
-						text-indent: 0;
-						width: 50px;
-						font-size: 30px;
-						line-height: 50px;
-						color: #fff;
-						background: $blue3;
-						cursor: pointer;
-						text-align: center;
-						display: block;
-					}
-
-					&.back {
-						z-index: 2;
-						&::before {
-							margin-left: -2px;
-						}
-					}
-					&.home {
-						right: 0;
 					}
 				}
 			}
@@ -400,7 +410,6 @@
 					top: -40px;
 					right: 0;
 					margin: 0;
-					display: none;
 					background: $green; 
 					z-index: 2;
 					padding-left: 42px;
@@ -417,17 +426,15 @@
 				    	font-size: 70%;
 				    }
 
-				    &.visible {
-				    	display:block;
-				    }
-
-				    &:active {
-				    	bottom: auto;
-				    }
+				    &:active { bottom: auto; }
 				}
 
 				.inner {
 					overflow: auto;
+
+					:global(.job) {
+						margin: 0;
+					}
 				}
 			}
 		}
@@ -502,6 +509,5 @@
 		.chemtool { background: $red2; }
 		.manual { background: $blue2; }
 	}
-
 
 </style>
