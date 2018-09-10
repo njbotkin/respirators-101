@@ -6,17 +6,17 @@
 
 		<div class="name">
 			{ #if editingName && job.id == $job.id }
-				<input type="text" bind:value="job.name" style="width:{nameWidth}px"><a class="stopEditing edit" on:click="set({ editingName: false })">[done]</a>
+				<input type="text" bind:value="job.name" style="width:{nameWidth}px"><span class="stopEditing edit" on:click="set({ editingName: false })">[done]</span>
 			{ :else }
-				<span>{ job.name }</span><a class="editJob edit" on:click="set({ editingName: true, nameWidth: this.previousSibling.offsetWidth })">[edit]</a>
+				<span class="inner">{ job.name }</span><span class="editJob edit" on:click="set({ editingName: true, nameWidth: this.previousSibling.offsetWidth })">[edit]</span>
 			{ /if }
 		</div>
 
 		<div class="date">
 			{ #if editingDate && job.id == $job.id }
-				<input type="date" bind:value="job.date"><a class="stopEditing edit" on:click="set({ editingDate: false })">[done]</a>
+				<input type="date" bind:value="job.date"><span class="stopEditing edit" on:click="set({ editingDate: false })">[done]</span>
 			{ :else }
-				<span>{ date(job.date) }</span><a class="editDate edit" on:click="set({ editingDate: true })">[edit]</a>
+				<span>{ date(job.date) }</span><span class="editDate edit" on:click="set({ editingDate: true })">[edit]</span>
 			{ /if }
 		</div>
 
@@ -58,6 +58,12 @@
 				{ /if }
 			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['hr']) }"> Edit </a></div>
 		</div>
+
+		<br>
+
+		{ #if job.options }
+			<a class="respirator-options button" href="{ asr.makePath('app.options-list', { id: job.options }) }">Respirator Options</a>
+		{ /if }
 
 	</div>
 
@@ -124,7 +130,7 @@
 		.name {
 			float:left;
 
-			span, input {
+			span.inner, input {
      			display: inline-block;
 				border: 1px solid;
 				padding: 1px 4px;
@@ -135,7 +141,7 @@
 				box-sizing: border-box;
 			}
 
-			span { border-color: transparent; }
+			span.inner { border-color: transparent; }
 			input { border-color: grey; }
 		}
 		.cfx {
@@ -145,7 +151,6 @@
 
 		.content {
 			margin-top: 10px;
-			border-top: 1px solid #ddd;
 			padding: 0;
 		}
 
@@ -199,6 +204,11 @@
 			&:active {
 				background: linear-gradient(color($green l(-5%)), color($green l(+5%)));
 			}
+		}
+
+		.respirator-options.button {
+			margin-top: 20px;
+			background: $red2;
 		}
 
 		/* slightly less awkward layout */

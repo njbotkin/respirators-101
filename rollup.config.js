@@ -67,13 +67,14 @@ let includePathOptions = {
 }
 
 export default {
-	name: `respiratorsStructure`,
 	input: `./client/index.js`,
 	output: {
 		file: `./public/index-bundle.js`,
 		format: `iife`,
+		sourcemap: true,
+		name: `respiratorsStructure`,
 	},
-	sourcemap: true,
+	watch: { clearScreen: false },
 	plugins: [
 		progress(),
 		includePaths(includePathOptions),

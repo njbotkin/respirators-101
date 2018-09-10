@@ -1,14 +1,12 @@
 <div class="property">
 	<div class="label">Exposure Limit</div>
-	<input type="number" bind:value="value" />
+	<input type="number" bind:value="value" placeholder="0" />
 	<ButtonSelect options="{ unitsPretty }" bind:value="unit" />
 </div>
 
 <div class="property">
 	<div class="label">Measurement Duration</div>
-	{ #if timeUnit }
-		<input type="number" bind:value="duration" />
-	{ /if}
+	<input type="number" bind:value="duration" placeholder="0" />
 	<ButtonSelect options="{ timeUnits }" bind:value="timeUnit" />
 </div>
 
@@ -33,8 +31,8 @@
 		oncreate() {
 			this.set( this.store.get().job.exposureLimit )
 		},
-		onstate({current, changed, previous}) {
-			if(changed.timeUnit && previous.timeUnit) {
+		onstate({current, changed}) {
+			if(changed.timeUnit) {
 				if(current.timeUnit == 'Hours') {
 					current.duration /= 60
 				} else {
@@ -71,11 +69,12 @@
 		margin: 10px 0;
 
 		input {
-			line-height: 30px;
+			line-height: 40px;
 			padding: 0 8px;
 			width: 50px;
 			font-size: 120%;
 			font-family: 'Open Sans';
+			border: 1px solid #bbb;
 		}
 	}
 

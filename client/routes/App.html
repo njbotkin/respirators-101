@@ -2,7 +2,7 @@
 
 <div class="maxwidth">
 
-	<div class="wrapper { sidebarOpen && 'sidebarOpen' } { jobOpen && 'jobOpen' }" style="transform: translate({ wrapperX }px, 0)">
+	<div class="wrapper { sidebarOpen && 'sidebarOpen' } { $jobOpen && 'jobOpen' }" style="transform: translate({ wrapperX }px, 0)">
 
 		<div class="left">
 			<div class="appname">Respirators 101 <div class="nav-button close icon-close" on:click="set({ sidebarOpen: false })">close menu</div></div>
@@ -12,7 +12,7 @@
 		</div>
 
 		<div class="right">
-			<div class="elsewhere" on:click="set({ sidebarOpen: false, jobOpen: false })"></div>
+			<div class="elsewhere" on:click="focusContent()"></div>
 
 			<nav>
 				{ #if categoryParent }
@@ -55,7 +55,7 @@
 			
 			{ #if showCurrentJobButton } 
 				<div class="job" bind:offsetHeight="jobHeight" id="job" style="transform: translate(0, { jobY }px)">
-					<div class="button current-job" on:click="set({ jobOpen: !jobOpen })"> Current Job </div>
+					<div class="button current-job" on:click="$set({ jobOpen: !$jobOpen })"> Current Job </div>
 					<div class="inner" style="max-height: { jobMaxHeight }px;">
 						<Job bind:job="$job" {asr} only="true" />
 					</div>
@@ -95,10 +95,16 @@
 			let manualELEdit = current.$editEL ? current.manualELEdit : 0
 			this.set({ manualELEdit })
 		},
+		methods: {
+			focusContent() {
+				this.set({ sidebarOpen: false })
+				store.set({ jobOpen: false })
+			}
+		},
 		computed: {
 			jobMaxHeight: ({ windowHeight, apertureMarginTop, windowWidth}) => windowHeight - apertureMarginTop - (windowWidth < 400 ? 30 : 40),
 			apertureMarginTop: ({ $nav, redNavHeight }) => (($nav && $nav.sub) ? redNavHeight : 0) + 50,
-			showCurrentJobButton: ({ stateName }) => /app\.((calculate-)|(respirator-)|(chemicals))/.test(stateName),
+			showCurrentJobButton: ({ stateName }) => /app\.((calculate-)|(respirator-)|(chemicals)|(options))/.test(stateName),
 			showResumeSelectionButton: ({ $job, stateName }) => $job.RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list')
 		},
 		store: () => store,
@@ -169,7 +175,8 @@
 
 			const renderSlide = () => {
 
-				let { wrapperX, jobY, sidebarOpen, jobOpen, jobHeight } = this.get()
+				let { wrapperX, jobY, sidebarOpen, jobHeight } = this.get()
+				let { jobOpen } = store.get()
 
 				let target = sidebarOpen ? 0 : -300
 				if(!prev && target !== wrapperX) wrapperX += (target - wrapperX) * .3
@@ -206,7 +213,10 @@
 				}
 			})
 
-			const stateChange = e => this.set({ stateName: e.state.name, sidebarOpen: false, jobOpen: false })
+			const stateChange = e => {
+				this.set({ stateName: e.state.name, sidebarOpen: false })
+				store.set({ jobOpen: false })
+			}
 
 			// captures event from router
 			this.on('stateChange', stateChange)

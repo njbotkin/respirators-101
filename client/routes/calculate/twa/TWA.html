@@ -3,7 +3,7 @@
 
 	<p>A Time-Weighted Average (TWA) is used to measure a worker's daily exposure to hazardous substances, averaged over an 8- or 10-hour workday. </p>
 
-	<img class="latex" src="images/twa.svg" />
+	<img class="latex" src="images/twa.svg" alt="TWA equation" />
 
 	<p class="latex-desc">where <i>t</i> is the measurement duration, and <i>c</i> is the measurement concentration.</p>
 
@@ -82,35 +82,34 @@
 	<Warnings />
 
 	{ #if $job.twa.final }
+		<div class="equation">
 
-			<div class="equation">
-
-				<div class="operand">
-					<div class="value">{ round($job.twa.totalValueMinutes / $job.exposureLimit.timeUnitMultiplier) }</div>
-					<div class="unit">Total <br>{ @html unitsPretty[$job.twa.unit] }-{ $job.exposureLimit.timeUnit }</div>
-				</div>
-
-				<div class="operator">&#247;</div>
-
-				<div class="operand">
-					<div class="value">{ round($job.twa.totalMinutes / $job.exposureLimit.timeUnitMultiplier) }</div>
-					<div class="unit">Total <br>{ $job.exposureLimit.timeUnit }</div>
-				</div>
-
-				<div class="operator">=</div>
-
-				<div class="operand">
-					<div class="save-value livetrue">
-						<div class="legend-cont"><div class="legend">TWA</div></div>
-
-							<div class="value">{ round($job.twa.final) }</div>
-							<div class="unit">{ @html unitsPretty[$job.twa.unit] }</div>
-
-						<div class="button-cont"><div class="button"> Current TWA  </div></div>
-					</div>
-				</div>
-
+			<div class="operand">
+				<div class="value">{ round($job.twa.totalValueMinutes / $job.exposureLimit.timeUnitMultiplier) }</div>
+				<div class="unit">Total <br>{ @html unitsPretty[$job.twa.unit] }-{ $job.exposureLimit.timeUnit }</div>
 			</div>
+
+			<div class="operator">&#247;</div>
+
+			<div class="operand">
+				<div class="value">{ round($job.twa.totalMinutes / $job.exposureLimit.timeUnitMultiplier) }</div>
+				<div class="unit">Total <br>{ $job.exposureLimit.timeUnit }</div>
+			</div>
+
+			<div class="operator">=</div>
+
+			<div class="operand">
+				<div class="save-value livetrue">
+					<div class="legend-cont"><div class="legend">TWA</div></div>
+
+						<div class="value">{ round($job.twa.final) }</div>
+						<div class="unit">{ @html unitsPretty[$job.twa.unit] }</div>
+
+					<div class="button-cont"><div class="button"> Current TWA  </div></div>
+				</div>
+			</div>
+
+		</div>
 	{ /if }
 
 { :else }

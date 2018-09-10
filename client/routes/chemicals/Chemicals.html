@@ -33,6 +33,12 @@
 
 	<div style="margin: 10px 0"><ExposureLimits exposureLimit="{ELModal}" /></div>
 
+	{ #if $job.twa.unit && $job.twa.unit !== ELModal.unit }
+		<div class="warnings">
+			This Exposure Limit measurement unit ({@html unitsPretty[ELModal.unit] }) doesn't match your TWA measurement unit ({@html unitsPretty[$job.twa.unit] }).  You'll need to amend your TWA samples after you make this change.	
+		</div>
+	{ /if }
+
 	<div class="buttons">
 		<div class="button saveEL" on:click="saveEL(ELModal)">Save</div>
 		<div class="button neverMind" on:click="set({ ELModal: false })">Cancel</div>
@@ -44,6 +50,7 @@
 	import chemicals from 'data/chemicals.json'
 	import letters from 'data/letters.json'
 	import Fuse from 'fuse.js'
+	import { unitsPretty } from 'lib/util.js'
 
 	var fuse = new Fuse(chemicals, {
 		keys: [
@@ -79,7 +86,8 @@
 		data: () => ({
 			search: '',
 			letters,
-			ELModal: false
+			ELModal: false,
+			unitsPretty
 		}),
 		oncreate() {
 
