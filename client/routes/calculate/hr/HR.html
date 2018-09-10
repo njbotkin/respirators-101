@@ -90,8 +90,8 @@ export default {
 	methods: {
 		setHR() {
 			let state = this.get()
-			if(state.valid) {
-				this.store.set({ job: { hr: state.hr } })
+			if(state.valid && state.hr !== this.store.get().job.hr) {
+				this.store.set({ job: { hr: state.hr }, jobOpen: true })
 			}
 		}
 	},
