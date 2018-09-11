@@ -18,9 +18,11 @@ function linkify(s) {
 var cas_to_chemical = {}
 var name_to_chemical = {}
 
-function munge_exposure_limit(standard, forms, n) {
+function munge_exposure_limit(standard, chemical, n) {
 
 	var carcinogens
+
+	let { forms } = chemical
 
 	// this one's easy
 	if(n.slice(0, 3) === 'Ca ') {
@@ -33,8 +35,17 @@ function munge_exposure_limit(standard, forms, n) {
 	var units = []
 	var durations = []
 
+	n = n
+
+	// cleanup
+	.replace('<BR>', '')
+	.replace(/\[skin\]/g, function() {
+		chemical.skin = true
+		return ''
+	})
+
 	// units
-	n = n.replace(/([0-9\.,]+) ppm/g, (match, p1) => {
+	.replace(/([0-9\.,]+) ppm/g, (match, p1) => {
 		units.push({
 			ppm: p1
 		})
@@ -69,6 +80,11 @@ function munge_exposure_limit(standard, forms, n) {
 
 	// forms of chemicals (format 1)
 	.replace(/([^:]+):( {{[0-9]}})+/g, (match, p1) => {
+
+		if(p1.trim() == 'Vapor') p1 = 'regular'
+		if(p1.trim() == 'Hg Vapor') p1 = 'regular'
+		if(p1.trim() == 'Dust') p1 = 'dust'
+		if(p1.trim() == 'Other') p1 = 'other'
 
 		if(!forms[p1]) forms[p1] = {}
 		if(!forms[p1][standard]) forms[p1][standard] = {}
@@ -171,8 +187,8 @@ for(var c of chemicals.chemicals) {
 	// console.log(c["n"], c["cn"])
 
 	// super side affects ahoy, avert your eyes FPers
-	munge_exposure_limit("niosh_rel", chemical.forms, c["n"])
-	munge_exposure_limit("osha_pel", chemical.forms, c["o"])
+	munge_exposure_limit("niosh_rel", chemical, c["n"])
+	munge_exposure_limit("osha_pel", chemical, c["o"])
 
 	// console.log(chemical.forms)
 	// console.log(chemical.forms[0].niosh_rel)
@@ -257,8 +273,8 @@ const SUBSTANCE = 0,
 
 let all = z1_data[0].length
 var parent = null
-console.log(z1_data[CAS].length, chemical_output.length)
-var found_by_cas = 0, found_by_name = 0, children = 0
+// console.log(z1_data[CAS].length, chemical_output.length)
+// var found_by_cas = 0, found_by_name = 0, children = 0
 
 for(let i = 0; i < all; i++) {
 	let cas = z1_data[CAS][i].trim(), name = z1_data[SUBSTANCE][i].trim()
@@ -270,7 +286,7 @@ for(let i = 0; i < all; i++) {
 
 		// console.log('CAS: ', z1_data[SUBSTANCE][i])
 
-		found_by_cas++
+		// found_by_cas++
 
 		chemical = chemical_output[cas_to_chemical[cas]]
 		form = null
@@ -288,7 +304,7 @@ for(let i = 0; i < all; i++) {
 
 		// console.log('NAME: ', z1_data[SUBSTANCE][i])
 
-		found_by_name++
+		// found_by_name++
 
 		chemical = chemical_output[name_to_chemical[name]]
 		form = null
@@ -303,7 +319,7 @@ for(let i = 0; i < all; i++) {
 
 	// child ELs
 	else if(parent) {
-		children++;
+		// children++;
 		chemical = parent
 		form = z1_data[SUBSTANCE][i]
 	}
@@ -315,6 +331,11 @@ for(let i = 0; i < all; i++) {
 	}
 
 	if(form) {
+
+		// normalize form name
+		if(form == 'Total dust') form = 'total'
+		if(form == 'Respirable fraction') form = 'resp'
+
 		if(!chemical.forms[form]) chemical.forms[form] = {}
 		el = chemical.forms[form]
 		// el = {
@@ -344,7 +365,8 @@ for(let i = 0; i < all; i++) {
 				el.osha_pel.durations.regular.ppm = e
 			}
 			else {
-				el.osha_pel.znotes.push(e)
+				// no duplicate notes
+				if(el.osha_pel.znotes.indexOf(e) == -1) el.osha_pel.znotes.push(e)
 			}
 		}
 	}
@@ -363,7 +385,7 @@ for(let i = 0; i < all; i++) {
 				el.osha_pel.durations.regular.mgm3 = e
 			}
 			else {
-				el.osha_pel.znotes.push(e)
+				if(el.osha_pel.znotes.indexOf(e) == -1) el.osha_pel.znotes.push(e)
 			}
 		}
 	}
@@ -382,7 +404,7 @@ for(let i = 0; i < all; i++) {
 					el.cal_osha_pel.durations.ceiling.mgm3 = mgm3(ceiling(e))
 				}
 				else {
-					console.log("WHAT",  cal_osha_pel)
+					// console.log("WHAT",  cal_osha_pel)
 				}
 			}
 			else if(stel(e)) {
@@ -393,7 +415,7 @@ for(let i = 0; i < all; i++) {
 					el.cal_osha_pel.durations.stel.mgm3 = mgm3(stel(e))
 				}
 				else {
-					console.log("WHAT",  cal_osha_pel)
+					// console.log("WHAT",  cal_osha_pel)
 				}
 			} 
 			else if(ppm(e)) {
@@ -403,7 +425,7 @@ for(let i = 0; i < all; i++) {
 				el.cal_osha_pel.durations.regular.mgm3 = mgm3(e)
 			}
 			else {
-				el.cal_osha_pel.znotes.push(e)
+				if(el.cal_osha_pel.znotes.indexOf(e) == -1) el.cal_osha_pel.znotes.push(e)
 			}
 		}
 	}
@@ -446,7 +468,7 @@ for(let i = 0; i < all; i++) {
 				el.niosh_rel.carcinogens = true
 			}
 			else {
-				el.niosh_rel.znotes.push(e)
+				if(el.niosh_rel.znotes.indexOf(e) > -1) el.niosh_rel.znotes.push(e)
 			}
 		}
 	} 
@@ -516,6 +538,8 @@ for(let i = 0; i < chemical_output.length; i++) {
 		letter++
 	}
 }
+
+// console.log(JSON.stringify(chemical_output[379]))
 
 // console.log(found_by_cas, found_by_name, children)
 
