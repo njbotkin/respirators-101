@@ -31,7 +31,7 @@
 
 											{ #each Object.entries(duration) as [unit, value] }
 
-												<div class="representation select-el EL" on:click="fire('confirmSaveEL', { formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey], eye: eye, idlh: idlh, idlh_notes: idlh_notes })" data-active="{ elSame({ formKey, standardKey, durationKey, unit, value }, $job.exposureLimit) }">
+												<div class="representation select-el EL" on:click="fire('confirmSaveEL', { formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey], eyes, idlh, idlh_notes, chemical_name })" data-active="{ elSame({ formKey, standardKey, durationKey, unit, value }, $job.exposureLimit) }">
 													{ value }
 													<div class="unit">{ @html unitsPretty[unit] }</div>
 												</div>
@@ -119,6 +119,8 @@
 		</div>
 		<br>
 
+		{ exposureLimit.chemical_name }<br>
+
 		{ #if exposureLimit.idlh }
 			<div class="property inline" style="padding: 0; margin: 0">
 				<div class="label">IDLH</div>
@@ -127,7 +129,7 @@
 			</div>
 		{ /if }
 
-		{ #if exposureLimit.eye }
+		{ #if exposureLimit.eyes }
 			<div class="eye">Eye irritant</div>
 		{ /if }
 

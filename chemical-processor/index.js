@@ -444,7 +444,7 @@ for(let i = 0; i < all; i++) {
 					el.niosh_rel.durations.ceiling.mgm3 = mgm3(ceiling(e))
 				}
 				else {
-					console.log("WHAT",  niosh_rel)
+					// console.log("WHAT",  niosh_rel)
 				}
 			}
 			else if(stel(e)) {
@@ -455,7 +455,7 @@ for(let i = 0; i < all; i++) {
 					el.niosh_rel.durations.stel.mgm3 = mgm3(stel(e))
 				}
 				else {
-					console.log("WHAT",  niosh_rel)
+					// console.log("WHAT",  niosh_rel)
 				}
 			} 
 			else if(ppm(e)) {
