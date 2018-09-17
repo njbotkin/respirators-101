@@ -1,6 +1,6 @@
 
 <div id="content">
-	<p>A Hazard Ratio is used to determine if a respirator is required for work. If the ratio is greater than 1, then a respirator is required.</p>
+	A <strong>Hazard Ratio (HR)</strong> is used to determine if a respirator is required for work. If the ratio is greater than 1, then a respirator is required.
 
 	<div class="equation">
 		<div class="operand">TWA</div>
@@ -14,69 +14,71 @@
 
 	<div class="indent">
 		<strong>Step 1:</strong> Enter the Time-Weighted Average (TWA) for the contaminant. <br>
-		<strong>Step 2:</strong> Enter the NIOSH REL or other applicable exposure limit. <br>
+		<strong>Step 2:</strong> Enter the NIOSH REL or other applicable exposure limit.* <br>
 		<strong>Step 3:</strong> Select "Save HR" to save to Current Job. <br>
 	</div>
+
+	<p style="font-size: 80%">*If the contaminant has a <strong>ceiling limit</strong>, divide the maximum exposure concentration for the contaminant by the ceiling limit. If the contaminant has a <strong>short term exposure limit (STEL)</strong>, divide the maximum 15 min TWA exposure concentration for the contaminant by the STEL.</p>
 
 	<p><em>NOTE: The TWA and exposure limit values MUST be based on the same time period (e.g. a 10-hr TWA CANNOT be used with an 8-hr exposure limit).</em></p>
 </div>
 
-	<Warnings />
+<Warnings />
 
-	<div class="equation">
+<div class="equation">
 
-		<div class="operand">
+	<div class="operand">
+		
+		<div class="read-value livetrue">
+			<div class="legend-cont"><div class="legend"> TWA </div></div>
+				{ #if $job.twa.final }
+					<div class="representation">
+						{ round($job.twa.final) }
+						<div class="unit">{ @html unitsPretty[$job.twa.unit] }</div>
+					</div>
+				{ :else }
+					No TWA set yet!
+				{ /if }
+			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['twa']) }"> Edit </a></div>
+		</div>
+
+	</div>
+
+	<div class="operator">&#247;</div>
+
+	<div class="operand">
+
+		<div class="read-value livetrue">
+			<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
+				{ #if $job.exposureLimit.value }
+					<div class="representation">
+						{ $job.exposureLimit.value }
+						<div class="unit">{ @html unitsPretty[$job.exposureLimit.unit] }</div>
+					</div>
+				{ :else }
+					No exposure limit selected yet!
+				{ /if }
+			<div class="button-cont"><div class="button edit" on:click="$set({ editEL: true })"> Edit </div></div>
+		</div>
+
+	</div>
+
+	<div class="operator">=</div>
+
+	<div class="operand HR">
+
+		<div class="save-value live{ $job.hr == hr}">
+			<div class="legend-cont"><div class="legend"> HR </div></div>
 			
-			<div class="read-value livetrue">
-				<div class="legend-cont"><div class="legend"> TWA </div></div>
-					{ #if $job.twa.final }
-						<div class="representation">
-							{ round($job.twa.final) }
-							<div class="unit">{ @html unitsPretty[$job.twa.unit] }</div>
-						</div>
-					{ :else }
-						No TWA set yet!
-					{ /if }
-				<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['twa']) }"> Edit </a></div>
-			</div>
+			<div class="value">{ round(hr) }</div>
 
-		</div>
-
-		<div class="operator">&#247;</div>
-
-		<div class="operand">
-
-			<div class="read-value livetrue">
-				<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
-					{ #if $job.exposureLimit.value }
-						<div class="representation">
-							{ $job.exposureLimit.value }
-							<div class="unit">{ @html unitsPretty[$job.exposureLimit.unit] }</div>
-						</div>
-					{ :else }
-						No exposure limit selected yet!
-					{ /if }
-				<div class="button-cont"><div class="button edit" on:click="$set({ editEL: true })"> Edit </div></div>
-			</div>
-
-		</div>
-
-		<div class="operator">=</div>
-
-		<div class="operand HR">
-
-			<div class="save-value live{ $job.hr == hr}">
-				<div class="legend-cont"><div class="legend"> HR </div></div>
-				
-				<div class="value">{ round(hr) }</div>
-
-				<div class="button-cont"><div class="button valid{ valid }" on:click="setHR()"> { $job.hr == hr ? 'Current' : 'Save' } HR  </div></div>
-
-			</div>
+			<div class="button-cont"><div class="button valid{ valid }" on:click="setHR()"> { $job.hr == hr ? 'Current' : 'Save' } HR  </div></div>
 
 		</div>
 
 	</div>
+
+</div>
 
 <script>
 
