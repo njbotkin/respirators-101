@@ -48,7 +48,7 @@
 			<div id="domlog"></div>
 
 			{ #if showResumeSelectionButton }
-				<a class="button in-selection" href="{ asr.makePath('app.respirator-picker', {id: $job.RSLStep})}">
+				<a class="button in-selection" href="{ $job.options ? asr.makePath('app.options-list', {id: $job.options}) : asr.makePath('app.respirator-picker', {id: $job.RSLStep}) }">
 					Resume Respirator Selection
 				</a>
 			{ /if }
