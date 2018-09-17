@@ -48,7 +48,7 @@ export default ({ makePath }) => ({
 			title: 'Respirator Selection',
 			sub: {
 				title: passage.title.match(/^([^<(:]+)/).pop(),
-				prev: makePath('app.respirator-picker', {id: passage.prev})
+				prev: passage.prev ? makePath('app.respirator-picker', {id: passage.prev}) : makePath('app.respirator-introduction')
 			}
 		} }, false)
 	}
