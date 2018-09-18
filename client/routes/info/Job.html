@@ -33,7 +33,7 @@
 				{ :else }
 					No exposure limit selected yet!
 				{ /if }
-			<div class="button-cont"><div class="button edit" on:click="$set({ editEL: true })"> Edit </div></div>
+			<div class="button-cont"><div class="button edit" on:click="$set({ editEL: true })"> { job.exposureLimit.value ? 'Edit' : 'Add' } </div></div>
 		</div>
 
 		<div class="read-value live{job.id == $job.id }" style="text-align: center">
@@ -46,7 +46,7 @@
 				{ :else }
 					No TWA set yet!
 				{ /if }
-			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['twa']) }"> Edit </a></div>
+			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['twa']) }"> { job.twa.final ? 'Edit' : 'Add' } </a></div>
 		</div>
 
 		<div class="read-value live{job.id == $job.id }">
@@ -56,7 +56,7 @@
 				{ :else }
 					No HR set yet!
 				{ /if }
-			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['hr']) }"> Edit </a></div>
+			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['hr']) }"> { job.hr ? 'Edit' : 'Add' } </a></div>
 		</div>
 
 		<br>
