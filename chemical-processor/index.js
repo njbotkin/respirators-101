@@ -18,11 +18,19 @@ function linkify(s) {
 var cas_to_chemical = {}
 var name_to_chemical = {}
 
+let allForms = new Set()
+
+function format_form(f) {
+	if(f == 'total') f = 'Total dust'
+	if(f == 'resp') f = 'Respirable fraction'
+	return (f.charAt(0).toUpperCase() + f.slice(1)).trim().replace(/<a[^<]+<\/a>/, '')
+}
+
 function munge_exposure_limit(standard, chemical, n) {
 
 	var carcinogens
 
-	let { forms } = chemical
+	let { standards } = chemical
 
 	// this one's easy
 	if(n.slice(0, 3) === 'Ca ') {
@@ -32,8 +40,7 @@ function munge_exposure_limit(standard, chemical, n) {
 
 	// breadth-last parse
 
-	var units = []
-	var durations = []
+	var hold = []
 
 	n = n
 
@@ -45,106 +52,133 @@ function munge_exposure_limit(standard, chemical, n) {
 	})
 
 	// units
-	.replace(/([0-9\.,]+) ppm/g, (match, p1) => {
-		units.push({
-			ppm: p1
-		})
-		return '{'+(units.length-1)+'}'
+	.replace(/([0-9.,]+) ppm/g, (match, p1) => {
+		hold.push({ ppm: p1 })
+		return `{${hold.length-1}}`
 	})
-	.replace(/([0-9\.,]+) mg\/m<SUP>3<\/SUP>/g, (match, p1) => {
-		units.push({
-			mgm3: p1
-		})
-		return '{'+(units.length-1)+'}'
+	.replace(/([0-9.,]+) mg\/m<SUP>3<\/SUP>/g, (match, p1) => {
+		hold.push({ mgm3: p1 })
+		return `{${hold.length-1}}`
 	})
 
 	// durations of exposure limits
 	.replace(/TWA {([0-9])}( \({([0-9])}\))?/g, (match, p1, p2, p3) => {
-		var el = units[p1]
-		if(p3) el = Object.assign(units[p3], el)
-		durations.push({ regular: el })
-		return '{{'+(durations.length-1)+'}}'
+		if(p3) Object.assign(hold[p1], hold[p3])
+		hold.push({ default: hold[p1] })
+		return `{-${hold.length-1}-}`
 	})
 	.replace(/C {([0-9])}( \({([0-9])}\))?/g, (match, p1, p2, p3) => {
-		var el = units[p1]
-		if(p3) el = Object.assign(units[p3], el)
-		durations.push({ ceiling: el })
-		return '{{'+(durations.length-1)+'}}'
+		if(p3) Object.assign(hold[p1], hold[p3])
+		hold.push({ ceiling: hold[p1] })
+		return `{-${hold.length-1}-}`
 	})
 	.replace(/ST {([0-9])}( \({([0-9])}\))?/g, (match, p1, p2, p3) => {
-		var el = units[p1]
-		if(p3) el = Object.assign(units[p3], el)
-		durations.push({ stel: el })
-		return '{{'+(durations.length-1)+'}}'
+		if(p3) Object.assign(hold[p1], hold[p3])
+		hold.push({ stel: hold[p1] })
+		return `{-${hold.length-1}-}`
+	})
+	// sometimes not specified
+	.replace(/{([0-9])}( \({([0-9])}\))?/g, (match, p1, p2, p3) => {
+		if(p3) Object.assign(hold[p1], hold[p3])
+		hold.push({ default: hold[p1] })
+		return `{-${hold.length-1}-}`
 	})
 
-	// forms of chemicals (format 1)
-	.replace(/([^:]+):( {{[0-9]}})+/g, (match, p1) => {
+	// forms of chemicals 
 
-		if(p1.trim() == 'Vapor') p1 = 'regular'
-		if(p1.trim() == 'Hg Vapor') p1 = 'regular'
-		if(p1.trim() == 'Dust') p1 = 'dust'
-		if(p1.trim() == 'Other') p1 = 'other'
+	// (as CrO<SUB>3</SUB>): {x}
+	.replace(/\(as ([^:]+)\):( {-[0-9]-})+/g, (match, p1) => {
+		let form = format_form(p1)
+		allForms.add(form)
 
-		if(!forms[p1]) forms[p1] = {}
-		if(!forms[p1][standard]) forms[p1][standard] = {}
-		if(!forms[p1][standard].durations) forms[p1][standard].durations = {}
+		if(!standards[standard].forms[form]) standards[standard].forms[form] = newForm()
 
-		match.replace(/{{([0-9])}}/g, (match, p2) => {
-			forms[p1][standard].durations = Object.assign(durations[p2], forms[p1][standard].durations)
+		match.replace(/{-([0-9])-}/g, (match, p2) => {
+			Object.assign(standards[standard].forms[form], hold[p2])
 		})
 
 		return ''
 	})
 
-	// forms of chemicals (format 2)
-	.replace(/({{[0-9]}} )+\(([a-z]+)\)/g, (match, p1, p2) => {
-		
-		if(!forms[p2]) forms[p2] = {}
-		if(!forms[p2][standard]) forms[p2][standard] = {}
-		if(!forms[p2][standard].durations) forms[p2][standard].durations = {}
+	// {x} (as Cr)
+	.replace(/({-[0-9]-} )+\(as ([^)]+)\)/g, (match, p1, p2) => {
+		let form = format_form(p2)
+		allForms.add(form)
 
-		match.replace(/{{([0-9])}}/g, (match, p3) => {
-			forms[p2][standard].durations = Object.assign(durations[p3], forms[p2][standard].durations)
+		if(!standards[standard].forms[form]) standards[standard].forms[form] = newForm()
+
+		match.replace(/{-([0-9])-}/g, (match, p3) => {
+			Object.assign(standards[standard].forms[form], hold[p3])
 		})
 
 		return ''
 	})
 
-	// the rest of the durations belong to the regular form
-	.replace(/{{([0-9])}}/g, (match, p1) => {
+	// Dust: {x}
+	.replace(/([^:]+):( {-[0-9]-})+/g, (match, p1) => {
+		let form = format_form(p1)
+		allForms.add(form)
 
-		if(!forms['regular']) forms['regular'] = {}
-		if(!forms['regular'][standard]) forms['regular'][standard] = {}
-		if(!forms['regular'][standard].durations) forms['regular'][standard].durations = {}
+		if(!standards[standard].forms[form]) standards[standard].forms[form] = newForm()
 
-		forms['regular'][standard].durations = Object.assign(durations[p1], forms['regular'][standard].durations)
+		match.replace(/{-([0-9])-}/g, (match, p2) => {
+			Object.assign(standards[standard].forms[form], hold[p2])
+		})
+
+		return ''
+	})
+
+	// {x} (resp)
+	.replace(/({-[0-9]-} )+\(([a-z]+)\)/g, (match, p1, p2) => {
+		let form = format_form(p2)
+		allForms.add(form)
+
+		if(!standards[standard].forms[form]) standards[standard].forms[form] = newForm()
+
+		match.replace(/{-([0-9])-}/g, (match, p3) => {
+			Object.assign(standards[standard].forms[form], hold[p3])
+		})
+
+		return ''
+	})
+
+	// the rest of the durations belong to the default form
+	.replace(/{-([0-9])-}/g, (match, p1) => {
+		allForms.add('default')
+
+		if(!standards[standard].forms.default) standards[standard].forms.default = newForm()
+
+		Object.assign(standards[standard].forms.default, hold[p1])
+
 		return ''
 	})
 
 	n = linkify(n)
 
-	// the rest is notes.  It's ambiguous which form/el the notes belong to, so add it to all of them
-	if(Object.keys(forms).length > 0) {
-		for(var formName in forms) {
-			if(forms[formName][standard]) {
-				if(carcinogens) forms[formName][standard].carcinogens = carcinogens
-				if(n.trim()) forms[formName][standard].notes = [n]
-			} else {
-				forms[formName][standard] = { notes: [n] }
-			}
-		}
-	} else {
-		forms['regular'] = {}
-		forms['regular'][standard] = { notes: [n] }
-	}
+	if(carcinogens) standards[standard].carcinogens = 1
+	if(n.trim()) standards[standard].notes.push(n.trim())
 
+}
+
+let standards = ['niosh_rel', 'osha_pel', 'cal_osha_pel']
+let durations = ['default', 'ceiling', 'stel']
+
+function newForm() {
+	let form = {}
+
+	for(let duration of durations) {
+		form[duration] = {
+			ppm: 0,
+			mgm3: 0
+		}
+	}
+	return form
 }
 
 for(var c of chemicals.chemicals) {
 
 	if(c["cn"]) {
-		let filtered_cas = c["cn"].match(/[0-9\-]+/)[0]
+		let filtered_cas = c["cn"].match(/[0-9-]+/)[0]
 		cas_to_chemical[filtered_cas] = chemical_output.length
 	} 
 	if(c["c"]) name_to_chemical[c["c"]] = chemical_output.length
@@ -166,22 +200,30 @@ for(var c of chemicals.chemicals) {
 		npg: 'https://www.cdc.gov/niosh/npg/npgd' + c["a"] + '.html',
 		idlh: idlh_split.shift(),
 		idlh_notes: linkify(idlh_split.join('<br />')),
-		niosh_rel: linkify(c["n"]),
-		osha_pel: linkify(c["o"]),
+		// niosh_rel: linkify(c["n"]),
+		// osha_pel: linkify(c["o"]),
 		physical_description: c["p"],
 		exposure_routes: c["e"].charAt(0).toUpperCase() + c["e"].slice(1),
 		target_organs: c["to"].charAt(0).toUpperCase() + c["to"].slice(1),
 		eye: /eye/i.test(c["to"]) ? 1 : 0,
 		one_ppm_in_mgm3,
-		forms: {},
 		notes: '', // for ambiguous things
-
+		standards: {},
 		ps: c["ps"],
 		pe: c["pe"],
 		pw: c["pw"],
 		pr: c["pr"],
 		pc: c["pc"],
 		pp: c["pp"]
+	}
+
+	// EL -> FORM -> DURATION -> UNIT -> VALUE
+	for(let standard of standards) {
+		chemical.standards[standard] = {
+			forms: {},
+			notes: [],
+			znotes: []
+		}
 	}
 
 	// console.log(c["n"], c["cn"])
@@ -194,7 +236,10 @@ for(var c of chemicals.chemicals) {
 	// console.log(chemical.forms[0].niosh_rel)
 
 	chemical_output.push(chemical)
-}
+
+	//break
+} 
+
 
 // process.exit()
 
@@ -228,41 +273,17 @@ function stel(s) {
 	if(match) return match[1]
 }
 function ppm(s) {
-	let match = s.match(/([0-9\.,]+) ppm/)
-	if(match) return match[1].replace(/\,/g,'')
+	let match = s.match(/([0-9.,]+) ppm/)
+	if(match) return match[1].replace(/,/g,'')
 }
 function mgm3(s) {
-	let match = s.match(/([0-9\.,]+) mg\/m<sup>3<\/sup>/)
-	if(match) return match[1].replace(/\,/g,'')
+	let match = s.match(/([0-9.,]+) mg\/m<sup>3<\/sup>/)
+	if(match) return match[1].replace(/,/g,'')
 }
 function carcinogens(s) {
 	return s === 'Ca'
 }
 
-function fillOutExposureLimit(el) {
-	if(!el) el = {}
-	if(!el.durations) el.durations = {}
-	if(!el.durations.regular) el.durations.regular = {}
-	if(!el.durations.ceiling) el.durations.ceiling = {}
-	if(!el.durations.stel) el.durations.stel = {}
-	if(!el.notes) el.notes = []
-	if(!el.znotes) el.znotes = []
-
-	return el
-}
-function cleanupExposureLimit(el) {
-	if(el.durations && Object.keys(el.durations).length === 0) {
-		delete el.durations
-	} else if(el.durations) {
-		if(el.durations.regular && Object.keys(el.durations.regular).length === 0) delete el.durations.regular
-		if(el.durations.ceiling && Object.keys(el.durations.ceiling).length === 0) delete el.durations.ceiling
-		if(el.durations.stel && Object.keys(el.durations.stel).length === 0) delete el.durations.stel	
-	}
-	if(el.notes && el.notes.length === 0) delete el.notes
-	if(el.znotes && el.znotes.length === 0) delete el.znotes
-	if(Object.keys(el).length === 0) el = null
-	return el
-}
 
 const SUBSTANCE = 0,
 	CAS = 1,
@@ -279,35 +300,27 @@ var parent = null
 for(let i = 0; i < all; i++) {
 	let cas = z1_data[CAS][i].trim(), name = z1_data[SUBSTANCE][i].trim()
 
-	var chemical, form, el
+	var chemical, form
 
-	// identify by CAS
-	if(cas !== '' && cas_to_chemical[cas] !== undefined) {
+	// identify by CAS and name together
+	// if(cas !== '' && cas_to_chemical[cas] !== undefined && name !== '' && name_to_chemical[name] !== undefined) {
 
-		// console.log('CAS: ', z1_data[SUBSTANCE][i])
+	// 	chemical = chemical_output[cas_to_chemical[cas]]
+	// 	form = 'default'
 
-		// found_by_cas++
-
-		chemical = chemical_output[cas_to_chemical[cas]]
-		form = null
-
-		if(cas_headers.indexOf(cas) > -1) {
-			parent = chemical
-			continue
-		} else {
-			parent = null
-		}
-	} 
+	// 	if(cas_headers.indexOf(cas) > -1) {
+	// 		parent = chemical
+	// 		continue
+	// 	} else {
+	// 		parent = null
+	// 	}
+	// } 
 
 	// identify by name
-	else if(name !== '' && name_to_chemical[name] !== undefined) {
-
-		// console.log('NAME: ', z1_data[SUBSTANCE][i])
-
-		// found_by_name++
+	if(name !== '' && name_to_chemical[name] !== undefined) {
 
 		chemical = chemical_output[name_to_chemical[name]]
-		form = null
+		form = 'default'
 
 		if(name_headers.indexOf(name) > -1) {
 			parent = chemical
@@ -318,10 +331,10 @@ for(let i = 0; i < all; i++) {
 	}
 
 	// child ELs
-	else if(parent) {
+	else if(parent && cas == '') {
 		// children++;
 		chemical = parent
-		form = z1_data[SUBSTANCE][i]
+		form = format_form(z1_data[SUBSTANCE][i])
 	}
 
 	else {
@@ -330,198 +343,139 @@ for(let i = 0; i < all; i++) {
 		continue
 	}
 
-	if(form) {
+	allForms.add(form)
 
-		// normalize form name
-		if(form == 'Total dust') form = 'total'
-		if(form == 'Respirable fraction') form = 'resp'
+	function process_osha_pel(zcolum, unit) {
+		let osha_pel = z1_data[zcolum][i]
+		if(osha_pel) {
+			if(!chemical.standards['osha_pel'].forms[form]) chemical.standards['osha_pel'].forms[form] = newForm()
 
-		if(!chemical.forms[form]) chemical.forms[form] = {}
-		el = chemical.forms[form]
-		// el = {
-		// 	form,
-		// 	osha_pel: fillOutExposureLimit(),
-		// 	niosh_rel: fillOutExposureLimit(),
-		// 	cal_osha_pel: fillOutExposureLimit()
-		// }
-		// chemical.forms.push(el) 
-	} else {
-		if(!chemical.forms["regular"]) chemical.forms["regular"] = {}
-		el = chemical.forms['regular']
-	}
+			let durations = chemical.standards['osha_pel'].forms[form]
 
-
-	let osha_pel_ppm = z1_data[OSHA_PEL_PPM][i]
-	if(osha_pel_ppm) {
-		el.osha_pel = fillOutExposureLimit(el.osha_pel)
-		for(let e of split(osha_pel_ppm)) {
-			if(ceiling(e)) {
-				el.osha_pel.durations.ceiling.ppm = ceiling(e)
-			} 
-			else if(stel(e)) {
-				el.osha_pel.durations.stel.ppm = stel(e) 
-			} 
-			else if(Number(e)) {
-				el.osha_pel.durations.regular.ppm = e
+			for(let e of split(osha_pel)) {
+				if(ceiling(e)) {
+					durations.ceiling[unit] = ceiling(e)
+				} 
+				else if(stel(e)) {
+					durations.stel[unit] = stel(e) 
+				} 
+				else if(Number(e)) {
+					durations.default[unit] = e
+				}
+				else {
+					// no duplicate notes
+					if(chemical.standards['osha_pel'].znotes.indexOf(e) == -1) chemical.standards['osha_pel'].znotes.push(e)
+				}
 			}
-			else {
-				// no duplicate notes
-				if(el.osha_pel.znotes.indexOf(e) == -1) el.osha_pel.znotes.push(e)
+		}
+	}
+	process_osha_pel(OSHA_PEL_PPM, 'ppm')
+	process_osha_pel(OSHA_PEL_MGM3, 'mgm3')
+
+	function process_combined_el_column(zcolumn, el_name) {
+
+		let el = z1_data[zcolumn][i]
+		if(el) {
+			if(!chemical.standards[el_name].forms[form]) chemical.standards[el_name].forms[form] = newForm()
+
+			let durations = chemical.standards[el_name].forms[form]
+
+			for(let e of split(el)) {
+				if(ceiling(e)) {
+					if(ppm(ceiling(e))) {
+						durations.ceiling.ppm = ppm(ceiling(e))
+					}
+					else if(mgm3(ceiling(e))) {
+						durations.ceiling.mgm3 = mgm3(ceiling(e))
+					}
+					else {
+						console.log("WHAT",  el)
+					}
+				}
+				else if(stel(e)) {
+					if(ppm(stel(e))) {
+						durations.stel.ppm = ppm(stel(e))
+					}
+					else if(mgm3(stel(e))) {
+						durations.stel.mgm3 = mgm3(stel(e))
+					}
+					else {
+						console.log("WHAT",  el)
+					}
+				} 
+				else if(ppm(e)) {
+					durations.default.ppm = ppm(e)
+				}
+				else if(mgm3(e)) {
+					durations.default.mgm3 = mgm3(e)
+				}
+				else if(carcinogens(e)) {
+					chemical.standards[el_name].carcinogens = true
+				}
+				else {
+					if(chemical.standards[el_name].znotes.indexOf(e) == -1) chemical.standards[el_name].znotes.push(e)
+				}
 			}
 		}
 	}
 
-	let osha_pel_mgm3 = z1_data[OSHA_PEL_MGM3][i]
-	if(osha_pel_mgm3) {
-		el.osha_pel = fillOutExposureLimit(el.osha_pel)
-		for(let e of split(osha_pel_mgm3)) {
-			if(ceiling(e)) {
-				el.osha_pel.durations.ceiling.mgm3 = ceiling(e)
-			} 
-			else if(stel(e)) {
-				el.osha_pel.durations.stel.mgm3 = stel(e) 
-			} 
-			else if(Number(e)) {
-				el.osha_pel.durations.regular.mgm3 = e
-			}
-			else {
-				if(el.osha_pel.znotes.indexOf(e) == -1) el.osha_pel.znotes.push(e)
-			}
-		}
-	}
+	process_combined_el_column(CAL_OSHA_PEL, 'cal_osha_pel')
+	process_combined_el_column(NIOSH_REL, 'niosh_rel')
 
-	if(el.osha_pel) el.osha_pel = cleanupExposureLimit(el.osha_pel)
-
-	let cal_osha_pel = z1_data[CAL_OSHA_PEL][i]
-	if(cal_osha_pel) {
-		el.cal_osha_pel = fillOutExposureLimit(el.cal_osha_pel)
-		for(let e of split(cal_osha_pel)) {
-			if(ceiling(e)) {
-				if(ppm(ceiling(e))) {
-					el.cal_osha_pel.durations.ceiling.ppm = ppm(ceiling(e))
-				}
-				else if(mgm3(ceiling(e))) {
-					el.cal_osha_pel.durations.ceiling.mgm3 = mgm3(ceiling(e))
-				}
-				else {
-					// console.log("WHAT",  cal_osha_pel)
-				}
-			}
-			else if(stel(e)) {
-				if(ppm(stel(e))) {
-					el.cal_osha_pel.durations.stel.ppm = ppm(stel(e))
-				}
-				else if(mgm3(stel(e))) {
-					el.cal_osha_pel.durations.stel.mgm3 = mgm3(stel(e))
-				}
-				else {
-					// console.log("WHAT",  cal_osha_pel)
-				}
-			} 
-			else if(ppm(e)) {
-				el.cal_osha_pel.durations.regular.ppm = ppm(e)
-			}
-			else if(mgm3(e)) {
-				el.cal_osha_pel.durations.regular.mgm3 = mgm3(e)
-			}
-			else {
-				if(el.cal_osha_pel.znotes.indexOf(e) == -1) el.cal_osha_pel.znotes.push(e)
-			}
-		}
-	}
-
-	if(el.cal_osha_pel) el.cal_osha_pel = cleanupExposureLimit(el.cal_osha_pel)
-
-	let niosh_rel = z1_data[NIOSH_REL][i]
-	if(niosh_rel) {
-		el.niosh_rel = fillOutExposureLimit(el.niosh_rel)
-		for(let e of split(niosh_rel)) {
-			if(ceiling(e)) {
-				if(ppm(ceiling(e))) {
-					el.niosh_rel.durations.ceiling.ppm = ppm(ceiling(e))
-				}
-				else if(mgm3(ceiling(e))) {
-					el.niosh_rel.durations.ceiling.mgm3 = mgm3(ceiling(e))
-				}
-				else {
-					// console.log("WHAT",  niosh_rel)
-				}
-			}
-			else if(stel(e)) {
-				if(ppm(stel(e))) {
-					el.niosh_rel.durations.stel.ppm = ppm(stel(e))
-				}
-				else if(mgm3(stel(e))) {
-					el.niosh_rel.durations.stel.mgm3 = mgm3(stel(e))
-				}
-				else {
-					// console.log("WHAT",  niosh_rel)
-				}
-			} 
-			else if(ppm(e)) {
-				el.niosh_rel.durations.regular.ppm = ppm(e)
-			}
-			else if(mgm3(e)) {
-				el.niosh_rel.durations.regular.mgm3 = mgm3(e)
-			}
-			else if(carcinogens(e)) {
-				el.niosh_rel.carcinogens = true
-			}
-			else {
-				if(el.niosh_rel.znotes.indexOf(e) > -1) el.niosh_rel.znotes.push(e)
-			}
-		}
-	} 
-
-	if(el.niosh_rel) el.niosh_rel = cleanupExposureLimit(el.niosh_rel)
-
-	// console.log(el)
-
-		// console.log(chemical_output[cas_to_chemical[cas]])
-
-		// console.log(cas)
 }
 
 
 // run ppm/mgm3 conversions
 
 for(let chemical of chemical_output) {
-
 	if(!chemical.one_ppm_in_mgm3) continue
-
-	for(let form in chemical.forms) {
-		for(let el in chemical.forms[form]) {
-			for(let duration in chemical.forms[form][el].durations) {
-				let cfed = chemical.forms[form][el].durations[duration]
-				if(cfed.ppm && !cfed.mgm3) {
-					cfed.mgm3 = Math.round((cfed.ppm * chemical.one_ppm_in_mgm3) * 100) / 100
+	for(let standard in chemical.standards) {
+		for(let form in chemical.standards[standard].forms) {
+			for(let duration in chemical.standards[standard].forms[form]) {
+				let dur = chemical.standards[standard].forms[form][duration]
+				if(dur.ppm && !dur.mgm3) {
+					dur.mgm3 = Math.round((dur.ppm * chemical.one_ppm_in_mgm3) * 100) / 100
 				}
-				else if(!cfed.ppm && cfed.mgm3) {
-					cfed.ppm = Math.round((cfed.mgm3 / chemical.one_ppm_in_mgm3) * 100) / 100
+				else if(!dur.ppm && dur.mgm3) {
+					dur.ppm = Math.round((dur.mgm3 / chemical.one_ppm_in_mgm3) * 100) / 100
 				}
 			}
 		}
 	}
-
 }
 
-// set exposure limit durations in minutes
-// const durations = {
-// 	osha_pel: {
-// 		regular: 8 * 60,
-// 		ceiling: 8 * 60,
-// 		stel: 15
-// 	},
-// 	cal_osha_pel: {
-// 		regular: 8 * 60,
-// 		ceiling: 8 * 60,
-// 		stel: 15
-// 	},
-// 	niosh_rel: {
-// 		regular: 10 * 60,
-// 		ceiling: 10 * 60,
-// 		stel: 15
-// 	}
+
+// cleanup
+for(let c of chemical_output) {
+	for(let standard in c.standards) {
+		for(let form in c.standards[standard].forms) {
+			for(let duration in c.standards[standard].forms[form]) {
+				let dur = c.standards[standard].forms[form][duration]
+				if(dur.ppm == 0) delete dur.ppm
+				if(dur.mgm3 == 0) delete dur.mgm3
+				if(!dur.ppm && !dur.mgm3) delete c.standards[standard].forms[form][duration]
+			}
+			if(!Object.keys(c.standards[standard].forms[form]).length) delete c.standards[standard].forms[form]
+		}
+		if(!c.standards[standard].notes.length) {
+			delete c.standards[standard].notes
+		}
+		if(!c.standards[standard].znotes.length) {
+			delete c.standards[standard].znotes
+		}
+		if(!Object.keys(c.standards[standard].forms).length) {
+			delete c.standards[standard].forms
+			if(!c.standards[standard].notes && !c.standards[standard].znotes) {
+				delete c.standards[standard]
+			}
+		}
+	}
+}
+
+console.log(JSON.stringify(chemical_output[510], null, 2))
+
+// for(let f of allForms) {
+// 	console.log(f)
 // }
 
 
@@ -538,10 +492,6 @@ for(let i = 0; i < chemical_output.length; i++) {
 		letter++
 	}
 }
-
-// console.log(JSON.stringify(chemical_output[379]))
-
-// console.log(found_by_cas, found_by_name, children)
 
 writeFileSync(joinPath(__dirname, '../client/data/chemicals.json'), JSON.stringify(chemical_output), 'utf8')
 writeFileSync(joinPath(__dirname, '../client/data/letters.json'), JSON.stringify(letterIndexes), 'utf8')

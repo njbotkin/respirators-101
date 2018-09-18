@@ -1,30 +1,28 @@
 { #if showKeys }
 	<div class="keys">
-		<div class="key form">Form</div>
 		<div class="key standard">Standard</div>
+		<div class="key form">State</div>
 		<div class="key duration">Measurement duration</div>
 		<div class="key EL">Exposure Limit</div>
 	</div>
 { /if }
 
-{ #if forms }
-	<div class="property-list">
-		{ #each Object.entries(forms) as [formKey, form] }
+{ #if standards }
+	<div class="property-list float">
+		{ #each Object.entries(standards) as [standardKey, standard] }
 
-			<div class="property form"> 
-				<div class="label">{ formsPretty[formKey] }</div>
-				<div class="value">
+			<div class="property standard"> 
+				<div class="label">{ standardsPretty[standardKey] }</div>
+				<div class="value property-list">
 
-					{ #each Object.entries(form) as [standardKey, standard] }
-
-						<div class="property standard">
-							<div class="label">{ standardsPretty[standardKey] }</div>
+					{ #if standard.forms }{ #each Object.entries(standard.forms) as [formKey, form] }
+						<div class="property form">
+							{ #if formKey !== 'default' }<div class="label">{@html formKey }</div>{ /if }
 							<div class="value property-list">
 
-								{ #if standard.durations }{ #each Object.entries(standard.durations) as [durationKey, duration] }
-
+								{ #each Object.entries(form) as [durationKey, duration] }
 									<div class="property duration">
-										<div class="label">{ durationsPretty[durationKey] }</div>
+										{ #if durationKey !== 'default' }<div class="label">{ durationsPretty[durationKey] }</div>{ /if }
 										<div class="value">
 
 											{ humanTime(durations[standardKey][durationKey]) }
@@ -40,31 +38,28 @@
 
 										</div>
 									</div>
-
-								{ /each }{ /if }
+								{ /each }
 
 							</div>
-
-							{ #if standard.carcinogens }
-								<span class="carcinogens">carcinogens</span>
-							{ /if }
-
-							{ #if standard.znotes }
-								{ #each standard.znotes as znote }
-									<div class="notes">{@html znote }</div>
-								{ /each }
-							{ :elseif standard.notes }
-								{ #each standard.notes as note }
-									<div class="notes">{@html note }</div>
-								{ /each }
-							{ /if }
-
 						</div>
+					{ /each }{ /if }
 
-					{ /each }
+					{ #if standard.carcinogens }
+						<span class="carcinogens">carcinogens</span>
+					{ /if }
+
+					{ #if standard.znotes }
+						{ #each standard.znotes as znote }
+							<div class="notes">{@html znote }</div>
+						{ /each }
+					{ /if }
+					{ #if standard.notes }
+						{ #each standard.notes as note }
+							<div class="notes">{@html note }</div>
+						{ /each }
+					{ /if }
 
 				</div>
-
 			</div>
 
 		{ /each }
@@ -90,16 +85,16 @@
 
 	{ :else }
 
-		<div class="property form"> 
-			<div class="label">{ formsPretty[exposureLimit.formKey] }</div>
+		<div class="property standard"> 
+			<div class="label">{ standardsPretty[exposureLimit.standardKey] }</div>
 			<div class="value">
 
-				<div class="property standard">
-					<div class="label">{ standardsPretty[exposureLimit.standardKey] }</div>
+				<div class="property form">
+					<div class="label">{ #if exposureLimit.formKey !== 'default' }{ exposureLimit.formKey }{ /if }</div>
 					<div class="value property-list">
 
 						<div class="property duration">
-							<div class="label">{ durationsPretty[exposureLimit.durationKey] }</div>
+							<div class="label">{ #if exposureLimit.durationKey !== 'default' }{ durationsPretty[exposureLimit.durationKey] }{ /if }</div>
 							<div class="value">
 
 								{ humanTime(exposureLimit.duration) }
@@ -117,9 +112,8 @@
 
 			</div>
 		</div>
-		<br>
 
-		{ exposureLimit.chemical_name }<br>
+		<div>{ exposureLimit.chemical_name }</div>
 
 		{ #if exposureLimit.idlh }
 			<div class="property inline" style="padding: 0; margin: 0">
@@ -153,20 +147,12 @@
 		},
 		data: () => ({
 			showKeys: false,
-			formsPretty: {
-				regular: 'Gas/Vapor',
-				total: 'Total dust',
-				dust: 'Dust',
-				resp: 'Respirable fraction',
-				other: 'Other'
-			},
 			standardsPretty: {
 				osha_pel: "OSHA PEL",
 				cal_osha_pel: "Cal/OSHA PEL 8-hour TWA",
 				niosh_rel: "NIOSH REL Up to 10-hour TWA"
 			},
 			durationsPretty: {
-				regular: "",
 				ceiling: "Ceiling",
 				stel: "STEL"
 			},
@@ -175,17 +161,17 @@
 			// durations in minutes
 			durations: {
 				osha_pel: {
-					regular: 8 * 60,
+					default: 8 * 60,
 					ceiling: 8 * 60,
 					stel: 15
 				},
 				cal_osha_pel: {
-					regular: 8 * 60,
+					default: 8 * 60,
 					ceiling: 8 * 60,
 					stel: 15
 				},
 				niosh_rel: {
-					regular: 10 * 60,
+					default: 10 * 60,
 					ceiling: 10 * 60,
 					stel: 15
 				}
@@ -211,6 +197,9 @@
 	$ELSolid: $red1;
 	$ELText: #ce817f;
 
+	.keys {
+		margin-bottom: 10px;
+	}
 	.key {
 		display: inline-block;
 		line-height: 1;
@@ -271,6 +260,24 @@
 		    vertical-align: text-top;
 		    margin-right: 3px;
 	    }
+	}
+
+	.property {
+		padding: 0 10px;
+		margin: 10px 0;
+
+		.label {
+			padding-bottom: 2px;
+		}
+
+		&:first-child { margin-top: 0; }
+		&:last-child { margin-bottom: 0; }
+	}
+
+	.property-list.float {
+		> .property {
+			display: inline-block;
+		}
 	}
 
 </style>
