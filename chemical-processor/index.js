@@ -167,7 +167,7 @@ function munge_exposure_limit(standard, chemical, n) {
 
 	if(carcinogens) standards[standard].carcinogens = 1
 	if(n.trim()) {
-		console.log(n)
+		// console.log(n)
 		standards[standard].notes.push(linkify(n.trim()))
 	}
 
