@@ -55,11 +55,11 @@
 
 			<table>
 				<tr>
-					<td>
+					<td style="padding-left: 0">
 						<label>Exposure Routes</label>
 						{@html exposure_routes }
 					</td>
-					<td>
+					<td style="padding-right: 0">
 						<label>Target Organs</label>
 						{@html target_organs }
 					</td>
@@ -67,7 +67,7 @@
 			</table>
 
 			<div class="block supsection">
-				<label>Personal Protection/Sanitation</label>
+				<label style="font-size: 90%">Personal Protection/Sanitation</label>
 
 				<table>	
 					<tr><td><label> Skin		</label></td><td>{@html ps }</td></tr>
@@ -77,6 +77,14 @@
 					<tr><td><label> Change		</label></td><td>{@html pc }</td></tr>
 					<tr><td><label> Provide		</label></td><td>{@html pp }</td></tr>
 				</table>
+			</div>
+
+			<div class="sources">
+				<h2>Sources</h2>
+				<a href="https://www.cdc.gov/niosh/npg/default.html">NIOSH Pocket Guide to Chemical Hazards</a><br>
+				{ #if z1 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-1.html">OSHA Annotated Table Z-1</a><br>{ /if }
+				{ #if z2 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-2.html">OSHA Annotated Table Z-2</a><br>{ /if }
+				{ #if z3 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-3.html">OSHA Annotated Table Z-3</a>{ /if }
 			</div>
 
 		</div>
@@ -172,10 +180,10 @@
 	}
 
 	.supsection {
-		border-bottom: 1px solid #ddd;
+		/*border-bottom: 1px solid #ddd;*/
 
 		> label {
-			border-bottom: 1px solid #ddd;
+			/*border-bottom: 1px solid #ddd;*/
 			padding-bottom: 5px;
 		}
 	}
@@ -197,6 +205,16 @@
 
 	table td {
 		padding: 0 5px;
+	}
+
+	.sources {
+		font-size: 80%;
+		line-height: 2;
+		h2 {
+			font-size: 100%;
+			margin: 0;
+			border-bottom: 1px solid #ddd;
+		}
 	}
 
 </style>

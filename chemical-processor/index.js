@@ -353,6 +353,7 @@ for(let i = 0; i < all; i++) {
 	if(name !== '' && name_to_chemical[name] !== undefined) {
 
 		chemical = chemical_output[name_to_chemical[name]]
+		chemical.z1 = 1
 		form = 'default'
 
 		if(name_headers.indexOf(name) > -1) {
