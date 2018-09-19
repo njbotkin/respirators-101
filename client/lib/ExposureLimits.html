@@ -25,11 +25,11 @@
 										{ #if durationKey !== 'default' }<div class="label">{ durationsPretty[durationKey] }</div>{ /if }
 										<div class="value">
 
-											{ humanTime(durations[standardKey][durationKey]) }
+											{ humanTime(duration.duration) }
 
-											{ #each Object.entries(duration) as [unit, value] }
+											{ #each Object.entries(duration.values) as [unit, value] }
 
-												<div class="representation select-el EL" on:click="fire('confirmSaveEL', { formKey, standardKey, durationKey, value, unit, duration: durations[standardKey][durationKey], eyes, idlh, idlh_notes, chemical_name })" data-active="{ elSame({ formKey, standardKey, durationKey, unit, value }, $job.exposureLimit) }">
+												<div class="representation select-el EL" on:click="fire('confirmSaveEL', { formKey, standardKey, durationKey, value, unit, duration: duration.duration, eyes, idlh, idlh_notes, chemical_name })" data-active="{ elSame({ formKey, standardKey, durationKey, unit, value }, $job.exposureLimit) }">
 													{ value }
 													<div class="unit">{ @html unitsPretty[unit] }</div>
 												</div>
@@ -46,12 +46,6 @@
 
 					{ #if standard.carcinogens }
 						<span class="carcinogens">carcinogens</span>
-					{ /if }
-
-					{ #if standard.znotes }
-						{ #each standard.znotes as znote }
-							<div class="notes">{@html znote }</div>
-						{ /each }
 					{ /if }
 					{ #if standard.notes }
 						{ #each standard.notes as note }
@@ -156,26 +150,7 @@
 				ceiling: "Ceiling",
 				stel: "STEL"
 			},
-			unitsPretty,
-
-			// durations in minutes
-			durations: {
-				osha_pel: {
-					default: 8 * 60,
-					ceiling: 8 * 60,
-					stel: 15
-				},
-				cal_osha_pel: {
-					default: 8 * 60,
-					ceiling: 8 * 60,
-					stel: 15
-				},
-				niosh_rel: {
-					default: 10 * 60,
-					ceiling: 10 * 60,
-					stel: 15
-				}
-			}
+			unitsPretty
 		})
 	}
 
