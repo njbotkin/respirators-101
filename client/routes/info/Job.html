@@ -63,7 +63,7 @@
 			<Table data="{ JSON.stringify([ ['Saved Respirator Options', 'APF'], ...Object.values(job.options_saved) ] ) }" />
 		{ /if }
 		{ #if job.options }
-			<a class="respirator-options button" href="{ asr.makePath('app.options-list', { id: job.options }) }">Respirator Options</a>
+			<a class="respirator-options button" href="{ asr.makePath('app.options-list', { id: job.options }) }">All Respirator Options</a>
 		{ /if }
 
 	</div>
