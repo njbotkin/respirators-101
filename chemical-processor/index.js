@@ -18,8 +18,6 @@ function linkify(s) {
 var cas_to_chemical = {}
 var name_to_chemical = {}
 
-let allForms = new Set()
-
 function format_form(f) {
 	if(f == 'total' || f == 'total dust') f = 'Total dust'
 	if(f == 'resp' || f == 'resp dust') f = 'Respirable fraction'
@@ -91,7 +89,6 @@ function munge_exposure_limit(standard, chemical, n) {
 	// (as CrO<SUB>3</SUB>): {x}
 	.replace(/\(as ([^:]+)\):( {-[0-9]-})+/g, (match, p1) => {
 		let form = format_form(p1)
-		allForms.add(form)
 
 		if(!standards[standard].forms[form]) standards[standard].forms[form] = newForm(standard)
 
@@ -107,7 +104,6 @@ function munge_exposure_limit(standard, chemical, n) {
 	// {x} (as Cr)
 	.replace(/({-[0-9]-} )+\(as ([^)]+)\)/g, (match, p1, p2) => {
 		let form = format_form(p2)
-		allForms.add(form)
 
 		if(!standards[standard].forms[form]) standards[standard].forms[form] = newForm(standard)
 
@@ -123,7 +119,6 @@ function munge_exposure_limit(standard, chemical, n) {
 	// Dust: {x}
 	.replace(/([^:]+):( {-[0-9]-})+/g, (match, p1) => {
 		let form = format_form(p1)
-		allForms.add(form)
 
 		if(!standards[standard].forms[form]) standards[standard].forms[form] = newForm(standard)
 
@@ -139,7 +134,6 @@ function munge_exposure_limit(standard, chemical, n) {
 	// {x} (resp)
 	.replace(/({-[0-9]-} )+\(([a-z ]+)\)/g, (match, p1, p2) => {
 		let form = format_form(p2)
-		allForms.add(form)
 
 		if(!standards[standard].forms[form]) standards[standard].forms[form] = newForm(standard)
 
@@ -154,7 +148,6 @@ function munge_exposure_limit(standard, chemical, n) {
 
 	// the rest of the durations belong to the default form
 	.replace(/{-([0-9])-}/g, (match, p1) => {
-		allForms.add('default')
 
 		if(!standards[standard].forms.default) standards[standard].forms.default = newForm(standard)
 
@@ -278,12 +271,13 @@ for(var c of chemicals.chemicals) {
 
 // integrate Z tables (overwrites on conflict)
 
-var cheerio = require('cheerio'),
-    cheerioTableparser = require('cheerio-tableparser');
+const cheerio = require('cheerio')
+const cheerioTableparser = require('./tableparser.js')
 
 const $ = cheerio.load(readFileSync(joinPath(__dirname, '../chemical-data/z1.html'), { encoding: `utf8` }))
 cheerioTableparser($)
-var z1_data = $("#z-1").parsetable(true, true, false)
+
+var z1_data = $("#z-1").parsetable()
 
 var cas_headers = [], name_headers = []
 for(let header of $('tr.headingRow').toArray()) {
@@ -331,7 +325,7 @@ var parent = null
 // var found_by_cas = 0, found_by_name = 0, children = 0
 
 for(let i = 0; i < all; i++) {
-	let cas = z1_data[CAS][i].trim(), name = z1_data[SUBSTANCE][i].trim()
+	let cas = z1_data[CAS][i].content.trim(), name = z1_data[SUBSTANCE][i].content.trim()
 
 	var chemical, form
 
@@ -365,22 +359,20 @@ for(let i = 0; i < all; i++) {
 	}
 
 	// child ELs
-	else if(parent && cas == '') {
-		// children++;
+	else if(parent && z1_data[SUBSTANCE][i].classes == 'indent') {
 		chemical = parent
-		form = format_form(z1_data[SUBSTANCE][i])
+		form = format_form(z1_data[SUBSTANCE][i].content)
 	}
 
 	else {
+		parent = null
 		// nothing I can do for you
-		// console.log('NO: ', z1_data[SUBSTANCE][i], z1_data[CAS][i])
+		// console.log('NO: ', z1_data[SUBSTANCE][i].content, z1_data[CAS][i].content)
 		continue
 	}
 
-	allForms.add(form)
-
 	function process_osha_pel(zcolum, unit) {
-		let osha_pel = z1_data[zcolum][i]
+		let osha_pel = z1_data[zcolum][i].content
 		if(osha_pel) {
 			if(!chemical.standards['osha_pel'].forms[form]) chemical.standards['osha_pel'].forms[form] = newForm('osha_pel')
 
@@ -408,7 +400,7 @@ for(let i = 0; i < all; i++) {
 
 	function process_combined_el_column(zcolumn, el_name) {
 
-		let el = z1_data[zcolumn][i]
+		let el = z1_data[zcolumn][i].content
 		if(el) {
 			if(!chemical.standards[el_name].forms[form]) chemical.standards[el_name].forms[form] = newForm(el_name)
 
@@ -514,13 +506,6 @@ for(let c of chemical_output) {
 		}
 	}
 }
-
-// console.log(JSON.stringify(chemical_output[510], null, 2))
-// console.log(chemical_output[510])
-
-// for(let f of allForms) {
-// 	console.log(f)
-// }
 
 
 // I know this seems hacky.  Sorting chemicals by name is pretty arbitrary, what with the alpha- 1,2,3- o- style prefixes.  I'm not going to build a hideous regex for this.  The data source is already mostly sorted alphabetically, so I'm just picking up on the existing order.
