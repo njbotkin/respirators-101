@@ -1,0 +1,81 @@
+<table>
+	<thead>
+		<th class="later"> Save for later </th>
+		{ #each head as cell }
+			<th>{ cell }</th>
+		{ /each }
+	</thead>
+	<tbody>
+		{ #each body as row, i }
+			<tr class:saved="$job.options_saved[i]">
+				<td> <div class="button" on:click="toggle(i, row)">Save{ $job.options_saved[i] ? 'd' : '' }</div> </td>
+				{ #each row as cell }
+					<td>{ cell }</td>
+				{ /each }
+			</tr>
+		{ /each }
+	</tbody>
+</table>
+
+<style>
+
+@import 'colors';
+
+table {
+	margin: 20px 0;
+	border-collapse: collapse;
+	border-spacing: 0;
+
+	th {
+		text-align: left;
+	}
+
+	th, td {
+		padding: 10px;
+	}
+
+	th.later {
+		white-space: nowrap;
+	}
+
+	tr:nth-child(odd) {
+		background: #ddd;
+	}
+
+	.button {
+		background: $green;
+	}
+
+	tr.saved {
+		outline: 4px solid $green;
+		outline-offset: -2px;
+
+		.button {
+			opacity: .5;
+		}
+	}
+}
+
+</style>
+
+<script>
+
+export default {
+	computed: {
+		head: ({ data }) => JSON.parse(data).shift(),
+		body: ({ data }) => JSON.parse(data).slice(1)
+	},
+	methods: {
+		toggle(i, row) {
+			let { options_saved } = this.store.get().job
+			if(options_saved[i]) {
+				delete options_saved[i]
+			} else {
+				options_saved[i] = row
+			}
+			this.store.set({ job: { options_saved } })
+		}
+	}
+}
+
+</script>

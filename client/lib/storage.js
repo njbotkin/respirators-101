@@ -6,7 +6,7 @@ import { Store } from 'svelte/store.js'
 import deepMerge from 'deepmerge'
 import { number, unitsPretty } from 'lib/util.js'
 
-const SCHEMA_VERSION = 1
+const SCHEMA_VERSION = 1.1
 
 // Makes setting deep properties easier (eg. { job: { chemicalsScrollTop: chemicals.scrollTop } })
 class MergeStore extends Store {
@@ -132,6 +132,8 @@ class JobStore extends LocalStore {
 					unit: null,
 					final: null
 				},
+				options: null,
+				options_saved: {},
 				hr: null,
 			}
 		}

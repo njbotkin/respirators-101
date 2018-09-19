@@ -53,7 +53,7 @@
     "loud-rejection": "^1.6.0",
     "pify": "^3.0.0",
     "regex-fun": "^2.0.2",
-    "svelte": "^2.9.7",
+    "svelte": "^2.13.4",
     "svelte-state-renderer": "^2.0.0",
     "validator": "^9.4.0"
   },

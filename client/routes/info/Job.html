@@ -59,8 +59,9 @@
 			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['hr']) }"> { job.hr ? 'Edit' : 'Add' } </a></div>
 		</div>
 
-		<br>
-
+		{ #if Object.keys(job.options_saved).length }
+			<Table data="{ JSON.stringify([ ['Saved Respirator Options', 'APF'], ...Object.values(job.options_saved) ] ) }" />
+		{ /if }
 		{ #if job.options }
 			<a class="respirator-options button" href="{ asr.makePath('app.options-list', { id: job.options }) }">Respirator Options</a>
 		{ /if }
@@ -88,7 +89,8 @@
 	export default {
 		components: {
 			ExposureLimits: 'lib/ExposureLimits.html',
-			Warnings: 'lib/Warnings.html'
+			Warnings: 'lib/Warnings.html',
+			Table: 'lib/Table.html'
 		},
 		helpers: {
 			date: (d) => date.format(new Date(d), 'MMM D, YYYY', true),
@@ -219,6 +221,10 @@
 
 		.read-value {
 			margin: 10px 0;
+		}
+
+		:global(table) {
+			margin-bottom: 0;
 		}
 	}
 

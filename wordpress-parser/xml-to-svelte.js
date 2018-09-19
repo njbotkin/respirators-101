@@ -262,11 +262,11 @@ const flatMap = (ary, fn) => ary.reduce((acc, element, index) => [ ...acc, ...fn
 
 function convertContentToSvelteComponent({ content, title, tables, tablepress }) {
 
-	var expandReplacements, tableReplacements
+	var expandReplacements, flatTableReplacements, dynamicTableReplacements
 
 	content = fixImages(content);
 	({ expandReplacements, content } = fixExpand(content));
-	({ tableReplacements, content } = insertTables(content, tables, tablepress));
+	({ flatTableReplacements, content, dynamicTableReplacements } = insertTables(content, tables, tablepress));
 	content = md.render(content);
 	content = deparagraph(content); // markdown is too aggressive, and this is easier than writing a markdown plugin
 
@@ -275,12 +275,11 @@ function convertContentToSvelteComponent({ content, title, tables, tablepress })
 ${ content }
 
 <script>
-	${ expandReplacements ? "import Accordion from 'lib/Accordion.html'" : "" }
-	${ tableReplacements ? "import Table from 'lib/Table.html'" : "" }
 	export default {
 		components: {
-			${ expandReplacements ? "Accordion," : "" }
-			${ tableReplacements ? "Table" : "" }
+			${ expandReplacements ? "Accordion: 'lib/Accordion.html'," : "" }
+			${ flatTableReplacements ? "Table: 'lib/Table.html'," : "" }
+			${ dynamicTableReplacements ? "Chooser: 'lib/Chooser.html'" : "" }
 		}
 	}
 </script>
@@ -311,18 +310,25 @@ const fixExpand = html => {
 }
 
 const insertTables = (html, tables, tablepress) => {
-	var tableReplacements = 0
+	var flatTableReplacements = 0
+	var dynamicTableReplacements = 0
 	var content = replace(
-		/\[table id=([0-9]+) \/\]/,
-		(id) => {
-			tableReplacements++
-			return `<Table data="${ he.encode(tables[tablepress[id]]) }"></Table>`
+		/\[table id=([0-9]+)( flat)? \/\]/,
+		(id, flat) => {
+			if(flat) {
+				flatTableReplacements++
+				return `<Table data="${ he.encode(tables[tablepress[id]]) }" />`
+			} else {
+				dynamicTableReplacements++
+				return `<Chooser data="${ he.encode(tables[tablepress[id]]) }" />`
+			}
 		},
 		html
 	)
 
 	return {
-		tableReplacements,
+		flatTableReplacements,
+		dynamicTableReplacements,
 		content
 	}
 }
