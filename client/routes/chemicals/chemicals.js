@@ -7,7 +7,7 @@ export default () => ({
 	activate(context) {
 		let store = context.domApi.store
 		store.set({ nav: {
-			title: 'Chemical Selection'
+			title: 'Chemical Lookup'
 		} }, false)
 	}
 }) 
