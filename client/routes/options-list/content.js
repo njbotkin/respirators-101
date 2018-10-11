@@ -31,11 +31,12 @@ export default () => ({
 		let store = context.domApi.store
 		let params = context.parameters
 
-		store.set({
-			job: {
-				options: params.id
-			}
-		})
+		if(store.get().job.options !== params.id) {
+			let { job } = store.get()
+			job.options = params.id
+			job.options_saved = {}
+			store.set({ job })
+		}
 
 		store.set({ nav: {
 			title: 'Respirator Selection',
