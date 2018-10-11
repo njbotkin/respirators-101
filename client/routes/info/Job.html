@@ -93,7 +93,7 @@
 			Table: 'lib/Table.html'
 		},
 		helpers: {
-			date: (d) => date.format(new Date(d), 'MMM D, YYYY', true),
+			date: (d) => d ? date.format(new Date(d), 'MMM D, YYYY', true) : 'Date', 
 			round
 		},
 		data: () => ({
