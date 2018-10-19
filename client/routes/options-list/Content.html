@@ -18,9 +18,15 @@
 		blockquote {
 			position: relative;
 			margin: 0px 40px 0px 0;
-			padding: 20px 20px 20px 60px;
+			padding: 10px 10px 10px 60px;
+			font-size: 90%;
 			/*border: none;*/
 			/*font-style: normal;*/
+
+			@media (max-width: 400px) {
+				padding: 10px 10px 10px 40px;
+				margin: 0;
+			}
 		}
 
 		blockquote:before {
@@ -44,6 +50,10 @@
 
 			font-size: 30px;
 			color: #999;
+
+			@media (max-width: 400px) {
+				left: 0;
+			}
 		}
 
 	}

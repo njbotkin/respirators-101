@@ -5,11 +5,10 @@
 	<div class="title">
 
 		<div class="name">
-			{ #if editingName && job.id == $job.id }
-				<input type="text" bind:value="job.name" style="width:{nameWidth}px"><span class="stopEditing edit" on:click="set({ editingName: false })">[done]</span>
-			{ :else }
-				<span class="inner">{ job.name }</span><span class="editJob edit" on:click="set({ editingName: true, nameWidth: this.previousSibling.offsetWidth })">[edit]</span>
-			{ /if }
+			<span class="inner">
+				<div ref:name class:short="editingName && job.id == $job.id">{ job.name }</div>
+				<input type="text" bind:value="job.name" style="width:{nameWidth}px" class:visible="editingName && job.id == $job.id">
+			</span><span class="editJob edit" on:click="set({ editingName: !editingName })">[{ editingName ? 'done' : 'edit' }]</span>
 		</div>
 
 		<div class="date">
@@ -100,7 +99,12 @@
 			valueSources,
 			only: false,
 			unitsPretty
-		})
+		}),
+		onupdate({changed}) {
+			if(changed.job) {
+				this.set({ nameWidth: this.refs.name.offsetWidth })
+			}
+		}
 	}
 
 </script>
@@ -132,18 +136,35 @@
 		.name {
 			float:left;
 
-			span.inner, input {
-     			display: inline-block;
+			span.inner {
+    			display: inline-block;
+			}
+
+			span.inner > div, input {
+				display: inline-block;
 				border: 1px solid;
 				padding: 1px 4px;
 				font-size: 100%;
 				line-height: 1.4;
 				font-family: 'Open Sans';
 				font-weight: bold;
-				box-sizing: border-box;
+    			box-sizing: border-box;
+			}
+			span.inner > div { border-color: transparent; }
+
+			input {
+				display: none;
+			}
+			.visible {
+				display: block;
 			}
 
-			span.inner { border-color: transparent; }
+			span.inner > div.short {
+				position: absolute;
+				height: 0;
+				overflow: hidden;
+			}
+
 			input { border-color: grey; }
 		}
 		.cfx {

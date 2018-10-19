@@ -1,6 +1,6 @@
 <table>
 	<thead>
-		<th class="later"> Save for later </th>
+		<th class="later"> Save </th>
 		{ #each head as cell }
 			<th>{ cell }</th>
 		{ /each }
@@ -8,7 +8,7 @@
 	<tbody>
 		{ #each body as row, i }
 			<tr class:saved="$job.options_saved[i]">
-				<td> <div class="button" on:click="toggle(i, row)">Save{ $job.options_saved[i] ? 'd' : '' }</div> </td>
+				<td class="save"> <div class="button" on:click="toggle(i, row)">Save{ $job.options_saved[i] ? 'd' : '' }</div> </td>
 				{ #each row as cell }
 					<td>{ cell }</td>
 				{ /each }
@@ -28,22 +28,33 @@ table {
 
 	th {
 		text-align: left;
+		&:last-child {
+			padding-left: 0;
+			text-align: right;
+		}
 	}
 
 	th, td {
 		padding: 10px;
 	}
 
-	th.later {
-		white-space: nowrap;
-	}
-
 	tr:nth-child(odd) {
 		background: #ddd;
 	}
 
+	@media (max-width: 400px) {
+		td:first-child {
+				padding-right: 0;
+		}
+		td:last-child {
+				padding-left: 0;
+		}
+	}
+
 	.button {
 		background: $green;
+		width: 35px;
+		text-align: center;
 	}
 
 	tr.saved {

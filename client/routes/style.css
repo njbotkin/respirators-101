@@ -60,6 +60,14 @@ a[href^='http'], a[href^='//'] {
 p {
 	margin: 20px 0;
 
+	@media (max-width: 400px) {
+		margin: 15px 0;
+	}
+
+	&:first-child {
+		margin-top: 0;
+	}
+
 	.expand {
 		margin-top: -25px;
 		margin-bottom: -25px;
