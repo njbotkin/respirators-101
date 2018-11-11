@@ -3,7 +3,7 @@
 var storage = localStorage
 
 import { Store } from 'svelte/store.js'
-import deepMerge from 'deepmerge'
+import deep_merge from 'deepmerge'
 import { number, unitsPretty } from 'lib/util.js'
 
 const SCHEMA_VERSION = 1.1
@@ -27,7 +27,7 @@ class MergeStore extends Store {
 		}
 		if (!dirty) return
 
-		this._set(deepMerge(this._state, newState), changed)
+		this._set(deep_merge(this._state, newState, { arrayMerge: (destinationArray, sourceArray, options) => sourceArray }), changed)
 	}
 }
 

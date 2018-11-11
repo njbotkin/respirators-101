@@ -195,12 +195,12 @@
 					.slice(0, 50) // maximum number for rendering speed
 
 				// highlight matched characters
-				for(var r of results) {
-					for(var m of r.matches) {
-						var highlit = ''
+				for(let r of results) {
+					for(let m of r.matches) {
+						let highlit = ''
 						if(m.indices.length > 0) {
 							highlit += m.value.slice(0, m.indices[0][0])
-							for(var i = 0; i < m.indices.length; i++) {
+							for(let i = 0; i < m.indices.length; i++) {
 								let indice = m.indices[i]
 								
 								highlit += '<em>' + m.value.slice(indice[0], indice[1]+1) + '</em>'
@@ -328,6 +328,7 @@
 			overflow-y: scroll;
 			overflow-x: hidden;
 			right: 0;
+			padding-bottom: 50px;
 
 			&.full {
 				right: calc(2.65vh - 2.65px + 16px );

@@ -17,11 +17,22 @@
 				</div>
 			{ /if }
 
-			<div class="property inline">
-				<div class="label">IDLH</div>
-				<div class="value">{ @html idlh }</div>
-				<div class="notes">{ @html idlh_notes }</div>
-			</div>
+			{ #if idlh }
+				<div class="property inline">
+					<div class="label">IDLH</div>
+					<div class="value">{ @html idlh }</div>
+					<div class="notes">{ @html idlh_notes }</div>
+				</div>
+			{ /if }
+
+			{ #if general_standard }
+				<div class="property">
+					<div class="label">General Standard</div>
+					{#each general_standard as s}
+						<div class="value">{ @html s }</div>
+					{/each}
+				</div>
+			{ /if }
 
 			{ #if one_ppm_in_mgm3 }
 			<div class="property inline">
@@ -48,40 +59,46 @@
 
 			<ExposureLimits {idlh} {idlh_notes} {eyes} chemical_name="{name}" standards="{standards}" on:confirmSaveEL showKeys="true" />
 
-			<div class="block">
-				<label>Physical Description</label>
-				{@html physical_description }
-			</div>
+			{#if physical_description}
+				<div class="block">
+					<label>Physical Description</label>
+					{@html physical_description }
+				</div>
+			{/if}
 
-			<table>
-				<tr>
-					<td style="padding-left: 0">
-						<label>Exposure Routes</label>
-						{@html exposure_routes }
-					</td>
-					<td style="padding-right: 0">
-						<label>Target Organs</label>
-						{@html target_organs }
-					</td>
-				</tr>
-			</table>
-
-			<div class="block supsection">
-				<label style="font-size: 90%">Personal Protection/Sanitation</label>
-
-				<table>	
-					<tr><td><label> Skin		</label></td><td>{@html ps }</td></tr>
-					<tr><td><label> Eyes		</label></td><td>{@html pe }</td></tr>
-					<tr><td><label> Wash Skin	</label></td><td>{@html pw }</td></tr>
-					<tr><td><label> Remove		</label></td><td>{@html pr }</td></tr>
-					<tr><td><label> Change		</label></td><td>{@html pc }</td></tr>
-					<tr><td><label> Provide		</label></td><td>{@html pp }</td></tr>
+			{#if exposure_routes}
+				<table>
+					<tr>
+						<td style="padding-left: 0">
+							<label>Exposure Routes</label>
+							{@html exposure_routes }
+						</td>
+						<td style="padding-right: 0">
+							<label>Target Organs</label>
+							{@html target_organs }
+						</td>
+					</tr>
 				</table>
-			</div>
+			{/if}
+
+			{#if pp}
+				<div class="block supsection">
+					<label style="font-size: 90%">Personal Protection/Sanitation</label>
+
+					<table>	
+						<tr><td><label> Skin		</label></td><td>{@html ps }</td></tr>
+						<tr><td><label> Eyes		</label></td><td>{@html pe }</td></tr>
+						<tr><td><label> Wash Skin	</label></td><td>{@html pw }</td></tr>
+						<tr><td><label> Remove		</label></td><td>{@html pr }</td></tr>
+						<tr><td><label> Change		</label></td><td>{@html pc }</td></tr>
+						<tr><td><label> Provide		</label></td><td>{@html pp }</td></tr>
+					</table>
+				</div>
+			{/if}
 
 			<div class="sources">
 				<h2>Sources</h2>
-				<a href="https://www.cdc.gov/niosh/npg/default.html">NIOSH Pocket Guide to Chemical Hazards</a><br>
+				{#if npg}<a href="https://www.cdc.gov/niosh/npg/default.html">NIOSH Pocket Guide to Chemical Hazards</a><br>{/if}
 				{ #if z1 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-1.html">OSHA Annotated Table Z-1</a><br>{ /if }
 				{ #if z2 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-2.html">OSHA Annotated Table Z-2</a><br>{ /if }
 				{ #if z3 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-3.html">OSHA Annotated Table Z-3</a>{ /if }
@@ -208,6 +225,7 @@
 	}
 
 	.sources {
+		margin-top: 10px;
 		font-size: 80%;
 		line-height: 2;
 		h2 {
