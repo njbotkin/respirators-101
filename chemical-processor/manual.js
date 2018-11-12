@@ -718,10 +718,22 @@ let manual = {
 		"z2": true
 	},
 
-	// Z-3
-
-	
 }
+
+let z3 = [
+	'Silica, crystalline (as respirable dust)',
+	'Silica, amorphous', 
+	'Mica (containing less than 1% quartz)', 
+	'Soapstone (containing less than 1% quartz)', 
+	'Talc (containing no asbestos and less than 1% quartz)',
+	'Talc (containing asbestos and less than 1% crystalline silica)',
+	'Tremolite, asbestiform',
+	'Asbestos',
+	'Portland cement',
+	'Graphite (natural)',
+	'Coal dust',
+	'Inert or Nuisance Dust'
+]
 
 // console.log(chemicals)
 for(let name in manual) {
@@ -732,5 +744,13 @@ for(let name in manual) {
 		}
 	} else {
 		newChemical(manual[name])
+	}
+}
+
+for(let name of z3) {
+	if(chemicals[name]) {
+		chemicals[name].z3 = true
+	} else {
+		newChemical({ name, z3: true })
 	}
 }

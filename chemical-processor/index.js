@@ -72,8 +72,8 @@ for(let name in chemicals) {
 		}
 	}
 	if(!Object.values(c.standards).length) {
-		// console.log('NO ELs:', name)
-		delete chemicals[name]
+		console.log('NO ELs:', name)
+		// delete chemicals[name]
 	}
 }
 

@@ -192,6 +192,10 @@ const move = [
 			}
 		}
 	},
+	{
+		id: row => row.cells[SUBSTANCE].content == 'Silicates (less than 1% crystalline silica)',
+		remove: true
+	},
 ]
 
 for(let m of move) {

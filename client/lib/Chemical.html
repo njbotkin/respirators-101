@@ -54,10 +54,16 @@
 			</div>
 			{ /if }
 
+			{#if standards}
+
 			<h2>Exposure Limits</h2>
 			<div class="instructions">Select a number to select an exposure limit.</div>
 
 			<ExposureLimits {idlh} {idlh_notes} {eyes} chemical_name="{name}" standards="{standards}" on:confirmSaveEL showKeys="true" />
+
+			{/if}
+
+			{ #if z3 }<div class="z3">See more information in the <a href="https://www.osha.gov/dsg/annotated-pels/tablez-3.html">OSHA Annotated Table Z-3</a></div>{ /if }
 
 			{#if physical_description}
 				<div class="block">
@@ -101,7 +107,6 @@
 				{#if npg}<a href="https://www.cdc.gov/niosh/npg/default.html">NIOSH Pocket Guide to Chemical Hazards</a><br>{/if}
 				{ #if z1 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-1.html">OSHA Annotated Table Z-1</a><br>{ /if }
 				{ #if z2 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-2.html">OSHA Annotated Table Z-2</a><br>{ /if }
-				{ #if z3 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-3.html">OSHA Annotated Table Z-3</a>{ /if }
 			</div>
 
 		</div>
@@ -233,6 +238,12 @@
 			margin: 0;
 			border-bottom: 1px solid #ddd;
 		}
+	}
+
+	.z3 {
+		text-align: center;
+		margin: 20px 0;
+		font-size: 120%;
 	}
 
 </style>
