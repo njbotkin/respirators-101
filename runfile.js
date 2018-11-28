@@ -90,7 +90,7 @@ const build = {
 
 // requires patched polyfill-server running locally
 function fetch_blind_polyfill() { 
-	run("curl 'http://127.0.0.1:3000/v2/polyfill.min.js?features=default-3.6,NodeList.prototype.@@iterator,NodeList.prototype.forEach,RegExp.prototype.flags&flags=always,gated' -H 'User_Agent: Mozilla/5.0 Firefox/900.0' > public/blind-polyfill.js")
+	run("curl 'https://cdn.polyfill.io/v2/polyfill.min.js?features=default-3.6,NodeList.prototype.@@iterator,NodeList.prototype.forEach,RegExp.prototype.flags,Object.entries,Object.is,Object.values&flags=always,gated' -H 'User_Agent: Mozilla/5.0 Firefox/900.0' > public/blind-polyfill.js")
 }
 
 function fetch_google_fonts() { 
@@ -142,11 +142,19 @@ const cordova = {
 	init() { 
 		run("cd cordova && npx cordova platform add android && npx cordova platform add ios")
 	},
+	icons() {
+		run('cd cordova && npx cordova-icon')
+		run('cd cordova && npx cordova-splash')
+	},
 	update_config() { 
 		run("cd cordova && npx cordova prepare")
 	},
 	copy_www() { 
-		run("rm -rf cordova/www; mkdir cordova/www && cp -r public/* cordova/www && node cordova-copy.js")
+		run("rm -rf cordova/www && mkdir cordova\\www && cp -r public/* cordova/www && node cordova-copy.js")
+	},
+	files() {
+		cordova.copy_www()
+		cordova.update_config()
 	},
 
 	build_ios() { 
@@ -157,21 +165,27 @@ const cordova = {
 	build_android() { 
 		run("cd cordova && npx cordova build android")
 	},
-	test_android() { 
-		run("adb -s 169.254.76.233:5555 install -r cordova/platforms/android/build/outputs/apk/debug/android-debug.apk")
+	install_android() { 
+		run("adb install -r cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk")
 		// start emulators too? %programfiles(x86)%\Microsoft Emulator Manager\1.0\emulatorcmd launch /sku:Android /id:0076019F-F03D-41CC-984F-D92FCBD52648
+	},
+	start_android() {
+		run("adb shell monkey -p com.iuoe.respirators101 -c android.intent.category.LAUNCHER 1")
+	},
+	android() {
+		cordova.files()
+		cordova.build_android()
+		cordova.test_android()
+	},
+	test_android() {
+		cordova.install_android()
+		cordova.start_android()
 	},
 	grab_android() {
 		run("cp cordova/platforms/android/build/outputs/apk/debug/android-debug.apk latest.apk")
 	}
 
 }
-
-function android_all() {
-	cordova.build_android()
-	cordova.test_android()
-}
-
 // window 
 // function push_public() {
 // 	run("rsync -W public "+creds.user+"@"+creds.host+":"+creds.path+"/app")
@@ -202,7 +216,6 @@ module.exports = {
 	fetch_blind_polyfill,
 	fetch_google_fonts,
 	cordova,
-	android_all,
 	// push_public,
 	// push_app
 }

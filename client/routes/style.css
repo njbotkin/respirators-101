@@ -228,9 +228,7 @@ img.size-90 { width: 90%; }
 	text-decoration: none;
 	cursor: pointer;
 	position: relative;
-	text-shadow: 0px 0px 5px #00000099;
-	/*opacity: .6;*/
-	/*box-shadow: 0px 1px 6px #00000066;*/
+	text-shadow: 0px 0px 5px rgba(0,0,0,0.6);
 	letter-spacing: .5px;
 
 	&:active {

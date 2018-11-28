@@ -1,3 +1,4 @@
+/* global NativeStorage */
 
 // var storage = window.WEB ? localStorage : NativeStorage
 var storage = localStorage
