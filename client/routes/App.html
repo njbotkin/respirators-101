@@ -2,7 +2,7 @@
 
 <div class="maxwidth">
 
-	<div class="wrapper { sidebarOpen && 'sidebarOpen' } { $jobOpen && 'jobOpen' }" style="transform: translate({ wrapperX }px, 0)">
+	<div class="wrapper { sidebarOpen && 'sidebarOpen' } { $jobOpen && 'jobOpen' }" style="-webkit-transform: translate({ wrapperX }px, 0); transform: translate({ wrapperX }px, 0)">
 
 		<div class="left">
 			<div class="appname">Respirators 101 <div class="nav-button close icon-close" on:click="set({ sidebarOpen: false })">close menu</div></div>
@@ -54,7 +54,7 @@
 			{ /if }
 			
 			{ #if showCurrentJobButton } 
-				<div class="job" bind:offsetHeight="jobHeight" id="job" style="transform: translate(0, { jobY }px)">
+				<div class="job" bind:offsetHeight="jobHeight" id="job" style="-webkit-transform: translate(0, { jobY }px); transform: translate(0, { jobY }px)">
 					<div class="button current-job" on:click="$set({ jobOpen: !$jobOpen })"> Current Job </div>
 					<div class="inner" style="max-height: { jobMaxHeight }px;">
 						<Job bind:job="$job" {asr} only="true" />
