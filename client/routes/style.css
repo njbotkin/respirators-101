@@ -329,3 +329,20 @@ img.size-90 { width: 90%; }
 		}
 	}
 }
+
+ol {
+	padding-left: 40px;
+	@media (max-width: 400px) {
+		padding-left: 20px;
+	}
+}
+
+/* Manually style some problem tables.  I wish there was a better way to do this. */
+.table_34 {
+	.col_0 { min-width: 300px; }
+	.col_2 { white-space: nowrap; }
+	th.col_4 { white-space: nowrap; }
+}
+.table_33 {
+	.col_0 { white-space: nowrap; }
+}

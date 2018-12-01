@@ -127,7 +127,10 @@ async function parseXmlAndOutputSvelteComponents({ xmlString, outputDir, downloa
 		const id = extractText(findFirstChild(node, `wp:post_id`))
 		const content = extractText(findFirstChild(node, `content:encoded`))
 
-		tables[id] = content
+		const meta = extractPostMeta(node)
+		const classes = JSON.parse(meta._tablepress_table_options).extra_css_classes
+
+		tables[id] = { content, classes }
 	})
 
 	// for (var id in tables) {
@@ -317,10 +320,10 @@ const insertTables = (html, tables, tablepress) => {
 		(id, flat) => {
 			if(flat) {
 				flatTableReplacements++
-				return `<Table data="${ he.encode(tables[tablepress[id]]) }" />`
+				return `<Table data="${ he.encode(tables[tablepress[id]].content) }" class="${ tables[tablepress[id]].classes } table_${id}" />`
 			} else {
 				dynamicTableReplacements++
-				return `<Chooser data="${ he.encode(tables[tablepress[id]]) }" />`
+				return `<Chooser data="${ he.encode(tables[tablepress[id]].content) }" />`
 			}
 		},
 		html

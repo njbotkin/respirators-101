@@ -25,3 +25,5 @@ cordova/plugins
 *.sublime-workspace
 
 *.apk
+*.keystore
+*.jks

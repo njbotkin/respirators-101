@@ -1,29 +1,56 @@
-<table>
-	<thead>
-		{ #each head as cell }
-			<th>{ cell }</th>
-		{ /each }
-	</thead>
-	<tbody>
-		{ #each body as row }
-			<tr>
-				{ #each row as cell }
-					<td>{ cell }</td>
-				{ /each }
-			</tr>
-		{ /each }
-	</tbody>
-</table>
+<div ref:mask class="mask" style="height: {maskHeight}px" class:zoomy=zoomy>
+	<table ref:table class="{class}" style="-webkit-transform: scale({z}); transform: scale({z}); -webkit-transform-origin: left top;
+		transform-origin: left top;">
+		<thead>
+			{ #each head as cell, i }
+				<th class="col_{i}">{@html cell }</th>
+			{ /each }
+		</thead>
+		<tbody>
+			{ #each body as row }
+				<tr>
+					{ #each row as cell, i }
+						<td class="col_{i}">{@html cell }</td>
+					{ /each }
+				</tr>
+			{ /each }
+		</tbody>
+	</table>
+</div>
 
 <style>
 
-table {
+.mask {
+	overflow-x: auto;
+	overflow-y: hidden;
 	margin: 20px 0;
+	/*touch-action: manipulate; */
+	/*.shadow {
+		position: absolute;
+		top: 0; right: 0;
+		left: 0; bottom: 0;
+		transition: all .5s;
+		pointer-events: none;
+	}
+
+	&.zoomy {
+		.shadow {
+			box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.25);
+		}
+	}*/
+}
+
+table {
+	font-size: 90%;
 	border-collapse: collapse;
 	border-spacing: 0;
+	min-width: 600px;
+	height: 200px;
+	/*touch-action: manipulate;*/
 
 	th {
 		text-align: left;
+	    vertical-align: bottom;
 	}
 
 	th, td {
@@ -33,13 +60,123 @@ table {
 	tr:nth-child(odd) {
 		background: #ddd;
 	}
+
+	tr:nth-child(even) {
+		background: #fff;
+	}
 }
 
 </style>
 
 <script>
 
+// import panzoom from 'pan-zoom'
+import pinch from 'touch-pinch'
+
 export default {
+	oncreate() {
+
+		const down = () => window.tableDragging = true
+		const up = () => window.tableDragging = false
+
+		this.refs.mask.addEventListener('touchstart', down, true)
+		this.refs.mask.addEventListener('mousedown', down, true)
+		this.refs.mask.addEventListener('touchend', up, true)
+		this.refs.mask.addEventListener('mouseup', up, true)
+
+		let width, height, maskWidth, maskHeight, fullScale
+		var zMax = 1
+
+		// iOS 10 disallows disabling zoom, so forget this
+		// if(!window.iOSversion || window.iOSversion < 10) {
+			pinch(this.refs.table).on('change', (dist, prev) => {
+				let { z } = this.get()
+
+				z = Math.min(Math.max(z + ((dist - prev) / 500), fullScale), zMax)
+
+				maskHeight = height*z
+
+				this.set({ z, maskHeight, zoomy: z != fullScale })
+			})
+		// }
+
+		const measure = () => {
+
+			width = this.refs.table.offsetWidth
+			height = this.refs.table.offsetHeight
+
+			maskWidth = this.refs.mask.getBoundingClientRect().width
+			fullScale = maskWidth/width
+
+			this.set({ maskHeight: height * this.get().z, zoomy: false })
+
+			// if(width > maskWidth) {
+			// 	if(!unpanzoom) {
+			// 		unpanzoom = panzoom(this.refs.table, e => {
+
+			// 			let zDelta = -e.dz / 1000
+
+			// 			z = Math.min(Math.max(z + zDelta, fullScale), zMax)
+
+			// 			let xOrigin = (e.x / z) / width
+			// 			let yOrigin = (e.y / z) / height
+
+			// 			if(z !== zMax) {
+			// 				let xOriginShift = zDelta * ((x - (width*z)) * xOrigin)
+			// 				let yOriginShift = zDelta * ((y - (height*z)) * yOrigin)
+
+			// 				x += xOriginShift
+			// 				y += yOriginShift
+			// 			}
+
+			// 			x += e.dx
+			// 			y += e.dy
+
+			// 			// maskHeight = height*z
+
+			// 			// clamp
+			// 			x = Math.min(Math.max(x, (0 - (width * z) + maskWidth)), 0)
+			// 			y = Math.min(Math.max(y, (0 - (height * z) + maskHeight)), 0)
+
+			// 			this.set({ x, y, z, zoomy: z != fullScale })
+
+			// 		})
+
+			// 	}
+			// } else {
+			// 	if(unpanzoom) {
+			// 		unpanzoom()
+			// 		unpanzoom = null
+
+			// 		this.refs.mask.removeEventListener('touchstart', down, false)
+			// 		this.refs.mask.removeEventListener('mousedown', down, false)
+			// 		this.refs.mask.removeEventListener('touchend', up, false)
+			// 		this.refs.mask.removeEventListener('mouseup', up, false)
+			// 	}
+			// }
+
+		}
+
+		const resize = () => { measure(); this.set({ z: fullScale, maskHeight: height * fullScale }) }
+		window.addEventListener('resize', resize)
+		resize()
+
+		this.refs.table.addEventListener('mousedown', measure)
+		this.refs.table.addEventListener('touchstart', measure)
+
+		// fixes weird safari 10 bug where preventDefault is prevented
+		// @see https://github.com/metafizzy/flickity/issues/457#issuecomment-254501356
+		window.addEventListener('touchmove', function() {});
+
+		// disable zoom on iOS > 9
+		this.refs.mask.addEventListener('touchmove', function(event) {
+			event = event.originalEvent || event;
+			if(event.scale != undefined && event.scale !== 1) {
+				event.preventDefault();
+			}
+		}, false);
+
+	},
 	computed: {
 		head: ({ data }) => JSON.parse(data).shift(),
 		body: ({ data }) => JSON.parse(data).slice(1)
