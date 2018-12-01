@@ -1,3 +1,4 @@
+<div ref:expandEvent class="expandEvent"></div>
 <div ref:mask class="mask" style="height: {maskHeight}px" class:zoomy=zoomy>
 	<table ref:table class="{class}" style="-webkit-transform: scale({z}); transform: scale({z}); -webkit-transform-origin: left top;
 		transform-origin: left top;">
@@ -100,15 +101,15 @@ export default {
 			})
 		// }
 
-		const measure = () => {
+		const resize = () => {
 
 			width = this.refs.table.offsetWidth
 			height = this.refs.table.offsetHeight
 
-			maskWidth = this.refs.mask.getBoundingClientRect().width
+			maskWidth = this.refs.mask.offsetWidth
 			fullScale = maskWidth/width
 
-			this.set({ maskHeight: height * this.get().z, zoomy: false })
+			this.set({ zoomy: false, z: fullScale, maskHeight: height * fullScale })
 
 			// if(width > maskWidth) {
 			// 	if(!unpanzoom) {
@@ -157,12 +158,10 @@ export default {
 
 		}
 
-		const resize = () => { measure(); this.set({ z: fullScale, maskHeight: height * fullScale }) }
 		window.addEventListener('resize', resize)
 		resize()
 
-		this.refs.table.addEventListener('mousedown', measure)
-		this.refs.table.addEventListener('touchstart', measure)
+		this.refs.expandEvent.addEventListener('expanded', resize)
 
 		// fixes weird safari 10 bug where preventDefault is prevented
 		// @see https://github.com/metafizzy/flickity/issues/457#issuecomment-254501356

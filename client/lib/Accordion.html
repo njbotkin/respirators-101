@@ -29,6 +29,12 @@
 				let expand = this.refs.expand
 				let inner = this.refs.inner
 
+				// alert any interested children
+				let events = this.refs.inner.querySelectorAll(".expandEvent")
+				for(let e of events) e.dispatchEvent(new CustomEvent(open ? 'expanding' : 'closing'))
+				setTimeout(() => { for(let e of events) e.dispatchEvent(new CustomEvent(open ? 'expanded' : 'closed')) }, 300)
+
+				// scroll to viewport
 				if(open) {
 
 					let aperture = document.getElementById('aperture')
@@ -105,7 +111,7 @@
 		line-height: 50px;
 		text-align: center;
 		font-size: 156.25%;
-		
+
 		@media (max-width: 400px) {
 			right: 5px;
 		}
