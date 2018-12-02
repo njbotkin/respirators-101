@@ -487,7 +487,7 @@ let manual = {
 	},
 	"Methylene chloride": {
 		"name_add": "(Z37.31-1970)",
-		general_standard: link_gs('1910.1052'),
+		general_standard: [link_gs('1910.1052')],
 	    "standards": {
 	        "cal_osha_pel": {
 	            "forms": {
