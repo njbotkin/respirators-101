@@ -14,6 +14,9 @@
 				<div class="label">{ standardsPretty[standardKey] }</div>
 				<div class="value property-list">
 
+					{#if standardKey == 'osha_pel' && osha_pel}<div class="raw">{@html osha_pel}</div>{/if}
+					{#if standardKey == 'niosh_rel' && niosh_rel}<div class="raw">{@html niosh_rel}</div>{/if}
+
 					{ #if standard.forms }{ #each Object.entries(standard.forms) as [formKey, form] }
 						<div class="property form">
 							{ #if formKey !== 'Default' }<div class="label">{@html formKey }</div>{ /if }
@@ -282,6 +285,12 @@
 
 	.period {
 		font-size: 80%;
+	}
+
+	.raw {
+		max-width: 200px;
+		font-size: 80%;
+		margin: 0 10px 10px;
 	}
 
 </style>

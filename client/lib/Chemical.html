@@ -64,9 +64,10 @@
 			{#if standards}
 
 			<h2>Exposure Limits</h2>
+			
 			<div class="instructions">Select a number to select an exposure limit.</div>
 
-			<ExposureLimits {idlh} {idlh_notes} {eyes} chemical_name="{name}" standards="{standards}" on:confirmSaveEL showKeys="true" />
+			<ExposureLimits {osha_pel} {niosh_rel} {idlh} {idlh_notes} {eyes} chemical_name="{name}" standards="{standards}" on:confirmSaveEL showKeys="true" />
 
 			{/if}
 
