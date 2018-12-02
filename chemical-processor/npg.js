@@ -173,6 +173,7 @@ for(let c of chemical_source.chemicals) {
 
 	let chemical = newChemical({
 		name: c["c"],
+		rtecs: c["rn"],
 		synonyms: c["s"].join(', '),
 		// npg_link: 'https://www.cdc.gov/niosh/npg/npgd' + c["a"] + '.html',
 		idlh: idlh_split.shift(),
