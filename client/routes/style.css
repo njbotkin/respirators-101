@@ -127,7 +127,7 @@ img.size-90 { width: 90%; }
 	vertical-align: top;
 	border-left: 2px solid transparent;
 	padding: 5px 10px;
-	margin: 5px 0;
+	margin: 0 0 5px 0;
 
 	label, .label {
 		font-size: 80%;

@@ -1,4 +1,5 @@
 let { chemicals, newChemical } = require('./chemicals.js')
+let { linkify } = require('./helpers.js')
 
 function link_gs(s) {
 	return `<a href="https://www.osha.gov/laws-regs/regulations/standardnumber/${ s.slice(0, 4) }/${ s.replace(/\([a-z]\)/, '') }#${ s }">${s}</a>`
@@ -222,7 +223,7 @@ let manual = {
 	                    }
 	                }
 	            },
-	            "notes": ['See Section 5219']
+	            "notes": [linkify('See Section 5219')]
 	        }
 	    },
 		"z2": true
@@ -508,7 +509,7 @@ let manual = {
 	                    }
 	                }
 	            },
-	            notes: ["See Section 5202"]
+	            notes: [linkify("See Section 5202")]
 	        }
 	    },
 		"z2": true

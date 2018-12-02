@@ -8,7 +8,7 @@ const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
 
 const { newChemical, chemicals } = require('./chemicals.js')
-const { linkify, addNote } = require('./helpers.js')
+const { addNote } = require('./helpers.js')
 
 const $ = cheerio.load(readFileSync(joinPath(__dirname, '../chemical-data/z1.html'), { encoding: `utf8` }))
 cheerioTableparser($)
@@ -45,11 +45,7 @@ function process_osha_pel({osha_pel, chemical, form, unit}) {
 			durations.default.values[unit] = e
 		}
 		else {
-			e = linkify(e.trim())
-			if(e !== '') {
-				// no duplicate notes
-				addNote(chemical.standards['osha_pel'].notes, e)
-			}
+			addNote(chemical.standards['osha_pel'].notes, e)
 		}
 	}
 }
@@ -103,10 +99,8 @@ function process_combined_el_column({el, chemical, form, el_name}) {
 		Object.assign(durations[duration_name].values, unit)
 		if(duration) durations[duration_name].duration = duration
 
-		e = linkify(e.trim())
-		if(e !== '') {
-			addNote(chemical.standards[el_name].notes, e)
-		}
+		addNote(chemical.standards[el_name].notes, e)
+
 	}
 }
 
@@ -307,10 +301,10 @@ for(let row of z1_data) {
 		parent = chemical
 
 		if(!empty(row.cells[CAL_OSHA_PEL])) {
-			chemical.standards["cal_osha_pel"].notes.push(linkify(row.cells[CAL_OSHA_PEL].content))
+			addNote(chemical.standards["cal_osha_pel"].notes, row.cells[CAL_OSHA_PEL].content)
 		}
 		if(!empty(row.cells[NIOSH_REL])) {
-			chemical.standards["niosh_rel"].notes.push(linkify(row.cells[NIOSH_REL].content))
+			addNote(chemical.standards["niosh_rel"].notes, row.cells[NIOSH_REL].content)
 		}
 
 		continue
@@ -320,7 +314,7 @@ for(let row of z1_data) {
 
 		if(general_standard) {
 			for(let standard in chemical.standards) {
-				chemical.standards[standard].forms[form].notes.push('see ' + link_gs(general_standard))
+				addNote(chemical.standards[standard].forms[form].notes, 'see ' + link_gs(general_standard))
 			}
 		}
 	} else {

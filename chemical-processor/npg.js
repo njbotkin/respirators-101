@@ -145,10 +145,9 @@ function munge_exposure_limit(standard, chemical, n) {
 	})
 
 	if(carcinogens) standards[standard].carcinogens = 1
-	n = linkify(n.trim())
-	if(n !== '') {
-		addNote(standards[standard].notes, n)
-	}
+
+	addNote(standards[standard].notes, n)
+
 }
 
 var chemical_source = JSON.parse(readFileSync(joinPath(__dirname, '../chemical-data/chemicals.json'), { encoding: `utf8` }))
