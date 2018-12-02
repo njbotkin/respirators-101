@@ -175,7 +175,6 @@ for(let c of chemical_source.chemicals) {
 	let chemical = newChemical({
 		name: c["c"],
 		synonyms: c["s"].join(', '),
-		cas: c["cn"],
 		// npg_link: 'https://www.cdc.gov/niosh/npg/npgd' + c["a"] + '.html',
 		idlh: idlh_split.shift(),
 		idlh_notes: linkify(idlh_split.join('<br />')),
@@ -195,6 +194,8 @@ for(let c of chemical_source.chemicals) {
 		pp: c["pp"] || "No recommendation",
 		npg: true
 	})
+
+	if(c["cn"] !== '') chemical.cas = c['cn']
 
 	// super side affects ahoy, avert your eyes FPers
 	munge_exposure_limit("niosh_rel", chemical, c["n"])
