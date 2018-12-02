@@ -1,4 +1,4 @@
-<div use:zoomy class="mask" style="height: {maskHeight}px" class:zoomy=zoomy>
+<div use:zoomy class="mask" style="height: {maskHeight}px">
 	<div class="expandEvent"></div>
 	<table class="{class}" style="-webkit-transform: scale({z}); transform: scale({z}); -webkit-transform-origin: left top;
 		transform-origin: left top;">
@@ -25,20 +25,6 @@
 	overflow-x: auto;
 	overflow-y: hidden;
 	margin: 20px 0;
-	/*touch-action: manipulate; */
-	/*.shadow {
-		position: absolute;
-		top: 0; right: 0;
-		left: 0; bottom: 0;
-		transition: all .5s;
-		pointer-events: none;
-	}
-
-	&.zoomy {
-		.shadow {
-			box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.25);
-		}
-	}*/
 }
 
 table {
@@ -47,7 +33,6 @@ table {
 	border-spacing: 0;
 	min-width: 600px;
 	height: 200px;
-	/*touch-action: manipulate;*/
 
 	th {
 		text-align: left;
@@ -71,7 +56,6 @@ table {
 
 <script>
 
-// import panzoom from 'pan-zoom'
 import pinch from 'touch-pinch'
 
 export default {
@@ -100,60 +84,13 @@ export default {
 				let fullScale = maskWidth/width
 
 				this.set({ 
-					zoomy: false, 
 					z: fullScale, 
 					maskHeight: height * fullScale, 
 					height,
 					fullScale 
 				})
-
-				// if(width > maskWidth) {
-				// 	if(!unpanzoom) {
-				// 		unpanzoom = panzoom(mask, e => {
-
-				// 			let zDelta = -e.dz / 1000
-
-				// 			z = Math.min(Math.max(z + zDelta, fullScale), zMax)
-
-				// 			let xOrigin = (e.x / z) / width
-				// 			let yOrigin = (e.y / z) / height
-
-				// 			if(z !== zMax) {
-				// 				let xOriginShift = zDelta * ((x - (width*z)) * xOrigin)
-				// 				let yOriginShift = zDelta * ((y - (height*z)) * yOrigin)
-
-				// 				x += xOriginShift
-				// 				y += yOriginShift
-				// 			}
-
-				// 			x += e.dx
-				// 			y += e.dy
-
-				// 			// maskHeight = height*z
-
-				// 			// clamp
-				// 			x = Math.min(Math.max(x, (0 - (width * z) + maskWidth)), 0)
-				// 			y = Math.min(Math.max(y, (0 - (height * z) + maskHeight)), 0)
-
-				// 			this.set({ x, y, z, zoomy: z != fullScale })
-
-				// 		})
-
-				// 	}
-				// } else {
-				// 	if(unpanzoom) {
-				// 		unpanzoom()
-				// 		unpanzoom = null
-
-				// 		mask.removeEventListener('touchstart', down, false)
-				// 		mask.removeEventListener('mousedown', down, false)
-				// 		mask.removeEventListener('touchend', up, false)
-				// 		mask.removeEventListener('mouseup', up, false)
-				// 	}
-				// }
-
 			}
-			
+
 			mask.addEventListener('touchstart', down, true)
 			mask.addEventListener('mousedown', down, true)
 			mask.addEventListener('touchend', up, true)
@@ -168,7 +105,7 @@ export default {
 
 				z = Math.min(Math.max(z + ((dist - prev) / 500), fullScale), zMax)
 
-				this.set({ z, maskHeight: height * z, zoomy: z != fullScale })
+				this.set({ z, maskHeight: height * z })
 			})
 			// }
 
