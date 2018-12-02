@@ -11,6 +11,15 @@ function linkify(s) {
 	})
 }
 
+// no duplicates
+function addNote(notes, note) {
+	for(let n of notes) {
+		if(n.indexOf(note) > -1) return;
+	}
+	notes.push(note)
+}
+
 module.exports = {
-	linkify
+	linkify,
+	addNote
 }

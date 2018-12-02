@@ -8,7 +8,7 @@ const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
 
 const { newChemical, chemicals } = require('./chemicals.js')
-const { linkify } = require('./helpers.js')
+const { linkify, addNote } = require('./helpers.js')
 
 const $ = cheerio.load(readFileSync(joinPath(__dirname, '../chemical-data/z1.html'), { encoding: `utf8` }))
 cheerioTableparser($)
@@ -48,7 +48,7 @@ function process_osha_pel({osha_pel, chemical, form, unit}) {
 			e = linkify(e.trim())
 			if(e !== '') {
 				// no duplicate notes
-				if(chemical.standards['osha_pel'].notes.indexOf(e) == -1) chemical.standards['osha_pel'].notes.push(e)
+				addNote(chemical.standards['osha_pel'].notes, e)
 			}
 		}
 	}
@@ -105,8 +105,7 @@ function process_combined_el_column({el, chemical, form, el_name}) {
 
 		e = linkify(e.trim())
 		if(e !== '') {
-			// no duplicate notes
-			if(chemical.standards[el_name].notes.indexOf(e) == -1) chemical.standards[el_name].notes.push(e)
+			addNote(chemical.standards[el_name].notes, e)
 		}
 	}
 }

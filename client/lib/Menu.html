@@ -47,13 +47,6 @@
 		components: {
 			Category
 		},
-		oncreate() {
-			// CSS transitions for the expands
-			for(var e of document.querySelectorAll('.expand')) {
-				e.style.height = e.clientHeight + 'px'
-				e.setAttribute('class', 'expand initialized')
-			}
-		},
 		data: () => ({
 			copyrightDate,
 			currentExpand: -1

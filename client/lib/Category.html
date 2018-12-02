@@ -1,12 +1,22 @@
-<div class="category open{ item.id == currentExpand }">
+<div class="category" class:open="item.id == currentExpand"> 
 	<div class="clickable category-title">
 		<a href="{ item.path }">{item.title}</a>
 		<div class="chevron icon-angle-left" on:click="set({ currentExpand: currentExpand == item.id ? -1 : item.id })"></div>
 	</div>
-	<div class="expand">
-		<slot></slot>
-	</div>
+	{#if currentExpand == item.id}
+		<div class="expand" transition:slide>
+			<slot></slot>
+		</div>
+	{/if}
 </div>
+
+<script>
+	import slide from 'svelte-transitions-slide'
+
+	export default {
+		transitions: { slide }
+	}
+</script>
 
 <style>
 
@@ -17,7 +27,7 @@
 		background: $blue2;
 	}
 
-	.category.opentrue .chevron {
+	.category.open .chevron {
 		transform: rotate(90deg);
 	}
 
@@ -45,16 +55,6 @@
 
 	.clickable {
 		cursor: pointer; 
-	}
-
-	:global(.expand.initialized) {
-		transition: height 0.2s ease-out;
-		height: auto;
-		overflow: hidden;
-	}
-
-	:global(.category.openfalse .expand.initialized) {
-		height: 0 !important;
 	}
 
 </style>

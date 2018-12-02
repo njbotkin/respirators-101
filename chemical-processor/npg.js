@@ -3,7 +3,7 @@ const { readFileSync } = require('fs')
 const { join: joinPath } = require(`path`)
 
 const { chemicals, newChemical } = require('./chemicals.js')
-const { linkify } = require('./helpers.js')
+const { linkify, addNote } = require('./helpers.js')
 
 function munge_exposure_limit(standard, chemical, n) {
 
@@ -147,8 +147,7 @@ function munge_exposure_limit(standard, chemical, n) {
 	if(carcinogens) standards[standard].carcinogens = 1
 	n = linkify(n.trim())
 	if(n !== '') {
-		// no duplicate notes
-		if(standards[standard].notes.indexOf(n) == -1) standards[standard].notes.push(n)
+		addNote(standards[standard].notes, n)
 	}
 }
 

@@ -1,10 +1,10 @@
 /* 
 	How this works:
 
-		1) Table-Z1 is base data.
-			Provides name, CAS, and ELs
-		2) NPG gets added on top and overwrites conflicting ELs.  
+		1) NPG gets added.
 			Matched by name
+		1) Table-Z1 gets added.  On conflict, NPG overwrites
+			Provides name, CAS, and ELs
 		3) Bring in manual data entry.  In contains manual corrections where the NPG data is either too obscure to bother importing, or is inconsistent.  Slso includes data from Tables z-2 and z-3.  It overwrites data found in the NPG.
 
 */
@@ -14,10 +14,10 @@ const { join: joinPath } = require(`path`)
 let { chemicals } = require('./chemicals.js')
 
 
-// STEP 2
+// STEP 1
 require('./npg.js')
 
-// STEP 1
+// STEP 2
 require('./z1.js')
 
 // STEP 3
