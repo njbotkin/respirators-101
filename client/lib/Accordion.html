@@ -68,8 +68,7 @@
 
 						// remove transform and set traditional scrolltop so user can scroll
 						setTimeout(function(o) { 
-							apertureInner.style.transitionDuration = '0s'
-							apertureInner.style.transform = `translate(0, 0)`
+							apertureInner.style.cssText = ''
 							aperture.scrollTop = o.t
 						}, 600, { t: aperture.scrollTop + movetop })
 
