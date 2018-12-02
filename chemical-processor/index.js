@@ -56,10 +56,15 @@ for(let name in chemicals) {
 				if(values.mgm3 == 0) delete values.mgm3
 				if(!values.ppm && !values.mgm3 && !c.standards[standard].forms[form].durations[duration].max) delete c.standards[standard].forms[form].durations[duration]
 			}
-			if(c.standards[standard].forms[form].notes && !c.standards[standard].forms[form].notes.length) {
-				delete c.standards[standard].forms[form].notes
-				if(!Object.keys(c.standards[standard].forms[form].durations).length) delete c.standards[standard].forms[form]
-			}
+			if(c.standards[standard].forms[form].notes) {
+				for(let i = 0; i < c.standards[standard].forms[form].notes.length; i++) {
+					if(c.standards[standard].forms[form].notes[i].trim() == '') c.standards[standard].forms[form].notes.splice(i, 1)
+				}
+				if(!c.standards[standard].forms[form].notes.length) {
+					delete c.standards[standard].forms[form].notes
+					if(!Object.keys(c.standards[standard].forms[form].durations).length) delete c.standards[standard].forms[form]
+				}
+			} 
 		}
 		if(c.standards[standard].notes && !c.standards[standard].notes.length) {
 			delete c.standards[standard].notes

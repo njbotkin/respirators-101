@@ -16,7 +16,7 @@ function addNote(notes, note) {
 	for(let n of notes) {
 		if(n.indexOf(note) > -1) return;
 	}
-	notes.push(note)
+	notes.push(note.replace(/<br>/g, ''))
 }
 
 module.exports = {

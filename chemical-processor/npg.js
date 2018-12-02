@@ -185,7 +185,6 @@ for(let c of chemical_source.chemicals) {
 		target_organs: c["to"].charAt(0).toUpperCase() + c["to"].slice(1) + '.',
 		eye: /eye/i.test(c["to"]) ? 1 : 0,
 		one_ppm_in_mgm3,
-		notes: '', // for ambiguous things
 		ps: c["ps"] || "No recommendation",
 		pe: c["pe"] || "No recommendation",
 		pw: c["pw"] || "No recommendation",
@@ -204,3 +203,10 @@ for(let c of chemical_source.chemicals) {
 
 // manual fixes
 chemicals['Mercury (organo) alkyl compounds (as Hg)'].cas = '7439-97-6'
+
+// let clear_notes = [
+// 	chemicals["Beryllium &amp; beryllium compounds (as Be)"].standards.osha_pel
+// ]
+// for(let n of clear_notes) {
+// 	n.notes = []
+// }

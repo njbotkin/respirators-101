@@ -145,14 +145,17 @@ const move = [
 		id: row => row.cells[SUBSTANCE].content == 'Uranium (as U)',
 		remove: true,
 		transform: (row, index) => { 
-			z1_data[index].cells[SUBSTANCE] = {
+			z1_data[index+1].cells[SUBSTANCE] = {
 				content: 'Uranium (soluble compounds, as U)',
 				classes: ''
 			}
-			z1_data[index+1].cells[SUBSTANCE] = {
+			z1_data[index+1].cells[CAS] = z1_data[index].cells[CAS]
+
+			z1_data[index+2].cells[SUBSTANCE] = {
 				content: 'Uranium (insoluble compounds, as U)',
 				classes: ''
 			}
+			z1_data[index+2].cells[CAS] = z1_data[index].cells[CAS]
 		}
 	},
 	{
@@ -181,11 +184,11 @@ const move = [
 		id: row => row.cells[SUBSTANCE].content == 'Vanadium',
 		remove: true,
 		transform: (row, index) => { 
-			z1_data[index].cells[SUBSTANCE] = {
+			z1_data[index+1].cells[SUBSTANCE] = {
 				content: 'Vanadium dust',
 				classes: ''
 			}
-			z1_data[index+1].cells[SUBSTANCE] = {
+			z1_data[index+2].cells[SUBSTANCE] = {
 				content: 'Vanadium fume',
 				classes: ''
 			}
@@ -205,8 +208,8 @@ for(let m of move) {
 	}
 	let row = z1_data[index]
 
-	if(m.remove) z1_data.splice(index, 1)[0]
 	if(m.transform) m.transform(row, index)
+	if(m.remove) z1_data.splice(index, 1)
 	if(m.to) {
 		let to_index = z1_data.findIndex(m.to)
 		z1_data.splice(to_index + 1, 0, row)
@@ -215,18 +218,18 @@ for(let m of move) {
 
 
 // line up with the NPG
-// let rename = {
-// 	'Heptane (n-Heptane)': 'n-Heptane' 
-// }
+let rename = {
+	'Tin, organic compounds (as Sn)': 'Tin (organic compounds, as Sn)' 
+}
 
-// for(let r in rename) {
-// 	let index = z1_data.findIndex(row => row.cells[SUBSTANCE].content === r)
-// 	if(index == -1) {
-// 		console.log('couldnt find ' +r)
-// 		continue
-// 	}
-// 	z1_data[index].cells[SUBSTANCE].content = rename[r]
-// }
+for(let r in rename) {
+	let index = z1_data.findIndex(row => row.cells[SUBSTANCE].content === r)
+	if(index == -1) {
+		console.log('couldnt find ' +r)
+		continue
+	}
+	z1_data[index].cells[SUBSTANCE].content = rename[r]
+}
 
 
 let parent = null
@@ -260,17 +263,19 @@ for(let row of z1_data) {
 	}
 		
 	// many of the names in Z-1 will line up with the NPG if we remove some parens
-	if(name.indexOf("(") > -1) {
-		let parens
-		let modified_name = name.replace(/\(([^(]+)\)/, (match, p1) => {
-			parens = p1
-			return ''
-		}).trim()
-		if(chemicals[modified_name] && chemicals[modified_name].cas === cas) {
-			name = modified_name
-		}
-		else if(chemicals[parens] && chemicals[parens].cas === cas) {
-			name = parens
+	if(!chemicals[name]) {
+		if(name.indexOf("(") > -1) {
+			let parens
+			let modified_name = name.replace(/\(([^(]+)\)/, (match, p1) => {
+				parens = p1
+				return ''
+			}).trim()
+			if(chemicals[modified_name] && chemicals[modified_name].cas === cas) {
+				name = modified_name
+			}
+			else if(chemicals[parens] && chemicals[parens].cas === cas) {
+				name = parens
+			}
 		}
 	}
 	// if(name.indexOf("(") > -1) {

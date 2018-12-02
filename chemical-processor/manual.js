@@ -207,7 +207,7 @@ let manual = {
 							}
 	                    }
 	                }
-	            },
+	            }
 	        },
 	        "cal_osha_pel": {
 	            "forms": {
@@ -752,5 +752,27 @@ for(let name of z3) {
 		chemicals[name].z3 = true
 	} else {
 		newChemical({ name, z3: true })
+	}
+}
+
+// remove NPG max peaks
+let max_peaks = {
+	'(30 minutes), with a maximum peak of 0.025 mg/m3': chemicals["Beryllium &amp; beryllium compounds (as Be)"].standards.osha_pel,
+	'100 ppm (30-minute maximum peak)': chemicals["Carbon disulfide"].standards.osha_pel,
+	'200 ppm (5-minute maximum peak in any 4 hours)': chemicals["Carbon tetrachloride"].standards.osha_pel,
+	'50 ppm [5-minute maximum peak]': chemicals["Ethylene dibromide"].standards.osha_pel,
+	'200 ppm [5-minute maximum peak in any 3 hours]': chemicals["Ethylene dichloride"].standards.osha_pel,
+	'[10-minute maximum peak]': chemicals["Hydrogen sulfide"].standards.osha_pel,
+	'300 ppm (5-minute maximum peak in any 3 hours)': chemicals["Methyl chloride"].standards.osha_pel,
+	'600 ppm (5-minute maximum peak in any 3 hours)': chemicals["Styrene"].standards.osha_pel,
+	'(for 5 minutes in any 3-hour period), with a maximum peak of 300 ppm': chemicals["Tetrachloroethylene"].standards.osha_pel,
+	'500 ppm (10-minute maximum peak)': chemicals["Toluene"].standards.osha_pel,
+	'300 ppm (5-minute maximum peak in any 2 hours)': chemicals["Trichloroethylene"].standards.osha_pel,
+}
+
+for(let note in max_peaks) {
+	for(let i = 0; i < max_peaks[note].notes.length; i++) {
+		max_peaks[note].notes[i] = max_peaks[note].notes[i].replace(note, '')
+		if(max_peaks[note].notes[i].trim() == '') max_peaks[note].notes.splice( i, 1 )
 	}
 }
