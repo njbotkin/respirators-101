@@ -16,6 +16,7 @@
 
 					{#if standardKey == 'osha_pel' && osha_pel}<div class="raw">{@html osha_pel}</div>{/if}
 					{#if standardKey == 'niosh_rel' && niosh_rel}<div class="raw">{@html niosh_rel}</div>{/if}
+					{#if standardKey == 'cal_osha_pel' && cal_osha_pel}<div class="raw">{@html cal_osha_pel}</div>{/if}
 
 					{ #if standard.forms }{ #each Object.entries(standard.forms) as [formKey, form] }
 						<div class="property form">
