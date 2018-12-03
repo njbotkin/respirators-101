@@ -25,7 +25,7 @@ function addNote(notes, note) {
 	if(note == '') return
 
 	for(let n of notes) {
-		if(striptags(n).indexOf(striptags(note)) > -1) return;
+		if(striptags(n).toUpperCase().indexOf(striptags(note).toUpperCase()) > -1) return;
 	}
 	notes.push(note.replace(/<br>/g, ''))
 }

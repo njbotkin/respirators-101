@@ -175,6 +175,18 @@ const move = [
 		transform: row => { row.cells[SUBSTANCE].content = 'Silica, crystalline (as respirable dust)' }
 	},
 	{
+		id: row => row.cells[SUBSTANCE].content == 'Platinum (as Pt) Metal',
+		transform: (row, index) => { 
+			row.classes = ''
+			row.cells[SUBSTANCE].content = 'Platinum'
+
+			z1_data[index+1].cells[SUBSTANCE] = {
+				content: 'Platinum (soluble salts, as Pt)',
+				classes: ''
+			}
+		}
+	},
+	{
 		id: row => row.cells[SUBSTANCE].content == 'Vanadium',
 		remove: true,
 		transform: (row, index) => { 
@@ -213,11 +225,40 @@ for(let m of move) {
 
 // line up with the NPG
 let rename = {
-	'Tin, organic compounds (as Sn)': 'Tin (organic compounds, as Sn)' 
+	'Tin, organic compounds (as Sn)': 'Tin (organic compounds, as Sn)',
+	'Tetramethyl lead, (as Pb)': 'Tetramethyl lead (as Pb)',
+	'Tantalum, metal and oxide dust': 'Tantalum (metal and oxide dust, as Ta)',
+	'Silver, metal and soluble compounds (as Ag)': 'Silver (metal dust and soluble compounds, as Ag)',
+	'Selenium compounds (as Se)': 'Selenium',
+	'Rhodium (as Rh), metal fume and insoluble compounds': 'Rhodium (metal fume and insoluble compounds, as Rh)',
+	'Rhodium (as Rh), soluble compounds': 'Rhodium (soluble compounds, as Rh)',
+	'Petroleum distillates (Naphtha) (Rubber Solvent)': 'Petroleum distillates (naphtha)',
+	'Phenyl ether, vapor': 'Phenyl ether (vapor)',
+	'Phenyl ether-biphenylmixture, vapor': 'Phenyl ether-biphenyl mixture (vapor)',
+	'Oil mist, mineral': 'Oil mist (mineral)',
+	'Particulates Not Otherwise Regulated (PNOR)(i)': 'Particulates not otherwise regulated',
+	'4-Nitrodiphenyl; see 1910.1003': '4-Nitrobiphenyl; see 1910.1003',
+	'Nitroglycerin': 'Nitroglycerine',
+	'Naphtha (Coal tar)': 'Naphtha (coal tar)',
+	'Grain dust (oat, wheat barley)': 'Grain dust (oat, wheat, barley)',
+	'Di-sec octyl phthalate (Di-(2-ethylhexyl) phthalate)': 'Di-sec octyl phthalate',
+	'4-Dimethylaminoazo-benzene; see 1910.1015': '4-Dimethylaminoazobenzene; see 1910.1015',
+	'Dimethyl-1,2-dibromo-2,2-dichloroethylphosphate': 'Dimethyl-1,2-dibromo-2,2-dichlorethyl phosphate',
+	'1,3-Dichloro-5,5-dimethyl hydantoin': '1,3-Dichloro-5,5-dimethylhydantoin',
+	'Crag herbicide (Sesone)': 'Crag® herbicide',
+	'2-Chloro-6-(trichloromethyl)pyridine': '2-Chloro-6-trichloromethyl pyridine',
+	'Cobalt metal, dust, and fume (as Co)': 'Cobalt metal dust and fume (as Co)',
+	'Camphor, synthetic': 'Camphor (synthetic)',
+	'Calcium Carbonate': 'Calcium carbonate',
+	'n-Butyl-acetate': 'n-Butyl acetate',
+	'Bismuth telluride, Undoped': 'Bismuth telluride, undoped',
+	'Aniline and homologs': 'Aniline (and homologs)',
+	'Arsenic, inorganic compounds (as As) see 1910.1018': 'Arsenic (inorganic compounds, as As); see 1910.1018',
+	'Arsenic, organic compounds (as As)': 'Arsenic (organic compounds, as As)',
 }
 
 for(let r in rename) {
-	let index = z1_data.findIndex(row => row.cells[SUBSTANCE].content === r)
+	let index = z1_data.findIndex(row => striptags(row.cells[SUBSTANCE].content) === r)
 	if(index == -1) {
 		console.log('couldnt find ' +r)
 		continue

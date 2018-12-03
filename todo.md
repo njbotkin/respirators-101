@@ -47,13 +47,6 @@ MAX PEAK: exception to ceiling limit.  Is ATTACHED to ceiling limit, visually an
 Z3
 
 
-	
-
-
-
-CHEM TOOL
-
-	In ELs - current EL needs to be matched by value + unit + CHEMICAL
 
 
 INVOICE the MAN
