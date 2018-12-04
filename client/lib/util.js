@@ -29,5 +29,6 @@ export function number(v) {
 
 export const unitsPretty = {
 	ppm: 'PPM',
-	mgm3: 'mg/m<sup>3</sup>'
+	mgm3: 'mg/m<sup>3</sup>',
+	mg10m3: 'mg/10m<sup>3</sup>'
 }

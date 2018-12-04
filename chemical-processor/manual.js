@@ -205,8 +205,8 @@ let manual = {
 						"durations": {
 							"ceiling": {
 								"values": {
-									"mgm3": 0.1
-								}
+									"mg10m3": 1
+								} 
 							}
 						}
 					}
