@@ -82,6 +82,7 @@ for(let name in chemicals) {
 	}
 }
 
+
 // sort by name
 const chemicals_array = Object.values(chemicals).map(c => c.serialize())
 	.sort((a, b) => a.name.replace(/^[a-z,\-0-9'(]+/, '').localeCompare(b.name.replace(/^[a-z,\-0-9'(]+/, '')))

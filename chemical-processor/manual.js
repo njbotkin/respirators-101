@@ -196,6 +196,24 @@ let manual = {
 	    },
 		"z2": true
 	},
+	"Chromic acid and chromates": {
+		"name_add": "(Z37-7-1971)",
+		"standards": {
+			"osha_pel": {
+				"forms": {
+					"Default": {
+						"durations": {
+							"ceiling": {
+								"values": {
+									"mgm3": 0.1
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
 	"Ethylene dibromide": {
 		"name_add": "(Z37.31-1970)",
 	    "standards": {
@@ -745,6 +763,9 @@ for(let name in manual) {
 		}
 	} else {
 		newChemical(manual[name])
+		if(manual[name].name_add) {
+			chemicals[name].name += ' ' + manual[name].name_add
+		}
 	}
 }
 
@@ -777,3 +798,5 @@ for(let note in max_peaks) {
 		if(max_peaks[note].notes[i].trim() == '') max_peaks[note].notes.splice( i, 1 )
 	}
 }
+
+

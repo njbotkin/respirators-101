@@ -6,9 +6,9 @@
 	</div>
 { /if }
 
-{ #if standards }
+{ #if standards_sorted_array }
 	<div class="property-list float">
-		{ #each Object.entries(standards) as [standardKey, standard] }
+		{ #each standards_sorted_array as [standardKey, standard] }
 
 			<div class="property standard"> 
 				<div class="label">{ standardsPretty[standardKey] }</div>
@@ -150,9 +150,15 @@
 		return true
 	}
 
+	const standards_order = {
+		'niosh_rel': 0,
+		'osha_pel': 1,
+		'cal_osha_pel': 2
+	}
+
 	export default {
 		helpers: {
-			humanTime: time => time >= 60 ? (time/60) + ' hours' : time + ' minutes',
+			humanTime: time => time >= 60 ? `${time/60} hour${time>60?'s':''}` : `${time} minute${time>1?'s':''}`,
 			elSame: propertiesMatch
 		},
 		data: () => ({
@@ -167,7 +173,10 @@
 				stel: "STEL"
 			},
 			unitsPretty
-		})
+		}),
+		computed: {
+			standards_sorted_array: ({standards}) => standards ? Object.entries(standards).sort( ([standard_a], [standard_b]) => standards_order[standard_a] - standards_order[standard_b] ) : null
+		}
 	}
 
 </script>

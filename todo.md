@@ -47,7 +47,5 @@ MAX PEAK: exception to ceiling limit.  Is ATTACHED to ceiling limit, visually an
 Z3
 
 
-
-
 INVOICE the MAN
 

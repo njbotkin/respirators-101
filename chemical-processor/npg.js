@@ -204,6 +204,10 @@ for(let c of chemical_source.chemicals) {
 // manual fixes
 chemicals['Mercury (organo) alkyl compounds (as Hg)'].cas = '7439-97-6'
 
+// better search results
+chemicals['Particulates not otherwise regulated'].tags = 'pnor'
+chemicals['L.P.G.'].tags = 'lpg'
+
 // let clear_notes = [
 // 	chemicals["Beryllium &amp; beryllium compounds (as Be)"].standards.osha_pel
 // ]
