@@ -255,6 +255,7 @@ let rename = {
 	'Aniline and homologs': 'Aniline (and homologs)',
 	'Arsenic, inorganic compounds (as As) see 1910.1018': 'Arsenic (inorganic compounds, as As); see 1910.1018',
 	'Arsenic, organic compounds (as As)': 'Arsenic (organic compounds, as As)',
+	'Plaster of paris': 'Plaster of Paris',
 }
 
 for(let r in rename) {

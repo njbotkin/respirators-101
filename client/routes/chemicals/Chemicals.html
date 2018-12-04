@@ -7,12 +7,12 @@
 
 	<div class="items { search == '' && 'full' }">
 		{ #if items.length }
-			{#each Object.entries(items) as [i, c]}
+			{ #each items as c, i (c.name) }
 				{ #if search == '' && letters[i] }
 					<div class="letter-heading" id="{ letters[i] }">{ letters[i] }</div>
 				{ /if }
 				<Chemical search={!search} {i} {...c} on:confirmSaveEL="confirmSaveEL(event)"  />
-			{/each}
+			{ /each }
 		{ :else }
 			<div class="empty">No search results.</div>
 		{ /if }
