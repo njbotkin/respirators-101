@@ -191,6 +191,13 @@ const move = [
 		}
 	},
 	{
+		id: row => row.cells[CAS].content == '65966-93-2',
+		transform: row => { 
+			row.cells[NIOSH_REL].content = '' // screw you, the NPG does it better
+			row.cells[OSHA_PEL_MGM3].content = '' // screw you, the NPG does it better
+		}
+	},
+	{
 		id: row => row.cells[CAS].content == '71-43-2',
 		transform: row => { row.cells[SUBSTANCE].content = 'Benzene; See 1910.1028' }
 	},
@@ -216,7 +223,7 @@ const move = [
 			row.cells[NIOSH_REL].content = row.cells[NIOSH_REL].content.replace('Ca<br>0.001 mg/m<sup>3</sup> CR (VI)', '')
 		}
 	},
-	
+
 	{
 		id: row => row.cells[SUBSTANCE].content == 'Silicates (less than 1% crystalline silica)',
 		remove: true
