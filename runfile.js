@@ -12,8 +12,10 @@ async function fetch_wordpress_data() {
 	if(creds.colocated) {
 		// we're on the same server!
 
-		await run("cd ../ && php ~/wp-cli.phar export --skip_comments --stdout > wordpress-data/wordpress.xml")
-		await run("cd ../&& php ~/wp-cli.phar option get tablepress_tables > wordpress-data/tablepress_tables.json")
+		console.log('grabbing wordpress data')
+
+		await run("php ~/wp-cli.phar export --skip_comments --stdout > wordpress-data/wordpress.xml")
+		await run("php ~/wp-cli.phar option get tablepress_tables > wordpress-data/tablepress_tables.json")
 
 	} else {
 		var ssh = new SSH(creds)
