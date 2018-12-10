@@ -66,6 +66,7 @@ function create_symlinks() {
 
 async function prep_build() { 
 	await Promise.all([
+		fetch_wordpress_data(),
 		build_twine_data_to_decisions_html(),
 		build_wordpress_data_to_svelte(),
 		process_chemicals(),
