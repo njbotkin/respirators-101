@@ -206,7 +206,8 @@ let manual = {
 							"ceiling": {
 								"values": {
 									"mg10m3": 1
-								} 
+								},
+								duration: 480
 							}
 						}
 					}
@@ -349,7 +350,7 @@ let manual = {
 	    "standards": {
 	        "cal_osha_pel": {
 	            "forms": {
-	                "Default": {
+	                "as F": {
 	                    "durations": {
 							"default": {
 	                            "values": {
@@ -737,6 +738,615 @@ let manual = {
 		"z2": true
 	},
 
+	// NPG
+
+	'Coal dust': {
+		"standards": {
+			"osha_pel": {
+				"forms": {
+					"respirable, < 5% SiO<SUB>2</SUB>": {
+						durations: {
+							"default": {
+								"values": {
+									"mgm3": 2.4
+								},
+								duration: 480
+							}
+						}
+					},
+					"respirable, > 5% SiO<SUB>2</SUB>": {
+						durations: {
+							"default": {
+								values: {
+									fractional: {
+										top: "10 mg/m<SUP>3</SUP>",
+										bottom: "%SiO<SUB>2</SUB> + 2"
+									}
+								},
+								duration: 480
+							}
+						}
+					}
+				}
+			},
+			"msha_pel": {
+				"forms": {
+					"respirable coal mine dust with < 5% silica": {
+						durations: {
+							"default": {
+								"values": {
+									"mgm3": '2.0'
+								},
+								duration: 480
+							}
+						}
+					},
+					"coal dust with > 5% silica": {
+						durations: {
+							"default": {
+								values: {},
+								"fractional_value": {
+									top: "10 mg/m<SUP>3</SUP>",
+									bottom: "% respirable quartz + 2"
+								},
+								duration: 480
+							}
+						}
+					}
+				},
+				notes: [linkify("See Appendix G")]
+			},
+			niosh_rel: {
+				forms: {
+					Default: {
+						durations: {
+							default: {
+								values: {
+									mgm3: 1
+								},
+								notes: ["measured according to MSHA method (CPSU)"],
+								duration: 480
+							},
+							default2: {
+								values: {
+									mgm3: 0.9
+								},
+								notes: ["measured according to ISO/CEN/ACGIH criteria"],
+								duration: 480
+							}
+						}
+					}
+				},
+				notes: [linkify("See Appendix C (Coal Dust and Coal Mine Dust)")]
+			}
+		}
+	},
+
+	'Ethylene oxide': {
+		standards: {
+			niosh_rel: {
+				forms: {
+					Default: {
+						durations: {
+							default: {
+								values: {
+									ppm: '< 0.1',
+									mgm3: '0.18',
+								},
+								duration: 480
+							},
+							ceiling: {
+								values: {
+									ppm: 5,
+									mgm3: 9,
+								},
+								duration: 10
+							}
+						}
+					}
+				},
+				carcinogens: 1,
+				notes: [linkify('See Appendix A')]
+			},
+			osha_pel: {
+				forms: {
+					Default: {
+						durations: {
+							default: {
+								values: {
+									ppm: 1
+								},
+								duration: 480
+							},
+							excursion: {
+								values: {
+									ppm: 5
+								},
+								duration: 15
+							}
+						}
+					}
+				},
+				notes: [linkify('[1910.1047]')]
+			}
+		}
+	},
+
+	'Lead': {
+		standards: {
+			niosh_rel: {
+				forms: {
+					Default: {
+						durations: {
+							default: {
+								values: {
+									mgm3: 0.05
+								},
+								duration: 480
+							}
+						}
+					}
+				},
+			}
+		}
+	},
+
+	'Chromium (VI) compounds': {
+		standards: {
+			niosh_rel: {
+				forms: {
+					Default: {
+						durations: {
+							default: {
+								values: {
+									mgm3: 0.05
+								},
+								duration: 480
+							}
+						}
+					}
+				},
+				notes: [linkify('See Appendix A'), linkify('See Appendix C')]
+			},
+			cal_osha_pel: {
+				forms: {
+					Default: {
+						durations: {
+							ceiling: {
+								values: {
+									mgm3: 0.1
+								},
+								duration: 480
+							}
+						}
+					},
+					"Cr": {
+						durations: {
+							default: {
+								values: {
+									mgm3: 0.005
+								},
+								duration: 480
+							}
+						}
+					}
+				},
+				notes: ['See Sections <a href="https://www.dir.ca.gov/title8/1532_2.html">1532.2</a>, <a href="https://www.dir.ca.gov/title8/5206.html">5206</a>, and <a href="https://www.dir.ca.gov/title8/8359.html">8359</a>']
+			}
+		}
+	},
+
+	'Silica, amorphous': {
+		standards: {
+			osha_pel: {
+				forms: {
+					Default: {
+						durations: {
+							default: {
+								values: {
+									mppcf: 20,
+									fractional: {
+										top: '80 mg/m<SUP>3</SUP>',
+										bottom: '%SiO<SUB>2</SUB>'
+									}
+								},
+								duration: 480
+							}
+						}
+					}
+				},
+			}
+		}
+	},
+
+	'Cotton dust (raw)': {
+		standards: {
+			niosh_rel: {
+				forms: {
+					Default: {
+						durations: {
+							default: {
+								values: {
+									mgm3: '< 0.200',
+								}
+							}
+						}
+					}
+				},
+			}
+		}
+	},
+
+	'tert-Butyl chromate (as CrO<SUB>3</SUB>)': {
+		standards: {
+			niosh_rel: {
+				forms: {
+					'Cr(VI)': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 0.001,
+								},
+								duration: 600
+							}
+						}
+					}
+				},
+			},
+			osha_pel: {
+				forms: {
+					Default: {
+						durations: {
+							default: {
+								values: {
+									mgm3: 0.005,
+								},
+								duration: 480
+							}
+						}
+					}
+				},
+			}
+		}
+	},
+
+	'Chromyl chloride': {
+		standards: {
+			niosh_rel: {
+				forms: {
+					'Cr(VI)': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 0.001,
+								},
+								duration: 600
+							}
+						}
+					}
+				},
+				carcinogens: 1,
+				notes: [linkify('See Appendix A See Appendix C')]
+			},
+		}
+	},
+
+	'Iron oxide (as Fe)': {
+		standards: {
+			niosh_rel: {
+				forms: {
+					'Dust and fume': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 5,
+								},
+								duration: 600
+							}
+						}
+					}
+				},
+			},
+			cal_osha_pel: {
+				forms: {
+					'Fume': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 5,
+								},
+								duration: 480
+							}
+						}
+					}
+				},
+			},
+			osha_pel: {
+				forms: {
+					'Dust and fume': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 10,
+								},
+								duration: 480
+							}
+						}
+					},
+					'Fume': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 10,
+								},
+								duration: 480
+							}
+						}
+					}
+				},
+			}
+		}
+	},
+
+	'Titanium dioxide - Total dust': {
+		standards: {
+			niosh_rel: {
+				forms: {
+					'Fine': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 2.4,
+								},
+								duration: 600
+							}
+						}
+					},
+					'Ultrafine': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 0.3,
+								},
+								duration: 600
+							}
+						}
+					}
+				},
+				carcinogen: 1,
+				notes: ['(ultrafine particles)', linkify('See Appendix A'), linkify('See Appendix C')]
+			},
+			cal_osha_pel: {
+				notes: [linkify('See PNOR')]
+			},
+			osha_pel: {
+				forms: {
+					'Default': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 15,
+								},
+								duration: 480
+							}
+						}
+					}
+				},
+			}
+		}
+	},
+
+	'Vanadium dust (as V<sub>2</sub>O<sub>5</sub>)': {
+		z1: true,
+		standards: {
+			niosh_rel: {
+				forms: {
+					'Default': {
+						durations: {
+							ceiling: {
+								values: {
+									vm3: 0.05
+								},
+								duration: 15
+							}
+						}
+					}
+				},
+				notes: ['[*Note: The REL applies to all vanadium compounds except Vanadium metal and Vanadium carbide (see Ferrovanadium dust).]']
+			},
+			osha_pel: {
+				forms: {
+					'Respirable dust': {
+						durations: {
+							ceiling: {
+								values: {
+									vm3: 0.5
+								},
+								duration: 480
+							}
+						}
+					}
+				},
+				notes: [linkify('See Appendix G')]
+			},
+			cal_osha_pel: {
+				forms: {
+					'Vanadium pentoxide': {
+						durations: {
+							default: {
+								values: {
+									vm3: 0.05
+								},
+								duration: 480
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+
+	'Vanadium fume (as V<sub>2</sub>O<sub>5</sub>)': {
+		z1: true,
+		standards: {
+			niosh_rel: {
+				forms: {
+					'Default': {
+						durations: {
+							ceiling: {
+								values: {
+									vm3: 0.05
+								},
+								duration: 15
+							}
+						}
+					}
+				},
+				notes: ['[*Note: The REL applies to all vanadium compounds except Vanadium metal and Vanadium carbide (see Ferrovanadium dust).]']
+			},
+			osha_pel: {
+				forms: {
+					'Default': {
+						durations: {
+							ceiling: {
+								values: {
+									vm3: 0.1
+								},
+								duration: 480
+							}
+						}
+					}
+				},
+				notes: [linkify('See Appendix G')]
+			},
+			cal_osha_pel: {
+				forms: {
+					'Default': {
+						durations: {
+							default: {
+								values: {
+									vm3: 0.05
+								},
+								duration: 480
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+
+	'Tin': {
+		z1: true,
+		standards: {
+			cal_osha_pel: {
+				forms: {
+					'also tin oxide; except SnH<sub>4</sub>': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 2
+								},
+								duration: 480
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+
+	'Nitroglycerine': {
+		z1: true,
+		standards: {
+			cal_osha_pel: {
+				forms: {
+					'mixture of nitroglycerine and ethylene glycol dinitrate': {
+						durations: {
+							default: {
+								values: {
+									ppm: 0.05
+								},
+								duration: 480
+							}
+						}
+					},
+					'Default': {
+						durations: {
+							stel: {
+								values: {
+									mgm3: 0.1
+								},
+								duration: 15
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+
+	'Carbon black': {
+		z1: true,
+		standards: {
+			niosh_rel: {
+				forms: {
+					'Default': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 3.5
+								},
+								duration: 600
+							}
+						}
+					},
+					'in presence of polycyclic aromatic hydrocarbons (PAHs)': {
+						durations: {
+							default: {
+								values: {
+									pahsm3: 0.1
+								},
+								duration: 600
+							}
+						},
+						carcinogens: 1
+					}
+				},
+				notes: [linkify('See Appendix A See Appendix C')]
+			},
+			osha_pel: {
+				forms: {
+					'Default': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 3.5
+								},
+								duration: 480
+							}
+						}
+					}
+				},
+				notes: [linkify('See Appendix G')]
+			},
+			cal_osha_pel: {
+				forms: {
+					'Default': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 3.5
+								},
+								duration: 480
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+
 }
 
 let z3 = [
@@ -776,27 +1386,3 @@ for(let name of z3) {
 		newChemical({ name, z3: true })
 	}
 }
-
-// remove NPG max peaks
-let max_peaks = {
-	'(30 minutes), with a maximum peak of 0.025 mg/m3': chemicals["Beryllium &amp; beryllium compounds (as Be)"].standards.osha_pel,
-	'100 ppm (30-minute maximum peak)': chemicals["Carbon disulfide"].standards.osha_pel,
-	'200 ppm (5-minute maximum peak in any 4 hours)': chemicals["Carbon tetrachloride"].standards.osha_pel,
-	'50 ppm [5-minute maximum peak]': chemicals["Ethylene dibromide"].standards.osha_pel,
-	'200 ppm [5-minute maximum peak in any 3 hours]': chemicals["Ethylene dichloride"].standards.osha_pel,
-	'[10-minute maximum peak]': chemicals["Hydrogen sulfide"].standards.osha_pel,
-	'300 ppm (5-minute maximum peak in any 3 hours)': chemicals["Methyl chloride"].standards.osha_pel,
-	'600 ppm (5-minute maximum peak in any 3 hours)': chemicals["Styrene"].standards.osha_pel,
-	'(for 5 minutes in any 3-hour period), with a maximum peak of 300 ppm': chemicals["Tetrachloroethylene"].standards.osha_pel,
-	'500 ppm (10-minute maximum peak)': chemicals["Toluene"].standards.osha_pel,
-	'300 ppm (5-minute maximum peak in any 2 hours)': chemicals["Trichloroethylene"].standards.osha_pel,
-}
-
-for(let note in max_peaks) {
-	for(let i = 0; i < max_peaks[note].notes.length; i++) {
-		max_peaks[note].notes[i] = max_peaks[note].notes[i].replace(note, '')
-		if(max_peaks[note].notes[i].trim() == '') max_peaks[note].notes.splice( i, 1 )
-	}
-}
-
-

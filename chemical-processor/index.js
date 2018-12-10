@@ -52,10 +52,10 @@ for(let name in chemicals) {
 		for(let form in c.standards[standard].forms) {
 			for(let duration in c.standards[standard].forms[form].durations) {
 				let values = c.standards[standard].forms[form].durations[duration].values
-				if(values.ppm == 0) delete values.ppm
-				if(values.mgm3 == 0) delete values.mgm3
-				if(values.mg10m3 == 0) delete values.mg10m3
-				if(!values.ppm && !values.mgm3 && !values.mg10m3 && !c.standards[standard].forms[form].durations[duration].max) delete c.standards[standard].forms[form].durations[duration]
+				// if(values.ppm == 0) delete values.ppm
+				// if(values.mgm3 == 0) delete values.mgm3
+				// if(values.mg10m3 == 0) delete values.mg10m3
+				if(!Object.keys(values).length && !c.standards[standard].forms[form].durations[duration].max) delete c.standards[standard].forms[form].durations[duration]
 			}
 			if(c.standards[standard].forms[form].notes) {
 				for(let i = 0; i < c.standards[standard].forms[form].notes.length; i++) {

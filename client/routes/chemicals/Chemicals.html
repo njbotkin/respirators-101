@@ -1,24 +1,24 @@
-<div class="search" data-active="{ !!search }">
+<div class="search" data-active="{ searching }">
 	<input bind:value=search type="text" id="search" placeholder="Search" />
 	<div class="closeSearch" on:click="set({ search: '' })">×</div>
 </div>
 
 <div class="container">
 
-	<div class="items { search == '' && 'full' }">
+	<div class="items" class:full="!searching">
 		{ #if items.length }
 			{ #each items as c, i (c.name) }
-				{ #if search == '' && letters[i] }
+				{ #if !searching && letters[i] }
 					<div class="letter-heading" id="{ letters[i] }">{ letters[i] }</div>
 				{ /if }
-				<Chemical search={!search} {i} {...c} on:confirmSaveEL="confirmSaveEL(event)"  />
+				<Chemical {searching} {i} {...c} on:confirmSaveEL="confirmSaveEL(event)"  />
 			{ /each }
 		{ :else }
 			<div class="empty">No search results.</div>
 		{ /if }
 	</div>
 
-	{ #if search == '' }
+	{ #if !searching }
 		<div class="alphabet">
 			{ #each Object.entries(letters) as [i, l] }
 				<div class="letter">{ l }</div>
@@ -190,6 +190,7 @@
 
 		},
 		computed: {
+			searching: ({ search }) => !!search,
 			items: ({ search }) => {
 
 				if(search === '') return chemicals
@@ -204,21 +205,15 @@
 
 				// highlight matched characters
 				for(let r of results) {
+					r.item.synonymIndices = []
+
 					for(let m of r.matches) {
-						let highlit = ''
-						if(m.indices.length > 0) {
-							highlit += m.value.slice(0, m.indices[0][0])
-							for(let i = 0; i < m.indices.length; i++) {
-								let indice = m.indices[i]
-								
-								highlit += '<em>' + m.value.slice(indice[0], indice[1]+1) + '</em>'
-								if(i+1 < m.indices.length) {
-									highlit += m.value.slice(indice[1]+1, m.indices[i+1][0])
-								}							
-							}
-							highlit += m.value.slice(m.indices[m.indices.length-1][1]+1)
+						if(m.key == 'name') {
+							r.item.nameIndices = m.indices
 						}
-						r.item[m.key + 'Highlit'] = highlit
+						if(m.key == 'synonyms') {
+							r.item.synonymIndices[r.item.synonyms.indexOf(m.value)] = m.indices
+						}
 					}
 				}
 

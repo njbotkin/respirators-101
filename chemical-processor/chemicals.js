@@ -81,10 +81,7 @@ class Chemical {
 				}
 				for(let duration of duration_names) {
 					s.forms[form_name].durations[duration] = {
-						values: {
-							ppm: 0,
-							mgm3: 0
-						},
+						values: {},
 						duration: durations[standard][duration]
 					}
 				}

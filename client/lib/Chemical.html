@@ -1,12 +1,12 @@
-<div class="chemical { (search ? $job.openChemicals[i] : open) && 'open' }">
+<div class="chemical { (searching ? open : $job.openChemicals[i]) && 'open' }">
 	<div class="title" on:click="toggleOpen()">
-		<span class="name">{ @html search ? name : (nameHighlit || name) }</span>
+		<span class="name">{ @html searching ? highlight(name, nameIndices) : name }</span>
 		{ #if synonyms }
-			<span class="synonyms">({ @html search ? synonyms : (synonymsHighlit || synonyms) })</span>
+			<span ref:synonyms class="synonyms"></span>
 		{ /if }
 	</div>
 
-	{ #if (search ? $job.openChemicals[i] : open) }
+	{ #if (searching ? open : $job.openChemicals[i]) }
 
 		<div class="contents">
 
@@ -110,12 +110,14 @@
 				</div>
 			{/if}
 
-			<div class="sources">
-				<h2>Sources</h2>
-				{#if npg}<a href="https://www.cdc.gov/niosh/npg/default.html">NIOSH Pocket Guide to Chemical Hazards</a><br>{/if}
-				{ #if z1 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-1.html">OSHA Annotated Table Z-1</a><br>{ /if }
-				{ #if z2 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-2.html">OSHA Annotated Table Z-2</a><br>{ /if }
-			</div>
+			{#if npg || z1 || z2 }
+				<div class="sources">
+					<h2>Sources</h2>
+					{#if npg}<a href="https://www.cdc.gov/niosh/npg/default.html">NIOSH Pocket Guide to Chemical Hazards</a><br>{/if}
+					{ #if z1 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-1.html">OSHA Annotated Table Z-1</a><br>{ /if }
+					{ #if z2 }<a href="https://www.osha.gov/dsg/annotated-pels/tablez-2.html">OSHA Annotated Table Z-2</a><br>{ /if }
+				</div>
+			{/if}
 
 		</div>
 
@@ -124,17 +126,44 @@
 </div>
 
 <script>
+
+	function highlight(string, indices) {
+		if(!indices || !indices.length) return string
+
+		let highlit = ''
+		highlit += string.slice(0, indices[0][0])
+		for(let i = 0; i < indices.length; i++) {
+			let indice = indices[i]
+			
+			highlit += '<em>' + string.slice(indice[0], indice[1]+1) + '</em>'
+			if(i+1 < indices.length) {
+				highlit += string.slice(indice[1]+1, indices[i+1][0])
+			}							
+		}
+		highlit += string.slice(indices[indices.length-1][1]+1)
+
+		return highlit
+	}
+
 	export default {
 		components: {
 			ExposureLimits: 'lib/ExposureLimits.html'
 		},
+		onupdate({ changed, current }) {
+			if((changed.searching || changed.synonymIndices) && this.refs.synonyms && current.synonyms.length) {
+				this.refs.synonyms.innerHTML = '(' + ( current.searching ? current.synonyms.map((s, i) => highlight(s, current.synonymIndices[i])) : current.synonyms ).join(', ') + ')'
+			}
+		},
+		helpers: {
+			highlight
+		},
 		methods: {
 			toggleOpen() {
-				let { i, open, search } = this.get()
+				let { i, open, searching } = this.get()
 				open = !open 
 				this.set({ open })
 
-				if(search) {
+				if(!searching) {
 					let { job } = this.store.get()
 					if(job.openChemicals[i]) {
 						delete job.openChemicals[i]
@@ -144,7 +173,11 @@
 					this.store.set({ job })
 				}
 			}
-		}
+		},
+		data: () => ({
+			nameIndices: [],
+			synonymIndices: []
+		})
 	}
 </script>
 

@@ -77,6 +77,10 @@ function process_combined_el_column({el, chemical, form, el_name}) {
 			unit = { mgm3: p1 }
 			return ''
 		})
+		.replace(/([0-9.,]+) f\/cm<sup>3<\/sup>/g, (match, p1) => {
+			unit = { fcm3: p1 }
+			return ''
+		})
 
 		// durations of exposure limits
 		.replace(/\(C\)/g, () => {
@@ -104,7 +108,26 @@ function process_combined_el_column({el, chemical, form, el_name}) {
 	}
 }
 
-const empty = cell => cell.content == '' || cell.content == 'See Annotated Z-2' || cell.content == 'See Annotated Z-3'
+function parse_ELs(row, chemical, form) {
+
+	if(!empty(row.cells[OSHA_PEL_PPM]) || !empty(row.cells[OSHA_PEL_MGM3])) {
+		if(!empty(row.cells[OSHA_PEL_PPM])) {
+			process_osha_pel({osha_pel: row.cells[OSHA_PEL_PPM].content, chemical, form, unit: 'ppm'})
+		}
+		if(!empty(row.cells[OSHA_PEL_MGM3])) {
+			process_osha_pel({osha_pel: row.cells[OSHA_PEL_MGM3].content, chemical, form, unit: 'mgm3'})
+		}
+	}
+
+	if(!empty(row.cells[CAL_OSHA_PEL])) {
+		process_combined_el_column({el: row.cells[CAL_OSHA_PEL].content, chemical, form, el_name:'cal_osha_pel'})
+	}
+	if(!empty(row.cells[NIOSH_REL])) {
+		process_combined_el_column({el: row.cells[NIOSH_REL].content, chemical, form, el_name:'niosh_rel'})
+	}
+}
+
+const empty = cell => cell.content == '' || cell.content == 'See Annotated Z-2' || cell.content == 'See Annotated Z-3' || cell.content == '........'
 
 
 const SUBSTANCE = 0,
@@ -161,6 +184,7 @@ const move = [
 				cas: row.cells[CAS].content.trim(),
 				z1: true,
 			})
+			row.cells[OSHA_PEL_PPM].content = '' // screw you, the NPG does it better
 			chemical.general_standard = [link_gs('1910.1051'), link_gs('1910.19(l)')]
 			let form = chemical.addForm('default')
 			parse_ELs(row, chemical, form)
@@ -187,22 +211,85 @@ const move = [
 		}
 	},
 	{
-		id: row => row.cells[SUBSTANCE].content == 'Vanadium',
-		remove: true,
-		transform: (row, index) => { 
-			z1_data[index+1].cells[SUBSTANCE] = {
-				content: 'Vanadium dust',
-				classes: ''
-			}
-			z1_data[index+2].cells[SUBSTANCE] = {
-				content: 'Vanadium fume',
-				classes: ''
-			}
+		id: row => row.cells[CAS].content == '1189-85-1',
+		transform: (row) => { 
+			row.cells[NIOSH_REL].content = row.cells[NIOSH_REL].content.replace('Ca<br>0.001 mg/m<sup>3</sup> CR (VI)', '')
 		}
 	},
+	
 	{
 		id: row => row.cells[SUBSTANCE].content == 'Silicates (less than 1% crystalline silica)',
 		remove: true
+	},
+	
+	{
+		id: row => row.cells[SUBSTANCE].content == 'Dinitrobenzene (all isomers)',
+		transform: (row, index) => { 
+			for(let i = 1; i <= 3; i++) {
+				z1_data[index+i].cells[SUBSTANCE].classes = ''
+				z1_data[index+i].cells[OSHA_PEL_MGM3].content = z1_data[index].cells[OSHA_PEL_MGM3].content
+				z1_data[index+i].cells[CAL_OSHA_PEL].content = z1_data[index].cells[CAL_OSHA_PEL].content
+				z1_data[index+i].cells[NIOSH_REL].content = z1_data[index].cells[NIOSH_REL].content
+			}
+		},
+		remove: true,
+	},
+	{
+		id: row => row.cells[CAS].content == '528-29-0',
+		transform: row => row.cells[SUBSTANCE].content = 'o-Dinitrobenzene'
+	},
+	{
+		id: row => row.cells[CAS].content == '99-65-0',
+		transform: row => row.cells[SUBSTANCE].content = 'm-Dinitrobenzene'
+	},
+	{
+		id: row => row.cells[CAS].content == '100-25-4',
+		transform: row => row.cells[SUBSTANCE].content = 'p-Dinitrobenzene'
+	},
+
+	{
+		id: row => row.cells[SUBSTANCE].content == 'Nitrotoluene (all isomers)',
+		transform: (row, index) => { 
+			for(let i = 1; i <= 3; i++) {
+				z1_data[index+i].cells[SUBSTANCE].classes = ''
+				z1_data[index+i].cells[OSHA_PEL_MGM3].content = z1_data[index].cells[OSHA_PEL_MGM3].content
+				z1_data[index+i].cells[CAL_OSHA_PEL].content = z1_data[index].cells[CAL_OSHA_PEL].content
+				z1_data[index+i].cells[NIOSH_REL].content = z1_data[index].cells[NIOSH_REL].content
+			}
+		},
+		remove: true,
+	},
+	{
+		id: row => row.cells[CAS].content == '88-72-2',
+		transform: row => row.cells[SUBSTANCE].content = 'o-Nitrotoluene'
+	},
+	{
+		id: row => row.cells[CAS].content == '99-08-1',
+		transform: row => row.cells[SUBSTANCE].content = 'm-Nitrotoluene'
+	},
+	{
+		id: row => row.cells[CAS].content == '99-99-0',
+		transform: row => row.cells[SUBSTANCE].content = 'p-Nitrotoluene'
+	},
+
+	{
+		id: row => row.cells[CAS].content == '14808-60-7',
+		transform: row => row.cells[SUBSTANCE].content = row.cells[SUBSTANCE].content.replace(':', ';')
+	},
+
+	{
+		id: row => row.cells[SUBSTANCE].content == 'Copper',
+		remove: true,
+		transform: (row, index) => { 
+			z1_data[index+1].cells[SUBSTANCE] = {
+				content: 'Copper fume (as Cu)',
+				classes: ''
+			}
+			z1_data[index+2].cells[SUBSTANCE] = {
+				content: 'Copper (dusts and mists, as Cu)',
+				classes: ''
+			}
+		}
 	},
 ]
 
@@ -256,6 +343,17 @@ let rename = {
 	'Arsenic, inorganic compounds (as As) see 1910.1018': 'Arsenic (inorganic compounds, as As); see 1910.1018',
 	'Arsenic, organic compounds (as As)': 'Arsenic (organic compounds, as As)',
 	'Plaster of paris': 'Plaster of Paris',
+	'4,4&apos;-Thiobis (6-tert,Butyl-m-cresol)': "4,4'-Thiobis(6-tert-butyl-m-cresol)",
+	'Coal tar pitch volatiles (benzene soluble fraction), anthracene, BaP, phenanthrene, acridine, chrysene, pyrene)': 'Coal tar pitch volatiles',
+	'Iron oxide': 'Iron oxide (as Fe)',
+	'2-Methoxyethanol; (Methyl cellosolve)': 'Methyl Cellosolve®',
+	'Vanadium': 'Vanadium fume (as V<sub>2</sub>O<sub>5</sub>)',
+	'Tin, inorganic compounds (except oxides) (as Sn)': 'Tin',
+	'Thallium, soluble compounds (as Tl)': 'Thallium (soluble compounds, as Tl)',
+	'2-Methoxyethyl acetate (Methyl cellosolve acetate)': 'Methyl Cellosolve® acetate',
+	'Graphite, synthetic': 'Graphite (synthetic)',
+	'Chromium (II) compounds (as Cr)': 'Chromium(II) compounds (as Cr) ',
+	'Chromium (III) compounds (as Cr)': 'Chromium(III) compounds (as Cr) ',
 }
 
 for(let r in rename) {
@@ -267,6 +365,18 @@ for(let r in rename) {
 	z1_data[index].cells[SUBSTANCE].content = rename[r]
 }
 
+let skip = [
+	'Ethylene oxide',
+	'Chromium (VI) compounds',
+	'Iron oxide (as Fe)',
+	'Titanium dioxide - Total dust',
+	'Respirable dust (as V<sub>2</sub>O<sub>5</sub>)',
+	'Vanadium',
+	'Fume (as V<sub>2</sub>O<sub>5</sub>)',
+	'Tin',
+	'Nitroglycerine',
+	'Carbon black'
+]
 
 let parent = null
 
@@ -278,12 +388,17 @@ for(let row of z1_data) {
 
 	name = entities.decode(striptags(name.trim(), '<sub>'))
 
-
 	// pull out general standard
 	.replace(/(see ([0-9]{4}\.[0-9]{4}))/ig, (match, p1, p2) => {
 		general_standard = p2
 		return ''
 	})
+
+	// pull out general standard
+	// .replace(/(see [0-9]{4}\.[0-9]{4})/ig, (match, p1, p2) => {
+	// 	general_standard = p2
+	// 	return ''
+	// })
 
 	// cull footnotes
 	.replace(/(\([a-z]\))/g, '')
@@ -378,25 +493,14 @@ for(let row of z1_data) {
 		form = chemical.addForm('default')
 	}
 
+	if(skip.indexOf(name) > -1) continue;
+
 	parse_ELs(row, chemical, form)
 
 }
 
-function parse_ELs(row, chemical, form) {
+chemicals['Uranium (soluble compounds, as U)'].standards.niosh_rel.notes = chemicals['Uranium (soluble compounds, as U)'].standards.niosh_rel.notes.join('|').replace(',', '').split('|')
 
-	if(!empty(row.cells[OSHA_PEL_PPM]) || !empty(row.cells[OSHA_PEL_MGM3])) {
-		if(!empty(row.cells[OSHA_PEL_PPM])) {
-			process_osha_pel({osha_pel: row.cells[OSHA_PEL_PPM].content, chemical, form, unit: 'ppm'})
-		}
-		if(!empty(row.cells[OSHA_PEL_MGM3])) {
-			process_osha_pel({osha_pel: row.cells[OSHA_PEL_MGM3].content, chemical, form, unit: 'mgm3'})
-		}
-	}
-
-	if(!empty(row.cells[CAL_OSHA_PEL])) {
-		process_combined_el_column({el: row.cells[CAL_OSHA_PEL].content, chemical, form, el_name:'cal_osha_pel'})
-	}
-	if(!empty(row.cells[NIOSH_REL])) {
-		process_combined_el_column({el: row.cells[NIOSH_REL].content, chemical, form, el_name:'niosh_rel'})
-	}
-}
+chemicals['Beryllium &amp; beryllium compounds (as Be)'].general_standard = [link_gs('1910.1024')]
+chemicals['Crotonaldehyde'].cas = '123-73-9 / 4170-30-3'
+chemicals['Emery'].cas += ' / 12415-34-8'

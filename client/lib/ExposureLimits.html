@@ -25,17 +25,26 @@
 
 								{ #each Object.entries(form.durations) as [durationKey, duration] }
 									<div class="property property-list duration">
-										{ #if durationKey !== 'default' }<div class="label">{ durationsPretty[durationKey] }</div>{ /if }
+										{ #if !/default[0-9]?/.test(durationKey) }<div class="label">{ durationsPretty[durationKey] }</div>{ /if }
 										<div class="value">
 
 											<span class="period">{ humanTime(duration.duration) }</span>
 
 											{ #each Object.entries(duration.values) as [unit, value] }
 
-												<div class="representation select-el EL" on:click="fire('confirmSaveEL', { chemical_name, formKey, standardKey, durationKey, value, unit, duration: duration.duration, eyes, idlh, idlh_notes, chemical_name })" data-active="{ elSame({ chemical_name, formKey, standardKey, durationKey, unit, value }, $job.exposureLimit) }">
-													{ value }
-													<div class="unit">{ @html unitsPretty[unit] }</div>
-												</div>
+												{#if unit == 'fractional'}
+													<div class="fractional_value">
+														<div class="top">{@html value.top }</div>
+														<div class="bottom">{@html value.bottom }</div>
+													</div>
+												{:else}
+
+													<div class="representation select-el EL" on:click="fire('confirmSaveEL', { chemical_name, formKey, standardKey, durationKey, value, unit, duration: duration.duration, eyes, idlh, idlh_notes, chemical_name })" data-active="{ elSame({ chemical_name, formKey, standardKey, durationKey, unit, value }, $job.exposureLimit) }">
+														{ value }
+														<div class="unit">{ @html unitsPretty[unit] }</div>
+													</div>
+
+												{/if}
 
 											{ /each }
 
@@ -44,11 +53,22 @@
 										{#if duration.max}
 											<div class="property max">
 												<div class="label">Max peak</div>
-												<div class="value">{ duration.max }</div>
+												<div class="value">{@html duration.max }</div>
 											</div>
 										{/if}
+
+										{ #if duration.notes }
+											{ #each duration.notes as note }
+												<div class="notes">{@html note }</div>
+											{ /each }
+										{ /if }
+
 									</div>
 								{ /each }
+
+								{ #if form.carcinogens }
+									<span class="carcinogens">Carcinogen</span>
+								{ /if }
 								
 								{ #if form.notes }
 									{ #each form.notes as note }
@@ -153,7 +173,8 @@
 	const standards_order = {
 		'niosh_rel': 0,
 		'osha_pel': 1,
-		'cal_osha_pel': 2
+		'cal_osha_pel': 2,
+		'msha_pel': 3
 	}
 
 	export default {
@@ -166,11 +187,13 @@
 			standardsPretty: {
 				osha_pel: "OSHA PEL",
 				cal_osha_pel: "Cal/OSHA PEL 8-hour TWA",
-				niosh_rel: "NIOSH REL Up to 10-hour TWA"
+				niosh_rel: "NIOSH REL Up to 10-hour TWA",
+				msha_pel: "The Mine Safety and Health Administration PEL"
 			},
 			durationsPretty: {
 				ceiling: "Ceiling",
-				stel: "STEL"
+				stel: "STEL",
+				excursion: "Excursion"
 			},
 			unitsPretty
 		}),
@@ -301,6 +324,19 @@
 		max-width: 200px;
 		font-size: 80%;
 		margin: 0 10px 10px;
+	}
+
+	.fractional_value {
+		display: inline-block;
+		vertical-align: middle;
+		font-size: 80%;
+		color: #777;
+		margin: 0 5px;
+		text-align: center;
+
+		.top {
+			border-bottom: 1px solid #bbb;
+		}
 	}
 
 </style>
