@@ -72,7 +72,7 @@ async function prep_build() {
 		process_chemicals(),
 		create_symlinks(),
 		glob_all()
-	]) 
+	])
 }
 
 async function build_all() {
