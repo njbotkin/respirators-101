@@ -100,6 +100,13 @@ const build = {
 	}
 }
 
+function wp_build() {
+	fetch_wordpress_data()
+	build_wordpress_data_to_svelte()
+	glob_all()
+	build.js()
+}
+
 // requires patched polyfill-server running locally
 function fetch_blind_polyfill() { 
 	run("curl 'https://cdn.polyfill.io/v2/polyfill.min.js?features=default-3.6,NodeList.prototype.@@iterator,NodeList.prototype.forEach,RegExp.prototype.flags,Object.entries,Object.is,Object.values&flags=always,gated' -H 'User_Agent: Mozilla/5.0 Firefox/900.0' > public/blind-polyfill.js")
@@ -223,6 +230,7 @@ module.exports = {
 	prep_build,
 	build_all,
 	build,
+	wp_build,
 	watch_all,
 	watch,
 	glob_all,
