@@ -1,5 +1,5 @@
 <div id="content">
-	<div class="form">
+	<form on:submit="sendMessage(event)">
 		<div class="name">
 			<label for="name">Name</label>
 			<input type="text" bind:value="form.name" />
@@ -29,7 +29,7 @@
 		</div>
 
 		<div class="buttons">
-			<button class="submit" on:click="sendMessage()">Submit</button>
+			<input type="submit" class="submit" value="Submit" />
 			<a class="call" href="tel:+1-234-555-1212">Call</a>
 		</div>
 
@@ -42,7 +42,7 @@
 			<div hidden="{connected}" class="bad"> You are not connected to the internet.  Please connect and try again. </div>
 			
 		</div>
-	</div>
+	</form>
 </div>
 
 <script>
@@ -79,7 +79,9 @@
 			error: false,
 		}),
 		methods: {
-			sendMessage() {
+			sendMessage(e) {
+
+				e.preventDefault()
 
 				const form = this.get().form
 
@@ -192,7 +194,7 @@
 		}
 	}
 
-	.form {
+	form {
 		label, input, textarea {
 			display: block;
 			width: 100%;
@@ -212,7 +214,7 @@
 			margin-top: 30px;
 			overflow: hidden;
 
-			button, a {
+			input, a {
 				border: 0;
 				cursor: pointer;
 				box-sizing: border-box;
