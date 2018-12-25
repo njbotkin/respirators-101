@@ -1145,7 +1145,7 @@ let manual = {
 						durations: {
 							ceiling: {
 								values: {
-									vm3: 0.05
+									mgvm3: 0.05
 								},
 								duration: 15
 							}
@@ -1160,7 +1160,7 @@ let manual = {
 						durations: {
 							ceiling: {
 								values: {
-									vm3: 0.5
+									mgv2o5m3: 0.5
 								},
 								duration: 480
 							}
@@ -1175,7 +1175,7 @@ let manual = {
 						durations: {
 							default: {
 								values: {
-									vm3: 0.05
+									mgm3: 0.05
 								},
 								duration: 480
 							}
@@ -1195,14 +1195,13 @@ let manual = {
 						durations: {
 							ceiling: {
 								values: {
-									vm3: 0.05
+									mgvm3: 0.05
 								},
 								duration: 15
 							}
 						}
 					}
-				},
-				notes: ['[*Note: The REL applies to all vanadium compounds except Vanadium metal and Vanadium carbide (see Ferrovanadium dust).]']
+				}
 			},
 			osha_pel: {
 				forms: {
@@ -1210,7 +1209,7 @@ let manual = {
 						durations: {
 							ceiling: {
 								values: {
-									vm3: 0.1
+									mgv2o5m3: 0.1
 								},
 								duration: 480
 							}
@@ -1225,7 +1224,7 @@ let manual = {
 						durations: {
 							default: {
 								values: {
-									vm3: 0.05
+									mgm3: 0.05
 								},
 								duration: 480
 							}
@@ -1241,7 +1240,7 @@ let manual = {
 		standards: {
 			cal_osha_pel: {
 				forms: {
-					'also tin oxide; except SnH<sub>4</sub>': {
+					Default: {
 						durations: {
 							default: {
 								values: {
@@ -1249,7 +1248,8 @@ let manual = {
 								},
 								duration: 480
 							}
-						}
+						},
+						notes: ['also tin oxide; except SnH<sub>4</sub>']
 					}
 				}
 			}
@@ -1301,7 +1301,7 @@ let manual = {
 							}
 						}
 					},
-					'in presence of polycyclic aromatic hydrocarbons (PAHs)': {
+					'In presence of polycyclic aromatic hydrocarbons (PAHs)': {
 						durations: {
 							default: {
 								values: {
@@ -1346,6 +1346,35 @@ let manual = {
 			}
 		}
 	},
+
+	'Nickel metal and other compounds (as Ni)': {
+		standards: {
+			cal_osha_pel: {
+				forms: {
+					'metal': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 0.5
+								},
+								duration: 480
+							}
+						}
+					},
+					'insoluble': {
+						durations: {
+							default: {
+								values: {
+									mgm3: 0.1
+								},
+								duration: 480
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
 }
 

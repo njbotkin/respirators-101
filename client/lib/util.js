@@ -35,5 +35,7 @@ export const unitsPretty = {
 	fiberscm3: 'fibers/cm<sup>3</sup>',
 	mppcf: 'mppcf',
 	vm3: 'V/m<sup>3</sup>',
+	mgvm3: 'mg V/m<sup>3</sup>',
+	mgv2o5m3: 'mg V<sub>2</sub>O<sub>5</sub>/m<sup>3</sup>',
 	pahsm3: 'PAHs/m<sup>3</sup>',
 }

@@ -361,6 +361,7 @@ let rename = {
 	'Graphite, synthetic': 'Graphite (synthetic)',
 	'Chromium (II) compounds (as Cr)': 'Chromium(II) compounds (as Cr) ',
 	'Chromium (III) compounds (as Cr)': 'Chromium(III) compounds (as Cr) ',
+	'Nickel, metal and insoluble compounds (as Ni)': 'Nickel metal and other compounds (as Ni)',
 }
 
 for(let r in rename) {
@@ -382,7 +383,8 @@ let skip = [
 	'Fume (as V<sub>2</sub>O<sub>5</sub>)',
 	'Tin',
 	'Nitroglycerine',
-	'Carbon black'
+	'Carbon black',
+	'Nickel metal and other compounds (as Ni)'
 ]
 
 let parent = null

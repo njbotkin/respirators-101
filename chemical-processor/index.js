@@ -83,6 +83,20 @@ for(let name in chemicals) {
 	}
 }
 
+// sort durations so "ceiling" is last
+for(let name in chemicals) {
+	let c = chemicals[name]
+	for(let standard in c.standards) {
+		for(let form in c.standards[standard].forms) {
+			let durations = c.standards[standard].forms[form].durations
+			if(durations['ceiling']) {
+				let ceiling = durations['ceiling']
+				delete durations['ceiling']
+				durations['ceiling'] = ceiling
+			}
+		}
+	}
+}
 
 // sort by name
 const chemicals_array = Object.values(chemicals).map(c => c.serialize())

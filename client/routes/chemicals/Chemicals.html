@@ -6,6 +6,17 @@
 <div class="container">
 
 	<div class="items" class:full="!searching">
+
+		{ #if !searching }
+			<div class="intro">
+				<p>Chemicals can be searched by name, CAS number, or RTECS number.</p>
+
+				<p>Data was derived from the <a href="https://www.cdc.gov/niosh/npg/">NIOSH Pocket Guide to Chemical Hazards</a> and OSHA's Annotated Tables <a href="https://www.osha.gov/dsg/annotated-pels/tablez-1.html">Z-1</a>, <a href="https://www.osha.gov/dsg/annotated-pels/tablez-2.html">Z-2</a>, and <a href="https://www.osha.gov/dsg/annotated-pels/tablez-3.html">Z-3</a> (Aug. 2018).</p>
+
+				Accuracy is not guaranteed. The user is encouraged to consult NIOSH and OSHA chemical data directly.
+			</div>
+		{/if} 
+
 		{ #if items.length }
 			{ #each items as c, i (c.name) }
 				{ #if !searching && letters[i] }
@@ -239,6 +250,14 @@
 <style>
 
 	@import 'colors';
+
+	.intro {
+		padding: 10px 20px 0;
+		margin: 0 auto;
+		max-width: 400px;
+		color: #66;
+		font-size: 90%;
+	}
 
 	.search {
 		height: 50px;
