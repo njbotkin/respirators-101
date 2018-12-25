@@ -21,18 +21,23 @@ function fetch_wordpress_data() {
 		var ssh = new SSH(creds)
 			.on('ready', () => console.log('connection opened to '+creds.user+'@'+creds.host))
 			.on('close', () => console.log('connection closed'))
-			
-		ssh
-			.exec("cd "+creds.path+" && php ~/wp-cli.phar export --skip_comments --stdout", {
-				start: () => console.log('fetching XML export'),
-				exit: (code, stdout) => fs.writeFileSync('wordpress-data/wordpress.xml', stdout)
-			})
-			.exec("cd "+creds.path+" && php ~/wp-cli.phar option get tablepress_tables", {
-				start: () => console.log('fetching tablepress config JSON'),
-				exit: (code, stdout) => fs.writeFileSync('wordpress-data/tablepress_tables.json', stdout)
-			})
-		.start()
-		return ssh
+
+		return new Promise((res, rej) => {
+
+			ssh
+				.exec("cd "+creds.path+" && php ~/wp-cli.phar export --skip_comments --stdout", {
+					start: () => console.log('fetching XML export'),
+					exit: (code, stdout) => fs.writeFileSync('wordpress-data/wordpress.xml', stdout)
+				})
+				.exec("cd "+creds.path+" && php ~/wp-cli.phar option get tablepress_tables", {
+					start: () => console.log('fetching tablepress config JSON'),
+					exit: (code, stdout) => {
+						fs.writeFileSync('wordpress-data/tablepress_tables.json', stdout)
+						res()
+					}
+				})
+			.start()
+		})
 	}
 
 }
@@ -100,10 +105,10 @@ const build = {
 	}
 }
 
-function wp_build() {
-	fetch_wordpress_data()
-	build_wordpress_data_to_svelte()
-	glob_all()
+async function wp_build() {
+	await fetch_wordpress_data()
+	await build_wordpress_data_to_svelte()
+	await glob_all()
 	build.js()
 }
 
