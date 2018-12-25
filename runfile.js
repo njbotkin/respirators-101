@@ -14,8 +14,8 @@ function fetch_wordpress_data() {
 
 		console.log('grabbing wordpress data')
 
-		run("php ~/wp-cli.phar export --skip_comments --stdout > wordpress-data/wordpress.xml")
-		run("php ~/wp-cli.phar option get tablepress_tables > wordpress-data/tablepress_tables.json")
+		run("php /home3/thecdeor/wp-cli.phar export --skip_comments --stdout > wordpress-data/wordpress.xml")
+		run("php /home3/thecdeor/wp-cli.phar option get tablepress_tables > wordpress-data/tablepress_tables.json")
 
 	} else {
 		var ssh = new SSH(creds)
