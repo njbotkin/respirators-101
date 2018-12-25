@@ -290,7 +290,7 @@ ${ content }
 }
 
 const fixImages = html => replace(
-	/<img([^>])+src="[^"]+\/([^"/]+)"/,
+	/<img([^>]+)src="[^"]+\/([^"/]+)"/,
 	(otherJunk, filename) => `<img${ otherJunk }src="wp-images/${ filename }"`,
 	html
 )
