@@ -40,10 +40,13 @@ MANUALLY FIX these and others
 	Talc (containing no asbestos and less than 1% quartz) (how do we handle mppcf?)
 
 
-MAX PEAK: exception to ceiling limit.  Is ATTACHED to ceiling limit, visually and structurally.  Do we even need to do something special with this?  Gonna leave it for now.
+iOS bugs
 
+	swipe menu too sensitive.  Disable control at end of touch stroke
 
+	disable swiping during input focus
 
+	
 
 
 
