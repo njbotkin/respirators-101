@@ -270,9 +270,12 @@ function convertContentToSvelteComponent({ content, title, tables, tablepress })
 	content = fixImages(content);
 	({ expandReplacements, content } = fixExpand(content));
 	({ flatTableReplacements, content, dynamicTableReplacements } = insertTables(content, tables, tablepress));
-	content = md.render(content);
-	content = deparagraph(content); // markdown is too aggressive, and this is easier than writing a markdown plugin
 
+	// only markdownify if not using new wordpress blocks
+	if(!/<!-- wp:paragraph -->/.test(content)) {
+		content = md.render(content);
+		content = deparagraph(content); // markdown is too aggressive, and this is easier than writing a markdown plugin
+	}
 	return `
 
 ${ content }
