@@ -267,12 +267,14 @@ function convertContentToSvelteComponent({ content, title, tables, tablepress })
 
 	var expandReplacements, flatTableReplacements, dynamicTableReplacements
 
+	let hasBlocks = /<!-- wp:paragraph -->/.test(content)
+
 	content = fixImages(content);
-	({ expandReplacements, content } = fixExpand(content));
+	({ expandReplacements, content } = fixExpand(content, hasBlocks));
 	({ flatTableReplacements, content, dynamicTableReplacements } = insertTables(content, tables, tablepress));
 
 	// only markdownify if not using new wordpress blocks
-	if(!/<!-- wp:paragraph -->/.test(content)) {
+	if(!hasBlocks) {
 		content = md.render(content);
 		content = deparagraph(content); // markdown is too aggressive, and this is easier than writing a markdown plugin
 	}
@@ -298,13 +300,13 @@ const fixImages = html => replace(
 	html
 )
 
-const fixExpand = html => {
+const fixExpand = (html, hasBlocks) => {
 	var expandReplacements = 0
 	var content = replace(
 		/\[expand title="([^"]+)"\]((?:.|\n)+?)\[\/expand\]/,
 		(title, content) => {
 			expandReplacements++
-			return `<Accordion title="${ he.encode(title) }">${ content }</Accordion>`
+			return `<Accordion title="${ he.encode(title) }">${ hasBlocks ? md.render(content) : content }</Accordion>`
 		},
 		html
 	)
