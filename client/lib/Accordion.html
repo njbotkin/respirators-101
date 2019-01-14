@@ -9,16 +9,35 @@
 		{/if}
 	</div>
 
-	<div class="inner" ref:inner>
+	<div class="inner" ref:inner use:resize>
 		<div class="padding"><slot></slot></div>
 	</div>
 </div>
 
 <script>
+
 	export default {
 		data: () => ({
 			open: false
 		}),
+		actions: {
+			resize: (inner) => {
+
+				function resize() {
+					inner.style.height = 'auto'
+					inner.style.height = inner.offsetHeight + 'px'
+					console.log('AAAWWWK')
+				}
+
+				inner.addEventListener('resized', resize)
+
+				return {
+					destroy() {
+						inner.removeEventListener('resized', resize)
+					}
+				}
+			}
+		},
 		methods: {
 			toggle() {
 

@@ -89,6 +89,8 @@ export default {
 					height,
 					fullScale 
 				})
+
+				mask.dispatchEvent(new CustomEvent('resized', {bubbles:true}))
 			}
 
 			mask.addEventListener('touchstart', down, true)
