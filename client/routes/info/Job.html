@@ -6,14 +6,14 @@
 
 		<div class="name">
 			<span ref:name contenteditable="{(editingName && job.id == $job.id) || false}" on:input="updateName(this.innerText)"></span>
-			<span class="editJob edit" on:click="editToggle()">[{ editingName ? 'done' : 'edit' }]</span>
+			<span class="editJob edit" on:click="editNameToggle()">[{ editingName ? 'done' : 'edit' }]</span>
 		</div>
 
 		<div class="date">
 			{ #if editingDate && job.id == $job.id }
-				<input type="date" bind:value="job.date"><span class="stopEditing edit" on:click="set({ editingDate: false })">[done]</span>
+				<input type="date" bind:value="job.date" ref:date on:blur="set({ editingDate: false })"><span class="stopEditing edit" on:click="set({ editingDate: false })">[done]</span>
 			{ :else }
-				<span>{ date(job.date) }</span><span class="editDate edit" on:click="set({ editingDate: true })">[edit]</span>
+				<span>{ date(job.date) }</span><span class="editDate edit" on:click="editDate()">[edit]</span>
 			{ /if }
 		</div>
 
@@ -93,7 +93,7 @@
 			this.refs.name.innerText = this.get().job.name
 		},
 		methods: {
-			editToggle() {
+			editNameToggle() {
 				this.set({ editingName: !this.get().editingName })
 				this.refs.name.focus()
 			},
@@ -101,6 +101,10 @@
 				let { job } = this.get()
 				job.name = text 
 				this.set({ job })
+			},
+			editDate() {
+				this.set({ editingDate: true })
+				this.refs.date.focus()
 			}
 		},
 		helpers: {
