@@ -5,10 +5,8 @@
 	<div class="title">
 
 		<div class="name">
-			<span class="inner">
-				<div ref:name class:short="editingName && job.id == $job.id">{ job.name }</div>
-				<input type="text" bind:value="job.name" style="width:{nameWidth}px" class:visible="editingName && job.id == $job.id">
-			</span><span class="editJob edit" on:click="set({ editingName: !editingName })">[{ editingName ? 'done' : 'edit' }]</span>
+			<span ref:name contenteditable="{(editingName && job.id == $job.id) || false}" on:input="updateName(this.innerText)"></span>
+			<span class="editJob edit" on:click="editToggle()">[{ editingName ? 'done' : 'edit' }]</span>
 		</div>
 
 		<div class="date">
@@ -71,7 +69,7 @@
 		<div class="buttons">
 			{ #if job.id !== $job.id }<div class="button switchJob" on:click="fire('switchJob', job.id)">Select</div>{ /if }
 			<div class="button duplicateJob" on:click="fire('duplicate', job.id)">Duplicate</div>
-			<div class="button deleteJob" on:click="fire('confirmDelete', job.id)">Delete</div>
+			{ #if Object.keys($jobs).length > 1 }<div class="button deleteJob" on:click="fire('confirmDelete', job.id)">Delete</div>{ /if }
 		</div>
 	{ /if }
 
@@ -90,6 +88,20 @@
 			ExposureLimits: 'lib/ExposureLimits.html',
 			Warnings: 'lib/Warnings.html',
 			Table: 'lib/Table.html'
+		},
+		oncreate() {
+			this.refs.name.innerText = this.get().job.name
+		},
+		methods: {
+			editToggle() {
+				this.set({ editingName: !this.get().editingName })
+				this.refs.name.focus()
+			},
+			updateName(text) {
+				let { job } = this.get()
+				job.name = text 
+				this.set({ job })
+			}
 		},
 		helpers: {
 			date: (d) => d ? date.format(new Date(d), 'MMM D, YYYY', true) : 'Date', 
@@ -127,7 +139,6 @@
 		padding: 20px;
 		overflow: hidden;
 		margin: 10px 0;
-		/*border: 2px solid #fff;*/
 
 		@media (max-width: 400px) {
 			padding: 10px;
@@ -135,37 +146,10 @@
 
 		.name {
 			float:left;
-
-			span.inner {
-    			display: inline-block;
+			span[contenteditable=true] {
+				outline: 1px solid #666;
+    			outline-offset: 3px;
 			}
-
-			span.inner > div, input {
-				display: inline-block;
-				border: 1px solid;
-				padding: 1px 4px;
-				font-size: 100%;
-				line-height: 1.4;
-				font-family: 'Open Sans';
-				font-weight: bold;
-    			box-sizing: border-box;
-			}
-			span.inner > div { border-color: transparent; }
-
-			input {
-				display: none;
-			}
-			.visible {
-				display: block;
-			}
-
-			span.inner > div.short {
-				position: absolute;
-				height: 0;
-				overflow: hidden;
-			}
-
-			input { border-color: grey; }
 		}
 		.cfx {
 			clear:both;

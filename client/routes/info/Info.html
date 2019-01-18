@@ -1,38 +1,24 @@
 <div id="content">
 
-	{ #if Object.keys($jobs).length === 0 }
-
-		<div class="nojobs">
-			You haven't saved any jobs yet!
-
-			Click 'add a job' to start, and any information you gather will be automatically saved to the current job.
-		</div>
-
-	{ /if }
-
 	<div class="buttons"><div class="button addJob" on:click="addJob()">Add a Job</div></div>
 
 	<div class="jobs">
-		
-		{ #each Object.entries($jobs).reverse() as [jobId, job] }
-			<Job bind:job="job" on:confirmDelete="confirmDelete(event)" on:switchJob="switchJob(event)" on:duplicate="duplicate(event)" {asr} />
+		{ #each Object.entries($jobs).reverse() as [jobId, job] (jobId) }
+			<Job bind:job="job" on:confirmDelete="set({ deleteJob: event })" on:switchJob="switchJob(event)" on:duplicate="duplicate(event)" {asr} />
 		{ /each }
-
 	</div>
 
-	{ #if deleteModal }
-
-		<Modal bind:show="deleteModal">
-			<p>Are you sure want to delete <b>{ $jobs[deleteModal].name }</b>?  This cannot be undone.</p>
-			<div class="buttons">
-				<div class="button deleteJob" on:click="deleteJob(deleteModal)">Delete Job</div>
-				<div class="button neverMind" on:click="set({ deleteModal: false })">Never mind</div>
-			</div>
-		</Modal>
-
-	{ /if }
-
 </div>
+
+<Modal bind:show="deleteJob">
+	{ #if deleteJob }
+		<p>Are you sure want to delete <b>{ $jobs[deleteJob].name }</b>?  This cannot be undone.</p>
+		<div class="buttons">
+			<div class="button deleteJob" on:click="deleteJob(deleteJob)">Delete Job</div>
+			<div class="button neverMind" on:click="set({ deleteJob: false })">Never mind</div>
+		</div>
+	{ /if }
+</Modal>
 
 <script>
 
@@ -43,23 +29,27 @@
 			Modal: 'lib/Modal.html',
 			Job: './Job.html'
 		},
+		onupdate({changed, current}) {
+			if(changed.deleteJob && current.deleteJob) {
+				store.set({ lockContent: true })
+			} else {
+				store.set({ lockContent: false })
+			}
+		},
 		methods: {
 			duplicate(id) {
 				let newJobId = store.duplicateJob(id)
 				store.switchJob(newJobId)
 			},
-			confirmDelete(id) {
-				this.set({ deleteModal: id })
-			},
 			deleteJob(id) {
-				this.set({ deleteModal: 0 })
+				this.set({ deleteJob: false })
 				store.removeJob(id)
 			},
 			switchJob: (id) => store.switchJob(id),
 			addJob: () => store.addJob()
 		},
 		data: () => ({
-			deleteModal: false
+			deleteJob: false
 		})
 	}
 
