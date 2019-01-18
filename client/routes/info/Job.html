@@ -115,12 +115,7 @@
 			valueSources,
 			only: false,
 			unitsPretty
-		}),
-		onupdate({changed, previous}) {
-			if(previous && changed.job) {
-				this.set({ nameWidth: this.refs.name.offsetWidth })
-			}
-		}
+		})
 	}
 
 </script>

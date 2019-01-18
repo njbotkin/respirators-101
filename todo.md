@@ -40,14 +40,6 @@ MANUALLY FIX these and others
 	Talc (containing no asbestos and less than 1% quartz) (how do we handle mppcf?)
 
 
-iOS bugs
-
-	swipe menu too sensitive.  Disable control at end of touch stroke
-
-	disable swiping during input focus
-
-	
-
 
 
 (DONE) asbestos needs f/cm3
