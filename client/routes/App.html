@@ -116,6 +116,10 @@
 			// 	document.getElementById('domlog').appendChild(div)
 			// }
 
+			let editing = false
+			window.addEventListener('focusin', () => editing = true)
+			window.addEventListener('focusout', () => editing = false)
+
 			function direction({x, y}) {
 				let threshold = 1 // pixels (arbitrary)
 				if(x - Math.abs(y) > threshold) return 'right'
@@ -131,7 +135,7 @@
 			window.addEventListener('touchcancel', () => up(), false )
 
 			const up = () => {
-				if(window.tableDragging) return
+				if(window.tableDragging || editing) return
 				prev = false
 
 				// swipe
@@ -140,15 +144,17 @@
 				let latestDirection = direction(movement)
 				let { wrapperX } = this.get()
 
-				if(latestDirection == 'right') this.set({ sidebarOpen: true })
-				else if(latestDirection == 'left') this.set({ sidebarOpen: false })
-				else this.set({ sidebarOpen: wrapperX > -150 }) // either side of halfway
+				if(!!~['left', 'right'].indexOf(initialDirection)) {
+					if(latestDirection == 'right') this.set({ sidebarOpen: true })
+					else if(latestDirection == 'left') this.set({ sidebarOpen: false })
+					else this.set({ sidebarOpen: wrapperX > -150 }) // either side of halfway
+				}
 
 				movement = {x:0, y:0}
 			}
 
 			window.addEventListener('touchmove', e => {
-				if(window.tableDragging) return
+				if(window.tableDragging || editing) return
 
 				event = e.originalEvent || e
 				if(event.scale !== 1) {
