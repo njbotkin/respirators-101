@@ -5,7 +5,7 @@
 	<div class="title">
 
 		<div class="name">
-			<span ref:name contenteditable="{(editingName && job.id == $job.id) || false}" on:input="updateName(this.innerText)"></span>
+			<span ref:name contenteditable="{(editingName && job.id == $job.id) || false}" on:input="updateName(this.innerText)" on:blur="set({ editingName: false })"></span>
 			<span class="editJob edit" on:click="editNameToggle()">[{ editingName ? 'done' : 'edit' }]</span>
 		</div>
 
