@@ -100,8 +100,8 @@
 			only: false,
 			unitsPretty
 		}),
-		onupdate({changed}) {
-			if(changed.job) {
+		onupdate({changed, previous}) {
+			if(previous && changed.job) {
 				this.set({ nameWidth: this.refs.name.offsetWidth })
 			}
 		}
@@ -230,7 +230,7 @@
 		}
 
 		.respirator-options.button {
-			margin-top: 20px;
+			/*margin-top: 20px;*/
 			background: $red2;
 		}
 
@@ -245,8 +245,9 @@
 		}
 
 		:global(table) {
+			width: 100%;
 			margin-bottom: 0;
-			margin-top: 10px;
+			/*margin-top: 10px;*/
 			font-size: 90%;
 		}
 	}

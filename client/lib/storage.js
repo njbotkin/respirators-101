@@ -114,7 +114,7 @@ class JobStore extends LocalStore {
 			const zeroify = n => String(n).length < 2 ? '0'+n : n
 
 			job = {
-				date: `${time.getFullYear()}-${zeroify(time.getMonth())}-${zeroify(time.getDate())}`,
+				date: `${time.getFullYear()}-${zeroify(time.getMonth()+1)}-${zeroify(time.getDate())}`,
 				name: 'New Job',
 				openChemicals: {},
 				chemicalsScrollTop: 0,
