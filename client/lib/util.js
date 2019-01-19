@@ -1,7 +1,7 @@
 // rounds and adds commas, add fake decimal to imply precision
 export function round(v) {
 	if(typeof v === 'undefined' || !number(v)) return 0
-	v = String(Math.round(v * 100) / 100) 
+	v = String(Math.round(v * 10000) / 10000) 
 
 	let decimal
 	if(v.indexOf('.') == -1) {

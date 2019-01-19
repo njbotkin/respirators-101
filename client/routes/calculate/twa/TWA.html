@@ -134,8 +134,8 @@ export default {
 		addSample() {
 			let samples = this.store.get().job.twa.samples
 			samples.push({
-				value: '',
-				period: ''
+				value: null,
+				period: null
 			})
 			this.store.set({ job: { twa: { samples } } })
 		},
