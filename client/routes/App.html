@@ -135,11 +135,9 @@
 			window.addEventListener('touchcancel', () => up(), false )
 
 			const up = () => {
-				if(window.tableDragging || editing) return
 				prev = false
 
-				// swipe
-				if(movement.x == 0 && movement.y == 0)  return
+				if(window.tableDragging || editing || (movement.x == 0 && movement.y == 0)) return
 
 				let latestDirection = direction(movement)
 				let { wrapperX } = this.get()

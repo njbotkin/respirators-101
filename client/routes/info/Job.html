@@ -5,15 +5,20 @@
 	<div class="title">
 
 		<div class="name">
-			<span ref:name contenteditable="{(editingName && job.id == $job.id) || false}" on:input="updateName(this.innerText)" on:blur="set({ editingName: false })"></span>
-			<span class="editJob edit" on:click="editNameToggle()">[{ editingName ? 'done' : 'edit' }]</span>
+			<span ref:name contenteditable="{ !!editingName }" on:input="updateName(this.innerText)" on:blur="set({ editingName: false })"></span>
+
+			{ #if editingName }
+				<span class="edit">[done]</span>
+			{ :else }
+				<span class="edit" on:click="editName()">[edit]</span>
+			{ /if }
 		</div>
 
 		<div class="date">
-			{ #if editingDate && job.id == $job.id }
-				<input type="date" bind:value="job.date" ref:date on:blur="set({ editingDate: false })"><span class="stopEditing edit" on:click="set({ editingDate: false })">[done]</span>
+			{ #if editingDate }
+				<input type="date" bind:value="job.date" ref:date on:blur="set({ editingDate: false })"><span class="edit">[done]</span>
 			{ :else }
-				<span>{ date(job.date) }</span><span class="editDate edit" on:click="editDate()">[edit]</span>
+				<span>{ date(job.date) }</span><span class="edit" on:click="editDate()">[edit]</span>
 			{ /if }
 		</div>
 
@@ -30,7 +35,7 @@
 				{ :else }
 					No exposure limit selected yet!
 				{ /if }
-			<div class="button-cont"><div class="button edit" on:click="$set({ editEL: true })"> { job.exposureLimit.value ? 'Edit' : 'Add' } </div></div>
+			<div class="button-cont"><div class="button" on:click="$set({ editEL: true })"> { job.exposureLimit.value ? 'Edit' : 'Add' } </div></div>
 		</div>
 
 		<div class="read-value live{job.id == $job.id }" style="text-align: center">
@@ -43,7 +48,7 @@
 				{ :else }
 					No TWA set yet!
 				{ /if }
-			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['twa']) }"> { job.twa.final ? 'Edit' : 'Add' } </a></div>
+			<div class="button-cont"><a class="button" href="{ asr.makePath(valueSources['twa']) }"> { job.twa.final ? 'Edit' : 'Add' } </a></div>
 		</div>
 
 		<div class="read-value live{job.id == $job.id }">
@@ -53,7 +58,7 @@
 				{ :else }
 					No HR set yet!
 				{ /if }
-			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['hr']) }"> { job.hr ? 'Edit' : 'Add' } </a></div>
+			<div class="button-cont"><a class="button" href="{ asr.makePath(valueSources['hr']) }"> { job.hr ? 'Edit' : 'Add' } </a></div>
 		</div>
 
 		{ #if Object.keys(job.options_saved).length }
@@ -93,8 +98,8 @@
 			this.refs.name.innerText = this.get().job.name
 		},
 		methods: {
-			editNameToggle() {
-				this.set({ editingName: !this.get().editingName })
+			editName() {
+				this.set({ editingName: true })
 				this.refs.name.focus()
 			},
 			updateName(text) {
@@ -160,7 +165,7 @@
 			padding: 0;
 		}
 
-		.editJob, .editDate, .stopEditing {
+		.edit {
 			font-size: 80%;
 			color: #4260b5;
 			cursor: pointer;
