@@ -93,8 +93,15 @@
 			Warnings: 'lib/Warnings.html',
 			Table: 'lib/Table.html'
 		},
-		oncreate() {
-			this.refs.name.innerText = this.get().job.name
+		// ideally this would be done in oncreate, but occasionally oncreate fires before the DOM has been assembled?
+		onupdate() {
+			let { job, contenteditableInit } = this.get()
+			if(contenteditableInit) return
+
+			if(this.refs.name) {
+				this.refs.name.innerText = job.name
+				this.set({ contenteditableInit: true })
+			}
 		},
 		methods: {
 			editName() {
@@ -118,7 +125,8 @@
 		data: () => ({
 			valueSources,
 			only: false,
-			unitsPretty
+			unitsPretty,
+			contenteditableInit: false
 		})
 	}
 
