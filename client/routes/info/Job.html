@@ -1,4 +1,4 @@
-{ #if job && $job } <!-- because weird binding issues -->
+
 { #if job.id == $job.id && !only }<div class="currentJob">Current Job</div>{ /if }
 
 <div class="job currentJob{ job.id == $job.id }">
@@ -80,7 +80,6 @@
 
 </div>
 
-{ /if }
 
 <script>
 
