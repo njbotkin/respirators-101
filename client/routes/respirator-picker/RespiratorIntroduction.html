@@ -10,10 +10,11 @@
 
 	<p>For more information about the NIOSH Respirator Selection Logic see the <a href="https://www.cdc.gov/niosh/docs/2005-100/default.html">NIOSH website</a>.</p>
 
-	<a class="start" href="{ asr.makePath( 'app.respirator-picker' ) }">Get Started</a>
-
-	{ #if step }
+	{ #if $job.RSLStep }
 		<a class="start" href="{ asr.makePath( 'app.respirator-picker', {id: $job.RSLStep} ) }">Resume where you left off</a>
+		<a class="start" href="{ asr.makePath( 'app.respirator-picker' ) }">Start over</a>
+	{:else}
+		<a class="start" href="{ asr.makePath( 'app.respirator-picker' ) }">Get Started</a>
 	{ /if }
 
 </div>
@@ -26,7 +27,7 @@
 
 	a.start {
 		width: 50%;
-		margin: 0 auto;
+		margin: 20px auto;
 		color: #000;
 		font-weight: bold;
 		display: block;

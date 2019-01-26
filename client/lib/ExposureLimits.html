@@ -120,11 +120,11 @@
 			<div class="value">
 
 				<div class="property form">
-					<div class="label">{ #if exposureLimit.formKey !== 'default' }{ exposureLimit.formKey }{ /if }</div>
+					<div class="label">{ #if exposureLimit.formKey !== 'Default' }{ exposureLimit.formKey }{ /if }</div>
 					<div class="value property-list">
 
 						<div class="property duration">
-							<div class="label">{ #if exposureLimit.durationKey !== 'default' }{ durationsPretty[exposureLimit.durationKey] }{ /if }</div>
+							<div class="label">{ #if !/default[0-9]?/.test(exposureLimit.durationKey) }{ durationsPretty[exposureLimit.durationKey] }{ /if }</div>
 							<div class="value">
 
 								{ humanTime(exposureLimit.duration) }
