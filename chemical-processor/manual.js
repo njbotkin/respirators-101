@@ -1395,6 +1395,7 @@ let z3 = [
 
 // console.log(chemicals)
 for(let name in manual) {
+
 	if(chemicals[name]) {
 		chemicals[name].merge(manual[name], true)
 		if(manual[name].name_add) {

@@ -160,6 +160,32 @@ const move = [
 		}
 	},
 	{
+		id: row => row.cells[SUBSTANCE].content == 'Methoxychlor - Total dust',
+		remove: true,
+		transform: row => { 
+			let chemical = newChemical({
+				name: 'Methoxychlor',
+				cas: row.cells[CAS].content.trim(),
+				z1: true,
+			})
+			let form = chemical.addForm('Total Dust')
+			parse_ELs(row, chemical, form)
+		}
+	},
+	{
+		id: row => row.cells[SUBSTANCE].content == 'Malathion - Total dust',
+		remove: true,
+		transform: row => { 
+			let chemical = newChemical({
+				name: 'Malathion',
+				cas: row.cells[CAS].content.trim(),
+				z1: true,
+			})
+			let form = chemical.addForm('Total Dust')
+			parse_ELs(row, chemical, form)
+		}
+	},
+	{
 		id: row => row.cells[SUBSTANCE].content == 'Uranium (as U)',
 		remove: true,
 		transform: (row, index) => { 
@@ -188,6 +214,25 @@ const move = [
 			row.cells[OSHA_PEL_PPM].content = '' // screw you, the NPG does it better
 			chemical.general_standard = [link_gs('1910.1051'), link_gs('1910.19(l)')]
 			let form = chemical.addForm('default')
+			parse_ELs(row, chemical, form)
+		}
+	},
+	{
+		id: row => row.cells[SUBSTANCE].content == 'Isomyl alcohol (primary and secondary)',
+		remove: true,
+		transform: row => { 
+			let chemical = newChemical({
+				name: 'Isoamyl alcohol (primary)',
+				z1: true,
+			})
+			let form = chemical.addForm('default')
+			parse_ELs(row, chemical, form)
+
+			chemical = newChemical({
+				name: 'Isoamyl alcohol (secondary)',
+				z1: true,
+			})
+			form = chemical.addForm('default')
 			parse_ELs(row, chemical, form)
 		}
 	},
@@ -363,6 +408,8 @@ let rename = {
 	'Chromium (II) compounds (as Cr)': 'Chromium(II) compounds (as Cr) ',
 	'Chromium (III) compounds (as Cr)': 'Chromium(III) compounds (as Cr) ',
 	'Nickel, metal and insoluble compounds (as Ni)': 'Nickel metal and other compounds (as Ni)',
+	'Dichloromono fluoromethane': 'Dichloromonofluoromethane',
+	'tert-Butyl chromate (as CrO3)(m); see 1910.1026': 'tert-Butyl chromate (as CrO<SUB>3</SUB>)'
 }
 
 for(let r in rename) {
@@ -378,7 +425,6 @@ let skip = [
 	'Ethylene oxide',
 	'Chromium (VI) compounds',
 	'Iron oxide (as Fe)',
-	'Titanium dioxide - Total dust',
 	'Respirable dust (as V<sub>2</sub>O<sub>5</sub>)',
 	'Vanadium',
 	'Fume (as V<sub>2</sub>O<sub>5</sub>)',

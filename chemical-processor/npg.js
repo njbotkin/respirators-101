@@ -176,6 +176,7 @@ function filter_osha_note(name, note) {
 	if(osha_note_filter[name]) {
 		note = note.replace(osha_note_filter[name], '')
 	}
+	note = note.replace('none', 'None')
 	return note
 }
 
@@ -189,6 +190,7 @@ function filter_niosh_note(name, note) {
 	if(niosh_note_filter[name]) {
 		note = note.replace(niosh_note_filter[name], '')
 	}
+	note = note.replace('none', 'None')
 	return note
 }
 
@@ -209,6 +211,7 @@ const renames = {
 	'tert-Butyl chromate': 'tert-Butyl chromate (as CrO<SUB>3</SUB>)',
 	'Methyl Cellosolve&reg;': 'Methyl Cellosolve®',
 	'Methyl Cellosolve&reg; acetate': 'Methyl Cellosolve® acetate',
+	'Crag&reg; herbicide': 'Crag® herbicide',
 	'Vanadium dust': 'Vanadium dust (as V<sub>2</sub>O<sub>5</sub>)',
 	'Vanadium fume': 'Vanadium fume (as V<sub>2</sub>O<sub>5</sub>)',
 }
