@@ -29,22 +29,17 @@
 			timeUnits
 		}),
 		oncreate() {
-			this.set( this.store.get().job.exposureLimit )
-		},
-		onstate({current, changed}) {
-			if(changed.timeUnit) {
-				let duration
-				if(current.timeUnit == 'Hours') {
-					duration = current.duration / 60
-				} else {
-					duration = current.duration * 60
-				}
-				this.set({ duration })
-			}
+			let exposureLimit = this.store.get().job.exposureLimit
+			if(exposureLimit.timeUnit == 'Hours') exposureLimit.duration /= 60
+			this.set( exposureLimit )
 		},
 		computed: {
 			valid: ({ duration, value, unit }) => {
-				if(!number(duration) || !number(value) || !unit) return false
+				if(
+					!(number(duration) && number(duration) > 0) ||
+					!(number(value) && number(value) > 0) ||
+					!unit
+					) return false
 				return true
 			}
 		},
