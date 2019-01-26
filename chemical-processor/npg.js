@@ -33,12 +33,16 @@ function munge_exposure_limit(standard, chemical, n) {
 		hold.push({ ppm: p1 })
 		return `{${hold.length-1}}`
 	})
-	.replace(/([0-9.,]+) mg\/m<SUP>3<\/SUP>/g, (match, p1) => {
+	.replace(/([0-9.,]+) mg\/m<SUP>3<\/SUP>/gi, (match, p1) => {
 		hold.push({ mgm3: p1 })
 		return `{${hold.length-1}}`
 	})
-	.replace(/([0-9.,]+) fibers\/cm<SUP>3<\/SUP>/g, (match, p1) => {
+	.replace(/([0-9.,]+) fibers\/cm<SUP>3<\/SUP>/gi, (match, p1) => {
 		hold.push({ fiberscm3: p1 })
+		return `{${hold.length-1}}`
+	})
+	.replace(/([0-9.,]+) mppcf/g, (match, p1) => {
+		hold.push({ mppcf: p1 })
 		return `{${hold.length-1}}`
 	})
 
@@ -203,7 +207,8 @@ const skip_standards = [
 	'Vanadium dust',
 	'Vanadium fume',
 	'Carbon black',
-	'Chromyl chloride'
+	'Chromyl chloride',
+	// 'Fibrous glass dust'
 ]
 
 const renames = {

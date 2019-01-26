@@ -334,7 +334,7 @@ let manual = {
 								"values": {
 									"mgm3": 2.5
 								},
-								"duration": 480
+								"duration": 600
 							}
 	                    },
 	            		"notes": []
@@ -805,14 +805,14 @@ let manual = {
 									mgm3: 1
 								},
 								notes: ["measured according to MSHA method (CPSU)"],
-								duration: 480
+								duration: 600
 							},
 							default2: {
 								values: {
 									mgm3: 0.9
 								},
 								notes: ["measured according to ISO/CEN/ACGIH criteria"],
-								duration: 480
+								duration: 600
 							}
 						}
 					}
@@ -833,7 +833,7 @@ let manual = {
 									ppm: '< 0.1',
 									mgm3: '0.18',
 								},
-								duration: 480
+								duration: 600
 							},
 							ceiling: {
 								values: {
@@ -882,7 +882,7 @@ let manual = {
 								values: {
 									mgm3: 0.05
 								},
-								duration: 480
+								duration: 600
 							}
 						}
 					}
@@ -901,7 +901,7 @@ let manual = {
 								values: {
 									mgm3: 0.05
 								},
-								duration: 480
+								duration: 600
 							}
 						}
 					}
@@ -968,7 +968,8 @@ let manual = {
 							default: {
 								values: {
 									mgm3: '< 0.200',
-								}
+								},
+								duration: 600
 							}
 						}
 					}
@@ -1026,7 +1027,7 @@ let manual = {
 					}
 				},
 				carcinogens: 1,
-				notes: [linkify('See Appendix A See Appendix C')]
+				notes: [linkify('See Appendix A'),  linkify('See Appendix C')]
 			},
 		}
 	},
@@ -1313,7 +1314,7 @@ let manual = {
 						carcinogens: 1
 					}
 				},
-				notes: [linkify('See Appendix A See Appendix C')]
+				notes: [linkify('See Appendix A'), linkify('See Appendix C')]
 			},
 			osha_pel: {
 				forms: {

@@ -1,10 +1,10 @@
 const striptags = require('striptags');
 
 function linkify(s) {
-	return s.replace(/See Appendix ([a-zA-Z])/g, (match, p1, offset, string) => {
+	return s.replace(/See Appendix ([a-zA-Z])/g, (match, p1) => {
 		return '<a href="https://www.cdc.gov/niosh/npg/nengapdx' + p1.toLowerCase() + '.html">' + match + '</a>'
 	})
-	.replace(/<a href='#' external data-url='([^']+)'>/g, (match, p1, offset, string) => {
+	.replace(/<a href='#' external data-url='([^']+)'>/g, (match, p1) => {
 		return '<a href="' + p1 + '">'
 	})
 	.replace(/See PNOR/g, match => {
@@ -23,21 +23,33 @@ function linkify(s) {
 
 // no duplicates
 function addNote(notes, note) {
-	note = linkify(note.trim())
+
+	// if(/TWA/.test(note)) console.log(note)
+
+	let split = note.split('<br>')
+	if(split.length > 1) {
+		for(let s of split) addNote(notes, s)
+		return 
+	}
+
+	note = striptags(note).trim()
 	if(note == '') return
 
-	for(let n of notes) {
-		if(striptags(n).toUpperCase().indexOf(striptags(note).toUpperCase()) > -1) return;
+	// if there's anything before an appendix link, split it into a separate note
+	split = note.match(/(.+)(See Appendix [a-zA-Z])/)
+	if(split) {
+		addNote(notes, split[1])
+		addNote(notes, split[2])
+		return
 	}
-	notes.push(note.replace(/(<br>|\[\])/g, ''))
+
+	note = linkify(note)
+
+	for(let n of notes) {
+		if(n.toUpperCase().indexOf(note.toUpperCase()) > -1) return // no dupes
+	}
+	notes.push(note.replace(/\[\]/g, ''))
 }
-
-// const units = [
-// 	'ppm',
-// 	'mgm3',
-// 	'fmc3',
-
-// ]
 
 module.exports = {
 	linkify,
