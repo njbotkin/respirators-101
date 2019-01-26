@@ -45,7 +45,6 @@ let durations = {
 
 class Chemical {
 	constructor(props) {
-		this.tags = ''
 		this.rtecs = ''
 		Object.assign(this, props)
 

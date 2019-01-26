@@ -486,6 +486,8 @@ for(let row of z1_data) {
 	} else {
 		parent = null
 
+		if(name == '') continue
+
 		// skip if no ELs
 		if(empty(row.cells[OSHA_PEL_PPM]) && empty(row.cells[OSHA_PEL_MGM3]) && empty(row.cells[CAL_OSHA_PEL]) && empty(row.cells[NIOSH_REL])) {
 			// console.log('EMPTY: ', name)

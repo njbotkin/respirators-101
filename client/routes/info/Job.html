@@ -96,9 +96,8 @@
 		// ideally this would be done in oncreate, but occasionally oncreate fires before the DOM has been assembled?
 		onupdate() {
 			let { job, contenteditableInit } = this.get()
-			if(contenteditableInit) return
 
-			if(this.refs.name) {
+			if(this.refs.name && !contenteditableInit) {
 				this.refs.name.innerText = job.name
 				this.set({ contenteditableInit: true })
 			}

@@ -258,7 +258,7 @@ for(let c of chemical_source.chemicals) {
 		pr: c["pr"] || "No recommendation",
 		pc: c["pc"] || "No recommendation",
 		pp: c["pp"] || "No recommendation",
-		npg: true
+		npg: c["a"]
 	})
 
 	if(c["cn"] !== '') chemical.cas = c['cn']
