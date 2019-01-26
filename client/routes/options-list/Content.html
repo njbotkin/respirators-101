@@ -1,8 +1,24 @@
 <div id=content class="options-list">
 	<svelte:component this={component} />
+
+	<a class="start" href="{ asr.makePath( 'app.info' ) }">Finish</a>
+
 </div>
 
 <style>
+
+	a.start {
+		width: 50%;
+		margin: 20px auto;
+		color: #000;
+		font-weight: bold;
+		display: block;
+		text-align: center;
+		padding: 20px 40px;
+		text-decoration: none;
+		font-size: 18px;
+		background: #fff;
+	}
 
 	:global(.options-list) {
 
