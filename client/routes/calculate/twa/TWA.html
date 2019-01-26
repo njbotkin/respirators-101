@@ -73,8 +73,8 @@
 
 		{ #if $job.warnings['unit-mismatch'] }
 			<div class="convert-units">
-				Click here to convert your {@html unitsPretty[$job.twa.unit] } measurements to {@html unitsPretty[$job.exposureLimit.unit] } measurements: 
-				<div class="button convert" on:click="$set({ job: { twa: { unit: $job.exposureLimit.unit } } })">Convert Units</div>
+				Click here to change your {@html unitsPretty[$job.twa.unit] } measurements to {@html unitsPretty[$job.exposureLimit.unit] } measurements: 
+				<div class="button convert" on:click="$set({ job: { twa: { unit: $job.exposureLimit.unit } } })">Change Units</div>
 			</div>
 		{ /if }
 	</div>

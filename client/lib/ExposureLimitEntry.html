@@ -33,12 +33,13 @@
 		},
 		onstate({current, changed}) {
 			if(changed.timeUnit) {
+				let duration
 				if(current.timeUnit == 'Hours') {
-					current.duration /= 60
+					duration = current.duration / 60
 				} else {
-					current.duration *= 60
+					duration = current.duration * 60
 				}
-				this.set( current )
+				this.set({ duration })
 			}
 		},
 		computed: {

@@ -205,7 +205,7 @@ store.on('state', ({current, changed}) => {
 		let totalValueMinutes = sampleProducts.reduce((a, t) => a + t, 0)
 		let final = (totalValueMinutes / totalMinutes) || 0 
 
-		if(totalMinutes !== job.exposureLimit.duration) {
+		if(totalMinutes !== Number(job.exposureLimit.duration)) {
 			job.warnings['duration-mismatch'] = `The total ${ job.exposureLimit.timeUnit.toLowerCase() } of the TWA samples you've entered is ${ totalMinutes > job.exposureLimit.duration ? 'greater' : 'less' } than the measurement period of the selected exposure limit (${job.exposureLimit.duration / job.exposureLimit.timeUnitMultiplier} ${ job.exposureLimit.timeUnit }).  Your TWA is invalid.`
 		}
 
