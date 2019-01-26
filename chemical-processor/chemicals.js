@@ -28,17 +28,14 @@ let duration_names = ['default', 'ceiling', 'stel']
 let durations = {
 	osha_pel: {
 		default: 8 * 60,
-		ceiling: 8 * 60,
 		stel: 15
 	},
 	cal_osha_pel: {
 		default: 8 * 60,
-		ceiling: 8 * 60,
 		stel: 15
 	},
 	niosh_rel: {
 		default: 10 * 60,
-		ceiling: 10 * 60,
 		stel: 15
 	}
 }
@@ -79,10 +76,8 @@ class Chemical {
 					notes: []
 				}
 				for(let duration of duration_names) {
-					s.forms[form_name].durations[duration] = {
-						values: {},
-						duration: durations[standard][duration]
-					}
+					s.forms[form_name].durations[duration] = { values: {} }
+					if(durations[standard][duration]) s.forms[form_name].durations[duration].duration = durations[standard][duration]
 				}
 			}
 		}

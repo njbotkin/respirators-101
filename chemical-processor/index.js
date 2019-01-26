@@ -83,7 +83,7 @@ for(let name in chemicals) {
 	}
 }
 
-// sort durations so "ceiling" is last
+// make "ceiling" duration last
 for(let name in chemicals) {
 	let c = chemicals[name]
 	for(let standard in c.standards) {
@@ -98,7 +98,7 @@ for(let name in chemicals) {
 	}
 }
 
-// put the "Default" state/form first
+// make "Default" state/form first
 for(let name in chemicals) {
 	let c = chemicals[name]
 	for(let standard in c.standards) {

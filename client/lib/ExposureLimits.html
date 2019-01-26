@@ -28,7 +28,7 @@
 										{ #if !/default[0-9]?/.test(durationKey) }<div class="label">{ durationsPretty[durationKey] }</div>{ /if }
 										<div class="value">
 
-											<span class="period">{ humanTime(duration.duration) }</span>
+											{#if duration.duration}<span class="period">{ humanTime(duration.duration) }</span>{/if}
 
 											{ #each Object.entries(duration.values) as [unit, value] }
 
@@ -127,7 +127,7 @@
 							<div class="label">{ #if !/default[0-9]?/.test(exposureLimit.durationKey) }{ durationsPretty[exposureLimit.durationKey] }{ /if }</div>
 							<div class="value">
 
-								{ humanTime(exposureLimit.duration) }
+								{#if exposureLimit.duration}{ humanTime(exposureLimit.duration) }{/if}
 
 								<div class="representation select-el EL">
 									{ exposureLimit.value }
