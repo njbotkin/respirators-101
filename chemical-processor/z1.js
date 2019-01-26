@@ -36,13 +36,13 @@ function process_osha_pel({osha_pel, chemical, form, unit}) {
 
 	for(let e of split(osha_pel)) {
 		if(ceiling(e)) {
-			durations.ceiling.values[unit] = ceiling(e)
+			if(!durations.ceiling.values[unit]) durations.ceiling.values[unit] = ceiling(e)
 		} 
 		else if(stel(e)) {
-			durations.stel.values[unit] = stel(e) 
+			if(!durations.stel.values[unit]) durations.stel.values[unit] = stel(e) 
 		} 
 		else if(Number(e)) {
-			durations.default.values[unit] = e
+			if(!durations.default.values[unit]) durations.default.values[unit] = e
 		}
 		else {
 			addNote(chemical.standards['osha_pel'].notes, e)
@@ -100,7 +100,8 @@ function process_combined_el_column({el, chemical, form, el_name}) {
 			return ''
 		})
 
-		Object.assign(durations[duration_name].values, unit)
+		// previous values take precedence
+		if(unit) durations[duration_name].values = Object.assign(unit, durations[duration_name].values)
 		if(duration) durations[duration_name].duration = duration
 
 		addNote(chemical.standards[el_name].notes, e)
