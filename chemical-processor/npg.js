@@ -217,6 +217,7 @@ const renames = {
 	'Methyl Cellosolve&reg;': 'Methyl Cellosolve®',
 	'Methyl Cellosolve&reg; acetate': 'Methyl Cellosolve® acetate',
 	'Crag&reg; herbicide': 'Crag® herbicide',
+	'Diazinon&reg;': 'Diazinon®',
 	'Vanadium dust': 'Vanadium dust (as V<sub>2</sub>O<sub>5</sub>)',
 	'Vanadium fume': 'Vanadium fume (as V<sub>2</sub>O<sub>5</sub>)',
 }
@@ -249,7 +250,7 @@ for(let c of chemical_source.chemicals) {
 	let chemical = newChemical({
 		name: rename(c["c"]),
 		rtecs: c["rn"],
-		synonyms: c["s"],
+		synonyms: c["s"].map(s => s.replace('&#174;', '®')),
 		// npg_link: 'https://www.cdc.gov/niosh/npg/npgd' + c["a"] + '.html',
 		idlh: idlh_split.shift(),
 		idlh_notes: linkify(idlh_split.join('<br />')),
