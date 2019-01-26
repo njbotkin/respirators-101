@@ -228,6 +228,8 @@ function rename(name) {
 
 const chemical_source = JSON.parse(readFileSync(joinPath(__dirname, '../chemical-data/chemicals.json'), { encoding: `utf8` }))
 
+const Entities = require('html-entities').AllHtmlEntities;
+const entities = new Entities();
 
 for(let c of chemical_source.chemicals) {
 
@@ -250,7 +252,7 @@ for(let c of chemical_source.chemicals) {
 	let chemical = newChemical({
 		name: rename(c["c"]),
 		rtecs: c["rn"],
-		synonyms: c["s"].map(s => s.replace('&#174;', '®')),
+		synonyms: c["s"].map(entities.decode),
 		// npg_link: 'https://www.cdc.gov/niosh/npg/npgd' + c["a"] + '.html',
 		idlh: idlh_split.shift(),
 		idlh_notes: linkify(idlh_split.join('<br />')),

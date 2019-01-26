@@ -98,6 +98,16 @@ for(let name in chemicals) {
 	}
 }
 
+// put the "Default" state/form first
+for(let name in chemicals) {
+	let c = chemicals[name]
+	for(let standard in c.standards) {
+		if(c.standards[standard].forms && c.standards[standard].forms['Default']) {
+			c.standards[standard].forms = Object.assign( { Default: c.standards[standard]['Default'] }, c.standards[standard].forms )
+		}
+	}
+}
+
 // sort by name
 const chemicals_array = Object.values(chemicals).filter(c => c.name).map(c => c.serialize())
 	.sort((a, b) => a.name.replace(/^[a-z,\-0-9'(]+/, '').localeCompare(b.name.replace(/^[a-z,\-0-9'(]+/, '')))
