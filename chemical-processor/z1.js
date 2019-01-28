@@ -329,6 +329,10 @@ const move = [
 		id: row => row.cells[CAS].content == '14808-60-7',
 		transform: row => row.cells[SUBSTANCE].content = row.cells[SUBSTANCE].content.replace(':', ';')
 	},
+	{
+		id: row => row.cells[SUBSTANCE].content == 'Coke oven emissions; see 1910.1029',
+		transform: row => row.cells[NIOSH_REL].content = row.cells[NIOSH_REL].content.replace('(benzene-soluble fraction)', '')
+	},
 
 	{
 		id: row => row.cells[SUBSTANCE].content == 'Copper',
@@ -562,3 +566,5 @@ chemicals['Uranium (soluble compounds, as U)'].standards.niosh_rel.notes = chemi
 chemicals['Beryllium &amp; beryllium compounds (as Be)'].general_standard = [link_gs('1910.1024')]
 chemicals['Crotonaldehyde'].cas = '123-73-9 / 4170-30-3'
 chemicals['Emery'].cas += ' / 12415-34-8'
+
+chemicals['Cotton dust'].standards.niosh_rel.notes = chemicals['Cotton dust'].standards.niosh_rel.notes.filter(n => n.trim() != '&lt;')

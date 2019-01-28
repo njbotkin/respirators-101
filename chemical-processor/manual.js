@@ -978,6 +978,24 @@ let manual = {
 		}
 	},
 
+	'Cotton dust': {
+		standards: {
+			niosh_rel: {
+				forms: {
+					Default: {
+						durations: {
+							default: {
+								values: {
+									mgm3: '< 0.200',
+								}
+							}
+						}
+					}
+				},
+			}
+		}
+	},
+
 	'tert-Butyl chromate (as CrO<SUB>3</SUB>)': {
 		standards: {
 			niosh_rel: {
