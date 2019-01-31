@@ -11,7 +11,7 @@ jobs:
           - v1-dependencies-
       - run:
           command: |
-              npm i --production
+              npm i
               npm run build
       - save_cache:
           paths:
