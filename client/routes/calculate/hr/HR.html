@@ -23,44 +23,18 @@
 	<p><em>NOTE: The TWA and exposure limit values MUST be based on the same time period (e.g. a 10-hr TWA CANNOT be used with an 8-hr exposure limit).</em></p>
 </div>
 
-<Warnings />
+<Warnings job={$job} />
 
 <div class="equation">
 
 	<div class="operand">
-		
-		<div class="read-value livetrue">
-			<div class="legend-cont"><div class="legend"> TWA </div></div>
-				{ #if $job.twa.final }
-					<div class="representation">
-						{ round($job.twa.final) }
-						<div class="unit">{ @html unitsPretty[$job.twa.unit] }</div>
-					</div>
-				{ :else }
-					No TWA set yet!
-				{ /if }
-			<div class="button-cont"><a class="button edit" href="{ asr.makePath(valueSources['twa']) }"> { $job.twa.final ? 'Edit' : 'Add' } </a></div>
-		</div>
-
+		<TWAWindow {...$job} editing />
 	</div>
 
-	<div class="operator">&#247;</div>
+	<div class="operator">÷</div>
 
 	<div class="operand">
-
-		<div class="read-value livetrue">
-			<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
-				{ #if $job.exposureLimit.value }
-					<div class="representation">
-						{ $job.exposureLimit.value }
-						<div class="unit">{ @html unitsPretty[$job.exposureLimit.unit] }</div>
-					</div>
-				{ :else }
-					No exposure limit selected yet!
-				{ /if }
-			<div class="button-cont"><div class="button edit" on:click="$set({ editEL: true })"> { $job.exposureLimit.value ? 'Edit' : 'Add' } </div></div>
-		</div>
-
+		<ExposureLimitWindow {...$job.exposureLimit} editing />
 	</div>
 
 	<div class="operator">=</div>
@@ -82,11 +56,12 @@
 
 <script>
 
-import { number, round, unitsPretty } from 'lib/util.js'
-import { valueSources } from 'lib/storage.js'
+import { number, round } from 'lib/util.js'
 
 export default {
 	components: {
+		ExposureLimitWindow: 'lib/ExposureLimitWindow.html',
+		TWAWindow: 'lib/TWAWindow.html',
 		Warnings: 'lib/Warnings.html'
 	},
 	methods: {
@@ -97,12 +72,6 @@ export default {
 			}
 		}
 	},
-	data: () => ({
-		exposureLimit: '',
-		twa: '',
-		valueSources,
-		unitsPretty
-	}),
 	computed: {
 		valid: ({ $job }) => !!(number($job.twa.final) && number($job.exposureLimit.value)),
 		hr: ({ $job, valid }) => valid ? (number($job.twa.final) / number($job.exposureLimit.value)) : 0
@@ -113,18 +82,3 @@ export default {
 }
 
 </script>
-
-<style>
-
-	@import 'colors';
-
-	.save-value {
-		display: table;
-		margin: 0 auto;
-	}
-
-	.read-value, .save-value {
-		margin: 10px 0 20px 0;
-	}
-
-</style>

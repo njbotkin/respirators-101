@@ -35,7 +35,8 @@ let manual = {
 					"Default": {
 						"durations": {
 							"ceiling": {
-								"max": "0.025 mg/m<sup>3</sup> (30 min)"
+								"max": "0.025 mg/m<sup>3</sup>",
+								duration: 30
 							}
 						}
 					}
@@ -60,8 +61,7 @@ let manual = {
 	                        "ceiling": {
 	                            "values": {
 	                                "mgm3": "0.025"
-	                            },
-	                            "duration": 480
+	                            }
 	                        }
 						}
 					}
@@ -80,8 +80,7 @@ let manual = {
 	                        "ceiling": {
 	                            "values": {
 	                                "mgm3": "0.3"
-	                            },
-	                            "duration": 480
+	                            }
 	                        }
 	                    }
 	                }
@@ -100,8 +99,7 @@ let manual = {
 	                        "ceiling": {
 	                            "values": {
 	                                "mgm3": "0.6"
-	                            },
-	                            "duration": 480
+	                            }
 	                        }
 	                    }
 	                }
@@ -143,8 +141,7 @@ let manual = {
 							"ceiling": {
 	                            "values": {
 	                                "ppm": 30
-	                            },
-	                            "duration": 480
+	                            }
 							},
 	                    }
 	                }
@@ -161,7 +158,7 @@ let manual = {
 	                "Default": {
 	                    "durations": {
 							"ceiling": {
-								"max": "200 ppm (5 min in any 3 hours)"
+								"max": "200 ppm (5 min in any 4 hours)"
 							}
 	                    }
 	                }
@@ -186,8 +183,7 @@ let manual = {
 							"ceiling": {
 	                            "values": {
 	                                "ppm": 200
-	                            },
-	                            "duration": 480
+	                            }
 							},
 	                    }
 	                }
@@ -206,8 +202,7 @@ let manual = {
 							"ceiling": {
 								"values": {
 									"mg10m3": 1
-								},
-								duration: 480
+								}
 							}
 						}
 					}
@@ -236,8 +231,7 @@ let manual = {
 							"ceiling": {
 	                            "values": {
 	                                "ppm": .13
-	                            },
-	                            "duration": 480
+	                            }
 							},
 	                    }
 	                }
@@ -280,8 +274,7 @@ let manual = {
 							"ceiling": {
 	                            "values": {
 	                                "ppm": 200
-	                            },
-	                            "duration": 480
+	                            }
 							},
 	                    }
 	                }
@@ -404,8 +397,7 @@ let manual = {
 							"ceiling": {
 	                            "values": {
 	                                "ppm": 50
-	                            },
-	                            "duration": 480
+	                            }
 							},
 	                    }
 	                }
@@ -425,8 +417,7 @@ let manual = {
 							ceiling: {
 								values: {
 									mgm3: 0.1
-								},
-								duration: 480
+								}
 							}
 						}
 					}
@@ -495,8 +486,7 @@ let manual = {
 							"ceiling": {
 	                            "values": {
 	                                "ppm": 300
-	                            },
-	                            "duration": 480
+	                            }
 							},
 	                    }
 	                }
@@ -555,8 +545,7 @@ let manual = {
 							"ceiling": {
 	                            "values": {
 	                                "mgm3": 0.04
-	                            },
-	                            "duration": 480
+	                            }
 							},
 	                    }
 	                }
@@ -598,8 +587,7 @@ let manual = {
 							"ceiling": {
 	                            "values": {
 	                                "ppm": 500
-	                            },
-	                            "duration": 480
+	                            }
 							},
 	                    }
 	                }
@@ -616,7 +604,8 @@ let manual = {
 					"Default": {
 						"durations": {
 							"ceiling": {
-								"max": "300 ppm (5 min in any 3 hours)"
+								"max": "300 ppm",
+								duration: "(5 min in any 3 hours)"
 							}
 						}
 					}
@@ -641,8 +630,7 @@ let manual = {
 	                        "ceiling": {
 	                            "values": {
 	                                "ppm": 300
-	                            },
-	                            "duration": 480
+	                            }
 	                        }
 						}
 					}
@@ -684,8 +672,7 @@ let manual = {
 	                        "ceiling": {
 	                            "values": {
 	                                "ppm": 500
-	                            },
-	                            "duration": 480
+	                            }
 	                        }
 						}
 					}
@@ -727,8 +714,7 @@ let manual = {
 	                        "ceiling": {
 	                            "values": {
 	                                "ppm": 300
-	                            },
-	                            "duration": 480
+	                            }
 	                        }
 						}
 					}
@@ -767,7 +753,9 @@ let manual = {
 							}
 						}
 					}
-				}
+				},
+				notes: [linkify('See Appendix C (Mineral Dusts)')]
+				
 			},
 			"msha_pel": {
 				"forms": {
@@ -784,10 +772,11 @@ let manual = {
 					"coal dust with > 5% silica": {
 						durations: {
 							"default": {
-								values: {},
-								"fractional_value": {
-									top: "10 mg/m<SUP>3</SUP>",
-									bottom: "% respirable quartz + 2"
+								values: {
+									fractional: {
+										top: "10 mg/m<SUP>3</SUP>",
+										bottom: "% respirable quartz + 2"
+									},
 								},
 								duration: 480
 							}
@@ -915,8 +904,7 @@ let manual = {
 							ceiling: {
 								values: {
 									mgm3: 0.1
-								},
-								duration: 480
+								}
 							}
 						}
 					},
@@ -1014,11 +1002,11 @@ let manual = {
 			},
 			osha_pel: {
 				forms: {
-					Default: {
+					'CrO<SUB>3</SUB>': {
 						durations: {
 							default: {
 								values: {
-									mgm3: 0.005,
+									mgcro3: 0.005,
 								},
 								duration: 480
 							}
@@ -1180,8 +1168,7 @@ let manual = {
 							ceiling: {
 								values: {
 									mgv2o5m3: 0.5
-								},
-								duration: 480
+								}
 							}
 						}
 					}
@@ -1229,8 +1216,7 @@ let manual = {
 							ceiling: {
 								values: {
 									mgv2o5m3: 0.1
-								},
-								duration: 480
+								}
 							}
 						}
 					}
@@ -1393,6 +1379,10 @@ let manual = {
 				}
 			}
 		}
+	},
+
+	'Tungsten carbide (cemented)': {
+		rtecs: '1: YO7350000<br>2: YO7525000<br>3: YO7700000'
 	}
 
 }

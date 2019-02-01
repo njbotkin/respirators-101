@@ -170,7 +170,7 @@ MANUALLY FIX these and others
 
 (DONE check) carbon black
 	
-	Ca not picking up
+	Ca not picking uponate
 
 	new state: in presence of polycyclic aromatic hydrocarbons (PAHs)
 
@@ -193,4 +193,51 @@ MANUALLY FIX these and others
 (DONE) chromyl chloride
 
 
-Titanium dioxide and Titanium dioxide total dust ---- cant be combined???
+chemicals
+
+	note issue
+		N-Phenyl-beta-naphthylamine
+		2-Nitronaphthalene
+
+	[skin] needs to be handled like Carcinogenic
+
+	aniline and homologs
+		(aniline only) should be a state
+
+	Tetrachloroethylene
+		string duration on EL
+
+	tert-Butyl chromate (as CrO3)
+		notes didn't come  through on OSHA PEL
+		cal osha pel needs to have cro3 as a state
+
+	vanadium dust (as v2o5), vanadium fume
+		custom units everywhere they occur in the NPG
+
+	RTECS fix
+		Calcium carbonate
+		Subtilisins
+		Toluenediamine
+
+	Titanium dioxide - Total dust
+		notes???
+
+	molybdenum
+
+		osha pel note goes with default state
+		cal osha pel (Insoluble Compounds) needs to be (Insoluble Compounds - Respirable dust)
+
+	arsine!!??
+
+
+my info stuff
+	
+	mandatory respirator for some selections - needs to be shown on jobs
+
+
+
+
+
+
+Acetaldehyde
+

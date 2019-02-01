@@ -26,39 +26,22 @@
 	</div>
 	<div class="content">
 
-		<Warnings />
+		<Warnings {job} />
 
-		<div class="read-value live{job.id == $job.id }">
-			<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
-				{ #if job.exposureLimit.value }
-					<ExposureLimits exposureLimit="{job.exposureLimit}" />
-				{ :else }
-					No exposure limit selected yet!
-				{ /if }
-			<div class="button-cont"><div class="button" on:click="$set({ editEL: true })"> { job.exposureLimit.value ? 'Edit' : 'Add' } </div></div>
-		</div>
+		<ExposureLimitWindow {...job.exposureLimit} editing={ job.id == $job.id } />
 
-		<div class="read-value live{job.id == $job.id }" style="text-align: center">
-			<div class="legend-cont"><div class="legend"> TWA </div></div>
-				{ #if job.twa.final }
-					<div class="representation">
-						{ round(job.twa.final) }
-						<div class="unit">{ @html unitsPretty[job.twa.unit] }</div>
-					</div>
-				{ :else }
-					No TWA set yet!
-				{ /if }
-			<div class="button-cont"><a class="button" href="{ asr.makePath(valueSources['twa']) }"> { job.twa.final ? 'Edit' : 'Add' } </a></div>
-		</div>
+		<TWAWindow {...job} editing={ job.id == $job.id } />
 
-		<div class="read-value live{job.id == $job.id }">
+		<div class="read-value live{ job.id == $job.id }" style="text-align: center">
 			<div class="legend-cont"><div class="legend"> HR </div></div>
-				{ #if job.hr }
-					{ round(job.hr) }
-				{ :else }
-					No HR set yet!
-				{ /if }
-			<div class="button-cont"><a class="button" href="{ asr.makePath(valueSources['hr']) }"> { job.hr ? 'Edit' : 'Add' } </a></div>
+
+			{ #if job.hr }
+				{ round(job.hr) }
+			{ :else }
+				No HR set yet!
+			{ /if }
+
+			{ #if job.id == $job.id }<div class="button-cont"><a class="button" href="{ asr.makePath(valueSources['hr']) }"> { job.hr ? 'Edit' : 'Add' } </a></div> { /if }
 		</div>
 
 		{ #if Object.keys(job.options_saved).length }
@@ -89,7 +72,8 @@
 
 	export default {
 		components: {
-			ExposureLimits: 'lib/ExposureLimits.html',
+			ExposureLimitWindow: 'lib/ExposureLimitWindow.html',
+			TWAWindow: 'lib/TWAWindow.html',
 			Warnings: 'lib/Warnings.html',
 			Table: 'lib/Table.html'
 		},
@@ -186,7 +170,7 @@
 			background: #fff;
 			/*border-color: color($green l(+20%));*/
 
-			.legend {
+			:global(.legend) {
 				background: #fff;
 			}
 		}
@@ -234,7 +218,7 @@
 		    width: 100px;
 		}*/
 
-		.read-value {
+		:global(.read-value) {
 			margin: 10px 0;
 		}
 

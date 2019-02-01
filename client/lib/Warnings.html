@@ -1,8 +1,8 @@
-{ #if $job.warnings && Object.keys($job.warnings).length }
+{ #if job.warnings && Object.keys(job.warnings).length }
 	<div class="warnings">
 		<div class="resolve">Resolve these:</div>
 		<ul>
-			{ #each Object.entries($job.warnings) as [id, warning] }
+			{ #each Object.entries(job.warnings) as [id, warning] }
 				<li class="warning {id}">{@html warning }</li>		
 			{ /each }
 		</ul>
@@ -13,9 +13,8 @@
 	@import 'colors';
 
 	:global(.warnings) {
-		background: $red3;
 		padding: 10px;
-		color: #fff;
+		color: $red3;
 		font-size: 90%;
 		max-width: 400px;
 		margin: 20px auto;
@@ -32,14 +31,16 @@
 		}
 
 		ul {
-			padding-left: 20px;
+			padding-left: 0;
 			margin: 0;
 		}
 
 		.warning {
-			margin: 10px 0;
-			background: #f00;
-			padding: 5px;
+			color: #fff;
+			margin: 5px 0;
+			background: $red3;
+			padding: 10px;
+    		list-style: none;
 		}
 	}
 </style>

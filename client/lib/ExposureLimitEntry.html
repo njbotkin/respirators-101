@@ -47,8 +47,22 @@
 			save() {
 				let { valid, unit, duration, value, timeUnit } = this.get()
 				if(!valid) return
+
+				let state = this.store.get()
+
 				if(timeUnit == 'Hours') duration *= 60
-				this.store.set({ job: { exposureLimit: { unit, duration, value, manual: true } }, editEL: false })
+
+				state.job.exposureLimit = {
+					unit,
+					duration,
+					value,
+					manual: true,
+					timeUnit,
+					timeUnitMultiplier: timeUnit == 'Minutes' ? 1 : 60
+				}
+
+				this.store.set( state, false )
+				this.store.set( { editEL: false } )
 			}
 		}
 	}

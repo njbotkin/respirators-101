@@ -1,0 +1,82 @@
+<div class="property">
+	<div class="label">TWA</div>
+	<input type="number" bind:value="final" placeholder="0" />
+	<ButtonSelect options="{ unitsPretty }" bind:value="unit" />
+</div>
+
+<div style="text-align: right"><div class="button { valid && 'valid' }" on:click='save()'>Save</div></div>
+
+<script>
+
+	import { number, unitsPretty } from 'lib/util.js'
+
+	export default {
+		components: {
+			ButtonSelect: 'lib/ButtonSelect.html'
+		},
+		data: () => ({
+			unitsPretty
+		}),
+		oncreate() {
+			this.set( this.store.get().job.twa )
+		},
+		computed: {
+			valid: ({ final, unit }) => {
+				if(
+					!(number(final) && number(final) > 0) ||
+					!unit
+					) return false
+				return true
+			}
+		},
+		methods: {
+			save() {
+				let { valid, unit, final } = this.get()
+				if(!valid) return
+
+				let state = this.store.get()
+
+				state.job.twa = {
+					final,
+					unit,
+					manual: true
+				}
+
+				this.store.set( state, false )
+				this.store.set( { editTWA: false } )
+			}
+		}
+	}
+
+</script>
+
+<style>
+
+	@import 'colors';
+	
+	.property {
+		display: block;
+		padding: 0;
+		margin: 10px 0;
+
+		input {
+			line-height: 40px;
+			padding: 0 8px;
+			width: 50px;
+			font-size: 120%;
+			font-family: 'Open Sans';
+			border: 1px solid #bbb;
+		}
+	}
+
+	.button {
+		cursor: default;
+
+		&.valid {
+			cursor: pointer;
+			background: $blue2;
+		}
+	}
+
+</style>
+

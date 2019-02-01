@@ -6,7 +6,7 @@
 
 		<div class="left">
 			<div class="appname">Respirators 101 <div class="nav-button close icon-close" on:click="set({ sidebarOpen: false })">close menu</div></div>
-			<div class="main">
+			<div class="main" on:click="closeMenu(event)">
 				<Menu {asr} />
 			</div>
 		</div>
@@ -41,24 +41,29 @@
 				</div> 
 			{ /if }
 
-			<div class="main" id="aperture" style="top: { apertureMarginTop }px; padding-bottom: { showResumeSelectionButton || showCurrentJobButton ? 80 : 0 }px" class:locked=$lockContent>
+			<div class="main" id="aperture" style="top: { apertureMarginTop }px; padding-bottom: { showState ? 70 : 0 }px" class:locked=$lockContent>
 				<uiView></uiView> 
 			</div>
 
 			<div id="domlog"></div>
 
-			{ #if showResumeSelectionButton }
-				<a class="button in-selection" href="{ $job.options ? asr.makePath('app.options-list', {id: $job.options}) : asr.makePath('app.respirator-picker', {id: $job.RSLStep}) }">
-					Resume Respirator Selection
-				</a>
-			{ /if }
-			
-			{ #if showCurrentJobButton } 
-				<div class="job" bind:offsetHeight="jobHeight" id="job" style="-webkit-transform: translate(0, { jobY }px); transform: translate(0, { jobY }px)">
-					<div class="button current-job" on:click="$set({ jobOpen: !$jobOpen })"> Current Job </div>
+			{ #if showState }
+				<div class="state" bind:offsetHeight="jobHeight" style="-webkit-transform: translate(0, { jobY }px); transform: translate(0, { jobY }px)" on:click="closeJob(event)">
+
+					<div class="header" on:click="$set({ jobOpen: !$jobOpen })">
+						<div class="current-job" bind:offsetWidth="currentJobWidth"> <div class="label">Current Job</div> { $job.name } </div>
+
+						{ #if showResumeSelectionButton }
+							<a class="in-selection" href="{ $job.options ? asr.makePath('app.options-list', {id: $job.options}) : asr.makePath('app.respirator-picker', {id: $job.RSLStep}) }" bind:offsetWidth="resumeWidth" class:icon=resumeIcon>
+								<div class="text">Resume <br>Respirator Selection</div>
+							</a>
+						{ /if }
+					</div>
 					<div class="inner" style="max-height: { jobMaxHeight }px;">
 						<Job bind:job="$job" {asr} only="true" />
+						<div style="text-align: right;"><a class="button my-info" href="{asr.makePath('app.info')}">My info</a></div>
 					</div>
+					
 				</div>
 			{ /if }
 
@@ -78,34 +83,57 @@
 		{ /if }
 	</Modal>
 
+	<Modal bind:show="$editTWA">
+		{ #if manualTWAEdit }
+			<TWAEntry />
+		{ :else }
+			<p>Would you like to calculate a TWA with the TWA calculator, or enter it manually?</p>
+
+			<div class="buttons editTWA">
+				<a class="button chemtool" href="{ asr.makePath(valueSources['twa']) }" on:click="$set({ editTWA: false })">TWA Calculator</a>
+				<div class="button manual" on:click="set({ manualTWAEdit: true })">Manually</div>
+			</div>
+		{ /if }
+	</Modal>
+
 </div>
 
 <script>
 
-	import { store } from 'lib/storage.js'
+	import { store, valueSources } from 'lib/storage.js'
 
 	export default {
 		components: {
 			Menu: 'lib/Menu.html',
 			Job: './info/Job.html',
 			Modal: 'lib/Modal.html',
-			ExposureLimitEntry: 'lib/ExposureLimitEntry.html'
+			ExposureLimitEntry: 'lib/ExposureLimitEntry.html',
+			TWAEntry: 'lib/TWAEntry.html'
 		},
 		onstate({ current }) {
 			let manualELEdit = current.$editEL ? current.manualELEdit : 0
-			this.set({ manualELEdit })
+			let manualTWAEdit = current.$editTWA ? current.manualTWAEdit : 0
+			this.set({ manualELEdit, manualTWAEdit })
 		},
 		methods: {
 			focusContent() {
 				this.set({ sidebarOpen: false })
 				store.set({ jobOpen: false })
+			},
+			closeMenu(event) {
+				if(event.target.nodeName == 'A') this.set({ sidebarOpen: false })
+			},
+			closeJob(event) {
+				if(event.target.nodeName == 'A') store.set({ jobOpen: false })
 			}
 		},
 		computed: {
-			jobMaxHeight: ({ windowHeight, apertureMarginTop, windowWidth}) => windowHeight - apertureMarginTop - (windowWidth < 400 ? 30 : 40),
+			jobMaxHeight: ({ windowHeight, apertureMarginTop }) => windowHeight - apertureMarginTop - 70,
 			apertureMarginTop: ({ $nav, redNavHeight }) => (($nav && $nav.sub) ? redNavHeight : 0) + 50,
-			showCurrentJobButton: ({ stateName }) => /app\.((calculate-)|(respirator-)|(chemicals)|(options))/.test(stateName),
-			showResumeSelectionButton: ({ $job, stateName }) => $job.RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list')
+			showState: ({ stateName }) => /app\.((calculate-)|(respirator-)|(chemicals)|(options))/.test(stateName),
+			showResumeSelectionButton: ({ $job, stateName }) => $job.RSLStep && (stateName !== 'app.respirator-picker') && (stateName !== 'app.options-list'),
+			maxResumeWidth: ({ resumeWidth, maxResumeWidth }) => Math.max(resumeWidth, maxResumeWidth),
+			resumeIcon: ({ maxResumeWidth, currentJobWidth, windowWidth }) => (maxResumeWidth && currentJobWidth) ? maxResumeWidth + currentJobWidth > windowWidth ? true : false : false
 		},
 		store: () => store,
 		oncreate () {
@@ -194,7 +222,7 @@
 					let target2 = jobOpen ? -jobHeight : 0
 					if(target2 !== jobY) jobY += (target2 - jobY) * .3
 
-					jobY = snapTo(jobY, -jobHeight)
+					// jobY = snapTo(jobY, -jobHeight)
 					jobY = snapTo(jobY, 0)
 				}
 
@@ -243,12 +271,13 @@
 			}
 
 		},
-		data() {
-			return { 
-				jobY: 0,
-				wrapperX: -300
-			}
-		}
+		data: () => ({
+			jobY: 0,
+			wrapperX: -300,
+			maxResumeWidth: 0,
+			resumeWidth: 0,
+			valueSources
+		})
 	}
 
 </script>
@@ -433,7 +462,7 @@
 				.next { right: 0; }
 			}
 
-			.job {
+			.state {
 				position: absolute;
 				top: 100%;
 				left: 0;
@@ -441,28 +470,64 @@
 				background: #fff;
 				z-index: 4;
 
-				.current-job {
-					position: absolute;
-					top: -40px;
-					right: 0;
-					margin: 0;
-					background: $green; 
-					z-index: 2;
-					padding-left: 42px;
-					background-image: url(icons/my-info.png);
-					background-size: 25px;
-					background-position: 8px center;
-					background-repeat: no-repeat;
+				.header {
+					cursor: pointer;
+					position: relative;
+					margin-top: -50px;
+					background: #fff;
+					height: 50px;
+    				box-shadow: 0px 0px 10px #bbb;
 
-					@media (max-width: 400px) {
-						top: -30px;
-						line-height: 30px;
-						padding: 0 8px 0 36px;
-						background-size: 20px;
-						font-size: 70%;
+					.current-job {
+						color: $green;
+						height: 50px;
+						line-height: 1.4;
+						padding-left: 42px;
+						background-image: url(icons/my-info-colored.png);
+						background-size: 26px;
+						background-position: 8px center;
+						background-repeat: no-repeat;
+						display: inline-block;
+						vertical-align: middle;
+						white-space: nowrap;
+
+						.label {
+							font-size: 10px;
+							text-transform: uppercase;
+							font-weight: bold;
+							margin-top: 8px;
+						}
 					}
 
-					&:active { bottom: auto; }
+					.in-selection {
+						background: #fff;
+						padding-left: 44px;
+						color: #4c5a8d;
+						position: absolute;
+						right: 0;
+						top: 0;
+						height: 50px;
+						text-decoration: none;
+						background-image: url(icons/respirator-colored.png);
+						background-size: 28px;
+						background-position: 8px center;
+						background-repeat: no-repeat;
+						box-sizing: border-box;
+
+						&.icon {
+							left: calc(100% - 44px);
+							right: auto;
+						}
+
+						.text {
+							text-transform: uppercase;
+							font-size: 10px;
+							font-weight: bold;
+							margin-top:11px;
+							padding-right: 10px;
+							line-height: 14px;
+						}
+					}
 				}
 
 				.inner {
@@ -470,6 +535,17 @@
 
 					:global(.job) {
 						margin: 0;
+						border-top: 1px solid #eee;
+						padding-top: 10px;
+					}
+
+					.my-info {
+						background: $red3;
+						margin: 0 20px 20px 0;
+
+						@media (max-width: 400px) {
+							margin: 0 10px 10px 0;
+						}
 					}
 				}
 			}
@@ -509,30 +585,6 @@
 		background: $blue5;
 	}
 
-	.in-selection {
-		position: absolute;
-		z-index: 2;
-		bottom: 0;
-		max-width: 55%;
-		background: #4c5a8d;
-		padding: 13px 15px 13px 42px;
-		vertical-align: middle;
-		color: rgba(255,255,255,0.93);
-		text-decoration: none;
-		background-image: url(icons/respirator.png);
-		background-size: 25px;
-		background-position: 8px center;
-		background-repeat: no-repeat;
-		line-height: 14px;
-		box-sizing: border-box;
-
-		@media (max-width: 400px) {
-			padding: 8px 10px 8px 38px;
-			background-size: 20px;
-			font-size: 70%;
-		}
-	}
-
 	#domlog	{
 		position: absolute;
 		bottom: 0;
@@ -543,7 +595,14 @@
 		text-align: right;
 
 		.chemtool { background: $red2; }
-		.manual { background: $blue2; }
+		.manual { background: #222; }
+	}
+
+	.buttons.editTWA {
+		text-align: right;
+
+		.chemtool { background: $blue2; }
+		.manual { background: #222; }
 	}
 
 </style>

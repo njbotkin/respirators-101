@@ -1,0 +1,27 @@
+<div class="read-value live{ editing }" style="text-align: center">
+	<div class="legend-cont"><div class="legend"> TWA </div></div>
+		{ #if twa.final }
+			<div class="representation">
+				{ round(twa.final) }
+				<div class="unit">{ @html unitsPretty[twa.unit] }</div>
+			</div>
+		{ :elseif exposureLimit.value && !exposureLimit.duration }
+			TWA not applicable
+		{ :else }
+			No TWA set yet!
+		{ /if }
+	{#if editing}<div class="button-cont"><div class="button" on:click="$set({ editTWA: true })"> { twa.final ? 'Edit' : 'Add' } </div></div>{/if}
+</div>
+
+<script>
+	
+	import { round, unitsPretty } from 'lib/util.js'
+
+	export default {
+		helpers: {
+			round,
+			unitsPretty
+		}
+	}
+
+</script>

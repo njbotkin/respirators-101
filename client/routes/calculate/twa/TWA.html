@@ -1,5 +1,5 @@
 
-<div id=content>
+<div class="content">
 
 	<p>A Time-Weighted Average (TWA) is used to measure a worker's daily exposure to hazardous substances, averaged over an 8- or 10-hour workday. </p>
 
@@ -28,19 +28,19 @@
 
 </div>
 
-<div class="read-value">
-	<div class="legend-cont"><div class="legend"> Exposure Limit </div></div>
+<div style="margin: 0 auto; display: table"><ExposureLimitWindow {...$job.exposureLimit} editing /></div>
 
-	{ #if $job.exposureLimit.value }
-		<ExposureLimits exposureLimit="{ $job.exposureLimit }" />
-	{ :else }
-		No exposure limit selected yet!
-	{ /if }
+{ #if $job.twa.manual }
 
-	<div class="button-cont"><div class="button edit" on:click="$set({ editEL: true })"> { $job.exposureLimit.value ? 'Edit' : 'Add' } </div></div>
-</div>
+	<div class="content"><p>TWA is being specified manually.  Click below to cancel manual value and use TWA calculator.</p></div>
 
-{ #if $job.exposureLimit.value }
+	<div style="text-align: center"><div class="button override" on:click="$set({ job: { twa: null } })">Use TWA calculator</div></div>
+
+{ :elseif !$job.exposureLimit.duration }
+
+	<div class="content"><p>A TWA can't be calculated for this Exposure Limit because it requires an instantaneous measurement.  Note that for the OSHA PEL, if instantaneous monitoring is not feasible, the ceiling must be assessed as a 15-minute TWA exposure.  If this is the case, <span on:click="$set({ editEL: true })" class="link">manually edit the exposure limit</span> to have a 15-minute duration.</p></div>
+
+{ :elseif $job.exposureLimit.chemical ||  $job.exposureLimit.manual }
 
 	<div class="samples">
 
@@ -79,7 +79,7 @@
 		{ /if }
 	</div>
 
-	<Warnings />
+	<Warnings job={$job} />
 
 	{ #if $job.twa.final }
 		<div class="equation">
@@ -127,7 +127,7 @@ import { round, unitsPretty } from 'lib/util.js'
 
 export default {
 	components : {
-		ExposureLimits: 'lib/ExposureLimits.html',
+		ExposureLimitWindow: 'lib/ExposureLimitWindow.html',
 		Warnings: 'lib/Warnings.html'
 	},
 	methods: {
@@ -268,6 +268,10 @@ export default {
 		line-height: 30px;
 		padding: 0 10px;
 		margin-left: 3px;
+	}
+
+	.button.override {
+		background: $blue2;
 	}
 
 	.save-value, .read-value {

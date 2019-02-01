@@ -33,7 +33,7 @@ body {
 	bottom: 0;
 }
 
-#content {
+#content, .content {
 	padding: 10px 20px;
 
 	@media (max-width: 400px) {
@@ -45,8 +45,15 @@ uiview {
 	display: block;
 }
 
-a {
+a:not(.button), .link {
 	word-break: break-word;
+	text-decoration: underline;
+	color: rgb(0, 0, 238);
+	cursor: pointer;
+
+	&:visited {
+		color: rgb(85, 26, 139);
+	}
 }
 
 /* cribbed from wikipedia 
@@ -138,8 +145,7 @@ img.size-90 { width: 90%; }
 		display: block;
 		padding-right: 2px;
 	}
-	.notes {
-		display: block;
+	.note {
 		font-size: 70%;
 		opacity: .8;
 		max-width: 200px;
@@ -179,14 +185,14 @@ img.size-90 { width: 90%; }
 	}
 
 	.operand {
-		.value, .unit {
+		> .value, > .unit {
 			display: block;
 			text-align: center;
 		} 
-		.value {
+		> .value {
 			font-size: 150%;
 		}
-		.unit {
+		> .unit {
 			color: #666;
 			line-height: 1.2;
 			font-size: 90%;
@@ -248,7 +254,7 @@ img.size-90 { width: 90%; }
 }
 
 .save-value, .read-value {
-	padding: 10px 10px 20px 10px;
+	padding: 10px;
 	display: inline-block;
 	margin: 20px 0;
 	position: relative;
@@ -276,13 +282,14 @@ img.size-90 { width: 90%; }
 	} 
 
     &.livefalse {
-		border: 1px solid #ddd;
+		border: 1px solid #ccc;
 		.legend {
 			color: #bbb;
 		}
     }
 
     &.livetrue {
+		padding: 10px 10px 20px 10px;
 		border: 1px solid color($green l(+10%));
 		.legend {
 			color: $green;

@@ -45,10 +45,10 @@
 			<div class="property inline">
 				<div class="label">Conversion</div>
 					
-				<div class="equation value" style="font-size:70%">
+				<div class="equation value conversion" style="font-size:70%">
 					<div class="operand">
 						<div class="value">1</div>
-						<div class="unit">ppm</div>
+						<div class="unit">PPM</div>
 					</div>
 
 					<div class="operator">=</div>
@@ -63,11 +63,11 @@
 
 			{#if standards}
 
-			<h2>Exposure Limits</h2>
+				<h2>Exposure Limits</h2>
 
-			<div class="instructions">Select a number to select an exposure limit.</div>
+				<div class="instructions">Select a number to select an exposure limit.</div>
 
-			<ExposureLimits {osha_pel} {niosh_rel} {cal_osha_pel} {idlh} {idlh_notes} {eyes} chemical_name="{name}" standards="{standards}" on:confirmSaveEL showKeys="true" />
+				<ExposureLimits {chemical} on:confirmSaveEL />
 
 			{/if}
 
@@ -222,6 +222,10 @@
 				padding: 5px 10px;
 			}
 		}
+	}
+
+	.conversion.equation .operand .unit {
+		line-height: 0.5;
 	}
 
 	h2 {
