@@ -17,10 +17,10 @@
 				</div>
 			{ /if }
 
-			{ #if rtecs.toString().trim() }
+			{ #if rtecs.length }
 				<div class="property inline">
 					<div class="label">RTECS</div>
-					<div class="value">{ @html rtecs }</div>
+					<div class="value">{ @html rtecs.join('<br>') }</div>
 				</div>
 			{ /if }
 
@@ -28,7 +28,7 @@
 				<div class="property inline">
 					<div class="label">IDLH</div>
 					<div class="value">{ @html idlh }</div>
-					<div class="notes">{ @html idlh_notes }</div>
+					<div class="note">{ @html idlh_notes }</div>
 				</div>
 			{ /if }
 

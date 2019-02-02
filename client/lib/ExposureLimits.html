@@ -114,6 +114,10 @@
 		<div class="eye">Eye irritant</div>
 	{ /if }
 
+	{ #if chemical.skin }
+		<div class="skin">Risk of dermal absorption. Prevent skin exposure as necessary.</div>
+	{ /if }
+
 { /if }
 
 { #if manual }
@@ -276,6 +280,17 @@
 		    vertical-align: text-top;
 		    margin-right: 3px;
 	    }
+	}
+
+	.skin {
+		display: inline-block;
+	    border: 1px solid #888;
+	    line-height: 1.3;
+	    padding: 5px;
+	    max-width: 200px;
+	    color: #888;
+	    font-size: 70%;
+	    margin-left: 5px;
 	}
 
 	.property {

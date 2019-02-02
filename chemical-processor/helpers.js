@@ -1,16 +1,16 @@
 const striptags = require('striptags');
 
 function linkify(s) {
-	return s.replace(/See Appendix ([a-zA-Z])/g, (match, p1) => {
+	return s.replace(/Appendix ([a-zA-Z])/g, (match, p1) => {
 		return '<a href="https://www.cdc.gov/niosh/npg/nengapdx' + p1.toLowerCase() + '.html">' + match + '</a>'
 	})
 	.replace(/<a href='#' external data-url='([^']+)'>/g, (match, p1) => {
 		return '<a href="' + p1 + '">'
 	})
-	.replace(/See PNOR/g, match => {
+	.replace(/PNOR/g, match => {
 		return '<a href="https://www.cdc.gov/niosh/npg/npgd0480.html">' + match + '</a>'
 	})
-	.replace(/See Section ([0-9]{4})/g, (match, p1) => {
+	.replace(/Section ([0-9]{4})/g, (match, p1) => {
 		return `<a href="https://www.dir.ca.gov/title8/${p1}.html">${match}</a>`
 	})
 	// general standard

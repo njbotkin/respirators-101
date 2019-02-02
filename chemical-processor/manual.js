@@ -1379,12 +1379,7 @@ let manual = {
 				}
 			}
 		}
-	},
-
-	'Tungsten carbide (cemented)': {
-		rtecs: '1: YO7350000<br>2: YO7525000<br>3: YO7700000'
 	}
-
 }
 
 let z3 = [
