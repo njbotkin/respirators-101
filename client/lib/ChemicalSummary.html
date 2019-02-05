@@ -1,0 +1,23 @@
+<div class="name">{ @html name }</div>
+
+{ #if idlh }
+	<div class="property inline" style="padding: 0; margin: 0">
+		<div class="label">IDLH</div>
+		<div class="value">{ @html idlh }</div>
+		<div class="note">{ @html idlh_notes }</div>
+	</div>
+{ /if }
+
+{ #if eye }
+	<div class="eye">Eye irritant</div>
+{ /if }
+
+{ #if skin }
+	<div class="skin">Risk of dermal absorption. Prevent skin exposure as necessary.</div>
+{ /if }
+
+<style>
+	.name {
+		font-weight: bold;
+	}
+</style>

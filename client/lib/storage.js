@@ -7,7 +7,7 @@ import { Store } from 'svelte/store.js'
 import deep_merge from 'deepmerge'
 import { number, unitsPretty } from 'lib/util.js'
 
-const SCHEMA_VERSION = 1.2
+const SCHEMA_VERSION = 1.4
 
 // Makes setting deep properties easier (eg. { job: { chemicalsScrollTop: chemicals.scrollTop } })
 class MergeStore extends Store {
@@ -118,20 +118,38 @@ class JobStore extends LocalStore {
 				name: 'New Job',
 				openChemicals: {},
 				chemicalsScrollTop: 0,
-				exposureLimit: {
-					chemical: null,
-					standardKey: null,
-					formKey: null
-				},
-				twa: {
-					samples: [],
-					unit: null,
-					final: null
-				},
+				table: [
+					/*{
+						SCHEMA:
+						limit: {
+							durationKey,
+							unit: 'ppm',
+							values: {
+								'ppm': 24,
+								'mgm3': 45
+							},
+							duration: 480,
+							timeUnit: 'Hours',
+							timeUnitMultiplier: 60,
+							manual: false
+						},
+						measured: {
+							value: 45,
+							unit: 'mgm3',
+							twa: {
+								samples: []
+							}
+						},
+						hr: 2
+						warnings: []
+					}*/
+				],
+				chemical: null,
+				standardKey: null,
+				formKey: null,
 				concentrations: [],
 				options: null,
-				options_saved: {},
-				hr: null,
+				options_saved: {}
 			}
 		}
 
@@ -155,47 +173,49 @@ class JobStore extends LocalStore {
 
 export const store = new JobStore()
 
-// validate/compute job values, keep them consistent
+// validate/compute job table values, keep them consistent
 store.on('state', ({current, changed}) => {
 	if(!changed.job) return
 
 	let { job } = current
 
-	job.warnings = {}
+	for(let r of job.table) {
 
-	if(!job.twa) {
-		job.twa = {
-			samples: [],
-			unit: null,
-			final: null
-		}
-	}
+		r.warnings = []
 
-	if(!job.twa.unit) {
-		job.twa.unit = job.exposureLimit.unit
-	}
+		// convenience
+		if(r.limit.value && !r.measured.value) r.measured.unit = r.limit.unit
+		if(r.measured.value && !r.limit.value) r.limit.unit = r.measured.unit
 
-	if(job.exposureLimit.value) {
-
-		if(job.twa.unit !== job.exposureLimit.unit) {
-			job.warnings['unit-mismatch'] = `Your Exposure Limit measurement unit (${ unitsPretty[job.exposureLimit.unit] }) doesn't match your TWA measurement unit (${ unitsPretty[job.twa.unit] }).  Your TWA and your HR will be invalid.`
+		if(r.limit.unit !== r.measured.unit) {
+			r.warnings.push(`Your Exposure Limit measurement unit (${ unitsPretty[r.limit.unit] }) doesn't match your concentration measurement unit (${ unitsPretty[r.measured.unit] }).  The HR is invalid.`)
 		}
 
-		if(!job.twa.manual) {
+		if(r.measured.twa) {
 
-			let validSamples = job.twa.samples.filter(s => !!(number(s.value) && number(s.period)))
-			let totalMinutes = validSamples.reduce((a, s) => number(s.period) ? a + (number(s.period) * job.exposureLimit.timeUnitMultiplier) : a, 0)
+			if(!r.measured.twa.samples) r.measured.twa.samples = []
+				
+			if(r.measured.twa.samples.length) {
+					
+				let validSamples = r.measured.twa.samples.filter(s => !!(number(s.value) && number(s.period)))
+				let totalMinutes = validSamples.reduce((a, s) => number(s.period) ? a + (number(s.period) * r.limit.timeUnitMultiplier) : a, 0)
 
-			let sampleProducts = job.twa.samples.map(s => (number(s.value) && number(s.period)) ? number(s.value) * (number(s.period) * job.exposureLimit.timeUnitMultiplier) : 0)
+				let sampleProducts = r.measured.twa.samples.map(s => (number(s.value) && number(s.period)) ? number(s.value) * (number(s.period) * r.limit.timeUnitMultiplier) : 0)
 
-			let totalValueMinutes = sampleProducts.reduce((a, t) => a + t, 0)
-			let final = (totalValueMinutes / totalMinutes) || 0 
+				let totalValueMinutes = sampleProducts.reduce((a, t) => a + t, 0)
+				let final = (totalValueMinutes / totalMinutes) || 0 
 
-			if(totalMinutes !== Number(job.exposureLimit.duration)) {
-				job.warnings['duration-mismatch'] = `The total ${ job.exposureLimit.timeUnit.toLowerCase() } of the TWA samples you've entered is ${ totalMinutes > job.exposureLimit.duration ? 'greater' : 'less' } than the measurement period of the selected exposure limit (${job.exposureLimit.duration / job.exposureLimit.timeUnitMultiplier} ${ job.exposureLimit.timeUnit }).  Your TWA is invalid.`
+				if(totalMinutes !== Number(r.limit.duration)) {
+					r.warnings.push(`The total ${ r.limit.timeUnit.toLowerCase() } of the TWA samples you've entered is ${ totalMinutes > r.limit.duration ? 'greater' : 'less' } than the measurement period of the selected exposure limit (${r.limit.duration / r.limit.timeUnitMultiplier} ${ r.limit.timeUnit }).  Your TWA is invalid.`)
+				}
+
+				r.measured.twa = Object.assign(r.measured.twa, { totalMinutes, sampleProducts, totalValueMinutes })
+				r.measured.value = final
 			}
+		}
 
-			job.twa = Object.assign(job.twa, { totalMinutes, sampleProducts, totalValueMinutes, final })
+		if(r.measured.value) {
+			r.hr = (r.measured.value / r.limit.value)
 		}
 
 	}

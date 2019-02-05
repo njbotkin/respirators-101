@@ -139,6 +139,15 @@ img.size-90 { width: 90%; }
 	padding: 5px;
 	margin: 0 0 5px 0;
 
+	input {
+		line-height: 40px;
+		padding: 0 8px;
+		width: 50px;
+		font-size: 120%;
+		font-family: 'Open Sans';
+		border: 1px solid #bbb;
+	}
+
 	label, .label {
 		font-size: 80%;
 		font-weight: bold;
@@ -191,8 +200,16 @@ img.size-90 { width: 90%; }
 		} 
 		> .value {
 			font-size: 150%;
+			input {
+				font-size: 100%;
+				line-height: 40px;
+				padding: 0 10px;
+				width: 60px;
+				border: 1px solid #aaa;
+			}
 		}
 		> .unit {
+			/*margin-top: 5px;*/
 			color: #666;
 			line-height: 1.2;
 			font-size: 90%;
@@ -222,7 +239,11 @@ img.size-90 { width: 90%; }
 	}
 }
 
-.button {
+sup { line-height: 0.5 }
+
+.button, button {
+	border: 0;
+	font-family: 'Open Sans';
 	display: inline-block;
 	padding: 0 15px;
 	line-height: 40px;
@@ -232,7 +253,7 @@ img.size-90 { width: 90%; }
 	font-size: 80%;
 	text-transform: uppercase;
 	font-weight: 600;
-	/*border-radius: 30px;*/
+	border-radius: 3px;
 	/*border: 2px solid;*/
 	text-decoration: none;
 	cursor: pointer;
@@ -245,98 +266,11 @@ img.size-90 { width: 90%; }
  		bottom: -1px;
 	}
 
-	&.validfalse {
+	&.validfalse, &[disabled] {
 		background: #aaa !important;
 		text-shadow: none;
 		color: #666 !important;
 		cursor: default;
-	}
-}
-
-.save-value, .read-value {
-	padding: 10px;
-	display: inline-block;
-	margin: 20px 0;
-	position: relative;
-	border-radius: 5px;
-    vertical-align: top;
-	border: 1px solid color($green l(+10%));
-
-    .legend-cont {
-    	height:0;
-    	margin-top: -23px;
-    	text-align: left; 
-    	margin-bottom: 23px;
-    }
-
-	.legend {
-	    padding: 0 2px;
-	    line-height: 20px;
-	    background: $bg;
-	    font-size: 80%;
-	    text-align: left;
-	    text-transform: uppercase;
-	    font-weight: 900;
-	    display: inline;
-		color: $green;
-	} 
-
-    &.livefalse {
-		border: 1px solid #ccc;
-		.legend {
-			color: #bbb;
-		}
-    }
-
-    &.livetrue {
-		padding: 10px 10px 20px 10px;
-		border: 1px solid color($green l(+10%));
-		.legend {
-			color: $green;
-		}
-    }
-
-    .button-cont {
-    	height:0;
-    	text-align: right;
-    }
-
-	.button {
-		color: #fff;
-		/*border: 1px solid color($green l(+10%));*/
-		/*bottom: -22px;*/
-		background: $green;
-		/*background: #fff;*/
-		/*text-shadow: none;*/
-		white-space: nowrap;
-		margin-top: 5px;
-		padding: 0 10px;
-		line-height: 30px;
-		
-		&:active {
-			background: linear-gradient(color($green l(-5%)), color($green l(+5%)));
-		}
-	}
-}
-
-.save-value.livetrue {
-	> .button-cont > .button {
-		background: #fff;
-		padding-right: 30px;
-		color: #666;
-		cursor: default;
-		border: 1px solid color($green l(+10%));
-		text-shadow: none;
-
-		&:after {
-			content: '\2714';
-			position: absolute;
-			line-height: 30px;
-			font-size: 120%;
-			right: 10px;
-			top: 0;
-			color: $green;
-		}
 	}
 }
 
@@ -355,4 +289,37 @@ ol {
 }
 .table_33 {
 	.col_0 { white-space: nowrap; }
+}
+
+
+
+.eye {
+	display: inline-block;
+    border: 1px solid $red1;
+    line-height: 2;
+    padding: 0 5px;
+    color: $red1;
+    font-size: 70%;
+    text-transform: uppercase;
+    margin-left: 5px;
+
+    &::before {    
+    	content: '\e8f4';
+	    font-family: 'icomoon' !important;
+	    font-size: 140%;
+	    line-height: 1;
+	    vertical-align: text-top;
+	    margin-right: 3px;
+    }
+}
+
+.skin {
+	display: inline-block;
+    border: 1px solid #888;
+    line-height: 1.3;
+    padding: 5px;
+    max-width: 200px;
+    color: #888;
+    font-size: 70%;
+    margin-left: 5px;
 }

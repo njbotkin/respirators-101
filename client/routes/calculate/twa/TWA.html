@@ -28,96 +28,93 @@
 
 </div>
 
-<div style="margin: 0 auto; display: table"><ExposureLimitWindow {...$job.exposureLimit} editing /></div>
+{ #if $job.chemical }<div style="margin: 0 auto; display: table"><ChemicalSummary {...$job.chemical} /></div>{ /if }
 
-{ #if $job.twa.manual }
-
-	<div class="content"><p>TWA is being specified manually.  Click below to cancel manual value and use TWA calculator.</p></div>
-
-	<div style="text-align: center"><div class="button override" on:click="$set({ job: { twa: null } })">Use TWA calculator</div></div>
-
-{ :elseif !$job.exposureLimit.duration }
-
-	<div class="content"><p>A TWA can't be calculated for this Exposure Limit because it requires an instantaneous measurement.  Note that for the OSHA PEL, if instantaneous monitoring is not feasible, the ceiling must be assessed as a 15-minute TWA exposure.  If this is the case, <span on:click="$set({ editEL: true })" class="link">manually edit the exposure limit</span> to have a 15-minute duration.</p></div>
-
-{ :elseif $job.exposureLimit.chemical ||  $job.exposureLimit.manual }
-
-	<div class="samples">
-
-		{ #if $job.twa.unit }
-			<table>
-				<thead>
-					<tr>
-						<th></th><th>{ @html unitsPretty[$job.twa.unit] } <br>Measured</th><th></th><th>{ $job.exposureLimit.timeUnit } <br>Represented</th><th></th><th>{ @html unitsPretty[$job.twa.unit] }-<br>{ $job.exposureLimit.timeUnit }</th><th></th>
-					</tr>
-				</thead>
-				<tbody>
-
-				{ #each $job.twa.samples as sample, i }
-					<tr class="sample">
-						<td><label><span class="optional">Sample </span>{i + 1}</label></td>
-						<td><input type="number" bind:value="sample.value" placeholder="0" /></td>
-						<td>&#215;</td>
-						<td><input type="number" bind:value="sample.period" placeholder="0" /></td>
-						<td>=</td>
-						<td><div class="result">{ round($job.twa.sampleProducts[i] / $job.exposureLimit.timeUnitMultiplier) }</div></td>
-						<td><div class="removeSample" on:click="removeSample(i)">&#215;</div></td>
-					</tr>
-				{ /each }
-					
-				</tbody>
-			</table>
-		{ /if }
-
-		<div style="text-align: center"><div class="addSample" on:click="addSample()">[ Add sample + ]</div></div>
-
-		{ #if $job.warnings['unit-mismatch'] }
-			<div class="convert-units">
-				Click here to change your {@html unitsPretty[$job.twa.unit] } measurements to {@html unitsPretty[$job.exposureLimit.unit] } measurements: 
-				<div class="button convert" on:click="$set({ job: { twa: { unit: $job.exposureLimit.unit } } })">Change Units</div>
-			</div>
-		{ /if }
-	</div>
-
-	<Warnings job={$job} />
-
-	{ #if $job.twa.final }
-		<div class="equation">
-
-			<div class="operand">
-				<div class="value">{ round($job.twa.totalValueMinutes / $job.exposureLimit.timeUnitMultiplier) }</div>
-				<div class="unit">Total <br>{ @html unitsPretty[$job.twa.unit] }-{ $job.exposureLimit.timeUnit }</div>
-			</div>
-
-			<div class="operator">&#247;</div>
-
-			<div class="operand">
-				<div class="value">{ round($job.twa.totalMinutes / $job.exposureLimit.timeUnitMultiplier) }</div>
-				<div class="unit">Total <br>{ $job.exposureLimit.timeUnit }</div>
-			</div>
-
-			<div class="operator">=</div>
-
-			<div class="operand">
-				<div class="save-value livetrue">
-					<div class="legend-cont"><div class="legend">TWA</div></div>
-
-						<div class="value">{ round($job.twa.final) }</div>
-						<div class="unit">{ @html unitsPretty[$job.twa.unit] }</div>
-
-					<div class="button-cont"><div class="button"> Current TWA  </div></div>
-				</div>
-			</div>
-
-		</div>
-	{ /if }
-
+{ #if !row }
+	<div class="content"><p>There are no exposure limits present that can be used with a TWA.</p></div>
 { :else }
 
-	<div class="description content">
-		<p>Please select an exposure limit first.</p>
-	</div>
+	{ #if row.measured.manual }
 
+		<div class="content"><p>TWA is being specified manually.  Click below to cancel the manual value and use TWA calculator.</p></div>
+
+		<div style="text-align: center"><div class="button override" on:click="useTWA()">Use TWA calculator</div></div>
+
+	{ :elseif !row.limit.duration }
+
+		<div class="content"><p>A TWA can't be calculated for this Exposure Limit because it requires an instantaneous measurement.  Note that for the OSHA PEL, if instantaneous monitoring is not feasible, the ceiling must be assessed as a 15-minute TWA exposure.  If this is the case, manually edit the exposure limit to have a 15-minute duration.</p></div>
+
+	{ :elseif row.measured.twa }
+
+		<div class="samples">
+
+			{ #if row.limit.unit }
+				<table>
+					<thead>
+						<tr>
+							<th></th><th>{ @html unitsPretty[row.measured.unit] } <br>Measured</th><th></th><th>{ row.limit.timeUnit } <br>Represented</th><th></th><th>{ @html unitsPretty[row.measured.unit] }-<br>{ row.limit.timeUnit }</th><th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{ #each row.measured.twa.samples as sample, i }
+							<tr class="sample">
+								<td><label><span class="optional">Sample </span>{i + 1}</label></td>
+								<td><input type="number" bind:value="sample.value" placeholder="0" /></td>
+								<td>&#215;</td>
+								<td><input type="number" bind:value="sample.period" placeholder="0" /></td>
+								<td>=</td>
+								<td><div class="result">{ round(row.measured.twa.sampleProducts[i] / row.limit.timeUnitMultiplier) }</div></td>
+								<td><div class="removeSample" on:click="removeSample(i)">&#215;</div></td>
+							</tr>
+						{ /each }
+					</tbody>
+				</table>
+			{ /if }
+
+			<div style="text-align: center"><div class="addSample" on:click="addSample()">[ Add sample + ]</div></div>
+
+			{ #if row.measured.unit !== row.limit.unit }
+				<div class="convert-units">
+					Click here to change your {@html unitsPretty[row.measured.unit] } measurements to {@html unitsPretty[row.limit.unit] } measurements: 
+					<div class="button convert" on:click="changeUnit()">Change Units</div>
+				</div>
+			{ /if }
+		</div>
+
+		{ #if row.measured.value && row.measured.twa.samples.length }
+			<div class="equation" style="margin: 10px 0">
+
+				<div class="operand">
+					<div class="value">{ round(row.measured.twa.totalValueMinutes / row.limit.timeUnitMultiplier) }</div>
+					<div class="unit">Total <br>{ @html unitsPretty[row.measured.unit] }-{ row.limit.timeUnit }</div>
+				</div>
+
+				<div class="operator">÷</div>
+
+				<div class="operand">
+					<div class="value">{ round(row.measured.twa.totalMinutes / row.limit.timeUnitMultiplier) }</div>
+					<div class="unit">Total <br>{ row.limit.timeUnit }</div>
+				</div>
+
+				<div class="operator">=</div>
+
+				<div class="operand">
+					<div class="value">{ round(row.measured.value) } {@html unitsPretty[row.measured.unit] }</div>
+					<div class="unit">TWA</div>
+				</div>
+
+			</div>
+		{ /if }
+
+		<div style="margin: 0 auto; display: table"><JobTable {...$job} editing {asr} only={i} /></div>
+
+	{ :else }
+
+		<div class="description content">
+			<p>Please select an exposure limit first.</p>
+		</div>
+
+	{ /if }
 { /if }
 
 
@@ -127,22 +124,52 @@ import { round, unitsPretty } from 'lib/util.js'
 
 export default {
 	components : {
-		ExposureLimitWindow: 'lib/ExposureLimitWindow.html',
-		Warnings: 'lib/Warnings.html'
+		ChemicalSummary: 'lib/ChemicalSummary.html',
+		JobTable: 'lib/JobTable.html'
 	},
+	oncreate() {
+		let { job } = this.store.get()
+		let i = job.table.findIndex(r => r.limit.duration > 60)
+		this.set({
+			i,
+			row: !!~i ? job.table[i] : null
+		})
+	},
+	// sync row with job
+	onstate({ current, changed }) {
+		if(changed.row) {
+			let { job } = this.store.get()
+			job.table[current.i] = current.row
+			this.store.set({ job })
+		}
+	},
+	// computed: {
+	// 	i: ({ $job }) => $job.table.findIndex(r => r.limit.duration > 60),
+	// 	row: ({ $job, i }) => !!~i ? $job.table[i] : null
+	// },
 	methods: {
+		useTWA() {
+			let { row } = this.get()
+			row.measured.manual = false 
+			this.set({ row })
+		},
+		changeUnit() {
+			let { row } = this.get()
+			row.measured.unit = row.limit.unit 
+			this.set({ row })
+		},
 		addSample() {
-			let samples = this.store.get().job.twa.samples
-			samples.push({
+			let { row } = this.get()
+			row.measured.twa.samples.push({
 				value: null,
 				period: null
 			})
-			this.store.set({ job: { twa: { samples } } })
+			this.set({ row })
 		},
-		removeSample(i) {
-			let samples = this.store.get().job.twa.samples
-			samples.splice(i, 1)
-			this.store.set({ job: { twa: { samples } } })
+		removeSample(si) {
+			let { row } = this.get()
+			row.measured.twa.samples.splice(si, 1)
+			this.set({ row })
 		}
 	},
 	helpers: {
@@ -272,14 +299,6 @@ export default {
 
 	.button.override {
 		background: $blue2;
-	}
-
-	.save-value, .read-value {
-		display: table;
-		margin: 0 auto;
-	}
-	.save-value {
-		margin-top: 20px;
 	}
 
 </style>

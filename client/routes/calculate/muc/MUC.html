@@ -1,5 +1,4 @@
-
-<div id="content">
+<div class="content">
 
 	<p><strong>Maximum Use Concentration (MUC)</strong> is the maximum contaminant concentration from which an employee can be expected to be protected when wearing a respirator.</p>
 
@@ -45,67 +44,22 @@
 
 </div>
 
-<style>
-
-	@import 'colors';
-
-	.equation {
-		text-align: center;
-
-		> div {
-			display: inline-block;
-			margin: 0 6px;
-			vertical-align: middle;
-		}
-
-		.operand {
-			.value, .unit {
-				display: block;
-				text-align: center;
-			}
-
-			.value {
-				font-size: 150%;
-				input {
-					font-size: 100%;
-					line-height: 40px;
-					padding: 0 10px;
-					width: 60px;
-					border: 1px solid #aaa;
-				}
-			}
-			.unit {
-				margin-top: 5px;
-				color: #666;
-				line-height: 1.2;
-				font-size: 90%;
-			}
-		}
-
-		.operator {
-			font-size: 120%;
-		}
-	}
-	
-</style>
-
-
 <script>
 
-import { number, round } from 'lib/util.js'
+	import { number, round } from 'lib/util.js'
 
-export default {
-	data: () => ({
-		exposureLimit: '',
-		apf: '',
-	}),
-	computed: {
-		valid: ({ apf, exposureLimit}) => !!(number(apf) && number(exposureLimit)),
-		muc: ({ apf, exposureLimit, valid }) => valid ? apf * exposureLimit : 0
-	},
-	helpers: {
-		round
+	export default {
+		data: () => ({
+			exposureLimit: '',
+			apf: '',
+		}),
+		computed: {
+			valid: ({ apf, exposureLimit}) => !!(number(apf) && number(exposureLimit)),
+			muc: ({ apf, exposureLimit, valid }) => valid ? apf * exposureLimit : 0
+		},
+		helpers: {
+			round
+		}
 	}
-}
 
 </script>

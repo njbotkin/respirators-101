@@ -42,7 +42,10 @@
 <Modal bind:show="ELModal">
 	This will be set as the current job ({$job.name})'s exposure limit.
 
-	<div style="margin: 10px 0">{#if ELModal}<ExposureLimits {...ELModal} />{/if}</div>
+	{#if ELModal}
+		<div style="margin: 10px 0"><ChemicalSummary {...ELModal.chemical} /></div>
+		<div style="margin: 10px 0"><ExposureLimits {...ELModal} /></div>
+	{/if}
 
 	<div class="buttons">
 		<div class="button saveEL" on:click="saveEL(ELModal)">Save</div>
@@ -89,7 +92,8 @@
 		components: {
 			ExposureLimits: 'lib/ExposureLimits.html',
 			Modal: 'lib/Modal.html',
-			Chemical: 'lib/Chemical.html'
+			Chemical: 'lib/Chemical.html',
+			ChemicalSummary: 'lib/ChemicalSummary.html'
 		},
 		data: () => ({
 			search: '',
@@ -222,7 +226,7 @@
 		},
 		methods: {
 			confirmSaveEL(el) {
-				if(!EL_is_current(el, this.store.get().job.exposureLimit)) {
+				if(!EL_is_current(el, this.store.get().job)) {
 					this.set({ ELModal: el })
 				}
 			},
@@ -230,21 +234,28 @@
 
 				let state = this.store.get()
 
-				let durations = Object.values(chemical.standards[standardKey].forms[formKey].durations)
-				let maxDuration = durations.reduce((m, d) => Math.max(m, d.duration || 0), 0)
-				let minDuration = durations.reduce((m, d) => Math.min(m, d.duration || 0), 0)
-				let timeUnit = minDuration > 60 ? 'Hours' : 'Minutes'
+				state.job.table = Object.entries(chemical.standards[standardKey].forms[formKey].durations)
+					.map(([durationKey, duration]) => ({
+						limit: {
+							durationKey,
+							unit: Object.keys(duration.values)[0],
+							values: duration.values,
+							value: Object.values(duration.values)[0],
+							duration: duration.duration,
+							timeUnit: duration.duration > 60 ? 'Hours' : 'Minutes',
+							timeUnitMultiplier: duration.duration > 60 ? 60 : 1,
+							manual: false,
+							twa: duration.duration > 60
+						},
+						measured: {
+							unit: Object.keys(duration.values)[0],
+							value: null
+						},
+						hr: null
+					}))
+					.concat(state.job.table.filter(r => r.manual))
 
-				state.job.exposureLimit = {
-					chemical,
-					standardKey,
-					formKey,
-					unit: Object.keys(durations[0].values)[0], // arbitrary default
-					value: Object.values(durations[0].values)[0], // arbitrary default (for editing manually)
-					duration: maxDuration,
-					timeUnit,
-					timeUnitMultiplier: timeUnit == 'Minutes' ? 1 : 60
-				}
+				Object.assign(state.job, { chemical, standardKey, formKey })
 
 				this.store.set( state, false )
 				this.store.set({ jobOpen: true })

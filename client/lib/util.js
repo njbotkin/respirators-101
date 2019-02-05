@@ -41,6 +41,23 @@ export const unitsPretty = {
 	mgcro3: 'mg CrO<sup>3</sup>'
 }
 
+export function durationsPretty(duration, standard) {
+	let s = {
+		osha_pel: "PEL",
+		cal_osha_pel: "PEL",
+		niosh_rel: "REL",
+		msha_pel: "PEL"
+	}
+	return ({
+		default: s[standard],
+		default1: s[standard],
+		default2: s[standard],
+		ceiling: "Ceiling",
+		stel: "STEL",
+		excursion: "Excursion"
+	})[duration]
+}
+
 export function arraySame(a, b) {
 	for(let i = 0; i < a.length; i++) if(a[i] !== b[i]) return false
 	return true

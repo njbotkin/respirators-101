@@ -1,7 +1,6 @@
+{ #if editing && !only }<div class="currentJob">Current Job</div>{ /if }
 
-{ #if job.id == $job.id && !only }<div class="currentJob">Current Job</div>{ /if }
-
-<div class="job currentJob{ job.id == $job.id }">
+<div class="job currentJob{ editing }">
 	<div class="title">
 
 		<div class="name">
@@ -26,23 +25,13 @@
 	</div>
 	<div class="content">
 
-		<Warnings {job} />
+		{ #if job.chemical }
+			<ChemicalSummary {...job.chemical} />
+		{ :elseif editing }
+			To automatically populate exposure limits, <a href="{ asr.makePath('app.chemicals') }" class="button selectchemical">Select a chemical</a>
+		{ /if }
 
-		<ExposureLimitWindow {...job.exposureLimit} editing={ job.id == $job.id } />
-
-		<TWAWindow {...job} editing={ job.id == $job.id } />
-
-		<div class="read-value live{ job.id == $job.id }" style="text-align: center">
-			<div class="legend-cont"><div class="legend"> HR </div></div>
-
-			{ #if job.hr }
-				{ round(job.hr) }
-			{ :else }
-				No HR set yet!
-			{ /if }
-
-			{ #if job.id == $job.id }<div class="button-cont"><a class="button" href="{ asr.makePath(valueSources['hr']) }"> { job.hr ? 'Edit' : 'Add' } </a></div> { /if }
-		</div>
+		<JobTable {...job} {editing} {asr} />
 
 		{ #if Object.keys(job.options_saved).length }
 			<Table data="{ JSON.stringify([ ['Saved Respirator Options', 'APF'], ...Object.values(job.options_saved) ] ) }" />
@@ -68,13 +57,12 @@
 
 	import date from 'date-and-time'
 	import { valueSources } from 'lib/storage.js'
-	import { round, unitsPretty } from 'lib/util.js'
+	import { unitsPretty } from 'lib/util.js'
 
 	export default {
 		components: {
-			ExposureLimitWindow: 'lib/ExposureLimitWindow.html',
-			TWAWindow: 'lib/TWAWindow.html',
-			Warnings: 'lib/Warnings.html',
+			ChemicalSummary: 'lib/ChemicalSummary.html',
+			JobTable: 'lib/JobTable.html',
 			Table: 'lib/Table.html'
 		},
 		// ideally this would be done in oncreate, but occasionally oncreate fires before the DOM has been assembled?
@@ -101,9 +89,11 @@
 				this.refs.date.focus()
 			}
 		},
+		computed: {
+			editing: ({ job, $job }) => job.id == $job.id
+		},
 		helpers: {
-			date: (d) => d ? date.format(new Date(d), 'MMM D, YYYY', true) : 'Date', 
-			round
+			date: (d) => d ? date.format(new Date(d), 'MMM D, YYYY', true) : 'Date'
 		},
 		data: () => ({
 			valueSources,
@@ -153,6 +143,13 @@
 		.content {
 			margin-top: 10px;
 			padding: 0;
+		}
+
+		.selectchemical {
+			background: $red2;
+			line-height: 25px;
+			padding: 0 5px;
+			font-size: 70%;
 		}
 
 		.edit {

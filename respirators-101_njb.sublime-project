@@ -2,17 +2,19 @@
 	"folders":
 	[
 		{
+			"path": "./", 
 			"file_exclude_patterns":
 			[
-				"*-bundle.js*"
+				"*-bundle.js*",
+				"*.map",
 			],
 			"folder_exclude_patterns":
 			[
 				"node_modules",
-				"cordova/platforms",
-				"cordova/www"
+				"cordova",
+				"public"
 			],
-			"path": "."
+            "follow_symlinks": true
 		}
 	]
 }

@@ -1,115 +1,102 @@
-{ #if chemical }
+{ #if !standardKey }
 
-	{ #if standardKey }
+	<div class="keys">
+		<div class="key form">State</div>
+		<div class="key EL">Exposure Limit</div>
+	</div>
 
-		<div class="name">{ @html chemical.name }</div>
+{ /if }
 
-		{ #if chemical.idlh }
-			<div class="property inline" style="padding: 0; margin: 0">
-				<div class="label">IDLH</div>
-				<div class="value">{ @html chemical.idlh }</div>
-				<div class="note">{ @html chemical.idlh_notes }</div>
-			</div>
-		{ /if }
+{ #if chemical.standards }
+	<div class="property-list float">
+		{ #each sort_filter_standards(chemical.standards, standardKey) as [standardKey, standard] }
 
-	{ :else }
+			<div class="property standard"> 
+				<div class="label">{ standardsPretty[standardKey] }</div>
+				<div class="value property-list">
 
-		<div class="keys">
-			<div class="key form">State</div>
-			<div class="key EL">Exposure Limit</div>
-		</div>
+					{#if standardKey == 'osha_pel' && chemical.osha_pel}<div class="raw">{@html chemical.osha_pel}</div>{/if}
+					{#if standardKey == 'niosh_rel' && chemical.niosh_rel}<div class="raw">{@html chemical.niosh_rel}</div>{/if}
+					{#if standardKey == 'cal_osha_pel' && chemical.cal_osha_pel}<div class="raw">{@html chemical.cal_osha_pel}</div>{/if}
 
-	{ /if }
+					{ #if standard.forms }{ #each filter_forms(standard.forms, formKey) as [formKey, form] }
+						<div class="property form" on:click="fire('confirmSaveEL', { chemical, standardKey, formKey })" class:active="EL_is_current({ chemical, standardKey, formKey }, $job)">
 
-	{ #if chemical.standards }
-		<div class="property-list float">
-			{ #each sort_filter_standards(chemical.standards, standardKey) as [standardKey, standard] }
+							{ #if formKey !== 'Default' }<div class="label">{@html formKey }</div>{ /if }
+							<div class="value">
+								<table>
+									{ #each Object.entries(form.durations) as [durationKey, duration] }
 
-				<div class="property standard"> 
-					<div class="label">{ standardsPretty[standardKey] }</div>
-					<div class="value property-list">
+										<tr class="duration">
+											<td class="label">{ durationsPretty(durationKey, standardKey) }</td>
+											<td class="value">
+												{ #each Object.entries(duration.values) as [unit, value] }
 
-						{#if standardKey == 'osha_pel' && chemical.osha_pel}<div class="raw">{@html chemical.osha_pel}</div>{/if}
-						{#if standardKey == 'niosh_rel' && chemical.niosh_rel}<div class="raw">{@html chemical.niosh_rel}</div>{/if}
-						{#if standardKey == 'cal_osha_pel' && chemical.cal_osha_pel}<div class="raw">{@html chemical.cal_osha_pel}</div>{/if}
+													{#if unit == 'fractional'}
+														<div class="fractional_value">
+															<div class="top">{@html value.top }</div>
+															<div class="bottom">{@html value.bottom }</div>
+														</div>
+													{:else}
+														<div class="representation EL">
+															{ value }
+															<div class="unit">{ @html unitsPretty[unit] }</div>
+														</div>
+													{/if}
 
-						{ #if standard.forms }{ #each filter_forms(standard.forms, formKey) as [formKey, form] }
-							<div class="property form" on:click="fire('confirmSaveEL', { chemical, standardKey, formKey })" class:active="EL_is_current({ chemical, standardKey, formKey }, $job.exposureLimit)">
-
-								{ #if formKey !== 'Default' }<div class="label">{@html formKey }</div>{ /if }
-								<div class="value">
-									<table>
-										{ #each Object.entries(form.durations) as [durationKey, duration] }
-
-											<tr class="duration">
-												<td class="label">{ durationsPretty[durationKey] }</td>
-												<td class="value">
-													{ #each Object.entries(duration.values) as [unit, value] }
-
-														{#if unit == 'fractional'}
-															<div class="fractional_value">
-																<div class="top">{@html value.top }</div>
-																<div class="bottom">{@html value.bottom }</div>
-															</div>
-														{:else}
-															<div class="representation EL">
-																{ value }
-																<div class="unit">{ @html unitsPretty[unit] }</div>
-															</div>
-														{/if}
-
-													{ /each }
-												</td>
-
-												<td class="period">{#if duration.duration}{ humanTime(duration.duration) }{/if}</td>
-
-											</tr>
-
-											{#if duration.max}
-												<tr class="property max"><td colspan="3">
-													<div class="label">Max peak</div>
-													<div class="value">{@html duration.max }</div>
-												</td></tr>
-											{/if}
-
-											{ #if duration.notes }
-												{ #each duration.notes as note }
-													<tr class="note"><td colspan="3">{@html note }</td></tr>
 												{ /each }
-											{ /if }
+											</td>
 
-										{ /each }
-									</table>
+											<td class="period">{#if duration.duration}{ humanTime(duration.duration) }{/if}</td>
 
-									{ #if form.carcinogens }
-										<span class="carcinogens">Carcinogen</span>
-									{ /if }
-									
-									{ #if form.notes }
-										{ #each form.notes as note }
-											<div class="note">{@html note }</div>
-										{ /each }
-									{ /if }
-								</div>
+										</tr>
+
+										{#if duration.max}
+											<tr class="property max"><td colspan="3">
+												<div class="label">Max peak</div>
+												<div class="value">{@html duration.max }</div>
+											</td></tr>
+										{/if}
+
+										{ #if duration.notes }
+											{ #each duration.notes as note }
+												<tr class="note"><td colspan="3">{@html note }</td></tr>
+											{ /each }
+										{ /if }
+
+									{ /each }
+								</table>
+
+								{ #if form.carcinogens }
+									<span class="carcinogens">Carcinogen</span>
+								{ /if }
+								
+								{ #if form.notes }
+									{ #each form.notes as note }
+										<div class="note">{@html note }</div>
+									{ /each }
+								{ /if }
 							</div>
-						{ /each }{ /if }
+						</div>
+					{ /each }{ /if }
 
-						{ #if standard.carcinogens }
-							<span class="carcinogens">Carcinogen</span>
-						{ /if }
-						{ #if standard.notes }
-							{ #each standard.notes as note }
-								<div class="note">{@html note }</div>
-							{ /each }
-						{ /if }
+					{ #if standard.carcinogens }
+						<span class="carcinogens">Carcinogen</span>
+					{ /if }
+					{ #if standard.notes }
+						{ #each standard.notes as note }
+							<div class="note">{@html note }</div>
+						{ /each }
+					{ /if }
 
-					</div>
 				</div>
+			</div>
 
-			{ /each }
-		</div>
-	{ /if }
+		{ /each }
+	</div>
+{ /if }
 
+{ #if !standardKey }
 	{ #if chemical.eye }
 		<div class="eye">Eye irritant</div>
 	{ /if }
@@ -117,29 +104,12 @@
 	{ #if chemical.skin }
 		<div class="skin">Risk of dermal absorption. Prevent skin exposure as necessary.</div>
 	{ /if }
-
 { /if }
 
-{ #if manual }
-
-	<div class="lone property">
-		<div class="value">
-
-			<div class="representation EL">
-				{ value }
-				<div class="unit">{ @html unitsPretty[unit] }</div>
-			</div>
-
-			{ humanTime(duration) }
-
-		</div>
-	</div>
-
-{ /if }
 
 <script>
 
-	import { unitsPretty, EL_is_current } from 'lib/util.js'
+	import { unitsPretty, EL_is_current, durationsPretty } from 'lib/util.js'
 
 	const standards_order = {
 		'niosh_rel': 0,
@@ -165,7 +135,8 @@
 				} else {
 					return Object.entries(forms)
 				}
-			}
+			},
+			durationsPretty
 		},
 		data: () => ({
 			showKeys: false,
@@ -174,14 +145,6 @@
 				cal_osha_pel: "Cal/OSHA PEL 8-hour TWA",
 				niosh_rel: "NIOSH REL Up to 10-hour TWA",
 				msha_pel: "The Mine Safety and Health Administration PEL"
-			},
-			durationsPretty: {
-				default: 'TWA',
-				default1: 'TWA',
-				default2: 'TWA',
-				ceiling: "Ceiling",
-				stel: "STEL",
-				excursion: "Excursion"
 			},
 			unitsPretty
 		})
@@ -203,10 +166,6 @@
 
 	$ELSolid: $red1;
 	$ELText: #ce817f;
-
-	.name {
-		font-weight: bold;
-	}
 
 	.keys {
 		margin-bottom: 10px;
@@ -262,47 +221,12 @@
 		}
 	}
 
-	.eye {
-		display: inline-block;
-	    border: 1px solid $red1;
-	    line-height: 2;
-	    padding: 0 5px;
-	    color: $red1;
-	    font-size: 70%;
-	    text-transform: uppercase;
-	    margin-left: 5px;
-
-	    &::before {    
-	    	content: '\e8f4';
-		    font-family: 'icomoon' !important;
-		    font-size: 140%;
-		    line-height: 1;
-		    vertical-align: text-top;
-		    margin-right: 3px;
-	    }
-	}
-
-	.skin {
-		display: inline-block;
-	    border: 1px solid #888;
-	    line-height: 1.3;
-	    padding: 5px;
-	    max-width: 200px;
-	    color: #888;
-	    font-size: 70%;
-	    margin-left: 5px;
-	}
-
 	.property {
 		padding: 0 10px;
 		/*margin: 10px 0;*/
 
 		.label {
 			padding-bottom: 4px;
-		}
-
-		&.lone {
-			padding: 0;
 		}
 
 		&:first-child { margin-top: 0; }

@@ -1,10 +1,9 @@
-
-<div id="content">
+<div class="content">
 	A <strong>Hazard Ratio (HR)</strong> is used to determine if a respirator is required for work. If the ratio is greater than 1, then a respirator is required.
 
 	<div class="equation">
 		<div class="operand">TWA</div>
-		<div class="operator">&#247;</div>
+		<div class="operator">÷</div>
 		<div class="operand">Exposure Limit</div>
 		<div class="operator">=</div>
 		<div class="operand">HR</div>
@@ -23,62 +22,45 @@
 	<p><em>NOTE: The TWA and exposure limit values MUST be based on the same time period (e.g. a 10-hr TWA CANNOT be used with an 8-hr exposure limit).</em></p>
 </div>
 
-<Warnings job={$job} />
-
 <div class="equation">
 
 	<div class="operand">
-		<TWAWindow {...$job} editing />
+		<div class="value"><input type="number" bind:value="measured" placeholder="0"></div>
+		<div class="unit">Measured Concentration</div>
 	</div>
 
 	<div class="operator">÷</div>
 
 	<div class="operand">
-		<ExposureLimitWindow {...$job.exposureLimit} editing />
+		<div class="value"><input type="number" bind:value="limit" placeholder="0"></div>
+		<div class="unit">Exposure limit</div>
 	</div>
 
 	<div class="operator">=</div>
 
-	<div class="operand HR">
-
-		<div class="save-value live{ $job.hr == hr}">
-			<div class="legend-cont"><div class="legend"> HR </div></div>
-			
-			<div class="value">{ round(hr) }</div>
-
-			<div class="button-cont"><div class="button valid{ valid }" on:click="setHR()"> { $job.hr == hr ? 'Current' : 'Save' } HR  </div></div>
-
-		</div>
-
+	<div class="operand">
+		<div class="value">{ round(hr) }</div>
+		<div class="unit">HR</div>
 	</div>
 
 </div>
 
 <script>
 
-import { number, round } from 'lib/util.js'
+	import { number, round } from 'lib/util.js'
 
-export default {
-	components: {
-		ExposureLimitWindow: 'lib/ExposureLimitWindow.html',
-		TWAWindow: 'lib/TWAWindow.html',
-		Warnings: 'lib/Warnings.html'
-	},
-	methods: {
-		setHR() {
-			let state = this.get()
-			if(state.valid && state.hr !== this.store.get().job.hr) {
-				this.store.set({ job: { hr: state.hr }, jobOpen: true })
-			}
+	export default {
+		data: () => ({
+			measured: '',
+			limit: '',
+		}),
+		computed: {
+			valid: ({ measured, limit }) => !!(number(measured) && number(limit)),
+			hr: ({ measured, limit, valid }) => valid ? (measured / limit) : 0
+		},
+		helpers: {
+			round
 		}
-	},
-	computed: {
-		valid: ({ $job }) => !!(number($job.twa.final) && number($job.exposureLimit.value)),
-		hr: ({ $job, valid }) => valid ? (number($job.twa.final) / number($job.exposureLimit.value)) : 0
-	},
-	helpers: {
-		round
 	}
-}
 
 </script>
