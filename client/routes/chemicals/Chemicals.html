@@ -3,41 +3,38 @@
 	<div class="closeSearch" on:click="set({ search: '' })">×</div>
 </div>
 
-<div class="container">
 
-	<div class="items" class:full="!searching">
-
-		{ #if !searching }
-			<div class="intro">
-				<p>Chemicals can be searched by name, CAS number, or RTECS number.</p>
-
-				<p>Data was derived from the <a href="https://www.cdc.gov/niosh/npg/">NIOSH Pocket Guide to Chemical Hazards</a> and OSHA's Annotated Tables <a href="https://www.osha.gov/dsg/annotated-pels/tablez-1.html">Z-1</a>, <a href="https://www.osha.gov/dsg/annotated-pels/tablez-2.html">Z-2</a>, and <a href="https://www.osha.gov/dsg/annotated-pels/tablez-3.html">Z-3</a> (Aug. 2018).</p>
-
-				Accuracy is not guaranteed. The user is encouraged to consult NIOSH and OSHA chemical data directly.
-			</div>
-		{/if} 
-
-		{ #if items.length }
-			{ #each items as c, i (c.name) }
-				{ #if !searching && letters[i] }
-					<div class="letter-heading" id="{ letters[i] }">{ letters[i] }</div>
-				{ /if }
-				<Chemical {searching} {i} {...c} chemical={c} on:confirmSaveEL="confirmSaveEL(event)"  />
-			{ /each }
-		{ :else }
-			<div class="empty">No search results.</div>
-		{ /if }
-	</div>
-
+<div class="items" class:full="!searching" ref:ey>
 	{ #if !searching }
-		<div class="alphabet">
-			{ #each Object.entries(letters) as [i, l] }
-				<div class="letter">{ l }</div>
-			{ /each }
-		</div>
-	{ /if }
+		<div class="intro">
+			<p>Chemicals can be searched by name, CAS number, or RTECS number.</p>
 
+			<p>Data was derived from the <a href="https://www.cdc.gov/niosh/npg/">NIOSH Pocket Guide to Chemical Hazards</a> and OSHA's Annotated Tables <a href="https://www.osha.gov/dsg/annotated-pels/tablez-1.html">Z-1</a>, <a href="https://www.osha.gov/dsg/annotated-pels/tablez-2.html">Z-2</a>, and <a href="https://www.osha.gov/dsg/annotated-pels/tablez-3.html">Z-3</a> (Aug. 2018).</p>
+
+			Accuracy is not guaranteed. The user is encouraged to consult NIOSH and OSHA chemical data directly.
+		</div>
+	{/if} 
+
+	{ #if items.length }
+		{ #each items as c, i (c.name) }
+			{ #if !searching && letters[i] }
+				<div class="letter-heading" id="{ letters[i] }">{ letters[i] }</div>
+			{ /if }
+			<Chemical {searching} {i} {...c} chemical={c} on:confirmSaveEL="confirmSaveEL(event)"  />
+		{ /each }
+	{ :else }
+		<div class="empty">No search results.</div>
+	{ /if }
 </div>
+
+{ #if !searching }
+	<div class="alphabet">
+		{ #each Object.entries(letters) as [i, l] }
+			<div class="letter">{ l }</div>
+		{ /each }
+	</div>
+{ /if }
+
 
 <Modal bind:show="ELModal">
 	This will be set as the current job ({$job.name})'s exposure limit.
@@ -104,14 +101,14 @@
 		oncreate() {
 
 			// scrolling through alphabet thingy
-			let container = document.querySelector('.container')
+			let alphabet = document.querySelector('.alphabet')
 			var mouseDown = false
 
-			container.addEventListener('mousedown', down)
-			container.addEventListener('touchstart', down)
-			container.addEventListener('mouseup', up)
-			container.addEventListener('touchend', up)
-			container.addEventListener('touchcancel', up)
+			alphabet.addEventListener('mousedown', down)
+			alphabet.addEventListener('touchstart', down)
+			alphabet.addEventListener('mouseup', up)
+			alphabet.addEventListener('touchend', up)
+			alphabet.addEventListener('touchcancel', up)
 
 			function down(e) {
 				if(e.target.className.indexOf('letter') > -1) {
@@ -126,9 +123,9 @@
 				}
 			}
 
-			container.addEventListener('mousemove', selectLetter)
-			container.addEventListener('touchmove', selectLetter)
-			container.addEventListener('click', selectLetter)
+			alphabet.addEventListener('mousemove', selectLetter)
+			alphabet.addEventListener('touchmove', selectLetter)
+			alphabet.addEventListener('click', selectLetter)
 
 			function selectLetter(e) {
 				var target
@@ -143,54 +140,50 @@
 					if(target.className && target.className.indexOf('letter') > -1) {
 						e.preventDefault()
 
-						var chemicalBox = document.querySelector('.items')
-						var chemicalBoxOffset = chemicalBox.getBoundingClientRect()
-
 						for(var l of document.querySelectorAll('.letter')) {
 							l.classList.remove('active')
 						}
 						target.classList.add('active')
 
-						var chemical = document.getElementById(target.innerText.toLowerCase())
-						if(chemical) {
-							var scrollTop = chemicalBox.scrollTop + chemical.getBoundingClientRect().top - chemicalBoxOffset.top - chemicalBoxOffset.height/3
-							chemicalBox.scrollTop = scrollTop
+						var letter = document.getElementById(target.innerText.toLowerCase())
+						if(letter) {
+							window.scrollTo(0, letter.offsetTop - 200)
 						}
 					}
 				}
 			}
 
 			// save scroll position
-			let chemicals = document.querySelector('.items')
-			chemicals.scrollTop = this.store.get().job.chemicalsScrollTop
-			var scrolls = 0
+            // let chemicals = document.querySelector('.items')
+            // chemicals.scrollTop = this.store.get().job.chemicalsScrollTop
+            // var scrolls = 0
 
-			chemicals.addEventListener('scroll', () => {
-				let { job } = this.store.get()
-				let { search } = this.get()
-				if(search !== '') return
-				// The first scroll is premature because the layout isn't finished.  When layout finishes, the browser wrongly scrolls again to compensate.  Set the scroll to the first scroll.
-				if(scrolls < 2) {
-					if(++scrolls == 1) {
-						// first scroll
-					} else {
-						// second scroll
-						chemicals.scrollTop = job.chemicalsScrollTop
-					}
-				} else {
-					// subsequent scrolls
-					this.store.set({ job: { chemicalsScrollTop: chemicals.scrollTop } })
-				}
-			})
+            // chemicals.addEventListener('scroll', () => {
+            //     let { job } = this.store.get()
+            //     let { search } = this.get()
+            //     if(search !== '') return
+            //     // The first scroll is premature because the layout isn't finished.  When layout finishes, the browser wrongly scrolls again to compensate.  Set the scroll to the first scroll.
+            //     if(scrolls < 2) {
+            //         if(++scrolls == 1) {
+            //             // first scroll
+            //         } else {
+            //             // second scroll
+            //             chemicals.scrollTop = job.chemicalsScrollTop
+            //         }
+            //     } else {
+            //         // subsequent scrolls
+            //         this.store.set({ job: { chemicalsScrollTop: chemicals.scrollTop } })
+            //     }
+            // })
 
-			this.on('update', ({changed, current}) => {
-				if(!changed.search) return
-				if(current.search == '') {
-					chemicals.scrollTop = this.store.get().job.chemicalsScrollTop
-				} else {
-					chemicals.scrollTop = 0
-				}
-			})
+            // this.on('update', ({changed, current}) => {
+            //     if(!changed.search) return
+            //     if(current.search == '') {
+            //         chemicals.scrollTop = this.store.get().job.chemicalsScrollTop
+            //     } else {
+            //         chemicals.scrollTop = 0
+            //     }
+            // })
 
 		},
 		computed: {
@@ -258,7 +251,7 @@
 				Object.assign(state.job, { chemical, standardKey, formKey })
 
 				this.store.set( state, false )
-				this.store.set({ jobOpen: true })
+				this.refs.ey.dispatchEvent(new CustomEvent('openJob', { bubbles: true }))
 				this.set({ ELModal: false })
 			}
 		}
@@ -280,9 +273,16 @@
 
 	.search {
 		height: 50px;
-		position: relative;
+		left: 0;
+		right: 0;
+		top: 50px;
+		position: fixed;
+		z-index: 1;
 		padding: 10px;
 		box-sizing: border-box;
+		background: #eaedf1;
+		max-width: 800px;
+		margin: 0 auto;
 
 		input {
 			line-height: 30px;
@@ -354,42 +354,39 @@
 		text-transform: uppercase;
 		padding-left: 10px;
 	}
-	.container {
-		position: absolute;
-		top: 50px;
-		right: 0;
-		bottom: 0;
-		left: 0;
 
-		.items {
-			position: absolute;
-			top: 0;
-			left: 0;
-			bottom: 0;
-			overflow-y: scroll;
-			overflow-x: hidden;
-			right: 0;
-			padding-bottom: 50px;
 
-			&.full {
-				right: calc(2.65vh - 2.65px + 16px );
-			}
+	.items {
+		padding-top: 50px;
+		padding-bottom: 50px;
+
+		&.full {
+			padding-right: calc(2.48vh - 2.48px + 16px );
 		}
-		.alphabet {
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			font-size: calc(2.65vh - 2.65px ); 
-			overflow: hidden;
+	}
+	.alphabet {
+		position: fixed;
+		font-size: calc(2.48vh - 2.48px ); 
+		overflow: hidden;
+		top: 100px;
+		right: 0;
+		z-index: 1;
+		left: calc(800px - calc(2.48vh - 2.48px + 16px ));
+		margin: 0 auto;
+		width: calc(2.48vh - 2.48px + 16px );
 
-			div {
-				user-select: none;
-				cursor: pointer;
-				width: calc(2.65vh - 2.65px );
-				padding: 0 8px;
-				text-transform: uppercase;
-			}
+		@media (max-width: 800px) {
+			left: auto;
+			width: auto;
+			margin: auto;
+		}
+
+		div {
+			user-select: none;
+			cursor: pointer;
+			width: calc(2.48vh - 2.48px );
+			padding: 0 8px;
+			text-transform: uppercase;
 		}
 	}
 

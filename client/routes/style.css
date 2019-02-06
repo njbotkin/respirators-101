@@ -1,10 +1,5 @@
 @import "colors";
 
-html {
-    overflow: hidden;
-    height: 100%;
-}
-
 body {
 	margin: 0;
 	background: #eaedf1; 
@@ -12,25 +7,18 @@ body {
 	line-height: 1.5;
 	font-size: 16px;
 
-	/* trying to ditch overscroll */
-	overscroll-behavior-y: none;
-	-webkit-overflow-scrolling: touch;
+	&.lock {
+		overflow: hidden;
+	}
 
-    height: 100%;
-    overflow: auto;
+	/* trying to ditch overscroll */
+	/*overscroll-behavior-y: none;
+	-webkit-overflow-scrolling: touch;
+	overflow-y: scroll;*/
 
 	@media (max-width: 600px) {
 		font-size: 14px;
 	}
-}
-
-#target {
-	overflow: hidden;
-	position: absolute;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
 }
 
 #content, .content {

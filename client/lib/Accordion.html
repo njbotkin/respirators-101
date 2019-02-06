@@ -23,9 +23,11 @@
 		actions: {
 			resize: (inner) => {
 
-				function resize() {
-					inner.style.height = 'auto'
-					inner.style.height = inner.offsetHeight + 'px'
+				const resize = () => {
+					if(this.get().open) {
+						inner.style.height = 'auto'
+						inner.style.height = inner.offsetHeight + 'px'
+					}
 				}
 
 				inner.addEventListener('resized', resize)
@@ -54,47 +56,34 @@
 
 				// scroll to viewport
 				if(open) {
-
-					let aperture = document.getElementById('aperture')
-					let apertureTop = aperture.getBoundingClientRect().top
-					let apertureInner = aperture.children[0]
-
-					// get dimensions
 					inner.style.height = 'auto'
 
-					var height = inner.offsetHeight
-					var viewportTop = expand.getBoundingClientRect().top - apertureTop - 20
-					var viewportBottom = aperture.offsetHeight - (viewportTop + height) - apertureTop - 40
+					let height = inner.offsetHeight
+					let { top, bottom } =  expand.getBoundingClientRect()
+					let fromTop = top - 100
+					let fromBottom = (window.innerHeight - bottom) - 70
 
-					inner.style.height = '0px'
+					let skipTransition
 
-					// expand contents are out of view
-					if(viewportBottom < 0 || viewportTop < 0 ) {
-						var movetop
+					if(fromBottom < 0 || fromTop < 0 ) {
+						let scroll = fromTop < 0 ? fromTop : Math.min(-fromBottom, fromTop)
 
-						// top is clipped
-						if(viewportTop < 0) {
-							movetop = viewportTop
-						} 
-						// bottom is clipped
-						else {
-							movetop = Math.min(-viewportBottom, viewportTop)
+						if((window.scrollY + window.innerHeight + scroll) > document.body.offsetHeight) {
+							skipTransition = true
 						}
 
-						apertureInner.style.transitionDuration = '.5s'
-						apertureInner.style.transform = `translate(0, ${-movetop}px)`
-
-						// remove transform and set traditional scrolltop so user can scroll
-						setTimeout(function(o) { 
-							apertureInner.style.cssText = ''
-							aperture.scrollTop = o.t
-						}, 600, { t: aperture.scrollTop + movetop })
-
+						window.scrollBy({ top: scroll, left: 0, behavior: 'smooth' });
 					}
-					requestAnimationFrame( () => inner.style.height = height + 'px' )
 
-				} 
-				else {
+					if(skipTransition) {
+						inner.style.height = height + 'px' 
+					} else {
+						inner.style.height = '0px'
+						requestAnimationFrame( () => {
+							inner.style.height = height + 'px' 
+						})
+					}
+				} else {
 					inner.style.height = '0px'
 				}
 			}
@@ -138,6 +127,11 @@
 		background: #fff;
 		margin-right: -20px;
 		margin-left: -20px;
+
+		@media (max-width: 400px) {
+			margin-right: -10px;
+			margin-left: -10px;
+		}
 
 		.inner {
 			box-sizing: border-box;

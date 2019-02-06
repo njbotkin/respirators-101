@@ -49,6 +49,7 @@
     "fuse.js": "^3.3.0",
     "pify": "^3.0.0",
     "regex-fun": "^2.0.2",
+    "smoothscroll-polyfill": "^0.4.3",
     "svelte": "^2.16.0",
     "svelte-state-renderer": "^2.0.0",
     "svelte-transitions-slide": "^1.0.0",

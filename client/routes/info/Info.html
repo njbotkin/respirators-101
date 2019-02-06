@@ -29,13 +29,6 @@
 			Modal: 'lib/Modal.html',
 			Job: './Job.html'
 		},
-		onupdate({changed, current}) {
-			if(changed.deleteJob && current.deleteJob) {
-				store.set({ lockContent: true })
-			} else {
-				store.set({ lockContent: false })
-			}
-		},
 		methods: {
 			duplicate(id) {
 				let newJobId = store.duplicateJob(id)

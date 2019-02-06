@@ -5,7 +5,10 @@ import createEmitter from 'better-emitter'
 import { store } from 'lib/storage.js'
 import states from 'data/globbed-routes.js'
 
-const stateRouter = StateRouter(makeSvelteStateRenderer({ store }), document.querySelector(`#target`))
+import smoothscroll from 'smoothscroll-polyfill'
+smoothscroll.polyfill()
+
+const stateRouter = StateRouter(makeSvelteStateRenderer({ store }), document.body)
 
 const context = createEmitter({
 	makePath: stateRouter.makePath,

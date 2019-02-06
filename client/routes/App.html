@@ -1,76 +1,67 @@
 <svelte:window bind:innerHeight="windowHeight" bind:innerWidth="windowWidth" />
 
-<div class="maxwidth">
+<div class="sidebar { sidebarOpen && 'sidebarOpen' } { jobOpen && 'jobOpen' }" style="-webkit-transform: translate({ wrapperX }px, 0); transform: translate({ wrapperX }px, 0)">
 
-	<div class="wrapper { sidebarOpen && 'sidebarOpen' } { $jobOpen && 'jobOpen' }" style="-webkit-transform: translate({ wrapperX }px, 0); transform: translate({ wrapperX }px, 0)">
-
-		<div class="left">
-			<div class="appname">Respirators 101 <div class="nav-button close icon-close" on:click="set({ sidebarOpen: false })">close menu</div></div>
-			<div class="main" on:click="closeMenu(event)">
-				<Menu {asr} />
-			</div>
-		</div>
-
-		<div class="right">
-			<div class="elsewhere" on:click="focusContent()"></div>
-
-			<nav>
-				{ #if categoryParent }
-					<a class="back nav-button icon-angle-left" href="{ categoryParent }">back</a>
-				{ :elseif backButton }
-					<a class="back nav-button icon-angle-left" href="javascript:window.history.go(-1);">back</a>
-				{ /if }
-
-				<div class="nav-button close icon-close">close menu</div>
-				<div class="nav-button menu icon-menu" on:click="set({ sidebarOpen: true })">open menu</div>
-
-				<div class="title"><div class="inner">{ $nav && $nav.title }</div></div>
-
-				<a class="nav-button home icon-home2" href="{ asr.makePath('app.home') }">go home</a>
-			</nav>
-
-			{ #if $nav && $nav.sub }
-				<div class="rednav" bind:offsetHeight="redNavHeight">
-						
-					{ #if $nav.sub.prev }<div class="prev"><a class="icon-chevron-circle-left" href="{ $nav.sub.prev }"><span class="text">Previous page</span></a></div>{ /if }
-
-					<div class="title"><div class="inner">{ $nav.sub.title }</div></div>
-
-					{ #if $nav.sub.next }<div class="next"><a class="icon-chevron-circle-right" href="{ $nav.sub.next }"><span class="text">Next page</span></a></div> { /if }
-
-				</div> 
-			{ /if }
-
-			<div class="main" id="aperture" style="top: { apertureMarginTop }px; padding-bottom: { showState ? 70 : 0 }px" class:locked=$lockContent>
-				<uiView></uiView> 
-			</div>
-
-			<div id="domlog"></div>
-
-			{ #if showState }
-				<div class="state" bind:offsetHeight="jobHeight" style="-webkit-transform: translate(0, { jobY }px); transform: translate(0, { jobY }px)" on:click="closeJob(event)">
-
-					<div class="header" on:click="$set({ jobOpen: !$jobOpen })">
-						<div class="current-job" bind:offsetWidth="currentJobWidth"> <div class="label">Current Job</div> { $job.name } </div>
-
-						{ #if showResumeSelectionButton }
-							<a class="in-selection" href="{ $job.options ? asr.makePath('app.options-list', {id: $job.options}) : asr.makePath('app.respirator-picker', {id: $job.RSLStep}) }" bind:offsetWidth="resumeWidth" class:icon=resumeIcon>
-								<div class="text">Resume <br>Respirator Selection</div>
-							</a>
-						{ /if }
-					</div>
-					<div class="inner" style="max-height: { jobMaxHeight }px;">
-						<Job bind:job="$job" {asr} only="true" />
-						<div style="text-align: right;"><a class="button my-info" href="{asr.makePath('app.info')}">My info</a></div>
-					</div>
-					
-				</div>
-			{ /if }
-
-		</div>
+	<div class="appname">Respirators 101 <div class="nav-button close icon-close" on:click="set({ sidebarOpen: false })">close menu</div></div>
+	<div class="main" on:click="closeMenu(event)">
+		<Menu {asr} />
 	</div>
 
 </div>
+
+<div class="elsewhere" hidden="{ !(sidebarOpen || jobOpen) }" on:click="set({ sidebarOpen: false, jobOpen: false })"></div>
+
+<nav>
+	{ #if categoryParent }
+		<a class="back nav-button icon-angle-left" href="{ categoryParent }">back</a>
+	{ :elseif backButton }
+		<a class="back nav-button icon-angle-left" href="javascript:window.history.go(-1);">back</a>
+	{ /if }
+
+	<div class="nav-button menu icon-menu" on:click="set({ sidebarOpen: true })">open menu</div>
+
+	<div class="title"><div class="inner">{ $nav && $nav.title }</div></div>
+
+	<a class="nav-button home icon-home2" href="{ asr.makePath('app.home') }">go home</a>
+</nav>
+
+{ #if $nav && $nav.sub }
+	<div class="rednav" bind:offsetHeight="redNavHeight">
+			
+		{ #if $nav.sub.prev }<div class="prev"><a class="icon-chevron-circle-left" href="{ $nav.sub.prev }"><span class="text">Previous page</span></a></div>{ /if }
+
+		<div class="title"><div class="inner">{ $nav.sub.title }</div></div>
+
+		{ #if $nav.sub.next }<div class="next"><a class="icon-chevron-circle-right" href="{ $nav.sub.next }"><span class="text">Next page</span></a></div> { /if }
+
+	</div> 
+{ /if }
+
+<div ref:ey id="main" style="padding-top: { apertureMarginTop }px; padding-bottom: { showState ? 70 : 0 }px">
+	<uiView></uiView> 
+</div>
+
+<div id="domlog"></div>
+
+{ #if showState }
+	<div class="state" ref:state style="bottom: { jobOpen ? 0 : -jobHeight }px" on:click="closeJob(event)" class:transitioning="transitioning">
+
+		<div class="header" on:click="set({ jobOpen: !jobOpen })">
+			<div class="current-job" bind:offsetWidth="currentJobWidth"> <div class="label">Current Job</div> { $job.name } </div>
+
+			{ #if showResumeSelectionButton }
+				<a class="in-selection" href="{ $job.options ? asr.makePath('app.options-list', {id: $job.options}) : asr.makePath('app.respirator-picker', {id: $job.RSLStep}) }" bind:offsetWidth="resumeWidth" class:icon=resumeIcon>
+					<div class="text">Resume <br>Respirator Selection</div>
+				</a>
+			{ /if }
+		</div>
+		<div class="inner" style="max-height: { jobMaxHeight }px;">
+			<Job bind:job="$job" {asr} only="true" />
+			<div style="text-align: right;"><a class="button my-info" href="{asr.makePath('app.info')}">My info</a></div>
+		</div>
+		
+	</div>
+{ /if }
 
 <script>
 
@@ -81,11 +72,24 @@
 			Menu: 'lib/Menu.html',
 			Job: './info/Job.html'
 		},
+		onstate({ changed, current }) {
+			if(current.jobOpen || current.sidebarOpen) {
+				document.body.classList.add('lock')
+			} else {
+				document.body.classList.remove('lock')
+			}
+		},
+		onupdate({ changed, current }) {
+			if((changed.showState || changed.jobOpen) && this.refs.state) {
+				if(current.jobOpen) {
+					setTimeout(() => this.refs.state.classList.remove('transitioning'), 300)
+				} else {
+					this.refs.state.classList.add('transitioning')
+				}
+			}
+
+		},
 		methods: {
-			focusContent() {
-				this.set({ sidebarOpen: false })
-				store.set({ jobOpen: false })
-			},
 			closeMenu(event) {
 				if(event.target.nodeName == 'A') this.set({ sidebarOpen: false })
 			},
@@ -103,6 +107,9 @@
 		},
 		store: () => store,
 		oncreate () {
+
+			setInterval(() => this.set({ jobHeight: this.refs.state ? this.refs.state.offsetHeight : 9999 }), 100)
+			this.refs.ey.addEventListener('openJob', () => this.set({ jobOpen: true }))
 
 			// console.log = console.error = m => {
 			// 	let div = document.createElement('div')
@@ -149,7 +156,7 @@
 				if(window.tableDragging || editing) return
 
 				event = e.originalEvent || e
-				if(event.scale !== 1) {
+				if(event.scale && event.scale !== 1) {
 					return
 				}
 
@@ -175,8 +182,7 @@
 
 			const renderSlide = () => {
 
-				let { wrapperX, jobY, sidebarOpen, jobHeight } = this.get()
-				let { jobOpen } = store.get()
+				let { wrapperX, sidebarOpen } = this.get()
 
 				let target = sidebarOpen ? 0 : -300
 				if(!prev && target !== wrapperX) wrapperX += (target - wrapperX) * .3
@@ -184,15 +190,7 @@
 				wrapperX = snapTo(wrapperX, -300)
 				wrapperX = snapTo(wrapperX, 0)
 
-				if(jobHeight) {
-					let target2 = jobOpen ? -jobHeight : 0
-					if(target2 !== jobY) jobY += (target2 - jobY) * .3
-
-					// jobY = snapTo(jobY, -jobHeight)
-					jobY = snapTo(jobY, 0)
-				}
-
-				this.set({ wrapperX, jobY })
+				this.set({ wrapperX })
 			}
 
 			function render() {
@@ -206,7 +204,7 @@
 				if(e.target.tagName !== 'A') return true
 				const a = e.target
 
-				if(a.href && a.host !== window.location.host && a.href.indexOf('javascript:') === -1) {
+				if(a.href && !~a.href.indexOf(window.location.host) && a.href.indexOf('javascript:') === -1) {
 					e.preventDefault()
 					e.stopPropagation() 
 					window.open(a.href, '_blank')
@@ -214,8 +212,7 @@
 			})
 
 			const stateChange = e => {
-				this.set({ stateName: e.state.name, sidebarOpen: false })
-				store.set({ jobOpen: false })
+				this.set({ stateName: e.state.name, sidebarOpen: false, jobOpen: false })
 			}
 
 			// captures event from router
@@ -238,7 +235,7 @@
 
 		},
 		data: () => ({
-			jobY: 0,
+			jobHeight: 9999,
 			wrapperX: -300,
 			maxResumeWidth: 0,
 			resumeWidth: 0,
@@ -252,286 +249,265 @@
 
 	@import "colors";
 
-	.maxwidth {
-		position:absolute;
+	nav {
+		position: fixed;
 		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
 		max-width: 800px;
+		width:100%;
+		left: 0; right: 0;
 		margin: 0 auto;
-		overflow:hidden;
-	}
+		height: 50px;
+		background: $blue3;
+		z-index: 1;
 
-	.wrapper {
+		.title {
+			display: table;
+			width: 100%;
+			.inner {
+				display: table-cell;
+				text-align: center;
+				font-family: "Roboto Condensed";
+				text-transform: uppercase;
+				color: #fff;
+				height: 50px;
+				vertical-align: middle;
+			}
+		}
+
+	}
+	
+	.nav-button {
 		position: absolute;
 		top: 0;
-		right: 0;
-		bottom: 0;
+		height: 50px;
+		text-indent: -99999px;
+		overflow: hidden;
+		text-decoration: none;
+
+		&::before {
+			text-indent: 0;
+			width: 50px;
+			font-size: 30px;
+			line-height: 50px;
+			color: #fff;
+			background: $blue3;
+			cursor: pointer;
+			text-align: center;
+			display: block;
+		}
+
+		&.back {
+			z-index: 2;
+			&::before {
+				margin-left: -2px;
+			}
+		}
+		&.home {
+			right: 0;
+		}
+	}
+
+	.rednav {
+		position: fixed;
+		top: 50px;
+		max-width: 800px;
+		width:100%;
+		left: 0; right: 0;
+		margin: 0 auto;
+		background: $red4;
+		z-index: 1;
+
+		.title {
+			display: table;
+			color: #fff;
+			width: 100%;
+
+			.inner {
+				display: table-cell;
+				text-align: center;
+				font-family: "Roboto Condensed";
+				color: #fff;
+				padding: 10px 40px;
+				line-height: 20px;
+				vertical-align: middle;
+			}
+		}
+
+		.prev, .next {
+			position: absolute;
+			top: 50%;
+			margin-top: -20px;
+
+			a { 
+				padding: 0;
+				display: block;
+				width: 26px;
+				height: 26px;
+				text-align: center;
+				line-height: 26px;
+				color: #fff;
+				text-decoration: none;
+				font-size: 26px;
+				margin: 7px 10px;
+
+				.text {
+					text-indent: -9999px;
+					display: block;
+				}
+			}
+		}
+		.prev { left: 0; }
+		.next { right: 0; }
+	}
+
+	#main {
+		max-width: 800px;
+		margin: 0 auto;
+
+		&.locked {
+			position: absolute;
+			overflow: hidden;
+			height: 100%;
+		}
+	}
+
+	.sidebar {
+		position: fixed;
+		top: 0;
+		right: calc(100% - 300px); 
+		height: 100%;
 		left: 0;
-		width: calc(100% + 300px);
+		background: $blue3;
+		color: #fff;
+		font-size: 14px;
+		z-index: 4;
+    	transform: translate3d(0,0,0);
+
+		.nav-button {
+			left: auto;
+			right: 0;
+
+			&::before {
+				background: $blue5;
+			}
+		}
 
 		.main {
 			position: absolute;
-			top: 50px;
-			right: 0;
-			left:0;
-			bottom: 0;
-			overflow-y: auto;
-			overflow-x: hidden;
-
-			&.locked {
-				overflow: hidden;
-			}
-		}
-		
-		.nav-button {
-			position: absolute;
-			top: 0;
-			height: 50px;
-			text-indent: -99999px;
-			overflow: hidden;
-			text-decoration: none;
-
-			&::before {
-				text-indent: 0;
-				width: 50px;
-				font-size: 30px;
-				line-height: 50px;
-				color: #fff;
-				background: $blue3;
-				cursor: pointer;
-				text-align: center;
-				display: block;
-			}
-
-			&.back {
-				z-index: 2;
-				&::before {
-					margin-left: -2px;
-				}
-			}
-			&.home {
-				right: 0;
-			}
-		}
-
-		.left {
-			position: absolute;
-			top: 0;
-			right: calc(100% - 300px); 
-			bottom: 0;
-			left: 0;
-			background: $blue3;
-			color: #fff;
-			font-size: 14px;
-
-			.nav-button {
-				left: auto;
-				right: 0;
-
-				&::before {
-					background: $blue5;
-				}
-			}
-		}
-
-		.right {
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 300px;
-			z-index: 3;
-
-			.elsewhere {
-				display: none;
-				position:absolute;
-				top:0;
-				right:0;
-				bottom:0;
-				left:0;
-				z-index: 3;
-				background: rgba(255,255,255,0.2);
-			}
-
-			nav {
-				width: 100%;
-				height: 50px;
-				background: $blue3;
-
-				.title {
-					display: table;
-					width: 100%;
-					.inner {
-						display: table-cell;
-						text-align: center;
-						font-family: "Roboto Condensed";
-						text-transform: uppercase;
-						color: #fff;
-						height: 50px;
-						vertical-align: middle;
-					}
-				}
-			}
-
-			.rednav {
-				position: relative;
-				background: $red4;
-				width:100%;
-
-				.title {
-					display: table;
-					color: #fff;
-					width: 100%;
-
-					.inner {
-						display: table-cell;
-						text-align: center;
-						font-family: "Roboto Condensed";
-						color: #fff;
-						padding: 10px 40px;
-						line-height: 20px;
-						vertical-align: middle;
-					}
-				}
-
-				.prev, .next {
-					position: absolute;
-					top: 50%;
-					margin-top: -20px;
-
-					a { 
-						padding: 0;
-						display: block;
-						width: 26px;
-						height: 26px;
-						text-align: center;
-						line-height: 26px;
-						color: #fff;
-						text-decoration: none;
-						font-size: 26px;
-						margin: 7px 10px;
-
-						.text {
-							text-indent: -9999px;
-							display: block;
-						}
-					}
-				}
-				.prev { left: 0; }
-				.next { right: 0; }
-			}
-
-			.state {
-				position: absolute;
-				top: 100%;
-				left: 0;
-				right: 0;
-				background: #fff;
-				z-index: 4;
-
-				.header {
-					cursor: pointer;
-					position: relative;
-					margin-top: -50px;
-					background: #fff;
-					height: 50px;
-    				box-shadow: 0px 0px 10px #bbb;
-
-					.current-job {
-						color: $green;
-						height: 50px;
-						line-height: 1.4;
-						padding-left: 42px;
-						background-image: url(icons/my-info-colored.png);
-						background-size: 26px;
-						background-position: 8px center;
-						background-repeat: no-repeat;
-						display: inline-block;
-						vertical-align: middle;
-						white-space: nowrap;
-
-						.label {
-							font-size: 10px;
-							text-transform: uppercase;
-							font-weight: bold;
-							margin-top: 8px;
-						}
-					}
-
-					.in-selection {
-						background: #fff;
-						padding-left: 44px;
-						color: #4c5a8d;
-						position: absolute;
-						right: 0;
-						top: 0;
-						height: 50px;
-						text-decoration: none;
-						background-image: url(icons/respirator-colored.png);
-						background-size: 28px;
-						background-position: 8px center;
-						background-repeat: no-repeat;
-						box-sizing: border-box;
-
-						&.icon {
-							left: calc(100% - 44px);
-							right: auto;
-						}
-
-						.text {
-							text-transform: uppercase;
-							font-size: 10px;
-							font-weight: bold;
-							margin-top:11px;
-							padding-right: 10px;
-							line-height: 14px;
-						}
-					}
-				}
-
-				.inner {
-					overflow: auto;
-
-					:global(.job) {
-						margin: 0;
-						border-top: 1px solid #eee;
-						padding-top: 10px;
-					}
-
-					.my-info {
-						background: $red3;
-						margin: 0 20px 20px 0;
-
-						@media (max-width: 400px) {
-							margin: 0 10px 10px 0;
-						}
-					}
-				}
-			}
-		}
-
-		&.jobOpen, &.sidebarOpen {
-			.elsewhere {
-				display: block;
-			}
-		}
-
-		&.jobOpen {
-			.job {
-				box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.4);
-			}
+		    top: 50px;
+		    right: 0;
+		    left: 0;
+		    bottom: 0;
+		    overflow-y: auto;
+		    overflow-x: hidden;
+			-webkit-overflow-scrolling: touch;
 		}
 
 		&.sidebarOpen {
-			.right {
-				box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.4);
-				
-				nav {
-					.close {
-						z-index: 1;
-					}
+			box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.4);
+		}
+	}
+
+	.elsewhere {
+		position:fixed;
+		top:0;
+		right:0;
+		bottom:0;
+		left:0;
+		z-index: 2;
+		background: rgba(255,255,255,0.2);
+	}
+
+	.state {
+		position: fixed;
+		max-width: 800px;
+		transition: bottom .3s cubic-bezier(0, 0, 0, 1);
+		left: 0;
+		right: 0;
+		margin: 0 auto;
+		background: #fff;
+		z-index: 3;
+		box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.4);
+
+		&.transitioning {
+    		transform: translate3d(0,0,0);
+		}
+
+		.header {
+			cursor: pointer;
+			position: relative;
+			margin-top: -50px;
+			background: #fff;
+			height: 50px;
+			box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.4);
+
+			.current-job {
+				color: $green;
+				height: 50px;
+				line-height: 1.4;
+				padding-left: 42px;
+				background-image: url(icons/my-info-colored.png);
+				background-size: 26px;
+				background-position: 8px center;
+				background-repeat: no-repeat;
+				display: inline-block;
+				vertical-align: middle;
+				white-space: nowrap;
+
+				.label {
+					font-size: 10px;
+					text-transform: uppercase;
+					font-weight: bold;
+					margin-top: 8px;
+				}
+			}
+
+			.in-selection {
+				background: #fff;
+				padding-left: 44px;
+				color: #4c5a8d;
+				position: absolute;
+				right: 0;
+				top: 0;
+				height: 50px;
+				text-decoration: none;
+				background-image: url(icons/respirator-colored.png);
+				background-size: 28px;
+				background-position: 8px center;
+				background-repeat: no-repeat;
+				box-sizing: border-box;
+
+				&.icon {
+					left: calc(100% - 44px);
+					right: auto;
+				}
+
+				.text {
+					text-transform: uppercase;
+					font-size: 10px;
+					font-weight: bold;
+					margin-top:11px;
+					padding-right: 10px;
+					line-height: 14px;
+				}
+			}
+		}
+
+		.inner {
+			overflow: auto;
+
+			:global(.job) {
+				margin: 0;
+				border-top: 1px solid #eee;
+				padding-top: 10px;
+			}
+
+			.my-info {
+				background: $red3;
+				margin: 0 20px 20px 0;
+
+				@media (max-width: 400px) {
+					margin: 0 10px 10px 0;
 				}
 			}
 		}
