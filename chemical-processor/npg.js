@@ -261,7 +261,7 @@ for(let c of chemical_source.chemicals) {
 		physical_description: c["p"],
 		exposure_routes: c["e"].charAt(0).toUpperCase() + c["e"].slice(1) + '.',
 		target_organs: c["to"].charAt(0).toUpperCase() + c["to"].slice(1) + '.',
-		eye: /eye/i.test(c["to"]) ? 1 : 0,
+		eye: (/eye/i.test(c["to"]) || /eye/i.test(c['pe'])) ? 1 : 0,
 		one_ppm_in_mgm3,
 		ps: c["ps"] || "No recommendation",
 		pe: c["pe"] || "No recommendation",
