@@ -117,7 +117,6 @@ class JobStore extends LocalStore {
 				date: `${time.getFullYear()}-${zeroify(time.getMonth()+1)}-${zeroify(time.getDate())}`,
 				name: 'New Job',
 				openChemicals: {},
-				chemicalsScrollTop: 0,
 				table: [
 					/*{
 						SCHEMA:
@@ -218,6 +217,11 @@ store.on('state', ({current, changed}) => {
 			r.hr = (r.measured.value / r.limit.value)
 		}
 
+	}
+
+	let maxHR = job.table.reduce((m, r) => Math.max(m, r.hr), 0)
+	for(let r of job.table) {
+		r.highest_hr = r.hr == maxHR
 	}
 
 	store.set({ job })
