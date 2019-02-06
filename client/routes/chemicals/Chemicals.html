@@ -40,7 +40,7 @@
 	This will be set as the current job ({$job.name})'s exposure limit.
 
 	{#if ELModal}
-		<div style="margin: 10px 0"><ChemicalSummary {...ELModal.chemical} /></div>
+		<div style="margin: 10px 0" class="override pls"><ChemicalSummary {...ELModal.chemical} {asr} /></div>
 		<div style="margin: 10px 0"><ExposureLimits {...ELModal} /></div>
 	{/if}
 
@@ -395,6 +395,10 @@
 	}
 	.saveEL.button {
 		background: $green;
+	}
+
+	:global(.override.pls .summary .legend) {
+		background: #fff !important;
 	}
 	
 </style> 

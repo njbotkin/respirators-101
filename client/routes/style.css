@@ -289,7 +289,7 @@ ol {
     color: $red1;
     font-size: 70%;
     text-transform: uppercase;
-    margin-left: 5px;
+    margin: 2px;
 
     &::before {    
     	content: '\e8f4';
@@ -309,5 +309,5 @@ ol {
     max-width: 200px;
     color: #888;
     font-size: 70%;
-    margin-left: 5px;
+    margin: 2px;
 }

@@ -72,7 +72,7 @@
 			Menu: 'lib/Menu.html',
 			Job: './info/Job.html'
 		},
-		onstate({ changed, current }) {
+		onstate({ current }) {
 			if(current.jobOpen || current.sidebarOpen) {
 				document.body.classList.add('lock')
 			} else {
@@ -94,7 +94,7 @@
 				if(event.target.nodeName == 'A') this.set({ sidebarOpen: false })
 			},
 			closeJob(event) {
-				if(event.target.nodeName == 'A') store.set({ jobOpen: false })
+				if(event.target.nodeName == 'A') this.set({ jobOpen: false })
 			}
 		},
 		computed: {

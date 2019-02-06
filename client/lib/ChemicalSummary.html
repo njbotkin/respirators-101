@@ -1,23 +1,80 @@
-<div class="name">{ @html name }</div>
+<div class="summary" class:editing="editing">
+	<div class="legend-cont"><div class="legend">Chemical</div></div>
+	<div class="name">{ @html name }</div>
 
-{ #if idlh }
-	<div class="property inline" style="padding: 0; margin: 0">
-		<div class="label">IDLH</div>
-		<div class="value">{ @html idlh }</div>
-		<div class="note">{ @html idlh_notes }</div>
-	</div>
-{ /if }
+	{ #if idlh }
+		<div><div class="property inline" style="padding: 0; margin: 0">
+			<div class="label">IDLH</div>
+			<div class="value">{ @html idlh }</div>
+			<div class="note">{ @html idlh_notes }</div>
+		</div></div>
+	{ /if }
 
-{ #if eye }
-	<div class="eye">Eye irritant</div>
-{ /if }
+	{ #if eye }
+		<div class="eye">Eye irritant</div>
+	{ /if }
 
-{ #if skin }
-	<div class="skin">Risk of dermal absorption. Prevent skin exposure as necessary.</div>
-{ /if }
+	{ #if skin }
+		<div class="skin">Risk of dermal absorption. Prevent skin exposure as necessary.</div>
+	{ /if }
+
+	{#if editing}<div class="button-cont"><a class="button" href="{ asr.makePath('app.chemicals') }">Change</a></div>{/if}
+</div>
 
 <style>
+	@import 'colors';
+
 	.name {
 		font-weight: bold;
+	}
+
+	.summary {
+	    padding: 10px 10px 10px 10px;
+	    display: table;
+	    margin: 15px 0 10px 0;
+	    border-radius: 5px;
+	    border: 1px solid color($red2);
+
+	    &.editing {
+	    	margin-bottom: 25px;
+	    	padding-bottom: 20px;
+	    }
+
+	    .legend-cont {
+	        height:0;
+	        margin-top: -23px;
+	        text-align: left;
+	        margin-bottom: 23px;
+	    }
+
+	    .legend {
+	        padding: 0 2px;
+	        line-height: 20px;
+	        background: $bg;
+	        font-size: 80%;
+	        text-align: left;
+	        text-transform: uppercase;
+	        font-weight: 900;
+	        display: inline;
+	        color: $red2;
+
+	        &.editing {
+	        	background: #fff;
+	        }
+	    }
+
+	    .button-cont {
+	        height:0;
+	        text-align: right;
+	    }
+
+	    .button {
+	        color: #fff;
+	        background: $red2;
+	        white-space: nowrap;
+	        margin-top: 5px;
+	        padding: 0 10px;
+	        line-height: 30px;
+	    }
 	}
 </style>

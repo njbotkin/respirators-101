@@ -26,9 +26,9 @@
 	<div class="content">
 
 		{ #if job.chemical }
-			<ChemicalSummary {...job.chemical} />
+			<ChemicalSummary {...job.chemical} {asr} {editing} />
 		{ :elseif editing }
-			To automatically populate exposure limits, <a href="{ asr.makePath('app.chemicals') }" class="button selectchemical">Select a chemical</a>
+			To automatically populate exposure limits, <a href="{ asr.makePath('app.chemicals') }">select a chemical</a>.
 		{ /if }
 
 		<JobTable {...job} {editing} {asr} />
