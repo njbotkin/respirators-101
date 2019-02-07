@@ -5,7 +5,7 @@
 			Matched by name
 		1) Table-Z1 gets added.  On conflict, NPG overwrites
 			Provides name, CAS, and ELs
-		3) Bring in manual data entry.  In contains manual corrections where the NPG data is either too obscure to bother importing, or is inconsistent.  Slso includes data from Tables z-2 and z-3.  It overwrites data found in the NPG.
+		3) Bring in manual data entry.  In contains manual corrections where the NPG data is either too obscure to bother importing, or is inconsistent.  Also includes data from Tables z-2 and z-3.  It overwrites data found in the NPG.
 
 */
 
@@ -83,17 +83,43 @@ for(let name in chemicals) {
 	}
 }
 
-// make "ceiling" duration last
+// sort standards
+const standards_order = {
+	'niosh_rel': 0,
+	'osha_pel': 1,
+	'cal_osha_pel': 2,
+	'msha_pel': 3
+}
+for(let name in chemicals) {
+	let c = chemicals[name]
+	let standards = Object.entries(c.standards).sort( ([a_k], [b_k]) => standards_order[a_k] - standards_order[b_k] )
+	c.standards = {}
+	for(let [k, o] of standards) {
+		c.standards[k] = o
+	}
+}
+
+// sort durations
+const durations_order = {
+	default: 0,
+	default1: 1,
+	default2: 2,
+	stel: 3,
+	excursion: 4,
+	ceiling: 5,
+	max: 6
+}
 for(let name in chemicals) {
 	let c = chemicals[name]
 	for(let standard in c.standards) {
 		for(let form in c.standards[standard].forms) {
-			let durations = c.standards[standard].forms[form].durations
-			if(durations['ceiling']) {
-				let ceiling = durations['ceiling']
-				delete durations['ceiling']
-				durations['ceiling'] = ceiling
+
+			let durations = Object.entries(c.standards[standard].forms[form].durations).sort( ([a_k], [b_k]) => durations_order[a_k] - durations_order[b_k] )
+			c.standards[standard].forms[form].durations = {}
+			for(let [k, o] of durations) {
+				c.standards[standard].forms[form].durations[k] = o
 			}
+
 		}
 	}
 }

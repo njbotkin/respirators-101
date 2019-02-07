@@ -17,8 +17,13 @@ let manual = {
 							"ceiling": {
 	                            "values": {
 	                                "ppm": "25"
-	                            },
-								"max": "50 ppm (10 min)"
+	                            }
+							},
+							"max": {
+								values: {
+									ppm: 50
+								},
+								duration: "(10 min)"
 							}
 						}
 					}
@@ -35,8 +40,16 @@ let manual = {
 					"Default": {
 						"durations": {
 							"ceiling": {
-								"max": "0.025 mg/m<sup>3</sup>",
-								duration: 30
+	                            "values": {
+	                                "mgm3": "0.005"
+	                            },
+	                            duration: 30
+							},
+							max: {
+								values: {
+									mgm3: '0.025'
+								},
+								duration: '30 min'
 							}
 						}
 					}

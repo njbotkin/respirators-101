@@ -54,7 +54,8 @@ export function durationsPretty(duration, standard) {
 		default2: s[standard],
 		ceiling: "Ceiling",
 		stel: "STEL",
-		excursion: "Excursion"
+		excursion: "Excursion",
+		max: "Max Peak"
 	})[duration]
 }
 

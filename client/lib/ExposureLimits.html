@@ -111,31 +111,16 @@
 
 	import { unitsPretty, EL_is_current, durationsPretty } from 'lib/util.js'
 
-	const standards_order = {
-		'niosh_rel': 0,
-		'osha_pel': 1,
-		'cal_osha_pel': 2,
-		'msha_pel': 3
-	}
-
 	export default {
 		helpers: {
 			humanTime: time => time >= 60 ? `${time/60} hour${time>60?'s':''}` : `${time} minute${time>1?'s':''}`,
 			EL_is_current,
-			sort_filter_standards: (standards, standardKey) => {
-				if(standardKey) {
-					return Object.entries(standards).filter(([k]) => k == standardKey)
-				} else {
-					return Object.entries(standards).sort( ([a_k], [b_k]) => standards_order[a_k] - standards_order[b_k] )
-				}
-			},
-			filter_forms: (forms, formKey) => {
-				if(formKey) {
-					return Object.entries(forms).filter(([k]) => k == formKey)
-				} else {
-					return Object.entries(forms)
-				}
-			},
+			sort_filter_standards: (standards, standardKey) => standardKey
+				? Object.entries(standards).filter(([k]) => k == standardKey)
+				: Object.entries(standards),
+			filter_forms: (forms, formKey) => formKey
+				? Object.entries(forms).filter(([k]) => k == formKey)
+				: Object.entries(forms),
 			durationsPretty
 		},
 		data: () => ({
@@ -275,6 +260,10 @@
 		.top {
 			border-bottom: 1px solid #bbb;
 		}
+	}
+
+	:global(.representation .unit) {
+		margin-top: 5px !important;
 	}
 
 </style>

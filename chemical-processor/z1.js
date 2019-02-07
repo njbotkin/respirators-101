@@ -1,4 +1,3 @@
-
 const { readFileSync } = require('fs')
 const { join: joinPath } = require(`path`)
 const cheerio = require('cheerio')
@@ -568,3 +567,5 @@ chemicals['Crotonaldehyde'].cas = '123-73-9 / 4170-30-3'
 chemicals['Emery'].cas += ' / 12415-34-8'
 
 chemicals['Cotton dust'].standards.niosh_rel.notes = chemicals['Cotton dust'].standards.niosh_rel.notes.filter(n => n.trim() != '&lt;')
+
+chemicals['Cadmium (as Cd)'].standards.cal_osha_pel.notes = ['See sections <a href="https://www.dir.ca.gov/title8/1532.html">1532</a> & <a href="https://www.dir.ca.gov/title8/5207.html">5207</a>']
