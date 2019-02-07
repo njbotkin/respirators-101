@@ -61,6 +61,9 @@
 			color: $red2;
 			cursor: default;
 		}
+		.max {
+			color: #bd0000;
+		}
 
 		.operator {
 			font-size: 150%;
@@ -146,7 +149,7 @@
 					<td class="operator">÷</td>
 
 					<!-- limit -->
-					<td class:editable=r.limit.manual on:click="edit_limit(i)" style="text-align: right">{ #if !r.limit.manual }{ durationsPretty(r.limit.durationKey, standardKey) }{ /if }</td>
+					<td class:editable=r.limit.manual class="{r.limit.durationKey}" on:click="edit_limit(i)" style="text-align: right">{ #if !r.limit.manual }{ durationsPretty(r.limit.durationKey, standardKey) }{ /if }</td>
 					<td class:editable=r.limit.manual on:click="edit_limit(i)">
 						{ #if r.limit.value || r.limit.values }
 							{ #if r.limit.manual }
@@ -159,7 +162,7 @@
 						{ /if }
 					</td>
 					<td class:editable=r.limit.manual on:click="edit_limit(i)" style="text-align: left">
-						{ #if r.limit.duration }{ r.limit.duration / r.limit.timeUnitMultiplier } { r.limit.timeUnit }{ /if }
+						{ r.limit.duration ? r.limit.durationKey == 'max' ? r.limit.duration : r.limit.duration / r.limit.timeUnitMultiplier + ' ' + r.limit.timeUnit : '' }
 					</td>
 
 					<td class="operator">=</td>

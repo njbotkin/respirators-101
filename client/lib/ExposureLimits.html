@@ -27,7 +27,7 @@
 								<table>
 									{ #each Object.entries(form.durations) as [durationKey, duration] }
 
-										<tr class="duration">
+										<tr class="duration { durationKey }">
 											<td class="label">{ durationsPretty(durationKey, standardKey) }</td>
 											<td class="value">
 												{ #each Object.entries(duration.values) as [unit, value] }
@@ -47,16 +47,9 @@
 												{ /each }
 											</td>
 
-											<td class="period">{#if duration.duration}{ humanTime(duration.duration) }{/if}</td>
+											<td class="period">{ duration.duration ? durationKey == 'max' ? duration.duration : humanTime(duration.duration) : '' }</td>
 
 										</tr>
-
-										{#if duration.max}
-											<tr class="property max"><td colspan="3">
-												<div class="label">Max peak</div>
-												<div class="value">{@html duration.max }</div>
-											</td></tr>
-										{/if}
 
 										{ #if duration.notes }
 											{ #each duration.notes as note }
@@ -179,6 +172,10 @@
 		color: $ELText;
 	}
 
+	.max {
+		color: #bd0000;
+	}
+
 	.form.property {
 		cursor: pointer;
 
@@ -225,20 +222,6 @@
 		}
 	}
 
-	.property.max {
-		padding: 0;
-		border: 0;
-		color: #bd0000;
-		display: table-row;
-		.label {
-			padding: 0;
-		}
-		.value { 
-			font-size: 80%;
-    		max-width: 200px;
-		}
-	}
-
 	.period {
 		font-size: 80%;
 	}
@@ -263,7 +246,9 @@
 	}
 
 	:global(.representation .unit) {
-		margin-top: 5px !important;
+		sup	{
+			line-height: 1
+		}
 	}
 
 </style>

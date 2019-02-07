@@ -128,8 +128,11 @@ let manual = {
 	            "forms": {
 	                "Default": {
 	                    "durations": {
-							"ceiling": {
-								"max": "100 ppm (30 min)"
+							"max": {
+								values: {
+									ppm: 100
+								},
+								duration: '30 min'
 							}
 	                    }
 	                }
@@ -170,8 +173,11 @@ let manual = {
 	            "forms": {
 	                "Default": {
 	                    "durations": {
-							"ceiling": {
-								"max": "200 ppm (5 min in any 4 hours)"
+							"max": {
+								values: {
+									ppm: 200
+								},
+								duration: '5 min in any 3 hr'
 							}
 	                    }
 	                }
@@ -230,8 +236,11 @@ let manual = {
 	            "forms": {
 	                "Default": {
 	                    "durations": {
-							"ceiling": {
-								"max": "50 ppm (5 min)"
+							"max": {
+								values: {
+									ppm: 50
+								},
+								duration: '5 min'
 							}
 	                    }
 	                }
@@ -261,8 +270,11 @@ let manual = {
 	            "forms": {
 	                "Default": {
 	                    "durations": {
-							"ceiling": {
-								"max": "200 ppm (5 min in any 3 hours)"
+							"max": {
+								values: {
+									ppm: 200
+								},
+								duration: "5 min in any 3 hours"
 							}
 	                    }
 	                }
@@ -384,9 +396,12 @@ let manual = {
 	            "forms": {
 	                "Default": {
 	                    "durations": {
-							"ceiling": {
-								"max": "50 ppm (10 min once only if no other measurable exposure occurs.)"
-							}
+	                    	max: {
+	                    		values: {
+	                    			ppm: 50
+	                    		},
+	                    		duration: '10 min once only if no other measurable exposure occurs.'
+	                    	}
 	                    }
 	                }
 	            },
@@ -473,9 +488,12 @@ let manual = {
 	            "forms": {
 	                "Default": {
 	                    "durations": {
-							"ceiling": {
-								"max": "300 ppm (5 min in any 3 hours)"
-							}
+	                    	max: {
+	                    		values: {
+	                    			ppm: 300
+	                    		},
+	                    		duration: '5 min in any 3 hours'
+	                    	}
 	                    }
 	                }
 	            },
@@ -574,9 +592,12 @@ let manual = {
 	            "forms": {
 	                "Default": {
 	                    "durations": {
-							"ceiling": {
-								"max": "600 ppm (5 min in any 3 hours)"
-							}
+	                    	max: {
+	                    		values: {
+	                    			ppm: 600
+	                    		},
+	                    		duration: '5 min in any 3 hours'
+	                    	}
 	                    }
 	                }
 	            },
@@ -616,9 +637,11 @@ let manual = {
 				"forms": {
 					"Default": {
 						"durations": {
-							"ceiling": {
-								"max": "300 ppm",
-								duration: "(5 min in any 3 hours)"
+							max: {
+								values: {
+									ppm: 300
+								},
+								duration: '5 min in any 3 hours'
 							}
 						}
 					}
@@ -659,8 +682,11 @@ let manual = {
 				"forms": {
 					"Default": {
 						"durations": {
-							"ceiling": {
-								"max": "500 ppm (10 min)"
+							max: {
+								values: {
+									ppm: 500
+								},
+								duration: '10 min'
 							}
 						}
 					}
@@ -701,8 +727,11 @@ let manual = {
 				"forms": {
 					"Default": {
 						"durations": {
-							"ceiling": {
-								"max": "300 ppm (5 min in any 2 hours)"
+							max: {
+								values: {
+									ppm: 300
+								},
+								duration: '5 min in any 2 hours'
 							}
 						}
 					}

@@ -239,3 +239,26 @@ my info stuff
 
 Acetaldehyde
 
+handy for ztables2
+	
+	thead th {
+	    position: sticky;
+		background: #fff;
+	    z-index: 100;
+	}
+
+	thead tr:nth-child(1) th {
+		top: 0;
+	}
+
+	thead tr:nth-child(2) th {
+		top: 36px;
+	}
+
+	thead tr:nth-child(3) th {
+	    top: 72px;
+	}
+
+	thead tr:nth-child(4) th {
+	    top: 149px;
+	}
