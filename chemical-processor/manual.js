@@ -227,7 +227,8 @@ let manual = {
 					}
 				}
 			}
-		}
+		},
+		z2: true
 	},
 	"Ethylene dibromide": {
 		"name_add": "(Z37.31-1970)",
@@ -899,6 +900,27 @@ let manual = {
 					}
 				},
 				notes: [linkify('[1910.1047]')]
+			},
+			"cal_osha_pel": {
+				"forms": {
+					"Default": {
+						"durations": {
+	                        "default": {
+	                            "values": {
+	                                "ppm": 1
+	                            },
+	                            "duration": 480
+	                        },
+	                        "stel": {
+	                            "values": {
+	                                "ppm": 5
+	                            },
+	                            "duration": 15
+	                        }
+						}
+					}
+				},
+				notes: [linkify('See Section 5220')]
 			}
 		}
 	},
