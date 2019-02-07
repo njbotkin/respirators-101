@@ -1185,7 +1185,7 @@ let manual = {
 					}
 				},
 				carcinogen: 1,
-				notes: ['(ultrafine particles)', linkify('See Appendix A'), linkify('See Appendix C')]
+				notes: ['Carcinogens (ultrafine particles)', linkify('See Appendix A'), linkify('See Appendix C')]
 			},
 			cal_osha_pel: {
 				notes: [linkify('See PNOR')]
