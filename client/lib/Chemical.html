@@ -1,4 +1,4 @@
-<div class="chemical { (searching ? open : $job.openChemicals[i]) && 'open' }">
+<div class="chemical" class:open="searching ? open : $job.openChemicals[i]">
 	<div class="title" on:click="toggleOpen()">
 		<span class="name">{ @html searching ? highlight(name, nameIndices) : name }</span>
 		{ #if synonyms }
@@ -237,11 +237,7 @@
 		color: #888;
 		margin: 0 0 10px 0;
 	}
-
-	.top-blocks td {
-		width: 33%;
-	}
-
+	
 	.block {
 		margin: 20px 0;
 	}
@@ -259,10 +255,6 @@
 		display:block;
 		font-weight: bold;
 		font-size: 80%;
-	}
-
-	.protection label {
-		display: inline;
 	}
 
 	.synonyms {

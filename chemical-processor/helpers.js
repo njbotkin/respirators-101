@@ -24,8 +24,6 @@ function linkify(s) {
 // no duplicates
 function addNote(notes, note) {
 
-	// if(/TWA/.test(note)) console.log(note)
-
 	let split = note.split('<br>')
 	if(split.length > 1) {
 		for(let s of split) addNote(notes, s)
@@ -36,10 +34,11 @@ function addNote(notes, note) {
 	if(note == '') return
 
 	// if there's anything before an appendix link, split it into a separate note
-	split = note.match(/(.+)(See Appendix [a-zA-Z])/)
+	split = note.match(/(.+)(See Appendix [a-zA-Z])(.*)/)
 	if(split) {
 		addNote(notes, split[1])
 		addNote(notes, split[2])
+		addNote(notes, split[3])
 		return
 	}
 
