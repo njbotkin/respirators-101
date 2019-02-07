@@ -38,7 +38,8 @@ export const unitsPretty = {
 	mgvm3: 'mg V/m<sup>3</sup>',
 	mgv2o5m3: 'mg V<sub>2</sub>O<sub>5</sub>/m<sup>3</sup>',
 	pahsm3: 'mg PAHs/m<sup>3</sup>',
-	mgcro3: 'mg CrO<sup>3</sup>'
+	mgcro3m3: 'mg CrO<sub>3</sub>/m<sup>3</sup>',
+	mgcrvim3: 'mg Cr(VI)/m<sup>3</sup>'
 }
 
 export function durationsPretty(duration, standard) {

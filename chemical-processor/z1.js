@@ -332,6 +332,13 @@ const move = [
 		id: row => row.cells[SUBSTANCE].content == 'Coke oven emissions; see 1910.1029',
 		transform: row => row.cells[NIOSH_REL].content = row.cells[NIOSH_REL].content.replace('(benzene-soluble fraction)', '')
 	},
+	{
+		id: row => row.cells[SUBSTANCE].content == 'Molybdenum (as Mo)',
+		transform: (row, index) => {
+			z1_data[index+3].cells[SUBSTANCE].content = 'Insoluble Compounds - Respirable'
+			z1_data[index+3].cells[CAL_OSHA_PEL].content = z1_data[index+3].cells[CAL_OSHA_PEL].content.replace('(resp.)', '')
+		}
+	},
 
 	{
 		id: row => row.cells[SUBSTANCE].content == 'Copper',
@@ -434,7 +441,8 @@ let skip = [
 	'Tin',
 	'Nitroglycerine',
 	'Carbon black',
-	'Nickel metal and other compounds (as Ni)'
+	'Nickel metal and other compounds (as Ni)',
+	'Titanium dioxide - Total dust'
 ]
 
 let parent = null

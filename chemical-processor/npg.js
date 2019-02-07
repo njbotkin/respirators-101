@@ -174,7 +174,8 @@ const osha_note_filter = {
 	"Tetrachloroethylene": '(for 5 minutes in any 3-hour period), with a maximum peak of 300 ppm',
 	"Toluene": '500 ppm (10-minute maximum peak)',
 	"Trichloroethylene": '300 ppm (5-minute maximum peak in any 2 hours)',
-	"Silica, amorphous": 'TWA 20 mppcf (80 mg/m<SUP>3</SUP>/%SiO<SUB>2</SUB>)'
+	"Silica, amorphous": 'TWA 20 mppcf (80 mg/m<SUP>3</SUP>/%SiO<SUB>2</SUB>)',
+	'Molybdenum': '[*Note: The PEL also applies to other insoluble molybdenum compounds (as Mo).] See Appendix G'
 }
 function filter_osha_note(name, note) {
 	if(osha_note_filter[name]) {
@@ -285,6 +286,7 @@ for(let c of chemical_source.chemicals) {
 chemicals['Mercury (organo) alkyl compounds (as Hg)'].cas = '7439-97-6'
 chemicals['Chromic acid and chromates'].carcinogens = 1
 chemicals['Chromic acid and chromates'].standards.niosh_rel.forms.Cr.durations.default.duration = 480
+addNote(chemicals['Molybdenum'].standards.osha_pel.forms['Default'].notes, '[*Note: The PEL also applies to other insoluble molybdenum compounds (as Mo).] See Appendix G')
 
 // better search results
 chemicals['Particulates not otherwise regulated'].tags = 'pnor'

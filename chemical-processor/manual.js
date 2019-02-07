@@ -1056,7 +1056,7 @@ let manual = {
 						durations: {
 							default: {
 								values: {
-									mgm3: 0.001,
+									mgcrvim3: 0.001,
 								},
 								duration: 600
 							}
@@ -1070,7 +1070,7 @@ let manual = {
 						durations: {
 							default: {
 								values: {
-									mgcro3: 0.005,
+									mgcro3m3: 0.005,
 								},
 								duration: 480
 							}

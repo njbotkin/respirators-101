@@ -13,7 +13,7 @@
 			{ #if cas }
 				<div class="property inline">
 					<div class="label">CAS</div>
-					<div class="value">{ @html cas }</div>
+					<div class="value">{ @html cas.split('/').join('<br>') }</div>
 				</div>
 			{ /if }
 
@@ -237,7 +237,7 @@
 		color: #888;
 		margin: 0 0 10px 0;
 	}
-	
+
 	.block {
 		margin: 20px 0;
 	}
@@ -280,7 +280,7 @@
 	.z3 {
 		text-align: center;
 		margin: 20px 0;
-		font-size: 120%;
+		font-size: 100%;
 	}
 
 </style>
