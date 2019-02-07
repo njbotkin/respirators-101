@@ -44,6 +44,8 @@ function addNote(notes, note) {
 
 	note = linkify(note)
 
+	note = note.replace('Ca*', 'Carcinogen*')
+
 	for(let n of notes) {
 		if(n.toUpperCase().indexOf(note.toUpperCase()) > -1) return // no dupes
 	}
