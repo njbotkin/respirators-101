@@ -127,15 +127,34 @@
 
 <script>
 
+	function overlap([a, b], [c, d]) {
+		return (b <= d && a >= c) || (a < c && b > d) || (a < d && b > d) || (a < c && b > c)
+	}
+
 	function highlight(string, indices) {
 		if(!indices || !indices.length) return string
+
+		// not okay to highlight html
+		let skipranges = (string.match(/<[^>]+>/g) || []).map(m => [string.indexOf(m), string.indexOf(m) + m.length])
 
 		let highlit = ''
 		highlit += string.slice(0, indices[0][0])
 		for(let i = 0; i < indices.length; i++) {
 			let indice = indices[i]
 			
-			highlit += '<em>' + string.slice(indice[0], indice[1]+1) + '</em>'
+			let overlaps = false
+			for(let r of skipranges) {
+				if(overlap(indice, r)) {
+					overlaps = true
+					break
+				}
+			}
+			if(overlaps) {
+				highlit += string.slice(indice[0], indice[1]+1)
+			} else {
+				highlit += '<em>' + string.slice(indice[0], indice[1]+1) + '</em>'
+			}
+			
 			if(i+1 < indices.length) {
 				highlit += string.slice(indice[1]+1, indices[i+1][0])
 			}							
