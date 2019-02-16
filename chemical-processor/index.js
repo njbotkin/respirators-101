@@ -78,7 +78,8 @@ for(let name in chemicals) {
 		}
 	}
 	if(!Object.values(c.standards).length) {
-		console.log('NO ELs:', name)
+		// console.log('NO ELs:', name)
+		delete c.standards
 		// delete chemicals[name]
 	}
 }
@@ -92,6 +93,7 @@ const standards_order = {
 }
 for(let name in chemicals) {
 	let c = chemicals[name]
+	if(!c.standards) continue
 	let standards = Object.entries(c.standards).sort( ([a_k], [b_k]) => standards_order[a_k] - standards_order[b_k] )
 	c.standards = {}
 	for(let [k, o] of standards) {
@@ -111,6 +113,7 @@ const durations_order = {
 }
 for(let name in chemicals) {
 	let c = chemicals[name]
+	if(!c.standards) continue
 	for(let standard in c.standards) {
 		for(let form in c.standards[standard].forms) {
 
@@ -127,6 +130,7 @@ for(let name in chemicals) {
 // make "Default" state/form first
 for(let name in chemicals) {
 	let c = chemicals[name]
+	if(!c.standards) continue
 	for(let standard in c.standards) {
 		if(c.standards[standard].forms && c.standards[standard].forms['Default']) {
 			c.standards[standard].forms = Object.assign( { Default: c.standards[standard]['Default'] }, c.standards[standard].forms )
