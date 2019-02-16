@@ -1061,8 +1061,10 @@ let manual = {
 						}
 					}
 				},
+				notes: [linkify('See Appendix C')]
 			}
-		}
+		},
+		skin: 1
 	},
 
 	'Chromyl chloride': {
