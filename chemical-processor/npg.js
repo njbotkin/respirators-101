@@ -289,6 +289,7 @@ chemicals['Chromic acid and chromates'].standards.niosh_rel.carcinogens = 1
 chemicals['Chromic acid and chromates'].standards.niosh_rel.forms.Cr.durations.default.duration = 480
 chemicals['Lead'].standards.niosh_rel.forms.Default.durations.default.duration = 480
 addNote(chemicals['Molybdenum'].standards.osha_pel.forms['Default'].notes, '[*Note: The PEL also applies to other insoluble molybdenum compounds (as Mo).] See Appendix G')
+chemicals['Rosin core solder, pyrolysis products (as formaldehyde)'].standards.niosh_rel.notes = ['[*Note: "Ca" in the presence of formaldehyde, acetaldehyde, or malonaldehyde. See Appendices <a href="https://www.cdc.gov/niosh/npg/nengapdxa.html">A</a> & <a href="https://www.cdc.gov/niosh/npg/nengapdxc.html">C</a> (Aldehydes).]']
 
 // better search results
 chemicals['Particulates not otherwise regulated'].tags = 'pnor'
