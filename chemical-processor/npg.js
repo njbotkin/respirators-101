@@ -221,7 +221,7 @@ const renames = {
 	'Diazinon&reg;': 'Diazinon®',
 	'Vanadium dust': 'Vanadium dust (as V<sub>2</sub>O<sub>5</sub>)',
 	'Vanadium fume': 'Vanadium fume (as V<sub>2</sub>O<sub>5</sub>)',
-	'Talc (containing no asbestos and less than 1% quartz)': 'Talc (containing asbestos and less than 1% crystalline silica)'
+	// 'Talc (containing no asbestos and less than 1% quartz)': 'Talc (containing asbestos and less than 1% crystalline silica)'
 }
 
 function rename(name) {

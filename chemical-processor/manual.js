@@ -1457,7 +1457,7 @@ let z3 = [
 	'Silica, amorphous', 
 	'Mica (containing less than 1% quartz)', 
 	'Soapstone (containing less than 1% quartz)', 
-	// 'Talc (containing no asbestos and less than 1% quartz)',
+	'Talc (containing no asbestos and less than 1% quartz)',
 	'Talc (containing asbestos and less than 1% crystalline silica)',
 	'Tremolite, asbestiform',
 	'Asbestos',
