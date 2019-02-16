@@ -632,7 +632,7 @@ let manual = {
 		"z2": true
 	},
 	"Tetrachloroethylene": {
-		"name_add": "(Z37.31-1970)",
+		// "name_add": "(Z37.31-1970)",
 		"standards": {
 			"osha_pel": {
 				"forms": {
@@ -1455,8 +1455,8 @@ let z3 = [
 	'Silica, amorphous', 
 	'Mica (containing less than 1% quartz)', 
 	'Soapstone (containing less than 1% quartz)', 
-	'Talc (containing no asbestos and less than 1% quartz)',
-	// 'Talc (containing asbestos and less than 1% crystalline silica)',
+	// 'Talc (containing no asbestos and less than 1% quartz)',
+	'Talc (containing asbestos and less than 1% crystalline silica)',
 	'Tremolite, asbestiform',
 	'Asbestos',
 	'Portland cement',
