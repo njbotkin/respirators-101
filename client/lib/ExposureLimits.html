@@ -47,7 +47,7 @@
 												{ /each }
 											</td>
 
-											<td class="period">{ duration.duration ? durationKey == 'max' ? duration.duration : humanTime(duration.duration) : '' }</td>
+											<td class="period">{ duration.duration ? Number(duration.duration) ? humanTime(duration.duration) : duration.duration : '' }</td>
 
 										</tr>
 

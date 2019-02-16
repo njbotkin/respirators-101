@@ -329,6 +329,10 @@ const move = [
 		transform: row => row.cells[SUBSTANCE].content = row.cells[SUBSTANCE].content.replace(':', ';')
 	},
 	{
+		id: row => row.cells[SUBSTANCE].content == 'Ethyl chloride',
+		transform: row => row.cells[NIOSH_REL].content = ''
+	},
+	{
 		id: row => row.cells[SUBSTANCE].content == 'Coke oven emissions; see 1910.1029',
 		transform: row => row.cells[NIOSH_REL].content = row.cells[NIOSH_REL].content.replace('(benzene-soluble fraction)', '')
 	},
@@ -442,7 +446,8 @@ let skip = [
 	'Nitroglycerine',
 	'Carbon black',
 	'Nickel metal and other compounds (as Ni)',
-	'Titanium dioxide - Total dust'
+	'Titanium dioxide - Total dust',
+	'Ethylene glycol dinitrate'
 ]
 
 let parent = null

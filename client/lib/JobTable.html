@@ -162,7 +162,7 @@
 						{ /if }
 					</td>
 					<td class:editable=r.limit.manual on:click="edit_limit(i)" style="text-align: left">
-						{ r.limit.duration ? r.limit.durationKey == 'max' ? r.limit.duration : r.limit.duration / r.limit.timeUnitMultiplier + ' ' + r.limit.timeUnit : '' }
+						{ r.limit.duration ? Number(r.limit.duration) ? r.limit.duration / r.limit.timeUnitMultiplier + ' ' + r.limit.timeUnit : r.limit.duration : '' }
 					</td>
 
 					<td class="operator">=</td>

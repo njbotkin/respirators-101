@@ -177,7 +177,7 @@ let manual = {
 								values: {
 									ppm: 200
 								},
-								duration: '5 min in any 3 hr'
+								duration: '5 min in any 4 hr'
 							}
 	                    }
 	                }
@@ -638,11 +638,13 @@ let manual = {
 				"forms": {
 					"Default": {
 						"durations": {
+							ceiling: {
+								duration: '5 min in any 3 hours'
+							},
 							max: {
 								values: {
 									ppm: 300
-								},
-								duration: '5 min in any 3 hours'
+								}
 							}
 						}
 					}
@@ -925,25 +927,6 @@ let manual = {
 		}
 	},
 
-	'Lead': {
-		standards: {
-			niosh_rel: {
-				forms: {
-					Default: {
-						durations: {
-							default: {
-								values: {
-									mgm3: 0.05
-								},
-								duration: 600
-							}
-						}
-					}
-				},
-			}
-		}
-	},
-
 	'Chromium (VI) compounds': {
 		standards: {
 			niosh_rel: {
@@ -1063,6 +1046,7 @@ let manual = {
 						}
 					}
 				},
+				carcinogens: 1
 			},
 			osha_pel: {
 				forms: {
@@ -1089,7 +1073,7 @@ let manual = {
 						durations: {
 							default: {
 								values: {
-									mgm3: 0.001,
+									mgcrvim3: 0.001,
 								},
 								duration: 600
 							}
@@ -1317,10 +1301,10 @@ let manual = {
 								},
 								duration: 480
 							}
-						},
-						notes: ['also tin oxide; except SnH<sub>4</sub>']
+						}
 					}
-				}
+				},
+				notes: ['also tin oxide; except SnH<sub>4</sub>']
 			}
 		}
 	},
@@ -1347,6 +1331,26 @@ let manual = {
 									mgm3: 0.1
 								},
 								duration: 15
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+
+	'Ethylene glycol dinitrate': {
+		z1: true,
+		standards: {
+			cal_osha_pel: {
+				forms: {
+					'mixture of ethylene glycol dinitrate and nitroglycerin': {
+						durations: {
+							default: {
+								values: {
+									ppm: 0.05
+								},
+								duration: 480
 							}
 						}
 					}

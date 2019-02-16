@@ -284,8 +284,9 @@ for(let c of chemical_source.chemicals) {
 
 // manual fixes
 chemicals['Mercury (organo) alkyl compounds (as Hg)'].cas = '7439-97-6'
-chemicals['Chromic acid and chromates'].carcinogens = 1
+chemicals['Chromic acid and chromates'].standards.niosh_rel.carcinogens = 1
 chemicals['Chromic acid and chromates'].standards.niosh_rel.forms.Cr.durations.default.duration = 480
+chemicals['Lead'].standards.niosh_rel.forms.Default.durations.default.duration = 480
 addNote(chemicals['Molybdenum'].standards.osha_pel.forms['Default'].notes, '[*Note: The PEL also applies to other insoluble molybdenum compounds (as Mo).] See Appendix G')
 
 // better search results
