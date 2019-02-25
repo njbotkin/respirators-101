@@ -47,5 +47,9 @@
 	{
 		"type": "post",
 		"name": "resources"
+	},
+	{
+		"type": "post",
+		"name": "about-this-app"
 	}
 ]
