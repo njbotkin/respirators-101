@@ -230,6 +230,7 @@ img.size-90 { width: 90%; }
 sup { line-height: 0.5 }
 
 .button, button {
+    vertical-align: middle;
 	border: 0;
 	font-family: 'Open Sans';
 	display: inline-block;

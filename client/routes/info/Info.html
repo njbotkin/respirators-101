@@ -1,6 +1,9 @@
 <div id="content">
 
-	<div class="buttons"><div class="button addJob" on:click="addJob()">Add a Job</div></div>
+	<div class="buttons">
+		<a class="button goto-rsl" href="{ $job.options ? asr.makePath('app.options-list', {id: $job.options}) : asr.makePath('app.respirator-picker', {id: $job.RSLStep}) }"> <div class="text">Resume <br>Respirator Selection</div></a>
+		<div class="button addJob" on:click="addJob()">Add a Job</div>
+	</div>
 
 	<div class="jobs">
 		{ #each Object.entries($jobs).reverse() as [jobId, job] (jobId) }
@@ -67,6 +70,27 @@
 		background: $blue1;
 		&:active {
 			background: linear-gradient(color($blue1 l(-5%)), color($blue1 l(+5%)));
+		}
+	}
+
+	.goto-rsl {
+		text-align: left;
+		background: $yellow2;
+		padding-left: 44px;
+		color: #fff;
+		text-decoration: none;
+		background-image: url(icons/respirator.png);
+		background-size: 28px;
+		background-position: 8px center;
+		background-repeat: no-repeat;
+		box-sizing: border-box;
+
+		.text {
+			text-transform: uppercase;
+			font-size: 10px;
+			font-weight: bold;
+			margin: 6px 0;
+			line-height: 14px;
 		}
 	}
 
