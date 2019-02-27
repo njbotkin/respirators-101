@@ -51,6 +51,7 @@
     "regex-fun": "^2.0.2",
     "smoothscroll-polyfill": "^0.4.3",
     "svelte": "^2.16.0",
+    "svelte-select": "^1.5.2",
     "svelte-state-renderer": "^2.0.0",
     "svelte-transitions-slide": "^1.0.0",
     "touch-pinch": "^1.0.1",

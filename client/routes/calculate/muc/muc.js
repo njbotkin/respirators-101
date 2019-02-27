@@ -7,7 +7,11 @@ export default () => ({
 	activate(context) {
 		let store = context.domApi.store
 		store.set({ nav: {
-			title: 'Calculate MUC'
+			title: 'Calculate MUC',
+			sub: {
+				title: ' ',
+				prev: 'javascript:window.history.go(-1)'
+			}
 		} }, false)
 	}
 })

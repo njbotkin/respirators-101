@@ -1,3 +1,212 @@
+<script>
+
+	import { valueSources } from 'lib/storage.js'
+	import { unitsPretty, durationsPretty, round } from './util.js'
+	import slide from 'svelte-transitions-slide'
+	
+	export default {
+		components: {
+			ButtonSelect: 'lib/ButtonSelect.html',
+			SelectWrapper: 'lib/SelectWrapper.html',
+		},
+		transitions: { slide },
+		helpers: {
+			unitsPretty,
+			durationsPretty,
+			round,
+			hr_class(hr) {
+				if(!hr) return 'invalid'
+				return hr > 1 ? 'over' : 'under'
+			}
+		},
+		methods: {
+			edit(i) {
+				let { editing, table, standardKey } = this.get()
+				if(table[i].editing) {
+					this.deep_set(['table', i], { editing: false })
+				} else {
+					this.deep_set(['table', i], {
+						editing,
+						confirm_twa: !!~['REL', 'PEL'].indexOf(durationsPretty(table[i].limit.durationKey, standardKey))
+					})
+				}
+			},
+
+			deep_set(path, obj) { 
+				let state = this.get()
+
+				let ref = state
+				while(path.length > 0) ref = ref[path.shift()]
+				Object.assign(ref, obj)
+
+				this.set(state)
+			},
+
+			deep_splice(path) {
+				let state = this.get()
+
+				let ref = state
+				while(path.length > 1) ref = ref[path.shift()]
+				ref.splice(path[0], 1)
+
+				this.set(state)
+			},
+			addEL() {
+				let { table } = this.get()
+
+				table.push({
+					limit: {
+						unit: null,
+						value: null,
+						duration: null,
+						timeUnit: null,
+						hours: null,
+						manual: true
+					},
+					measured: {
+						unit: null,
+						value: null
+					},
+					hr: null
+				})
+
+				let { job } = this.store.get()
+				job.table = table
+				this.store.set({ job })
+			}
+		},
+		data: () => ({
+			valueSources,
+			only: null,
+			timeUnits: {
+				'Hours': 'Hours',
+				'Minutes': 'Minutes'
+			}
+		})
+	}
+
+</script>
+
+<div class="padding">
+<table class:editing=editing class="jobtable">
+	<thead>
+		<tr>
+			<th>Measured <br>Concentration</th>
+			<th></th>
+			<th colspan="3">Exposure <br>Limit</th>
+			<th></th>
+			<th>Hazard <br>Ratio</th>
+		</tr>
+	</thead>
+	<tbody>
+		{ #if !table.length }
+			<tr><td colspan="8" class="noels">Please add select a chemical or add an exposure limit to get started.</td></tr>
+		{ :else }
+			{ #each table as r, i }
+				{ #if only !== null && only !== i }
+				{ :else }
+					<tr on:click="edit(i)">
+						<!-- measured -->
+						<td class="measured editable" class:manual=r.limit.manual>
+							{ #if r.measured.value }
+								{ r.measured.value } {@html unitsPretty[r.measured.unit] || '' }
+							{ /if }
+						</td>
+
+						<td class="operator">÷</td>
+
+						<!-- limit -->
+						<td class:editable=r.limit.manual class="{r.limit.durationKey}" style="text-align: right">{ #if !r.limit.manual }{ durationsPretty(r.limit.durationKey, standardKey) }{ /if }</td>
+						<td class:editable=r.limit.manual>
+							{ #if r.limit.value || r.limit.values }
+								{ #if r.limit.manual }
+									<div class="limit active">{ r.limit.value } {@html unitsPretty[r.limit.unit] || '' }</div>
+								{ :else }
+									{ #each Object.entries(r.limit.values) as [unit, value] }
+										<div class="limit" class:active="r.limit.unit == unit" on:click|stopPropagation="deep_set(['table', i, 'limit'], { unit, value })">{value} {@html unitsPretty[unit] }</div>
+									{ /each }
+								{ /if }
+							{ /if }
+						</td>
+						<td class:editable=r.limit.manual style="text-align: left">
+							{ r.limit.duration ? Number(r.limit.duration) ? r.limit.duration / r.limit.timeUnitMultiplier + ' ' + (r.limit.timeUnit || '') : r.limit.duration : '' }
+						</td>
+
+						<td class="operator">=</td>
+
+						<!-- HR -->
+						<td class:highest="r.highest_hr" class="hr { hr_class(r.hr) }">{ round(r.hr) }</td>
+					</tr>
+					<tr class="edit" class:editing="r.editing">
+						<td colspan="7">
+							{ #if r.editing }
+								<div transition:slide>
+
+									{ #if r.confirm_twa }
+
+										<p>Would you like to calculate a TWA with the TWA calculator, or enter it manually?</p>
+
+										<div class="buttons">
+											<a class="button red" href="{ asr.makePath(valueSources['twa']) }" on:click="deep_set(['table', i], { confirm_twa: false, editing: false })">TWA Calculator</a>
+											<button class="manual" on:click="deep_set(['table', i], { confirm_twa: false })">Manually</button>
+										</div>
+
+									{ :else }
+
+										<div class="property">
+											<div class="label">Measured Concentration</div>
+											<input type="number" bind:value="table[i].measured.value" placeholder="0" />
+											<SelectWrapper options="{ unitsPretty }" bind:value="table[i].measured.unit" />
+										</div>
+
+										{#if r.limit.manual}
+											<div>
+												<div class="property">
+													<div class="label">Exposure Limit</div>
+													<input type="number" bind:value="table[i].limit.value" placeholder="0" />
+													<SelectWrapper options="{ unitsPretty }" bind:value="table[i].limit.unit" />
+												</div>
+
+												<div class="property">
+													<div class="label">Measurement Duration</div>
+													{ #if r.limit.timeUnit == 'Hours' }
+														<input type="number" bind:value="table[i].limit.hours" placeholder="0" />
+													{ :else }
+														<input type="number" bind:value="table[i].limit.duration" placeholder="0" />
+													{ /if }
+													<ButtonSelect options="{ timeUnits }" bind:value="table[i].limit.timeUnit" />
+												</div>
+											</div>
+										{/if}
+
+										<div class="buttons">
+											<button class="small blue" on:click="deep_set(['table', i], { editing: false })">Done</button>
+											{#if r.limit.manual}<button class="small red" on:click="deep_splice(['table', i])">Delete</button>{/if}
+										</div>
+
+									{/if}
+								</div>
+							{ /if }
+						</td>
+					</tr>
+					{ #each r.warnings as w }
+						<tr>
+							<td colspan="8" class:manual=r.limit.manual><div class="warning">{@html w }</div></td>
+						</tr>
+					{ /each }
+				{ /if }
+			{ /each }
+		{ /if }
+	</tbody>
+</table>
+
+{ #if editing }
+	{ #if only == null }<div style="text-align: center"><div class="addEL" on:click="addEL()">[ Add Exposure Limit + ]</div></div>{ /if }
+	<div class="help">Touch any row to edit.</div>
+{ /if }
+
+</div>
+
 <style>
 
 	@import 'colors';
@@ -35,9 +244,9 @@
 		td.manual { border-left: 5px solid  #222; }
 
 		&.editing {
+			tr { cursor: pointer; }
 			td.editable { 
 				background: #fff; 
-				cursor: pointer;
 			}
 		}
 
@@ -50,6 +259,17 @@
 		td {
 			text-align: center;
 			border-top: 1px solid #ddd;
+		}
+
+		tr.edit:not(.editing) {
+			td {
+				padding: 0;
+				border: 0;
+			}
+		}
+
+		tr.edit td {
+			text-align: left;
 		}
 
 		.limit {
@@ -71,7 +291,8 @@
 		}
 
 		.warning {
-			margin: 5px;
+			max-width: 400px;
+			margin: 5px auto;
 			padding: 10px;
 			background: $red3;
 			font-size: 90%;
@@ -118,260 +339,8 @@
 		.manual { background: #222; }
 	}
 
-</style>
-
-<div class="padding">
-<table class:editing=editing class="jobtable">
-	<thead>
-		<tr>
-			<th>Measured <br>Concentration</th>
-			<th></th>
-			<th colspan="3">Exposure <br>Limit</th>
-			<th></th>
-			<th>Hazard <br>Ratio</th>
-		</tr>
-	</thead>
-	<tbody>
-		{ #if !table.length }
-			<tr><td colspan="8" class="noels">Please add select a chemical or add an exposure limit to get started.</td></tr>
-		{ :else }
-			{ #each table as r, i }
-				{ #if only !== null && only !== i }
-				{ :else }
-				<tr>
-					<!-- measured -->
-					<td class="measured editable" class:manual=r.limit.manual on:click="edit_measured(i)">
-						{ #if r.measured.value }
-							{ r.measured.value } {@html unitsPretty[r.measured.unit] }
-						{ /if }
-					</td>
-
-					<td class="operator">÷</td>
-
-					<!-- limit -->
-					<td class:editable=r.limit.manual class="{r.limit.durationKey}" on:click="edit_limit(i)" style="text-align: right">{ #if !r.limit.manual }{ durationsPretty(r.limit.durationKey, standardKey) }{ /if }</td>
-					<td class:editable=r.limit.manual on:click="edit_limit(i)">
-						{ #if r.limit.value || r.limit.values }
-							{ #if r.limit.manual }
-								<div class="limit active">{ r.limit.value } {@html unitsPretty[r.limit.unit] }</div>
-							{ :else }
-								{ #each Object.entries(r.limit.values) as [unit, value] }
-									<div class="limit" class:active="r.limit.unit == unit" on:click="setUnit(i, unit)">{value} {@html unitsPretty[unit] }</div>
-								{ /each }
-							{ /if }
-						{ /if }
-					</td>
-					<td class:editable=r.limit.manual on:click="edit_limit(i)" style="text-align: left">
-						{ r.limit.duration ? Number(r.limit.duration) ? r.limit.duration / r.limit.timeUnitMultiplier + ' ' + r.limit.timeUnit : r.limit.duration : '' }
-					</td>
-
-					<td class="operator">=</td>
-
-					<!-- HR -->
-					<td class:highest="r.highest_hr" class="hr { hr_class(r.hr) }">{ round(r.hr) }</td>
-				</tr>
-				{ #each r.warnings as w }
-					<tr>
-						<td colspan="8" class:manual=r.limit.manual><div class="warning">{@html w }</div></td>
-					</tr>
-				{ /each }
-				{ /if }
-			{ /each }
-		{ /if }
-	</tbody>
-</table>
-
-{ #if editing }
-	{ #if only == null }<div style="text-align: center"><div class="addEL" on:click="addEL()">[ Add Exposure Limit + ]</div></div>{ /if }
-	<div class="help">Touch any white cell to edit</div>
-{ /if }
-
-</div>
-
-
-<Modal bind:show="confirm_twa">
-	<p>Would you like to calculate a TWA with the TWA calculator, or enter it manually?</p>
-
-	<div class="buttons">
-		<a class="button red" href="{ asr.makePath(valueSources['twa']) }" on:click="set({ confirm_twa: false })">TWA Calculator</a>
-		<button class="manual" on:click="set({ confirm_twa: false, editing_measured: true })">Manually</button>
-	</div>
-</Modal>
-
-<Modal bind:show="editing_measured">
-	<div class="property">
-		<div class="label">Measured Concentration</div>
-		<input type="number" bind:value="measured_value" placeholder="0" />
-		<small><ButtonSelect options="{ unitsPretty }" bind:value="measured_unit" /></small>
-	</div>
-
-	<div class="buttons"><button class="blue" disabled={!measured_valid} on:click='save_measured()'>Save</button></div>
-</Modal>
-
-
-<Modal bind:show="editing_limit">
-	<div class="property">
-		<div class="label">Exposure Limit</div>
-		<input type="number" bind:value="limit_value" placeholder="0" />
-		<small><ButtonSelect options="{ unitsPretty }" bind:value="limit_unit" /></small>
-	</div>
-
-	<div class="property">
-		<div class="label">Measurement Duration</div>
-		<input type="number" bind:value="limit_duration" placeholder="0" />
-		<ButtonSelect options="{ timeUnits }" bind:value="limit_timeUnit" />
-	</div>
-
-	<div class="buttons"><button class="blue" disabled={!limit_valid} on:click='save_limit()'>Save</button></div>
-</Modal>
-
-
-<script>
-
-	import { valueSources } from 'lib/storage.js'
-	import { unitsPretty, durationsPretty, number, round } from './util.js'
-	
-	export default {
-		components: {
-			Modal: './lib/Modal.html',
-			ButtonSelect: 'lib/ButtonSelect.html'
-		},
-		helpers: {
-			unitsPretty,
-			durationsPretty,
-			round,
-			hr_class(hr) {
-				if(!hr) return 'invalid'
-				return hr > 1 ? 'over' : 'under'
-			}
-		},
-		computed: {
-			measured_valid: ({ measured_value, measured_unit }) => (number(measured_value) && number(measured_value) > 0 && measured_unit),
-			limit_valid: ({ limit_value, limit_unit, limit_duration }) => number(limit_duration) && number(limit_duration) > 0 && number(limit_value) && number(limit_value) > 0 && limit_unit
-		},
-		methods: {
-			setUnit(i, unit) {
-				if(!this.get().editing) return
-				let { job } = this.store.get()
-				job.table[i].limit.unit = unit 
-				this.store.set({ job })
-			},
-			edit_measured(i) {
-				let { table, standardKey, editing } = this.get()
-				if(!editing) return false
-
-				let row = table[i]
-
-				this.set({ 
-					measured_value: row.measured.value,
-					measured_unit: row.measured.unit,
-					row: i
-				})
-
-				if(!!~['REL', 'PEL'].indexOf(durationsPretty(row.limit.durationKey, standardKey))) {
-					this.set({ confirm_twa: true })
-				} else {
-					this.set({ editing_measured: true })
-				}
-			},
-			save_measured() {
-				let { measured_value, measured_unit, table, row } = this.get()
-
-				Object.assign(table[row].measured, { 
-					value: measured_value, 
-					unit: measured_unit,
-					manual: true 
-				})
-
-				let { job } = this.store.get()
-				job.table = table
-				this.store.set({ job })
-
-				this.set({ editing_measured: false })
-			},
-			edit_limit(i) {
-				let { table, editing } = this.get()
-				if(!editing) return false
-
-				let row = table[i]
-				if(!row.limit.manual) return false
-
-				this.set({ 
-					limit_value: row.limit.value,
-					limit_unit: row.limit.unit,
-					limit_timeUnit: row.limit.timeUnit,
-					limit_duration: row.limit.duration / (row.limit.timeUnit == 'Hours' ? 60 : 1),
-					row: i,
-					editing_limit: true
-				})
-			},
-			save_limit() {
-				let { limit_value, limit_unit, limit_duration, limit_timeUnit, table, row } = this.get()
-
-				Object.assign(table[row].limit, { 
-					value: limit_value, 
-					unit: limit_unit,
-					duration: limit_duration * (limit_timeUnit == 'Hours' ? 60 : 1),
-					timeUnit: limit_timeUnit,
-					timeUnitMultiplier: limit_timeUnit == 'Hours' ? 60 : 1,
-					manual: true
-				})
-
-				let { job } = this.store.get()
-				job.table = table
-				this.store.set({ job })
-
-				this.set({ editing_limit: false })
-			},
-			addEL() {
-				let { table } = this.get()
-
-				table.push({
-					limit: {
-						unit: null,
-						values: null,
-						value: null,
-						duration: null,
-						timeUnit: null,
-						timeUnitMultiplier: null,
-						manual: true
-					},
-					measured: {
-						unit: null,
-						value: null
-					},
-					hr: null
-				})
-
-				let { job } = this.store.get()
-				job.table = table
-				this.store.set({ job })
-			}
-		},
-		data: () => ({
-			valueSources,
-			only: null,
-
-			timeUnits: {
-				'Hours': 'Hours',
-				'Minutes': 'Minutes'
-			},
-
-			row: null,
-
-			confirm_twa: false,
-
-			editing_measured: false,
-			measured_value: null,
-			measured_unit: null,
-
-			editing_limit: false,
-			limit_value: null,
-			limit_duration: null,
-			limit_unit: null,
-			limit_timeUnit: null,
-
-		})
+	button.small {
+		line-height: 30px;
 	}
 
-</script>
+</style>

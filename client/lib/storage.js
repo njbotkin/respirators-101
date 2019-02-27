@@ -128,6 +128,7 @@ class JobStore extends LocalStore {
 								'mgm3': 45
 							},
 							duration: 480,
+							hours: 8,
 							timeUnit: 'Hours',
 							timeUnitMultiplier: 60,
 							manual: false
@@ -186,7 +187,17 @@ store.on('state', ({current, changed}) => {
 		if(r.limit.value && !r.measured.value) r.measured.unit = r.limit.unit
 		if(r.measured.value && !r.limit.value) r.limit.unit = r.measured.unit
 
-		if(r.limit.unit !== r.measured.unit) {
+		if(r.limit.manual) {
+			if(r.limit.timeUnit == 'Hours') {
+				r.limit.duration = r.limit.hours * 60
+			} else {
+				r.limit.hours = Math.round(r.limit.duration / .6) / 100
+			}
+		}
+
+		r.limit.timeUnitMultiplier = r.limit.timeUnit == 'Hours' ? 60 : 1
+
+		if(r.limit.unit && r.measured.unit && r.limit.unit !== r.measured.unit) {
 			r.warnings.push(`Your Exposure Limit measurement unit (${ unitsPretty[r.limit.unit] }) doesn't match your concentration measurement unit (${ unitsPretty[r.measured.unit] }).  The HR is invalid.`)
 		}
 
@@ -213,9 +224,7 @@ store.on('state', ({current, changed}) => {
 			}
 		}
 
-		if(r.measured.value) {
-			r.hr = (r.measured.value / r.limit.value)
-		}
+		r.hr = (r.measured.value && r.limit.value) ? (r.measured.value / r.limit.value) : 0
 
 	}
 

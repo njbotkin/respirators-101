@@ -236,7 +236,7 @@
 							value: Object.values(duration.values)[0],
 							duration: duration.duration,
 							timeUnit: duration.duration > 60 ? 'Hours' : 'Minutes',
-							timeUnitMultiplier: duration.duration > 60 ? 60 : 1,
+							hours: duration.duration / 60,
 							manual: false,
 							twa: duration.duration > 60
 						},

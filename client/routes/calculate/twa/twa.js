@@ -5,9 +5,13 @@ export default () => ({
 	route: `calculate/twa`,
 	template: TWA,
 	activate(context) {
-		let store = context.domApi.store
+		let { store } = context.domApi
 		store.set({ nav: {
-			title: 'Calculate TWA'
-		} }, false)
+			title: 'Calculate TWA',
+			sub: {
+				title: ' ',
+				prev: 'javascript:window.history.go(-1)'
+			}
+		} }, false) 
 	}
 })

@@ -1,0 +1,52 @@
+<script>
+	// because I would appreciate a simpler API
+	import Select from 'svelte-select'
+
+	export default {
+		components: {
+			Select,
+		},
+		computed: {
+			items: ({ options }) => Object.entries(options).map(([value, label]) => ({ value, label }))
+		},
+	    methods: {
+			handleSelect({ value }) {
+				this.set({ value })
+			}
+	    }
+	}
+</script>
+
+<div class="s e l e c t"><Select {items} on:select="handleSelect(event)" isClearable={0} selectedValue="{ items[Object.keys(options).indexOf(value)] }"></Select></div>
+
+<style>
+	/* override without !important */
+	.s.e.l.e.c.t {
+		display: inline-block;
+    	vertical-align: middle;
+	}
+	:global(.s.e.l.e.c.t .selectContainer) {
+		display: inline-block;
+		height:40px;
+		padding: 0 15px;
+	    background: #fff;
+	    border: 2px solid #eee;
+		width: 100px;
+
+		input {
+			padding: 0 15px;
+			line-height: 40px;
+			height: 40px;
+		}
+
+		&::after {
+			position: absolute;
+			right: 16px;
+			top: 0;
+			font-size: 80%;
+			line-height: 40px;
+			content: '▼';
+			color: #bbb;
+		}
+	}
+</style>

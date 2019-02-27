@@ -12,12 +12,6 @@
 <div class="elsewhere" hidden="{ !(sidebarOpen || jobOpen) }" on:click="set({ sidebarOpen: false, jobOpen: false })"></div>
 
 <nav>
-	{ #if categoryParent }
-		<a class="back nav-button icon-angle-left" href="{ categoryParent }">back</a>
-	{ :elseif backButton }
-		<a class="back nav-button icon-angle-left" href="javascript:window.history.go(-1);">back</a>
-	{ /if }
-
 	<div class="nav-button menu icon-menu" on:click="set({ sidebarOpen: true })">open menu</div>
 
 	<div class="title"><div class="inner">{ $nav && $nav.title }</div></div>

@@ -26,12 +26,12 @@
 	<div class="content">
 
 		{ #if job.chemical }
-			<ChemicalSummary {...job.chemical} {asr} {editing} />
+			<div class="s u m m a r y"><ChemicalSummary {...job.chemical} {asr} {editing} /></div>
 		{ :elseif editing }
 			To automatically populate exposure limits, <a href="{ asr.makePath('app.chemicals') }">select a chemical</a>.
 		{ /if }
 
-		<JobTable {...job} {editing} {asr} />
+		<JobTable bind:table="job.table" {...job} {editing} {asr} />
 
 		{ #if Object.keys(job.options_saved).length }
 			<Table data="{ JSON.stringify([ ['Saved Respirator Options', 'APF'], ...Object.values(job.options_saved) ] ) }" />
@@ -145,13 +145,6 @@
 			padding: 0;
 		}
 
-		.selectchemical {
-			background: $red2;
-			line-height: 25px;
-			padding: 0 5px;
-			font-size: 70%;
-		}
-
 		.edit {
 			font-size: 80%;
 			color: #4260b5;
@@ -225,6 +218,11 @@
 			/*margin-top: 10px;*/
 			font-size: 90%;
 		}
+	}
+
+	:global(.s.u.m.m.a.r.y .summary) {
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 </style>
