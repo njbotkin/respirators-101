@@ -1,5 +1,19 @@
+<script>
+	export default {
+		methods: {
+			remove() {
+				let state = this.store.get()
+				state.job.table = state.job.table.filter(r => r.limit.manual)
+				Object.assign(state.job, { chemical: null, standardKey: null, formKey: null })
+				this.store.set( state, false )
+			}
+		}
+	}
+</script>
+
 <div class="summary" class:editing="editing">
 	<div class="legend-cont"><div class="legend" style="background: {background}">Chemical</div></div>
+	{#if editing}<div class="x" on:click="remove()">✕</div>{/if}
 	<div class="name">{ @html name }</div>
 
 	{ #if idlh }
@@ -24,20 +38,35 @@
 <style>
 	@import 'colors';
 
-	.name {
-		font-weight: bold;
-	}
-
 	.summary {
+		position: relative;
 	    padding: 10px 10px 10px 10px;
 	    display: table;
 	    margin: 15px auto 10px auto;
 	    border-radius: 5px;
 	    border: 1px solid color($red2);
 
+		.name {
+			font-weight: bold;
+		}
+
 	    &.editing {
 	    	margin-bottom: 25px;
 	    	padding-bottom: 20px;
+	    	
+			.name {
+				padding-right: 20px;
+			}
+
+			.x {
+				position: absolute;
+				top: 0;
+				right: 0;
+				cursor: pointer;
+				line-height: 1;
+				padding: 10px;
+				color: $red2;
+			}
 	    }
 
 	    .legend-cont {
