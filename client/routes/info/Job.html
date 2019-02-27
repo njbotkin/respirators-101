@@ -26,7 +26,7 @@
 	<div class="content">
 
 		{ #if job.chemical }
-			<div class="s u m m a r y"><ChemicalSummary {...job.chemical} {asr} {editing} background="{ editing ? '#fff' : '#eaedf1' }" /></div>
+			<ChemicalSummary {...job.chemical} {asr} {editing} background="{ editing ? '#fff' : '#eaedf1' }" />
 		{ :elseif editing }
 			To automatically populate exposure limits, <a href="{ asr.makePath('app.chemicals') }">select a chemical</a>.
 		{ /if }
@@ -218,11 +218,6 @@
 			/*margin-top: 10px;*/
 			font-size: 90%;
 		}
-	}
-
-	:global(.s.u.m.m.a.r.y .summary) {
-		margin-left: auto;
-		margin-right: auto;
 	}
 
 </style>

@@ -28,7 +28,7 @@
 
 </div>
 
-{ #if $job.chemical }<div style="margin: 0 auto; display: table"><ChemicalSummary {...$job.chemical} {asr} editing={1} /></div>{ /if }
+{ #if $job.chemical }<ChemicalSummary {...$job.chemical} {asr} editing={1} />{ /if }
 
 { #if !row }
 	<div class="content"><p>There are no exposure limits present that can be used with a TWA.</p></div>
