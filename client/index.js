@@ -21,6 +21,7 @@ stateRouter.on(`routeNotFound`, (route, parameters) => {
 })
 
 stateRouter.on(`stateChangeStart`, (state, params) => {
+	window.scroll(0, 0)
 	context.emit(`stateChangeStart`, { state, params })
 })
 

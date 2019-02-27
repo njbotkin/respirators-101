@@ -357,32 +357,32 @@
 		},
 		"96": {
 			"title": "Step 9.1 (Oxy)(UnderEL)(Eye)(Esc)",
-			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"143\">No</a></li>\n<li><a href=\"#/options/9-1b\">Yes</a></li>\n</ul>\n",
+			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/9-1b\">Yes</a></li>\n<li><a href=\"143\">No</a></li>\n</ul>\n",
 			"prev": "46"
 		},
 		"97": {
 			"title": "Step 10.1 (Oxy)(UnderEL)(Eye)(Esc)",
-			"html": "<p>Is the gas/vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"144\">No</a></li>\n<li><a href=\"#/options/10-1b\">Yes</a></li>\n</ul>\n",
+			"html": "<p>Is the gas/vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/10-1b\">Yes</a></li>\n<li><a href=\"144\">No</a></li>\n</ul>\n",
 			"prev": "46"
 		},
 		"98": {
 			"title": "Step 11.1 (Oxy)(UnderEL)(Eye)(Esc)",
-			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"145\">No</a></li>\n<li><a href=\"#/options/11-1b\">Yes</a></li>\n</ul>\n",
+			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/11-1b\">Yes</a></li>\n<li><a href=\"145\">No</a></li>\n</ul>\n",
 			"prev": "46"
 		},
 		"99": {
 			"title": "Step 9.1 (Oxy)(UnderEL)(NoEye)(Esc)",
-			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"147\">No</a></li>\n<li><a href=\"#/options/9-1a\">Yes</a></li>\n</ul>\n",
+			"html": "<p>Is the particulate respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/9-1a\">Yes</a></li>\n<li><a href=\"147\">No</a></li>\n</ul>\n",
 			"prev": "47"
 		},
 		"100": {
 			"title": "Step 10.1 (Oxy)(UnderEL)(NoEye)(Esc)",
-			"html": "<p>Is the gas/vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"148\">No</a></li>\n<li><a href=\"#/options/10-1a\">Yes</a></li>\n</ul>\n",
+			"html": "<p>Is the gas/vapor respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/10-1a\">Yes</a></li>\n<li><a href=\"148\">No</a></li>\n</ul>\n",
 			"prev": "47"
 		},
 		"101": {
 			"title": "Step 11.1 (Oxy)(UnderEL)(NoEye)(Esc)",
-			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"149\">No</a></li>\n<li><a href=\"#/options/11-1a\">Yes</a></li>\n</ul>\n",
+			"html": "<p>Is the combination respirator intended ONLY for escape purposes?</p>\n<ul class=\"answer-links\">\n<li><a href=\"#/options/11-1a\">Yes</a></li>\n<li><a href=\"149\">No</a></li>\n</ul>\n",
 			"prev": "47"
 		},
 		"118": {

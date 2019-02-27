@@ -154,36 +154,23 @@
 			}
 
 			// save scroll position
-            // let chemicals = document.querySelector('.items')
-            // chemicals.scrollTop = this.store.get().job.chemicalsScrollTop
-            // var scrolls = 0
+            window.scroll(0, this.store.get().job.chemicalsScrollY)
 
-            // chemicals.addEventListener('scroll', () => {
-            //     let { job } = this.store.get()
-            //     let { search } = this.get()
-            //     if(search !== '') return
-            //     // The first scroll is premature because the layout isn't finished.  When layout finishes, the browser wrongly scrolls again to compensate.  Set the scroll to the first scroll.
-            //     if(scrolls < 2) {
-            //         if(++scrolls == 1) {
-            //             // first scroll
-            //         } else {
-            //             // second scroll
-            //             chemicals.scrollTop = job.chemicalsScrollTop
-            //         }
-            //     } else {
-            //         // subsequent scrolls
-            //         this.store.set({ job: { chemicalsScrollTop: chemicals.scrollTop } })
-            //     }
-            // })
+            window.addEventListener('scroll', () => {
+                let { job } = this.store.get()
+                let { search } = this.get()
+                if(search !== '') return
+                this.store.set({ job: { chemicalsScrollY: window.scrollY } })
+            })
 
-            // this.on('update', ({changed, current}) => {
-            //     if(!changed.search) return
-            //     if(current.search == '') {
-            //         chemicals.scrollTop = this.store.get().job.chemicalsScrollTop
-            //     } else {
-            //         chemicals.scrollTop = 0
-            //     }
-            // })
+            this.on('update', ({changed, current}) => {
+                if(!changed.search) return
+                if(current.search == '') {
+           			window.scroll(0, this.store.get().job.chemicalsScrollY)
+                } else {
+                    window.scroll(0, 0)
+                }
+            })
 
 		},
 		computed: {
