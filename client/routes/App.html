@@ -436,6 +436,8 @@
 			box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.4);
 
 			.current-job {
+				max-width: calc(100% - 42px);
+				overflow: hidden;
 				color: $green;
 				height: 50px;
 				line-height: 1.4;
@@ -474,6 +476,7 @@
 				&.icon {
 					left: calc(100% - 44px);
 					right: auto;
+					.text { display: none; }
 				}
 
 				.text {
