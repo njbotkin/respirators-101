@@ -2,6 +2,10 @@ import StaticContent from './Content.html'
 
 import idToPage from 'lib/static-content-by-id.js'
 
+import decisionData from 'data/decision-data.json'
+const { start, decisions } = decisionData
+
+
 export default () => ({
 	name: `app.options-list`,
 	route: `/options/:id(.+)`,
@@ -30,6 +34,8 @@ export default () => ({
 
 		let store = context.domApi.store
 		let params = context.parameters
+		let makePath = context.domApi._state.asr.makePath
+		const passage = decisions['#/options/'+params.id]
 
 		if(store.get().job.options !== params.id) {
 			let { job } = store.get()
@@ -42,7 +48,7 @@ export default () => ({
 			title: 'Respirator Selection',
 			sub: {
 				title: 'Acceptable Respirator Options',
-				prev: 'javascript:window.history.go(-1)'
+				prev: makePath('app.respirator-picker', {id: passage.prev})
 			}
 		} }, false)
 	}
