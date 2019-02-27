@@ -51,7 +51,7 @@
 		<div class="buttons">
 			{ #if job.id !== $job.id }<div class="button switchJob" on:click="fire('switchJob', job.id)">Select</div>{ /if }
 			<div class="button duplicateJob" on:click="fire('duplicate', job.id)">Duplicate</div>
-			{ #if Object.keys($jobs).length > 1 }<div class="button deleteJob" on:click="fire('confirmDelete', job.id)">Delete</div>{ /if }
+			<div class="button deleteJob" on:click="fire('confirmDelete', job.id)">Delete</div>
 		</div>
 	{ /if }
 

@@ -63,12 +63,16 @@ class JobStore extends LocalStore {
 			schema: SCHEMA_VERSION
 		})
 
-		if(!this._state.job) {
+		if(!Object.keys(this._state.jobs).length) {
 			this.addJob()
 		}
 	}
 	// keep current job and jobs synced
 	_set(newState, changed) {
+
+		if(!Object.keys(this._state.jobs).length) {
+			this.addJob()
+		}
 
 		// keep job and jobs synced
 		if(this._state.job) {
@@ -163,6 +167,7 @@ class JobStore extends LocalStore {
 	removeJob(id) {
 		delete this._state.jobs[id]
 		this._set(this._state, { jobs: true })
+		// if(!Object.keys(this._state.jobs).length) this.addJob()
 	}
 	duplicateJob(id) {
 		let job = Object.assign({}, this._state.jobs[id])
