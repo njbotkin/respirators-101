@@ -40,10 +40,6 @@
 
 		<div style="text-align: center"><div class="button override" on:click="useTWA()">Use TWA calculator</div></div>
 
-	{ :elseif !row.limit.duration }
-
-		<div class="content"><p>A TWA can't be calculated for this Exposure Limit because it requires an instantaneous measurement.  Note that for the OSHA PEL, if instantaneous monitoring is not feasible, the ceiling must be assessed as a 15-minute TWA exposure.  If this is the case, manually edit the exposure limit to have a 15-minute duration.</p></div>
-
 	{ :elseif row.measured.twa }
 
 		<div class="samples">

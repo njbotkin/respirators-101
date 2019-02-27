@@ -1,7 +1,7 @@
 <div id="content">
 
 	<div class="buttons">
-		<a class="button goto-rsl" href="{ $job.options ? asr.makePath('app.options-list', {id: $job.options}) : asr.makePath('app.respirator-picker', {id: $job.RSLStep}) }"> <div class="text">Resume <br>Respirator Selection</div></a>
+		<a class="button goto-rsl" href="{ $job.options ? asr.makePath('app.options-list', {id: $job.options}) : asr.makePath('app.respirator-picker', {id: $job.RSLStep}) }"> <div class="text">Respirator Selection</div></a>
 		<div class="button addJob" on:click="addJob()">Add a Job</div>
 	</div>
 
@@ -89,8 +89,6 @@
 			text-transform: uppercase;
 			font-size: 10px;
 			font-weight: bold;
-			margin: 6px 0;
-			line-height: 14px;
 		}
 	}
 

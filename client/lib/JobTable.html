@@ -31,7 +31,6 @@
 					})
 				}
 			},
-
 			deep_set(path, obj) { 
 				let state = this.get()
 
@@ -41,7 +40,6 @@
 
 				this.set(state)
 			},
-
 			deep_splice(path) {
 				let state = this.get()
 
@@ -50,6 +48,20 @@
 				ref.splice(path[0], 1)
 
 				this.set(state)
+			},
+			useTWA(i) {
+				let { table } = this.get()
+				let row = table[i]
+				Object.assign(row, { confirm_twa: false, editing: false })
+				row.measured.manual = false
+				this.set({ table })
+			},
+			useManual(i) {
+				let { table } = this.get()
+				let row = table[i]
+				Object.assign(row, { confirm_twa: false })
+				row.measured.manual = true
+				this.set({ table })
 			},
 			addEL() {
 				let { table } = this.get()
@@ -174,8 +186,8 @@
 										<p>Would you like to calculate a TWA with the TWA calculator, or enter it manually?</p>
 
 										<div class="buttons">
-											<a class="button red" href="{ asr.makePath(valueSources['twa']) }" on:click="deep_set(['table', i], { confirm_twa: false, editing: false })">TWA Calculator</a>
-											<button class="manual" on:click="deep_set(['table', i], { confirm_twa: false })">Manually</button>
+											<a class="button red" href="{ asr.makePath(valueSources['twa']) }" on:click="useTWA(i)">TWA Calculator</a>
+											<button class="manual" on:click="useManual(i)">Manually</button>
 										</div>
 
 									{ :else }

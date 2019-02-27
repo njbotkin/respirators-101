@@ -41,7 +41,9 @@
 				{ #if Object.keys(job.options_saved).length }
 					<Chooser data="{ JSON.stringify([ ['Saved Respirator Options', 'APF'], ...Object.values(job.options_saved) ] ) }" chosen />
 				{ /if }
-				<div style="margin: 10px 0 0"><a class="respirator-options button" href="{ asr.makePath('app.options-list', { id: job.options }) }">All Respirator Options</a></div>
+				{#if editing}
+					<div style="margin: 10px 0 0"><a class="respirator-options button" href="{ asr.makePath('app.options-list', { id: job.options }) }">All Respirator Options</a></div>
+				{/if}
 			</div>
 		{ /if }
 

@@ -38,7 +38,7 @@
 <div id="domlog"></div>
 
 { #if showState }
-	<div class="state" ref:state style="bottom: { jobOpen ? 0 : -jobHeight }px" on:click="closeJob(event)" class:transitioning="transitioning">
+	<div class="state" ref:state style="top: { jobOpen ? windowHeight-jobHeight : windowHeight }px" on:click="closeJob(event)" class:transitioning="transitioning">
 
 		<div class="header" on:click="set({ jobOpen: !jobOpen })">
 			<div class="current-job" bind:offsetWidth="currentJobWidth"> <div class="label">Current Job</div> { $job.name } </div>
@@ -102,7 +102,7 @@
 		store: () => store,
 		oncreate () {
 
-			setInterval(() => this.set({ jobHeight: this.refs.state ? this.refs.state.offsetHeight : 9999 }), 100)
+			setInterval(() => this.set({ jobHeight: this.refs.state ? this.refs.state.offsetHeight : 0 }), 100)
 			this.refs.ey.addEventListener('openJob', () => this.set({ jobOpen: true }))
 
 			// console.log = console.error = m => {
@@ -229,7 +229,7 @@
 
 		},
 		data: () => ({
-			jobHeight: 9999,
+			jobHeight: 0,
 			wrapperX: -300,
 			maxResumeWidth: 0,
 			resumeWidth: 0,
@@ -415,7 +415,7 @@
 	.state {
 		position: fixed;
 		max-width: 800px;
-		transition: bottom .3s cubic-bezier(0, 0, 0, 1);
+		transition: top .3s cubic-bezier(0, 0, 0, 1);
 		left: 0;
 		right: 0;
 		margin: 0 auto;
