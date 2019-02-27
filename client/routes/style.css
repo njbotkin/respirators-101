@@ -311,3 +311,18 @@ ol {
     font-size: 70%;
     margin: 2px;
 }
+
+
+
+.fractional_value {
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 80%;
+	color: #777;
+	margin: 0 5px;
+	text-align: center;
+
+	.top {
+		border-bottom: 1px solid #bbb;
+	}
+}

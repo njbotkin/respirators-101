@@ -237,16 +237,16 @@
 							duration: duration.duration,
 							timeUnit: duration.duration > 60 ? 'Hours' : 'Minutes',
 							hours: duration.duration / 60,
-							manual: false,
-							twa: duration.duration > 60
+							manual: false
 						},
 						measured: {
 							unit: Object.keys(duration.values)[0],
-							value: null
+							value: null,
+							twa: duration.duration > 60 && {}
 						},
 						hr: null
 					}))
-					.concat(state.job.table.filter(r => r.manual))
+					.concat(state.job.table.filter(r => r.limit.manual))
 
 				Object.assign(state.job, { chemical, standardKey, formKey })
 

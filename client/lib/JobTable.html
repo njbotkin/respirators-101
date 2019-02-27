@@ -59,7 +59,7 @@
 						unit: null,
 						value: null,
 						duration: null,
-						timeUnit: null,
+						timeUnit: 'Hours',
 						hours: null,
 						manual: true
 					},
@@ -123,13 +123,20 @@
 									<div class="limit active">{ r.limit.value } {@html unitsPretty[r.limit.unit] || '' }</div>
 								{ :else }
 									{ #each Object.entries(r.limit.values) as [unit, value] }
-										<div class="limit" class:active="r.limit.unit == unit" on:click|stopPropagation="deep_set(['table', i, 'limit'], { unit, value })">{value} {@html unitsPretty[unit] }</div>
+										{#if unit == 'fractional'}
+											<div class="fractional_value">
+												<div class="top">{@html value.top }</div>
+												<div class="bottom">{@html value.bottom }</div>
+											</div>
+										{ :else }
+											<div class="limit" class:active="r.limit.unit == unit" on:click|stopPropagation="deep_set(['table', i, 'limit'], { unit, value })">{value} {@html unitsPretty[unit] }</div>
+										{ /if }
 									{ /each }
 								{ /if }
 							{ /if }
 						</td>
 						<td class:editable=r.limit.manual style="text-align: left">
-							{ r.limit.duration ? Number(r.limit.duration) ? r.limit.duration / r.limit.timeUnitMultiplier + ' ' + (r.limit.timeUnit || '') : r.limit.duration : '' }
+							{ r.limit.duration ? Number(r.limit.duration) ? (r.limit.timeUnit == 'Hours' ? r.limit.hours : r.limit.duration) + ' ' + (r.limit.timeUnit || '') : r.limit.duration : '' }
 						</td>
 
 						<td class="operator">=</td>

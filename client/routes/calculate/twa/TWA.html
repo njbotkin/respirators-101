@@ -28,7 +28,7 @@
 
 </div>
 
-{ #if $job.chemical }<div style="margin: 0 auto; display: table"><ChemicalSummary {...$job.chemical} {asr} /></div>{ /if }
+{ #if $job.chemical }<div style="margin: 0 auto; display: table"><ChemicalSummary {...$job.chemical} {asr} editing={1} /></div>{ /if }
 
 { #if !row }
 	<div class="content"><p>There are no exposure limits present that can be used with a TWA.</p></div>
@@ -106,7 +106,7 @@
 			</div>
 		{ /if }
 
-		<div style="margin: 0 auto; display: table"><JobTable {...$job} editing {asr} only={i} /></div>
+		<div style="margin: 0 auto; display: table"><JobTable {...$job} {asr} only={i} /></div>
 
 	{ :else }
 
@@ -143,10 +143,6 @@ export default {
 			this.store.set({ job })
 		}
 	},
-	// computed: {
-	// 	i: ({ $job }) => $job.table.findIndex(r => r.limit.duration > 60),
-	// 	row: ({ $job, i }) => !!~i ? $job.table[i] : null
-	// },
 	methods: {
 		useTWA() {
 			let { row } = this.get()

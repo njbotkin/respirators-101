@@ -184,12 +184,12 @@ store.on('state', ({current, changed}) => {
 		r.warnings = []
 
 		// convenience
-		if(r.limit.value && !r.measured.value) r.measured.unit = r.limit.unit
-		if(r.measured.value && !r.limit.value) r.limit.unit = r.measured.unit
+		// if(r.limit.value && !r.measured.value) r.measured.unit = r.limit.unit
+		// if(r.measured.value && !r.limit.value) r.limit.unit = r.measured.unit
 
 		if(r.limit.manual) {
 			if(r.limit.timeUnit == 'Hours') {
-				r.limit.duration = r.limit.hours * 60
+				r.limit.duration = Math.round(r.limit.hours * 60)
 			} else {
 				r.limit.hours = Math.round(r.limit.duration / .6) / 100
 			}
@@ -197,8 +197,8 @@ store.on('state', ({current, changed}) => {
 
 		r.limit.timeUnitMultiplier = r.limit.timeUnit == 'Hours' ? 60 : 1
 
-		if(r.limit.unit && r.measured.unit && r.limit.unit !== r.measured.unit) {
-			r.warnings.push(`Your Exposure Limit measurement unit (${ unitsPretty[r.limit.unit] }) doesn't match your concentration measurement unit (${ unitsPretty[r.measured.unit] }).  The HR is invalid.`)
+		if(r.limit.unit !== r.measured.unit) {
+			r.warnings.push(`Your Exposure Limit measurement unit${ unitsPretty[r.limit.unit] ? ` (${ unitsPretty[r.limit.unit] })` : '' } doesn't match your concentration measurement unit${ unitsPretty[r.measured.unit] ? ` (${ unitsPretty[r.measured.unit] })` : '' }.  The HR is invalid.`)
 		}
 
 		if(r.measured.twa) {
@@ -224,7 +224,7 @@ store.on('state', ({current, changed}) => {
 			}
 		}
 
-		r.hr = (r.measured.value && r.limit.value) ? (r.measured.value / r.limit.value) : 0
+		r.hr = (r.measured.value && r.limit.value && r.limit.unit !== 'fractional') ? (r.measured.value / r.limit.value) : 0
 
 	}
 
