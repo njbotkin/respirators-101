@@ -34,7 +34,7 @@
 		<JobTable bind:table="job.table" {...job} {editing} {asr} />
 
 		{ #if Object.keys(job.options_saved).length }
-			<Table data="{ JSON.stringify([ ['Saved Respirator Options', 'APF'], ...Object.values(job.options_saved) ] ) }" />
+			<Chooser data="{ JSON.stringify([ ['Saved Respirator Options', 'APF'], ...Object.values(job.options_saved) ] ) }" chosen />
 		{ /if }
 		{ #if job.options }
 			<div><a class="respirator-options button" href="{ asr.makePath('app.options-list', { id: job.options }) }">All Respirator Options</a></div>
@@ -63,7 +63,7 @@
 		components: {
 			ChemicalSummary: 'lib/ChemicalSummary.html',
 			JobTable: 'lib/JobTable.html',
-			Table: 'lib/Table.html'
+			Chooser: 'lib/Chooser.html'
 		},
 		// ideally this would be done in oncreate, but occasionally oncreate fires before the DOM has been assembled?
 		onupdate() {
@@ -214,8 +214,6 @@
 
 		:global(table) {
 			width: 100%;
-			margin-bottom: 0;
-			/*margin-top: 10px;*/
 			font-size: 90%;
 		}
 	}

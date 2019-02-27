@@ -1,6 +1,6 @@
-<table>
+<table class:choose="!chosen">
 	<thead>
-		<th class="later"> Save </th>
+		{#if !chosen}<th class="later"> Save </th>{/if}
 		{ #each head as cell }
 			<th>{ cell }</th>
 		{ /each }
@@ -8,7 +8,7 @@
 	<tbody>
 		{ #each body as row, i }
 			<tr class:saved="$job.options_saved[i]">
-				<td class="save"> <div class="button" on:click="toggle(i, row)">Save{ $job.options_saved[i] ? 'd' : '' }</div> </td>
+				{#if !chosen}<td class="save"> <div class="button" on:click="toggle(i, row)">Save{ $job.options_saved[i] ? 'd' : '' }</div> </td>{/if}
 				{ #each row as cell }
 					<td>{ cell }</td>
 				{ /each }
@@ -56,7 +56,9 @@ table {
 		width: 35px;
 		text-align: center;
 	}
+}
 
+table.choose {
 	tr.saved {
 		outline: 4px solid $green;
 		outline-offset: -2px;

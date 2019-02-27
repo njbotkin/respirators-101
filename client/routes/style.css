@@ -261,6 +261,11 @@ sup { line-height: 0.5 }
 		color: #666 !important;
 		cursor: default;
 	}
+
+	@media (max-width: 400px) {
+		padding: 0 10px;
+		line-height: 30px;
+	}
 }
 
 ol {
