@@ -560,7 +560,7 @@ for(let row of z1_data) {
 		chemical = newChemical({
 			name,
 			cas,
-			cal_osha_pel: row.cells[CAL_OSHA_PEL].content,
+			// cal_osha_pel: row.cells[CAL_OSHA_PEL].content,
 			z1: true,
 		})
 		if(general_standard) chemical.general_standard = [link_gs(general_standard)]
