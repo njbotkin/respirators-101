@@ -33,11 +33,16 @@
 
 		<JobTable bind:table="job.table" {...job} {editing} {asr} />
 
-		{ #if Object.keys(job.options_saved).length }
-			<Chooser data="{ JSON.stringify([ ['Saved Respirator Options', 'APF'], ...Object.values(job.options_saved) ] ) }" chosen />
-		{ /if }
 		{ #if job.options }
-			<div><a class="respirator-options button" href="{ asr.makePath('app.options-list', { id: job.options }) }">All Respirator Options</a></div>
+			<div class="options-list">
+				{ #if require_escape_respirator.indexOf(job.options) > -1 }
+					<blockquote>You MUST SEE <a href="#/category/all-about-respirators/escape-respirators">Section IV of the NIOSH Respirator Selection Logic</a> to determine what kind of <strong>escape respirator</strong> you need.</blockquote>
+				{/if}
+				{ #if Object.keys(job.options_saved).length }
+					<Chooser data="{ JSON.stringify([ ['Saved Respirator Options', 'APF'], ...Object.values(job.options_saved) ] ) }" chosen />
+				{ /if }
+				<div style="margin: 10px 0 0"><a class="respirator-options button" href="{ asr.makePath('app.options-list', { id: job.options }) }">All Respirator Options</a></div>
+			</div>
 		{ /if }
 
 	</div>
@@ -99,7 +104,8 @@
 			valueSources,
 			only: false,
 			unitsPretty,
-			contenteditableInit: false
+			contenteditableInit: false,
+			require_escape_respirator: ["7a","7b","9-1a","9-1b","10-1a","10-1b","11-1a","11-1b","9-3a","9-3c","9-3e","9-3g","10-3a","10-3c","10-3e","10-3g","11-2a","11-2c","11-2e","11-2g"]
 		})
 	}
 
@@ -210,11 +216,6 @@
 
 		:global(.read-value) {
 			margin: 10px 0;
-		}
-
-		:global(table) {
-			width: 100%;
-			font-size: 90%;
 		}
 	}
 

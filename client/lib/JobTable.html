@@ -82,12 +82,32 @@
 				'Hours': 'Hours',
 				'Minutes': 'Minutes'
 			}
-		})
+		}),
+		actions: {
+			drag: (el) => {
+				const down = () => window.tableDragging = true
+				const up = () => window.tableDragging = false
+
+				el.addEventListener('touchstart', down, true)
+				el.addEventListener('mousedown', down, true)
+				el.addEventListener('touchend', up, true)
+				el.addEventListener('mouseup', up, true)
+
+				return {
+					remove: () => {
+						el.remove('touchstart', down, true)
+						el.remove('mousedown', down, true)
+						el.remove('touchend', up, true)
+						el.remove('mouseup', up, true)
+					}
+				}
+			}
+		}
 	}
 
 </script>
 
-<div class="padding">
+<div class="padding" use:drag>
 <table class:editing=editing class="jobtable">
 	<thead>
 		<tr>
@@ -220,6 +240,7 @@
 
 	.padding {
 		margin: 10px 0;
+		overflow: auto;
 		@media (max-width: 400px) {
 			margin: 10px -10px;
 		}
@@ -228,7 +249,6 @@
 	table.jobtable {
 		width: auto;
 		border-collapse: collapse;
-		border-spacing: none;
 		background: #f7f8f9;
 		margin: 0 auto;
 
