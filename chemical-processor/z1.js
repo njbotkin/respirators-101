@@ -7,7 +7,7 @@ const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
 
 const { newChemical, chemicals } = require('./chemicals.js')
-const { addNote } = require('./helpers.js')
+const { addNote, number } = require('./helpers.js')
 
 const $ = cheerio.load(readFileSync(joinPath(__dirname, '../chemical-data/z1.html'), { encoding: `utf8` }))
 cheerioTableparser($)
@@ -19,11 +19,11 @@ function split(s) {
 }
 function ceiling(s) {
 	let match = s.match(/^\(C\) (.*)/)
-	if(match) return match[1]
+	if(match) return number(match[1])
 }
 function stel(s) {
 	let match = s.match(/^\(ST\) (.*)/)
-	if(match) return match[1]
+	if(match) return number(match[1])
 }
 
 function link_gs(s) {
@@ -65,19 +65,19 @@ function process_combined_el_column({el, chemical, form, el_name}) {
 
 		// units
 		.replace(/([0-9.,]+) ppm/g, (match, p1) => {
-			unit = { ppm: p1 }
+			unit = { ppm: number(p1) }
 			return ''
 		})
 		.replace(/([0-9.,]+) mg\/m<sup>3<\/sup>/g, (match, p1) => {
-			unit = { mgm3: p1 }
+			unit = { mgm3: number(p1) }
 			return ''
 		})
 		.replace(/([0-9.,]+) mg\/m3/g, (match, p1) => {
-			unit = { mgm3: p1 }
+			unit = { mgm3: number(p1) }
 			return ''
 		})
 		.replace(/([0-9.,]+) f\/cm<sup>3<\/sup>/g, (match, p1) => {
-			unit = { fcm3: p1 }
+			unit = { fcm3: number(p1) }
 			return ''
 		})
 
