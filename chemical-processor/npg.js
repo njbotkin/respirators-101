@@ -3,7 +3,7 @@ const { readFileSync } = require('fs')
 const { join: joinPath } = require(`path`)
 
 const { chemicals, newChemical } = require('./chemicals.js')
-const { linkify, addNote } = require('./helpers.js')
+const { linkify, addNote, number } = require('./helpers.js')
 
 function munge_exposure_limit(standard, chemical, n) {
 
@@ -30,19 +30,19 @@ function munge_exposure_limit(standard, chemical, n) {
 
 	// units
 	.replace(/([0-9.,]+) ppm/g, (match, p1) => {
-		hold.push({ ppm: p1 })
+		hold.push({ ppm: number(p1) })
 		return `{${hold.length-1}}`
 	})
 	.replace(/([0-9.,]+) mg\/m<SUP>3<\/SUP>/gi, (match, p1) => {
-		hold.push({ mgm3: p1 })
+		hold.push({ mgm3: number(p1) })
 		return `{${hold.length-1}}`
 	})
 	.replace(/([0-9.,]+) fibers\/cm<SUP>3<\/SUP>/gi, (match, p1) => {
-		hold.push({ fiberscm3: p1 })
+		hold.push({ fiberscm3: number(p1) })
 		return `{${hold.length-1}}`
 	})
 	.replace(/([0-9.,]+) mppcf/g, (match, p1) => {
-		hold.push({ mppcf: p1 })
+		hold.push({ mppcf: number(p1) })
 		return `{${hold.length-1}}`
 	})
 

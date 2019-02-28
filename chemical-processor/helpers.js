@@ -52,7 +52,18 @@ function addNote(notes, note) {
 	notes.push(note.replace(/\[\]/g, ''))
 }
 
+// serves as a validator and a transformer.  Removes commas
+function number(v) {
+	if(typeof v === 'undefined') return false
+	if(!isNaN(v)) return Number(v)
+	v = v.trim().replace(',', '')
+	if(v.length === 0) return false
+	v = Number(v)
+	return !isNaN(v) && v
+}
+
 module.exports = {
 	linkify,
-	addNote
+	addNote,
+	number
 }

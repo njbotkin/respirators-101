@@ -21,7 +21,6 @@ export function round(v) {
 export function number(v) {
 	if(typeof v === 'undefined') return false
 	if(!isNaN(v)) return Number(v)
-		console.log(v)
 	v = v.trim().replace(',', '')
 	if(v.length === 0) return false
 	v = Number(v)
