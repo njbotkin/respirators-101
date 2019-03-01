@@ -17,7 +17,7 @@
 	}
 </script>
 
-<div class="s e l e c t"><Select {items} on:select="handleSelect(event)" isClearable={0} selectedValue="{ items[Object.keys(options).indexOf(value)] }"></Select></div>
+<div class="s e l e c t"><Select {items} on:select="handleSelect(event)" isClearable={0} selectedValue="{ items[Object.keys(options).indexOf(value)] }" isSearchable={0}></Select></div>
 
 <style>
 	/* override without !important */
@@ -37,16 +37,6 @@
 			padding: 0 15px;
 			line-height: 40px;
 			height: 40px;
-		}
-
-		&::after {
-			position: absolute;
-			right: 16px;
-			top: 0;
-			font-size: 80%;
-			line-height: 40px;
-			content: '▼';
-			color: #bbb;
 		}
 
 		.selectedItem {
