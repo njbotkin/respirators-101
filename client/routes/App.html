@@ -38,7 +38,7 @@
 <div id="domlog"></div>
 
 { #if showState }
-	<div class="state" ref:state style="-webkit-transform: translate3d(0, { jobOpen ? windowHeight-jobHeight : windowHeight }px, 0); transform: translate3d(0, { jobOpen ? windowHeight-jobHeight : windowHeight }px, 0)" on:click="closeJob(event)" class:transitioning="transitioning">
+	<div class="state" ref:state style="-webkit-transform: translate3d(0, { jobOpen ? 0 : jobHeight }px, 0); transform: translate3d(0, { jobOpen ? 0 : jobHeight }px, 0)" on:click="closeJob(event)" class:transitioning="transitioning">
 
 		<div class="header" on:click="set({ jobOpen: !jobOpen })">
 			<div class="current-job" bind:offsetWidth="currentJobWidth"> <div class="label">Current Job</div> { $job.name } </div>
@@ -49,7 +49,7 @@
 				</a>
 			{ /if }
 		</div>
-		<div class="inner" style="max-height: { jobMaxHeight }px;">
+		<div class="inner" style="max-height: { jobMaxHeight }px;" bind:offsetHeight="jobHeight">
 			<Job bind:job="$job" {asr} only="true" />
 			<div style="text-align: right;"><a class="button my-info" href="{asr.makePath('app.info')}">My info</a></div>
 		</div>
@@ -75,11 +75,8 @@
 		},
 		onupdate({ changed, current }) {
 			if((changed.showState || changed.jobOpen)) {
-				if(current.jobOpen) {
-					setTimeout(() => this.set({ transitioning: false }), 300)
-				} else {
-					this.set({ transitioning: true })
-				}
+				this.set({ transitioning: true })
+				setTimeout(() => this.set({ transitioning: false }), 300)
 			}
 		},
 		methods: {
@@ -101,7 +98,6 @@
 		store: () => store,
 		oncreate () {
 
-			setInterval(() => this.set({ jobHeight: this.refs.state ? this.refs.state.offsetHeight : 0 }), 16)
 			this.refs.ey.addEventListener('openJob', () => this.set({ jobOpen: true }))
 
 			// console.log = console.error = m => {
@@ -406,9 +402,10 @@
 	}
 
 	.state {
+		overscroll-behavior: contain;
 		position: fixed;
 		max-width: 800px;
-		top: 0;
+		bottom: 0;
 		left: 0;
 		right: 0;
 		margin: 0 auto;
