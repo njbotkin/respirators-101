@@ -1,7 +1,7 @@
 <script>
 	export default {
 		onupdate({ current }) {
-			document.body.classList[( current.show ? 'add' : 'remove' )]('lock')
+			document.body.classList[( current.show ? 'add' : 'remove' )]('lock1')
 		}
 	}
 </script>
@@ -26,6 +26,8 @@
 		position: absolute;
 		right: 0; left: 0; top: 0; bottom: 0;
 		background: rgba(0,0,0,0.4);
+		overflow: hidden;
+		overscroll-behavior: none;
 	}
 	.modal {
 		overflow: hidden;

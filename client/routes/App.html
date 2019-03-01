@@ -67,11 +67,7 @@
 			Job: './info/Job.html'
 		},
 		onstate({ current }) {
-			if(current.jobOpen || current.sidebarOpen) {
-				document.body.classList.add('lock')
-			} else {
-				document.body.classList.remove('lock')
-			}
+			document.body.classList[( current.jobOpen || current.sidebarOpen ? 'add' : 'remove' )]('lock')
 		},
 		onupdate({ changed, current }) {
 			if(current.jobHeight && (changed.showState || changed.jobOpen)) {

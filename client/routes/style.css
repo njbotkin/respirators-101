@@ -1,7 +1,8 @@
 @import "colors";
 
-/* android webview is unique.  overflow:hidden and overscroll-behavior:none are required to stop background scrolling on any elements
-html.lock {
+/* android webview is unique.  overflow:hidden and overscroll-behavior:none 
+   are required to stop background scrolling on any elements */
+body.lock, body.lock1 {
 	overflow: hidden;
 	overscroll-behavior: none;
 }
@@ -13,11 +14,6 @@ body {
 	line-height: 1.5;
 	font-size: 16px;
 
-	&.lock {
-		overflow: hidden;
-		overscroll-behavior: none;
-	}
-
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 	-webkit-tap-highlight-color: transparent;
 
@@ -28,7 +24,7 @@ body {
 
 	@media (max-width: 600px) {
 		font-size: 14px;
-	}
+	} 
 }
 
 #content, .content {
