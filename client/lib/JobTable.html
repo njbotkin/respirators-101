@@ -176,9 +176,9 @@
 						<!-- HR -->
 						<td class:highest="r.highest_hr" class="hr { hr_class(r.hr) }">{ Number(r.hr) ? round(r.hr) : r.hr }</td>
 					</tr>
-					<tr class="edit" class:editing="r.editing">
+					<tr class="edit" class:editing="r.editing && editing">
 						<td colspan="7">
-							{ #if r.editing }
+							{ #if r.editing && editing }
 								<div transition:slide>
 
 									{ #if r.confirm_twa }

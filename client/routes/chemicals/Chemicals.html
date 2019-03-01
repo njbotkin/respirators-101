@@ -28,7 +28,7 @@
 </div>
 
 { #if !searching }
-	<div class="alphabet">
+	<div class="alphabet" ref:alphabet>
 		{ #each Object.entries(letters) as [i, l] }
 			<div class="letter">{ l }</div>
 		{ /each }
@@ -85,6 +85,15 @@
 		threshold: 0.3,
 	})
 
+	let mouseDown = false
+
+	function listen(emitter, events, listener) {
+		for(let event of events) emitter.addEventListener(event, listener)
+	}
+	function ignore(emitter, events, listener) {
+		for(let event of events) emitter.removeEventListener(event, listener)
+	}
+
 	export default {
 		components: {
 			ExposureLimits: 'lib/ExposureLimits.html',
@@ -99,79 +108,18 @@
 			unitsPretty
 		}),
 		oncreate() {
-
-			// scrolling through alphabet thingy
-			let alphabet = document.querySelector('.alphabet')
-			var mouseDown = false
-
-			alphabet.addEventListener('mousedown', down)
-			alphabet.addEventListener('touchstart', down)
-			alphabet.addEventListener('mouseup', up)
-			alphabet.addEventListener('touchend', up)
-			alphabet.addEventListener('touchcancel', up)
-
-			function down(e) {
-				if(e.target.className.indexOf('letter') > -1) {
-					mouseDown = true
-				}
-			}
-			function up() {
-				mouseDown = false
-
-				for(var l of document.querySelectorAll('.letter')) {
-					l.classList.remove('active')
-				}
-			}
-
-			alphabet.addEventListener('mousemove', selectLetter)
-			alphabet.addEventListener('touchmove', selectLetter)
-			alphabet.addEventListener('click', selectLetter)
-
-			function selectLetter(e) {
-				var target
-				if(e.type == 'touchmove') {
-					let myLocation = e.touches[0];
-					target = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
-				} else {
-					target = e.target
-				}
-
-				if(mouseDown || e.type == 'click') {
-					if(target.className && target.className.indexOf('letter') > -1) {
-						e.preventDefault()
-
-						for(var l of document.querySelectorAll('.letter')) {
-							l.classList.remove('active')
-						}
-						target.classList.add('active')
-
-						var letter = document.getElementById(target.innerText.toLowerCase())
-						if(letter) {
-							window.scrollTo(0, letter.offsetTop - 200)
-						}
-					}
-				}
-			}
-
-			// save scroll position
-            window.scroll(0, this.store.get().job.chemicalsScrollY)
-
-            window.addEventListener('scroll', () => {
-                let { job } = this.store.get()
-                let { search } = this.get()
-                if(search !== '') return
-                this.store.set({ job: { chemicalsScrollY: window.scrollY } })
-            })
-
-            this.on('update', ({changed, current}) => {
-                if(!changed.search) return
-                if(current.search == '') {
-           			window.scroll(0, this.store.get().job.chemicalsScrollY)
-                } else {
-                    window.scroll(0, 0)
-                }
-            })
-
+			listen(this.refs.alphabet, ['mousedown', 'touchstart', 'mouseup', 'touchend', 'touchcancel', 'mousemove', 'touchmove', 'click'], this)
+			listen(window, ['scroll'], this)
+		},
+		onupdate({changed, current}) {
+			// restore scroll position
+            if(changed.search) {
+            	requestAnimationFrame( () => window.scroll(0, current.search == '' ? this.store.get().job.chemicalsScrollY : 0) )
+            }
+		},
+		ondestroy() {
+			ignore(this.refs.alphabet, ['mousedown', 'touchstart', 'mouseup', 'touchend', 'touchcancel', 'mousemove', 'touchmove', 'click'], this)
+			ignore(window, ['scroll'], this)
 		},
 		computed: {
 			searching: ({ search }) => !!search,
@@ -212,9 +160,9 @@
 			},
 			saveEL({ chemical, standardKey, formKey }) {
 
-				let state = this.store.get()
+				let { job } = this.store.get()
 
-				state.job.table = Object.entries(chemical.standards[standardKey].forms[formKey].durations)
+				job.table = Object.entries(chemical.standards[standardKey].forms[formKey].durations)
 					.map(([durationKey, duration]) => ({
 						limit: {
 							durationKey,
@@ -233,13 +181,46 @@
 						},
 						hr: null
 					}))
-					.concat(state.job.table.filter(r => r.limit.manual))
+					.concat(job.table.filter(r => r.limit.manual))
 
-				Object.assign(state.job, { chemical, standardKey, formKey })
+				Object.assign(job, { chemical, standardKey, formKey })
 
-				this.store.set( state, false )
+				this.store.set({ job }, false )
 				this.refs.ey.dispatchEvent(new CustomEvent('openJob', { bubbles: true }))
 				this.set({ ELModal: false })
+			},
+			handleEvent(e) {
+				// scrolling through alphabet thingy
+				if(!!~['mousedown', 'touchstart'].indexOf(e.type)) {
+					if(e.target.className.indexOf('letter') > -1) {
+						mouseDown = true
+					}
+				}
+				if(!!~['mouseup', 'touchend', 'touchcancel'].indexOf(e.type)) {
+					mouseDown = false
+				}
+				if(!!~['touchmove', 'mousemove', 'click'].indexOf(e.type)) {
+					let target = e.type == 'touchmove' ? document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY) : e.target
+
+					if(mouseDown || e.type == 'click') {
+
+						if(target.className && target.className.indexOf('letter') > -1) {
+							e.preventDefault()
+
+							let letter = document.getElementById(target.innerText.toLowerCase())
+							if(letter) {
+								window.scroll(0, letter.offsetTop - 200)
+							}
+						}
+					}
+				}
+
+				// save scroll position
+				if(e.type == 'scroll') {
+			        let { search } = this.get()
+			        if(search !== '') return
+			        this.store.set({ job: { chemicalsScrollY: window.scrollY } })
+				}
 			}
 		}
 	}

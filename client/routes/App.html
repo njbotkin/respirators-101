@@ -38,7 +38,7 @@
 <div id="domlog"></div>
 
 { #if showState }
-	<div class="state" ref:state style="-webkit-transform: translate3d(0, { jobOpen ? 0 : jobHeight }px, 0); transform: translate3d(0, { jobOpen ? 0 : jobHeight }px, 0)" on:click="closeJob(event)" class:transitioning="transitioning">
+	<div class="state" ref:state style="-webkit-transform: translate3d(0, { (jobOpen ? 0 : jobHeight) }px, 0); transform: translate3d(0, { (jobOpen ? 0 : jobHeight) }px }px, 0)" on:click="closeJob(event)" class:transitioning="transitioning">
 
 		<div class="header" on:click="set({ jobOpen: !jobOpen })">
 			<div class="current-job" bind:offsetWidth="currentJobWidth"> <div class="label">Current Job</div> { $job.name } </div>
@@ -74,7 +74,7 @@
 			}
 		},
 		onupdate({ changed, current }) {
-			if((changed.showState || changed.jobOpen)) {
+			if(current.jobHeight && (changed.showState || changed.jobOpen)) {
 				this.set({ transitioning: true })
 				setTimeout(() => this.set({ transitioning: false }), 300)
 			}
@@ -399,10 +399,13 @@
 		left:0;
 		z-index: 2;
 		background: rgba(255,255,255,0.2);
+		overflow: hidden;
+		overscroll-behavior: none;
 	}
 
 	.state {
-		overscroll-behavior: contain;
+		overflow: hidden;
+		overscroll-behavior: none;
 		position: fixed;
 		max-width: 800px;
 		bottom: 0;
@@ -412,16 +415,16 @@
 		background: #fff;
 		z-index: 3;
 		box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.4);
-    	/*transform: translate3d(0,0,0);*/
 
 		&.transitioning {
 			transition: all .3s cubic-bezier(0, 0, 0, 1);
 		}
 
 		.header {
+			overflow: hidden;
+			overscroll-behavior: none;
 			cursor: pointer;
 			position: relative;
-			margin-top: -50px;
 			background: #fff;
 			height: 50px;
 			box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.4);

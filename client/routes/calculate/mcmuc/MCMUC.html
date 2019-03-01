@@ -35,9 +35,9 @@
 		{ #each $job.concentrations as concentration, i }
 			<tr class="concentration">
 				<td><label><span class="optional">Component </span>{i + 1}</label></td>
-				<td><input type="text" bind:value="concentration.value" placeholder="0" /></td>
+				<td><input type="number" bind:value="concentration.value" placeholder="0" /></td>
 				<td>&#247;</td>
-				<td><input type="text" bind:value="concentration.muc" placeholder="0" /></td>
+				<td><input type="number" bind:value="concentration.muc" placeholder="0" /></td>
 				<td>=</td>
 				<td><div class="result">{ round(componentRatios[i]) }</div></td>
 				<td><div class="removeConcentration" on:click="removeConcentration(i)">&#215;</div></td>
