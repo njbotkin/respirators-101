@@ -202,8 +202,8 @@ store.on('state', ({current, changed}) => {
 
 		r.limit.timeUnitMultiplier = r.limit.timeUnit == 'Hours' ? 60 : 1
 
-		if(r.limit.unit !== r.measured.unit) {
-			r.warnings.push(`Your Exposure Limit measurement unit${ unitsPretty[r.limit.unit] ? ` (${ unitsPretty[r.limit.unit] })` : '' } doesn't match your concentration measurement unit${ unitsPretty[r.measured.unit] ? ` (${ unitsPretty[r.measured.unit] })` : '' }.  The HR is invalid.`)
+		if(r.limit.value && r.measured.value && r.limit.unit && r.measured.unit && r.limit.unit !== r.measured.unit) {
+			r.warnings.push(`Your Exposure Limit measurement unit${ unitsPretty[r.limit.unit] ? ` (${ unitsPretty[r.limit.unit] })` : '' } doesn't match your concentration measurement unit${ unitsPretty[r.measured.unit] ? ` (${ unitsPretty[r.measured.unit] })` : '' }.`)
 		}
 
 		if(r.measured.twa) {
@@ -226,14 +226,14 @@ store.on('state', ({current, changed}) => {
 
 				r.measured.twa = Object.assign(r.measured.twa, { totalMinutes, sampleProducts, totalValueMinutes })
 				r.measured.value = final
-			}
+			} 
 		}
 
-		r.hr = (r.measured.value && r.limit.value && r.limit.unit !== 'fractional') ? (r.measured.value / r.limit.value) : 0
+		r.hr = (r.measured.value && r.limit.value && r.limit.unit !== 'fractional' && r.limit.unit == r.measured.unit) ? (r.measured.value / r.limit.value) : 'N/A'
 
 	}
 
-	let maxHR = job.table.reduce((m, r) => Math.max(m, r.hr), 0)
+	let maxHR = job.table.reduce((m, r) => isNaN(r.hr) ? m : Math.max(m, r.hr), 0)
 	for(let r of job.table) {
 		r.highest_hr = r.hr == maxHR
 	}

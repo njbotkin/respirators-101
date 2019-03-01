@@ -15,7 +15,7 @@
 			durationsPretty,
 			round,
 			hr_class(hr) {
-				if(!hr) return 'invalid'
+				if(!hr || isNaN(hr)) return 'invalid'
 				return hr > 1 ? 'over' : 'under'
 			}
 		},
@@ -174,7 +174,7 @@
 						<td class="operator">=</td>
 
 						<!-- HR -->
-						<td class:highest="r.highest_hr" class="hr { hr_class(r.hr) }">{ round(r.hr) }</td>
+						<td class:highest="r.highest_hr" class="hr { hr_class(r.hr) }">{ Number(r.hr) ? round(r.hr) : r.hr }</td>
 					</tr>
 					<tr class="edit" class:editing="r.editing">
 						<td colspan="7">
