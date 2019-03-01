@@ -1,3 +1,11 @@
+<script>
+	export default {
+		onupdate({ current }) {
+			document.body.classList[( current.show ? 'add' : 'remove' )]('lock')
+		}
+	}
+</script>
+
 <div class="fixed" hidden="{ !show }">
 	<div class="bg" on:click="set({ show: false })"></div>
 	<div class="modal">
