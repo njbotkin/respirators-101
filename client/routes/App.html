@@ -1,6 +1,6 @@
 <svelte:window bind:innerHeight="windowHeight" bind:innerWidth="windowWidth" />
 
-<div class="sidebar { sidebarOpen && 'sidebarOpen' } { jobOpen && 'jobOpen' }" style="-webkit-transform: translate({ wrapperX }px, 0); transform: translate({ wrapperX }px, 0)">
+<div class="sidebar { sidebarOpen && 'sidebarOpen' } { jobOpen && 'jobOpen' }" style="-webkit-transform: translate3d({ wrapperX }px, 0, 0); transform: translate3d({ wrapperX }px, 0, 0)">
 
 	<div class="appname">Respirators 101 <div class="nav-button close icon-close" on:click="set({ sidebarOpen: false })">close menu</div></div>
 	<div class="main" on:click="closeMenu(event)">
@@ -38,7 +38,7 @@
 <div id="domlog"></div>
 
 { #if showState }
-	<div class="state" ref:state style="top: { jobOpen ? windowHeight-jobHeight : windowHeight }px" on:click="closeJob(event)" class:transitioning="transitioning">
+	<div class="state" ref:state style="-webkit-transform: translate3d(0, { jobOpen ? windowHeight-jobHeight : windowHeight }px, 0); transform: translate3d(0, { jobOpen ? windowHeight-jobHeight : windowHeight }px, 0)" on:click="closeJob(event)" class:transitioning="transitioning">
 
 		<div class="header" on:click="set({ jobOpen: !jobOpen })">
 			<div class="current-job" bind:offsetWidth="currentJobWidth"> <div class="label">Current Job</div> { $job.name } </div>
@@ -408,16 +408,17 @@
 	.state {
 		position: fixed;
 		max-width: 800px;
+		top: 0;
 		left: 0;
 		right: 0;
 		margin: 0 auto;
 		background: #fff;
 		z-index: 3;
 		box-shadow: 0px 0px 40px 0px rgba(0,0,0,0.4);
+    	/*transform: translate3d(0,0,0);*/
 
 		&.transitioning {
-		transition: top .3s cubic-bezier(0, 0, 0, 1);
-    		transform: translate3d(0,0,0);
+			transition: all .3s cubic-bezier(0, 0, 0, 1);
 		}
 
 		.header {
