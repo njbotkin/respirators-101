@@ -206,7 +206,7 @@ store.on('state', ({current, changed}) => {
 			r.warnings.push(`Your Exposure Limit measurement unit${ unitsPretty[r.limit.unit] ? ` (${ unitsPretty[r.limit.unit] })` : '' } doesn't match your concentration measurement unit${ unitsPretty[r.measured.unit] ? ` (${ unitsPretty[r.measured.unit] })` : '' }.`)
 		}
 
-		if(r.measured.twa) {
+		if(r.measured.twa && !r.measured.manual) {
 
 			if(!r.measured.twa.samples) r.measured.twa.samples = []
 				
