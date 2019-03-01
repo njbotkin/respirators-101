@@ -1,4 +1,3 @@
-
 <div class="content">
 
 	<p>A Time-Weighted Average (TWA) is used to measure a worker's daily exposure to hazardous substances, averaged over an 8- or 10-hour workday. </p>
@@ -52,15 +51,15 @@
 						</tr>
 					</thead>
 					<tbody>
-						{ #each row.measured.twa.samples as sample, i }
+						{ #each $job.table[i].measured.twa.samples as sample, i2 }
 							<tr class="sample">
-								<td><label><span class="optional">Sample </span>{i + 1}</label></td>
+								<td><label><span class="optional">Sample </span>{i2 + 1}</label></td>
 								<td><input type="number" bind:value="sample.value" placeholder="0" /></td>
 								<td>&#215;</td>
 								<td><input type="number" bind:value="sample.period" placeholder="0" /></td>
 								<td>=</td>
-								<td><div class="result">{ round(row.measured.twa.sampleProducts[i] / row.limit.timeUnitMultiplier) }</div></td>
-								<td><div class="removeSample" on:click="removeSample(i)">&#215;</div></td>
+								<td><div class="result">{ round(row.measured.twa.sampleProducts[i2] / row.limit.timeUnitMultiplier) }</div></td>
+								<td><div class="removeSample" on:click="removeSample(i2)">&#215;</div></td>
 							</tr>
 						{ /each }
 					</tbody>
@@ -102,7 +101,7 @@
 			</div>
 		{ /if }
 
-		<div style="margin: 0 auto; display: table"><JobTable {...$job} {asr} only={i} /></div>
+		<div style="margin: 0 auto; display: table"><JobTable bind:table="$job.table" {...$job} {asr} only={i} /></div>
 
 	{ :else }
 
@@ -123,46 +122,24 @@ export default {
 		ChemicalSummary: 'lib/ChemicalSummary.html',
 		JobTable: 'lib/JobTable.html'
 	},
-	oncreate() {
-		let { job } = this.store.get()
-		let i = job.table.findIndex(r => r.limit.duration > 60)
-		this.set({
-			i,
-			row: !!~i ? job.table[i] : null
-		})
-	},
-	// sync row with job
-	onstate({ current, changed }) {
-		if(changed.row) {
-			let { job } = this.store.get()
-			job.table[current.i] = current.row
-			this.store.set({ job })
-		}
+	computed: {
+		i: ({ $job }) => $job.table.findIndex(r => r.limit.duration > 60),
+		row: ({ $job, i }) => !!~i ? $job.table[i] : null
 	},
 	methods: {
-		useTWA() {
-			let { row } = this.get()
-			row.measured.manual = false 
-			this.set({ row })
+		edit(f) {
+			let { i } = this.get()
+			let { job } = this.store.get()
+			f({ job, i })
+			this.store.set({ job })
 		},
-		changeUnit() {
-			let { row } = this.get()
-			row.measured.unit = row.limit.unit 
-			this.set({ row })
-		},
-		addSample() {
-			let { row } = this.get()
-			row.measured.twa.samples.push({
+		useTWA() { this.edit(({ job, i }) => job.table[i].measured.manual = false) },
+		changeUnit() { this.edit(({ job, i }) => job.table[i].measured.unit = job.table[i].limit.unit) },
+		addSample() { this.edit(({ job, i }) => job.table[i].measured.twa.samples.push({
 				value: null,
 				period: null
-			})
-			this.set({ row })
-		},
-		removeSample(si) {
-			let { row } = this.get()
-			row.measured.twa.samples.splice(si, 1)
-			this.set({ row })
-		}
+			})) },
+		removeSample(si) { this.edit(({ job, i }) => job.table[i].measured.twa.samples.splice(si, 1)) },
 	},
 	helpers: {
 		round

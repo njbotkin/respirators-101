@@ -189,8 +189,8 @@ store.on('state', ({current, changed}) => {
 		r.warnings = []
 
 		// convenience
-		// if(r.limit.value && !r.measured.value) r.measured.unit = r.limit.unit
-		// if(r.measured.value && !r.limit.value) r.limit.unit = r.measured.unit
+		if(r.limit.value && !r.measured.value) r.measured.unit = r.limit.unit
+		if(r.measured.value && !r.limit.value) r.limit.unit = r.measured.unit
 
 		if(r.limit.manual) {
 			if(r.limit.timeUnit == 'Hours') {
